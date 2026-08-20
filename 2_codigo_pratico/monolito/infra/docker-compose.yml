@@ -1,0 +1,63 @@
+services:
+  # -------------------------------------------------------------
+  # BANCO DE DADOS ÚNICO DO MONÓLITO (PostgreSQL)
+  # -------------------------------------------------------------
+  monolith-postgres-db:
+    image: postgres:16-alpine
+    container_name: tcc-mono-postgres-db
+    restart: always
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: monolith_db
+      POSTGRES_USER: tcc_user
+      POSTGRES_PASSWORD: tcc_password
+    volumes:
+      - monolith-postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql:ro
+    networks:
+      - monolith-net
+
+  # -------------------------------------------------------------
+  # APLICAÇÃO MONOLÍTICA (API Node.js / Express Única)
+  # -------------------------------------------------------------
+  monolith-service:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile
+    container_name: tcc-mono-service
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      POSTGRES_URI: postgresql://tcc_user:tcc_password@monolith-postgres-db:5432/monolith_db
+    depends_on:
+      - monolith-postgres-db
+    networks:
+      - monolith-net
+
+  # -------------------------------------------------------------
+  # FRONTEND DO MONÓLITO (Next.js App)
+  # -------------------------------------------------------------
+  frontend:
+    build:
+      context: ../src/frontend
+      dockerfile: Dockerfile
+    container_name: tcc-mono-frontend
+    restart: always
+    ports:
+      - "4000:4000"
+    environment:
+      NEXT_PUBLIC_MONOLITH_URL: http://localhost:8000
+    depends_on:
+      - monolith-service
+    networks:
+      - monolith-net
+
+networks:
+  monolith-net:
+    driver: bridge
+
+volumes:
+  monolith-postgres-data:

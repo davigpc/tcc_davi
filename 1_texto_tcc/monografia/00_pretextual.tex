@@ -1,0 +1,118 @@
+% Isto é um exemplo de Folha de aprovação, elemento obrigatório da NBR
+% 14724/2011 (seção 4.2.1.3). Você pode utilizar este modelo até a aprovação
+% do trabalho. Após isso, substitua todo o conteúdo deste arquivo por uma
+% imagem da página assinada pela banca com o comando abaixo:
+%
+% \includepdf{folhadeaprovacao_final.pdf}
+%
+\begin{folhadeaprovacao}
+
+  \begin{center}
+    {\ABNTEXchapterfont\large\imprimirautor}
+
+    \vspace*{\fill}\vspace*{\fill}
+    {\ABNTEXchapterfont\bfseries\Large\imprimirtitulo}
+    \vspace*{\fill}
+    
+    \hspace{.45\textwidth}
+    \begin{minipage}{.5\textwidth}
+        \imprimirpreambulo
+    \end{minipage}%
+    \vspace*{\fill}
+   \end{center}
+    
+   \imprimirlocal, \today:
+   % Caso prefira fixar a data, basta mudar o comando \today pela data,
+   %   como no exemplo abaixo:
+   %Trabalho aprovado. \imprimirlocal, 7 de setembro de 1822:
+
+   \assinatura{\textbf{\imprimirorientador} \\ Orientador} 
+   %\assinatura{\textbf{Professor} \\ Convidado 1}
+   %\assinatura{\textbf{Professor} \\ Convidado 2}
+   %\assinatura{\textbf{Professor} \\ Convidado 3}
+   %\assinatura{\textbf{Professor} \\ Convidado 4}
+      
+   \begin{center}
+    \vspace*{0.5cm}
+    {\large\imprimirlocal}
+    \par
+    {\large\imprimirdata}
+    \vspace*{1cm}
+  \end{center}
+  
+\end{folhadeaprovacao}
+
+% ---------------------------------------------------------------------------------------------
+% ---------------------------------------------------------------------------------Dedicatória-
+% ---------------------------------------------------------------------------------------------
+\begin{dedicatoria}
+	\vspace*{\fill}
+	\centering
+	\noindent
+	\textit{ Este trabalho é dedicado às crianças adultas que,\\
+		quando pequenas, sonharam em se tornar cientistas.} \vspace*{\fill}
+\end{dedicatoria}
+
+% ---------------------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------Agradecimentos-
+% ---------------------------------------------------------------------------------------------
+\begin{agradecimentos}
+	Os agradecimentos principais são direcionados à Gerald Weber, Miguel Frasson,
+	Leslie H. Watter, Bruno Parente Lima, Flávio de Vasconcellos Corrêa, Otavio Real
+	Salvador, Renato Machnievscz\footnote{Os nomes dos integrantes do primeiro
+		projeto abn\TeX\ foram extraídos de
+		\url{http://codigolivre.org.br/projects/abntex/}} e todos aqueles que
+	contribuíram para que a produção de trabalhos acadêmicos conforme
+	as normas ABNT com \LaTeX\ fosse possível.
+	
+	Agradecimentos especiais são direcionados ao Centro de Pesquisa em Arquitetura
+	da Informação\footnote{\url{http://www.cpai.unb.br/}} da Universidade de
+	Brasília (CPAI), ao grupo de usuários
+	\emph{latex-br}\footnote{\url{http://groups.google.com/group/latex-br}} e aos
+	novos voluntários do grupo
+	\emph{\abnTeX}\footnote{\url{http://groups.google.com/group/abntex2} e
+		\url{http://abntex2.googlecode.com/}}~que contribuíram e que ainda
+	contribuirão para a evolução do \abnTeX.
+	
+\end{agradecimentos}
+
+% ---------------------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------------Epígrafe-
+% ---------------------------------------------------------------------------------------------
+\begin{epigrafe}
+	\vspace*{\fill}
+	\begin{flushright}
+		\textit{``Não vos amoldeis às estruturas deste mundo, \\
+			mas transformai-vos pela renovação da mente, \\
+			a fim de distinguir qual é a vontade de Deus: \\
+			o que é bom, o que Lhe é agradável, o que é perfeito.\\
+			(Bíblia Sagrada, Romanos 12, 2)}
+	\end{flushright}
+\end{epigrafe}
+% ---
+
+% ---------------------------------------------------------------------------------------------
+% -------------------------------------------------------------------------resumo em português-
+% ---------------------------------------------------------------------------------------------
+\begin{resumo}
+A evolução dos sistemas de informação frequentemente conduz aplicações legadas construídas sob arquiteturas monolíticas a gargalos de acoplamento, alta complexidade de manutenção e limitações de escalabilidade. Diante deste cenário, a transição para uma arquitetura de microsserviços surge como uma alternativa viável para promover o desacoplamento e a evolução independente dos componentes de software. Contudo, a migração sem um planejamento estruturado introduz riscos operacionais significativos. Este trabalho apresenta uma metodologia estruturada para a decomposição de aplicações monolíticas em microsserviços, fundamentada nos princípios de Domain-Driven Design (DDD) para o mapeamento de Bounded Contexts, no padrão Strangler Fig (Figueira-Mata-Pau) para estrangulamento gradual do monólito e no padrão Database per Service para garantir o isolamento de dados por meio da persistência poliglota. Para a validação prática do roteiro proposto, foi desenvolvida uma Prova de Conceito (PoC) conteinerizada com Docker simulando um e-commerce, composta por um front-end/BFF em Next.js e três microsserviços independentes utilizando MongoDB (Catálogo), Redis (Carrinho de Compras) e PostgreSQL (Pedidos e Pagamentos). Os resultados demonstraram que o roteiro metodológico viabiliza a segregação efetiva dos domínios de negócio e dos bancos de dados, assegurando baixo acoplamento, alta coesão e escalabilidade granular por serviço.
+	
+	\vspace{\onelineskip}
+	
+	\noindent
+	\textbf{Palavras-chaves}: Microsserviços. Domain-Driven Design. Strangler Fig Pattern. Database per Service.
+\end{resumo}
+
+% ---------------------------------------------------------------------------------------------
+% ----------------------------------------------------------------------------resumo em inglês-
+% ---------------------------------------------------------------------------------------------
+\begin{resumo}[Abstract]
+	\begin{otherlanguage*}{english}
+		The evolution of information systems often leads legacy applications built on monolithic architectures to coupling bottlenecks, high maintenance complexity, and scalability limitations. In this context, migrating to a microservices architecture emerges as a viable alternative to promote decoupling and the independent evolution of software components. However, migration without structured planning introduces significant operational risks. This work presents a structured methodology for decomposing monolithic applications into microservices, based on Domain-Driven Design (DDD) principles for mapping Bounded Contexts, the Strangler Fig Pattern for gradual monolith strangulation, and the Database per Service pattern to ensure data isolation through polyglot persistence. For the practical validation of the proposed roadmap, a Docker-containerized Proof of Concept (PoC) of an e-commerce platform was developed, consisting of a Next.js frontend/BFF and three independent microservices using MongoDB (Catalog), Redis (Shopping Cart), and PostgreSQL (Orders and Payments). The results demonstrated that the methodological roadmap enables the effective segregation of business domains and databases, ensuring low coupling, high cohesion, and granular scalability per service.
+		
+		\vspace{\onelineskip}
+		
+		\noindent 
+		\textbf{Key-words}: Microservices. Domain-Driven Design. Strangler Fig Pattern. Database per Service. Polyglot Persistence.
+	\end{otherlanguage*}
+\end{resumo}

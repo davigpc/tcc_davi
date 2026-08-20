@@ -1,0 +1,127 @@
+services:
+  # -------------------------------------------------------------
+  # BANCOS DE DADOS (MICROSSERVIÇOS)
+  # -------------------------------------------------------------
+  mongo-db:
+    image: mongo:7.0
+    container_name: tcc-micro-mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: catalog_db
+    volumes:
+      - mongo-data:/data/db
+      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    networks:
+      - ecommerce-net
+
+  redis-db:
+    image: redis:7-alpine
+    container_name: tcc-micro-redis-db
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - ecommerce-net
+
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: tcc-micro-postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: orders_db
+      POSTGRES_USER: tcc_user
+      POSTGRES_PASSWORD: tcc_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-postgres.sql:/docker-entrypoint-initdb.d/init-postgres.sql:ro
+    networks:
+      - ecommerce-net
+
+  # -------------------------------------------------------------
+  # MICROSSERVIÇOS (APIs Node.js / Express)
+  # -------------------------------------------------------------
+  catalog-service:
+    build:
+      context: ../src/services/catalog-service
+      dockerfile: Dockerfile
+    container_name: tcc-micro-catalog-service
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      PORT: 3001
+      MONGO_URI: mongodb://mongo-db:27017/catalog_db
+    depends_on:
+      - mongo-db
+    networks:
+      - ecommerce-net
+
+  cart-service:
+    build:
+      context: ../src/services/cart-service
+      dockerfile: Dockerfile
+    container_name: tcc-micro-cart-service
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+      REDIS_HOST: redis-db
+      REDIS_PORT: 6379
+    depends_on:
+      - redis-db
+    networks:
+      - ecommerce-net
+
+  order-service:
+    build:
+      context: ../src/services/order-service
+      dockerfile: Dockerfile
+    container_name: tcc-micro-order-service
+    restart: always
+    ports:
+      - "3003:3003"
+    environment:
+      PORT: 3003
+      POSTGRES_URI: postgresql://tcc_user:tcc_password@postgres-db:5432/orders_db
+    depends_on:
+      - postgres-db
+    networks:
+      - ecommerce-net
+
+  # -------------------------------------------------------------
+  # FRONTEND DO MICROSSERVIÇO (Next.js App)
+  # -------------------------------------------------------------
+  frontend:
+    build:
+      context: ../src/frontend
+      dockerfile: Dockerfile
+    container_name: tcc-micro-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      CATALOG_SERVICE_URL: http://catalog-service:3001
+      CART_SERVICE_URL: http://cart-service:3002
+      ORDER_SERVICE_URL: http://order-service:3003
+    depends_on:
+      - catalog-service
+      - cart-service
+      - order-service
+    networks:
+      - ecommerce-net
+
+networks:
+  ecommerce-net:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  redis-data:
+  postgres-data:

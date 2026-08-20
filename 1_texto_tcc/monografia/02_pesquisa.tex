@@ -1,0 +1,60 @@
+% ---
+% Capítulo 2: Fundamentação Teórica, Trabalhos Relacionados e Metodologia
+% ---
+
+\chapter{Fundamentação Teórica}
+
+A evolução dos sistemas de informação nas últimas décadas foi acompanhada por transformações significativas nos padrões de arquitetura de \textit{software}. Com o crescimento da complexidade das aplicações e a exigência de entregas contínuas e escaláveis, os modelos tradicionais de desenvolvimento baseados em aplicações monolíticas passaram a apresentar limitações estruturais significativas. Nesse cenário, o estilo arquitetural de microsserviços consolidou-se como uma abordagem proeminente para a construção de sistemas modernos, modulares e desacoplados.
+
+\section{Conceituação de Arquitetura Monolítica}
+
+Historicamente, a maioria dos sistemas de \textit{software} foi desenvolvida sob o paradigma monolítico. De acordo com \citeonline{richardson2018}, uma aplicação monolítica é concebida como uma unidade lógica singular de execução. Em um monólito típico, todos os componentes do sistema, tais como a interface com o usuário, a lógica de negócio e os módulos de acesso a dados, são empacotados e implantados conjuntamente em um único processo computacional.
+
+Embora a arquitetura monolítica apresente vantagens nos estágios iniciais do ciclo de vida do \textit{software}, como a simplicidade de testes locais, a facilidade de implantação inicial e a alta performance de chamadas de função diretas em memória, ela frequentemente enfrenta severos gargalos à medida que o sistema e a organização expandem-se, conforme cita \cite{newman2021}. 
+
+Um dos principais problemas decorre do alto acoplamento de código e de banco de dados. A proliferação de dependências diretas entre módulos e o compartilhamento de um único esquema de banco de dados relacional tornam o sistema rígido. Nessa estrutura, pequenas alterações em uma funcionalidade específica podem desencadear efeitos colaterais imprevistos em módulos aparentemente não relacionados \cite{richardson2018}.
+
+Adicionalmente, a arquitetura monolítica impõe uma limitação severa à escalabilidade granular. Para escalar uma aplicação monolítica sob alta demanda, é necessário duplicar a unidade inteira de execução em múltiplos servidores. Esse processo consome recursos de infraestrutura de forma ineficiente, visto que módulos ociosos são replicados juntamente com aqueles que realmente necessitam de maior capacidade de processamento \cite{fowler2014}.
+
+Por fim, manifesta-se o acoplamento no ciclo de implantação. Toda a aplicação precisa ser recompilada, testada integralmente e reimplantada a cada nova atualização, por menor que seja a alteração no código-fonte. Esse fator eleva substancialmente a latência de entrega de novas funcionalidades e aumenta o risco operacional de falha global, onde uma exceção não tratada em um módulo secundário pode derrubar todo o processo da aplicação.
+
+\section{Conceituação de Arquitetura de Microsserviços}
+
+Para suplantar as limitações estruturais do monólito, \citeonline{fowler2014} definem a arquitetura de microsserviços como uma abordagem em que a aplicação é projetada como um ecossistema de pequenos serviços autônomos. Cada serviço é executado em seu próprio processo computacional e se comunica com os demais por meio de mecanismos leves de rede, tipicamente utilizando APIs fundamentadas no protocolo HTTP com o padrão REST ou barramentos de mensageria assíncrona.
+
+Segundo as diretrizes estabelecidas por \citeonline{newman2021}, os microsserviços são unidades de \textit{software} independentemente implantáveis, fortemente coesas e estruturadas em torno de limites de negócios específicos. Em vez de organizar o código por camadas técnicas horizontais, tais como camada de apresentação, camada de regras de negócio e camada de persistência, os microsserviços alinham a estrutura do \textit{software} às capacidades de negócio da organização, promovendo o desacoplamento e a clareza de responsabilidade de cada componente.
+
+\subsection{Características Fundamentais}
+
+A literatura especializada destaca que a transição para microsserviços fundamenta-se em um conjunto de características e princípios arquiteturais estruturantes. A primeira dessas características refere-se à componentização promovida por meio de serviços. Conforme enfatizado por \citeonline{fowler2014}, a componentização tradicional via bibliotecas ligadas em memória é substituída por serviços independentes expostos via rede. Essa mudança assegura que a substituição, atualização ou manutenção de um serviço específico ocorra sem a necessidade de recompactar ou reimplantar os demais componentes do ecossistema.
+
+Em adição à substituição de bibliotecas por serviços de rede, sobressai-se a governança e a descentralização tecnológica. Diferente do monólito, que impõe uma única linguagem e um único \textit{framework} para toda a aplicação, \citeonline{newman2021} ressalta que os microsserviços viabilizam a adoção da abordagem da "ferramenta certa para o problema certo", ou programação poliglota, nas palavras do autor. Cada serviço possui autonomia para escolher a linguagem de programação, o \textit{framework} e as bibliotecas que melhor se adaptem às suas exigências técnicas particulares \cite{newman2021}.
+
+No que tange ao gerenciamento da informação, o isolamento de dados por serviço é apontado por \citeonline{richardson2018} como um pilar incontornável. Cada microsserviço deve possuir e gerenciar seu próprio repositório de dados privado, sendo impedido o acesso direto de serviços externos ao seu banco de dados. Qualquer interação ou consulta a informações sob domínio de outro serviço deve ocorrer exclusivamente por meio de sua API pública. Esse princípio elimina o acoplamento oculto no nível de esquemas relacionais de banco de dados.
+
+Dessa segregação de dados deriva diretamente a possibilidade de adoção da persistência poliglota. Como o banco de dados deixa de ser um recurso compartilhado globalmente, \citeonline{richardson2018} explica que é possível selecionar tecnologias de armazenamento distintas de acordo com a natureza de cada domínio de negócio. Por exemplo, um serviço de catálogo de produtos pode adotar um banco NoSQL orientado a documentos para otimização de leitura, enquanto o serviço de carrinho de compras utiliza um banco chave-valor em memória para alta performance, e o serviço de pedidos utiliza um banco relacional garantidor de transações ACID \cite{richardson2018}.
+
+Por fim, a separação física entre processos contribui de maneira determinante para a resiliência operacional e o isolamento de falhas. Em uma arquitetura monolítica tradicional, uma exceção não tratada pode paralisar todo o processo computacional. Em contrapartida, sob o modelo de microsserviços, a degradação ou a indisponibilidade pontual de um serviço específico não provoca o colapso de toda a aplicação. A adoção de padrões de resiliência impede a propagação de falhas em cascata, permitindo que funcionalidades não afetadas continuem operando normalmente para o usuário final \cite{newman2021}.
+
+\subsection{Desafios da Arquitetura de Microsserviços}
+
+Apesar dos evidentes benefícios de disponibilidade e desacoplamento, a adoção de microsserviços introduz uma nova camada de complexidade inerente aos sistemas distribuídos \cite{fowler2014}. Conforme adverte \citeonline{richardson2018}, a principal contrapartida operacional reside na observabilidade e no diagnóstico de falhas. Enquanto em um monólito a depuração ocorre pela análise de um log único e unificado com a pilha de execução completa (\textit{stack trace}), em microsserviços a execução de uma única requisição de usuário atravessa múltiplos serviços independentes via rede.
+
+Essa pulverização de processos torna a identificação das causas raízes de erros um desafio complexo. Para contornar essa dificuldade e correlacionar os registros de auditoria espalhados entre diversos \textit{containers}, torna-se indispensável a implementação de técnicas de rastreamento distribuído (\textit{distributed tracing}), injetando identificadores únicos de correlação em todas as chamadas de rede \cite{richardson2018}. Além disso, destacam-se como desafios a latência de rede adicional, a exigência de roteamento eficiente por meio de \textit{API Gateways} e o gerenciamento de transações entre múltiplos repositórios.
+
+Em particular, a substituição de transações ACID locais por modelos de consistência eventual exige a reformulação do fluxo de dados. A coordenação de estados entre serviços passa a demandar padrões avançados, tais como a Arquitetura Baseada em Eventos (\textit{Event-Driven Architecture}) e o Padrão Saga \cite{richardson2018}. Dessa forma, a transição para microsserviços representa uma escolha consciente (\textit{trade-off}): reduz-se a complexidade interna do código-fonte e ganha-se resiliência, em troca do aumento da complexidade de infraestrutura, rastreabilidade e comunicação de rede.
+
+
+\chapter{Trabalhos Relacionados}
+
+Nesta seção, são analisados estudos anteriores que investigaram abordagens de migração arquitetural, decomposição de aplicações monolíticas e os impactos da adoção de microsserviços na indústria de \textit{software}.
+
+
+\chapter{Metodologia}
+
+Este capítulo apresenta a abordagem metodológica adotada para a concepção do roteiro de decomposição do monólito e a implementação da Prova de Conceito (PoC) de e-commerce.
+
+
+\chapter{Conclusão}
+
+Este capítulo apresentará as considerações finais, a avaliação dos resultados alcançados pela metodologia proposta e as direções para trabalhos futuros.
