@@ -19,18 +19,18 @@ services:
       - monolith-net
 
   # -------------------------------------------------------------
-  # APLICAÇÃO MONOLÍTICA (API Node.js / Express Única)
+  # MONÓLITO 1: E-COMMERCE VAREJISTA (Porta 8001)
   # -------------------------------------------------------------
-  monolith-service:
+  ecommerce-monolith:
     build:
-      context: ../src/backend
+      context: ../src/apps/ecommerce
       dockerfile: Dockerfile
-    container_name: tcc-mono-service
+    container_name: tcc-mono-ecommerce
     restart: always
     ports:
-      - "8000:8000"
+      - "8001:8001"
     environment:
-      PORT: 8000
+      PORT: 8001
       POSTGRES_URI: postgresql://tcc_user:tcc_password@monolith-postgres-db:5432/monolith_db
     depends_on:
       - monolith-postgres-db
@@ -38,7 +38,45 @@ services:
       - monolith-net
 
   # -------------------------------------------------------------
-  # FRONTEND DO MONÓLITO (Next.js App)
+  # MONÓLITO 2: MES MANUFATURA (Porta 8002)
+  # -------------------------------------------------------------
+  mes-monolith:
+    build:
+      context: ../src/apps/mes
+      dockerfile: Dockerfile
+    container_name: tcc-mono-mes
+    restart: always
+    ports:
+      - "8002:8002"
+    environment:
+      PORT: 8002
+      POSTGRES_URI: postgresql://tcc_user:tcc_password@monolith-postgres-db:5432/monolith_db
+    depends_on:
+      - monolith-postgres-db
+    networks:
+      - monolith-net
+
+  # -------------------------------------------------------------
+  # MONÓLITO 3: MONITOR DE LEILÕES (Porta 8003)
+  # -------------------------------------------------------------
+  auction-monolith:
+    build:
+      context: ../src/apps/auction
+      dockerfile: Dockerfile
+    container_name: tcc-mono-auction
+    restart: always
+    ports:
+      - "8003:8003"
+    environment:
+      PORT: 8003
+      POSTGRES_URI: postgresql://tcc_user:tcc_password@monolith-postgres-db:5432/monolith_db
+    depends_on:
+      - monolith-postgres-db
+    networks:
+      - monolith-net
+
+  # -------------------------------------------------------------
+  # FRONTEND UNIFICADO (Next.js App)
   # -------------------------------------------------------------
   frontend:
     build:
@@ -49,9 +87,13 @@ services:
     ports:
       - "4000:4000"
     environment:
-      NEXT_PUBLIC_MONOLITH_URL: http://localhost:8000
+      NEXT_PUBLIC_ECOMMERCE_URL: http://localhost:8001
+      NEXT_PUBLIC_MES_URL: http://localhost:8002
+      NEXT_PUBLIC_AUCTION_URL: http://localhost:8003
     depends_on:
-      - monolith-service
+      - ecommerce-monolith
+      - mes-monolith
+      - auction-monolith
     networks:
       - monolith-net
 

@@ -1,6 +1,10 @@
--- Script de inicialização do Banco de Dados Único do Monólito (PostgreSQL)
+-- Script de Inicialização do Banco de Dados Único do Monólito (PostgreSQL)
+-- Suporta os 3 Estudos de Caso do TCC: E-commerce, MES Manufatura e Leilões/Mercado
 
--- Tabela de Produtos (Domínio do Catálogo)
+-- =============================================================================
+-- ESTUDO DE CASO 1: E-COMMERCE VAREJISTA
+-- =============================================================================
+
 CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,
     sku VARCHAR(50) UNIQUE NOT NULL,
@@ -13,7 +17,6 @@ CREATE TABLE IF NOT EXISTS products (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de Itens do Carrinho (Domínio do Carrinho)
 CREATE TABLE IF NOT EXISTS cart_items (
     id SERIAL PRIMARY KEY,
     customer_id VARCHAR(50) NOT NULL,
@@ -25,7 +28,6 @@ CREATE TABLE IF NOT EXISTS cart_items (
     CONSTRAINT unique_customer_sku UNIQUE(customer_id, sku)
 );
 
--- Tabela de Pedidos (Domínio de Pedidos)
 CREATE TABLE IF NOT EXISTS orders (
     id VARCHAR(50) PRIMARY KEY,
     customer_id VARCHAR(50) NOT NULL,
@@ -35,7 +37,6 @@ CREATE TABLE IF NOT EXISTS orders (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabela de Pagamentos (Domínio de Pedidos / Pagamentos)
 CREATE TABLE IF NOT EXISTS payments (
     id VARCHAR(50) PRIMARY KEY,
     order_id VARCHAR(50) NOT NULL REFERENCES orders(id),
@@ -45,30 +46,78 @@ CREATE TABLE IF NOT EXISTS payments (
     processed_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Seeds Iniciais de Produtos (Equivalente ao MongoDB)
+-- =============================================================================
+-- ESTUDO DE CASO 2: SISTEMA DE EXECUÇÃO DA MANUFATURA (MES)
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS mes_work_orders (
+    op_number VARCHAR(50) PRIMARY KEY,
+    product_code VARCHAR(50) NOT NULL,
+    target_quantity INT NOT NULL,
+    produced_quantity INT NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'PLANNED',
+    priority VARCHAR(10) NOT NULL DEFAULT 'MEDIUM',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS mes_production_logs (
+    id SERIAL PRIMARY KEY,
+    op_number VARCHAR(50) NOT NULL REFERENCES mes_work_orders(op_number),
+    machine_id VARCHAR(50) NOT NULL,
+    operator_id VARCHAR(50) NOT NULL,
+    quantity_produced INT NOT NULL,
+    rejected_quantity INT NOT NULL DEFAULT 0,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS mes_quality_inspections (
+    id SERIAL PRIMARY KEY,
+    op_number VARCHAR(50) NOT NULL REFERENCES mes_work_orders(op_number),
+    inspector_id VARCHAR(50) NOT NULL,
+    result VARCHAR(20) NOT NULL DEFAULT 'PASSED',
+    defect_type VARCHAR(50),
+    notes TEXT,
+    inspected_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================================================
+-- ESTUDO DE CASO 3: MONITOR DE MERCADO E LEILÕES (ALTA CONCORRÊNCIA)
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS auctions (
+    id VARCHAR(50) PRIMARY KEY,
+    asset_name VARCHAR(150) NOT NULL,
+    current_price NUMERIC(12, 2) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    end_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS auction_bids (
+    id VARCHAR(50) PRIMARY KEY,
+    auction_id VARCHAR(50) NOT NULL REFERENCES auctions(id),
+    bidder_id VARCHAR(50) NOT NULL,
+    bid_amount NUMERIC(12, 2) NOT NULL,
+    timestamp TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =============================================================================
+-- SEEDS INICIAIS DE DADOS
+-- =============================================================================
+
 INSERT INTO products (sku, nome, descricao, preco, categoria, estoque, imagem_url)
 VALUES
-  ('PROD-001', 'Camiseta Tech Algodão Premium', 'Camiseta 100% algodão penteado, ideal para desenvolvedores.', 89.90, 'Vestuário', 15, 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500'),
-  ('PROD-002', 'Caneca de Cerâmica Debug King', 'Caneca 350ml resistente a micro-ondas para suas sessões de depuração.', 45.00, 'Acessórios', 30, 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500'),
-  ('PROD-003', 'Mousepad Extra Large Dark Theme', 'Mousepad emborrachado 90x40cm com costura reforçada e design minimalista.', 79.90, 'Periféricos', 20, 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500'),
-  ('PROD-004', 'Teclado Mecânico RGB Wireless', 'Teclado mecânico compacto layout 65% com switches táteis silenciados.', 349.90, 'Periféricos', 8, 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500')
+  ('PROD-001', 'Camiseta Tech Algodão Premium', 'Camiseta 100% algodão penteado.', 89.90, 'Vestuário', 15, 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500'),
+  ('PROD-002', 'Caneca de Cerâmica Debug King', 'Caneca 350ml resistente a micro-ondas.', 45.00, 'Acessórios', 30, 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500')
 ON CONFLICT (sku) DO NOTHING;
 
--- Seed de Exemplo de um Pedido Histórico (Equivalente ao PostgreSQL dos microsserviços)
-INSERT INTO orders (id, customer_id, total_amount, status, items)
-VALUES (
-    'ord_demo_001',
-    'usr_demo_123',
-    89.90,
-    'COMPLETED',
-    '[{"sku": "PROD-001", "nome": "Camiseta Tech Algodão Premium", "quantidade": 1, "preco": 89.90}]'::jsonb
-) ON CONFLICT (id) DO NOTHING;
+INSERT INTO mes_work_orders (op_number, product_code, target_quantity, produced_quantity, status, priority)
+VALUES
+  ('OP-2026-001', 'PROD-001', 500, 120, 'IN_PROGRESS', 'HIGH'),
+  ('OP-2026-002', 'PROD-002', 1000, 0, 'PLANNED', 'MEDIUM')
+ON CONFLICT (op_number) DO NOTHING;
 
-INSERT INTO payments (id, order_id, amount, payment_method, status)
-VALUES (
-    'pay_demo_001',
-    'ord_demo_001',
-    89.90,
-    'PIX',
-    'APPROVED'
-) ON CONFLICT (id) DO NOTHING;
+INSERT INTO auctions (id, asset_name, current_price, status, end_time)
+VALUES
+  ('auc_demo_101', 'Lote de Turbinas Industriais v2', 15000.00, 'ACTIVE', CURRENT_TIMESTAMP + INTERVAL '2 hours')
+ON CONFLICT (id) DO NOTHING;

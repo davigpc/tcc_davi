@@ -14,21 +14,21 @@ Embora a arquitetura monolítica apresente vantagens nos estágios iniciais do c
 
 Um dos principais problemas decorre do alto acoplamento de código e de banco de dados. A proliferação de dependências diretas entre módulos e o compartilhamento de um único esquema de banco de dados relacional tornam o sistema rígido. Nessa estrutura, pequenas alterações em uma funcionalidade específica podem desencadear efeitos colaterais imprevistos em módulos aparentemente não relacionados \cite{richardson2018}.
 
-Adicionalmente, a arquitetura monolítica impõe uma limitação severa à escalabilidade granular. Para escalar uma aplicação monolítica sob alta demanda, é necessário duplicar a unidade inteira de execução em múltiplos servidores. Esse processo consome recursos de infraestrutura de forma ineficiente, visto que módulos ociosos são replicados juntamente com aqueles que realmente necessitam de maior capacidade de processamento \cite{fowler2014}.
+Adicionalmente, a arquitetura monolítica impõe uma limitação severa à escalabilidade granular. Para escalar uma aplicação monolítica sob alta demanda, é necessário duplicar a unidade inteira de execução em múltiplos servidores. Esse processo consome recursos de infraestrutura de forma ineficiente, visto que módulos ociosos são replicados juntamente com aqueles que realmente necessitam de maior capacidade de processamento \cite{lewis2014}.
 
 Por fim, manifesta-se o acoplamento no ciclo de implantação. Toda a aplicação precisa ser recompilada, testada integralmente e reimplantada a cada nova atualização, por menor que seja a alteração no código-fonte. Esse fator eleva substancialmente a latência de entrega de novas funcionalidades e aumenta o risco operacional de falha global, onde uma exceção não tratada em um módulo secundário pode derrubar todo o processo da aplicação.
 
 \section{Conceituação de Arquitetura de Microsserviços}
 
-Para suplantar as limitações estruturais do monólito, \citeonline{fowler2014} definem a arquitetura de microsserviços como uma abordagem em que a aplicação é projetada como um ecossistema de pequenos serviços autônomos. Cada serviço é executado em seu próprio processo computacional e se comunica com os demais por meio de mecanismos leves de rede, tipicamente utilizando APIs fundamentadas no protocolo HTTP com o padrão REST ou barramentos de mensageria assíncrona.
+Para suplantar as limitações estruturais do monólito, \citeonline{lewis2014} definem a arquitetura de microsserviços como uma abordagem em que a aplicação é projetada como um ecossistema de pequenos serviços autônomos. Cada serviço é executado em seu próprio processo computacional e se comunica com os demais por meio de mecanismos leves de rede, tipicamente utilizando APIs fundamentadas no protocolo HTTP com o padrão REST ou barramentos de mensageria assíncrona.
 
 Segundo as diretrizes estabelecidas por \citeonline{newman2021}, os microsserviços são unidades de \textit{software} independentemente implantáveis, fortemente coesas e estruturadas em torno de limites de negócios específicos. Em vez de organizar o código por camadas técnicas horizontais, tais como camada de apresentação, camada de regras de negócio e camada de persistência, os microsserviços alinham a estrutura do \textit{software} às capacidades de negócio da organização, promovendo o desacoplamento e a clareza de responsabilidade de cada componente.
 
 \subsection{Características Fundamentais}
 
-A literatura especializada destaca que a transição para microsserviços fundamenta-se em um conjunto de características e princípios arquiteturais estruturantes. A primeira dessas características refere-se à componentização promovida por meio de serviços. Conforme enfatizado por \citeonline{fowler2014}, a componentização tradicional via bibliotecas ligadas em memória é substituída por serviços independentes expostos via rede. Essa mudança assegura que a substituição, atualização ou manutenção de um serviço específico ocorra sem a necessidade de recompactar ou reimplantar os demais componentes do ecossistema.
+A literatura especializada destaca que a transição para microsserviços fundamenta-se em um conjunto de características e princípios arquiteturais estruturantes. A primeira dessas características refere-se à componentização promovida por meio de serviços. Conforme enfatizado por \citeonline{lewis2014}, a componentização tradicional via bibliotecas ligadas em memória é substituída por serviços independentes expostos via rede. Essa mudança assegura que a substituição, atualização ou manutenção de um serviço específico ocorra sem a necessidade de recompactar ou reimplantar os demais componentes do ecossistema.
 
-Em adição à substituição de bibliotecas por serviços de rede, sobressai-se a governança e a descentralização tecnológica. Diferente do monólito, que impõe uma única linguagem e um único \textit{framework} para toda a aplicação, \citeonline{newman2021} ressalta que os microsserviços viabilizam a adoção da abordagem da "ferramenta certa para o problema certo", ou programação poliglota, nas palavras do autor. Cada serviço possui autonomia para escolher a linguagem de programação, o \textit{framework} e as bibliotecas que melhor se adaptem às suas exigências técnicas particulares \cite{newman2021}.
+Em adição à substituição de bibliotecas por serviços de rede, sobressai-se a governança e a descentralização tecnológica. Diferente do monólito, que impõe uma única linguagem e um único \textit{framework} para toda a aplicação, \citeonline{lewis2014} ressaltam que os microsserviços viabilizam a adoção da abordagem da "ferramenta certa para o trabalho", abrindo espaço para o que \citeonline{richardson2018} descreveu historicamente como uma "arquitetura poliglota". Sob essa ótica, \citeonline{newman2020} reforça que cada microsserviço é tecnologicamente agnóstico, garantindo autonomia para escolher a linguagem de programação, o \textit{framework} e as bibliotecas que melhor se adaptem às suas exigências técnicas particulares.
 
 No que tange ao gerenciamento da informação, o isolamento de dados por serviço é apontado por \citeonline{richardson2018} como um pilar incontornável. Cada microsserviço deve possuir e gerenciar seu próprio repositório de dados privado, sendo impedido o acesso direto de serviços externos ao seu banco de dados. Qualquer interação ou consulta a informações sob domínio de outro serviço deve ocorrer exclusivamente por meio de sua API pública. Esse princípio elimina o acoplamento oculto no nível de esquemas relacionais de banco de dados.
 
@@ -38,7 +38,7 @@ Por fim, a separação física entre processos contribui de maneira determinante
 
 \subsection{Desafios da Arquitetura de Microsserviços}
 
-Apesar dos evidentes benefícios de disponibilidade e desacoplamento, a adoção de microsserviços introduz uma nova camada de complexidade inerente aos sistemas distribuídos \cite{fowler2014}. Conforme adverte \citeonline{richardson2018}, a principal contrapartida operacional reside na observabilidade e no diagnóstico de falhas. Enquanto em um monólito a depuração ocorre pela análise de um log único e unificado com a pilha de execução completa (\textit{stack trace}), em microsserviços a execução de uma única requisição de usuário atravessa múltiplos serviços independentes via rede.
+Apesar dos evidentes benefícios de disponibilidade e desacoplamento, a adoção de microsserviços introduz uma nova camada de complexidade inerente aos sistemas distribuídos \cite{lewis2014}. Conforme adverte \citeonline{richardson2018}, a principal contrapartida operacional reside na observabilidade e no diagnóstico de falhas. Enquanto em um monólito a depuração ocorre pela análise de um log único e unificado com a pilha de execução completa (\textit{stack trace}), em microsserviços a execução de uma única requisição de usuário atravessa múltiplos serviços independentes via rede.
 
 Essa pulverização de processos torna a identificação das causas raízes de erros um desafio complexo. Para contornar essa dificuldade e correlacionar os registros de auditoria espalhados entre diversos \textit{containers}, torna-se indispensável a implementação de técnicas de rastreamento distribuído (\textit{distributed tracing}), injetando identificadores únicos de correlação em todas as chamadas de rede \cite{richardson2018}. Além disso, destacam-se como desafios a latência de rede adicional, a exigência de roteamento eficiente por meio de \textit{API Gateways} e o gerenciamento de transações entre múltiplos repositórios.
 
@@ -51,8 +51,92 @@ Nesta seção, são analisados estudos anteriores que investigaram abordagens de
 
 
 \chapter{Metodologia}
+\label{cap:metodologia}
 
-Este capítulo apresenta a abordagem metodológica adotada para a concepção do roteiro de decomposição do monólito e a implementação da Prova de Conceito (PoC) de e-commerce.
+Este capítulo descreve a metodologia experimental adotada para conduzir a avaliação comparativa de estratégias de decomposição de monólitos em microsserviços. A pesquisa caracteriza-se por uma abordagem empírico-quantitativa, fundamentada na construção, refatoração e instrumentação de três aplicações monolíticas distintas, submetidas a três metodologias de decomposição arquitetural.
+
+A estrutura experimental foi definida para registrar dados quantitativos ao longo do processo de migração, utilizando o padrão \textit{Strangler Fig} como o mecanismo de extração incremental. A coleta de dados ocorre de forma iterativa por meio de \textit{snapshots} de medição, permitindo analisar o impacto de cada estratégia sob quatro dimensões: agilidade e DevOps, custo e infraestrutura, desempenho e manutenibilidade.
+
+As seções a seguir apresentam a estrutura experimental da pesquisa, a caracterização dos estudos de caso, os critérios teóricos para a seleção dos padrões de decomposição, os procedimentos de migração incremental por \textit{snapshots} e a matriz de métricas e instrumentos de medição adotados.
+
+\section{Desenho da Pesquisa e Abordagem Experimental}
+\label{sec:desenho_pesquisa}
+% Explicar a estrutura da matriz de avaliação (3 metodologias x 3 aplicações).
+% Detalhar o uso do padrão Strangler Fig como o mecanismo padrão de extração em todos os experimentos.
+
+\section{Seleção e Justificativa das Aplicações (Estudos de Caso)}
+\label{sec:selecao_aplicacoes}
+% Justificar a escolha de domínios diferentes para testar os gargalos das arquiteturas.
+
+\subsection{Aplicação Crítica: Sistema de Execução da Manufatura (MES)}
+% Focar na necessidade de zero downtime e integridade no apontamento do chão de fábrica.
+
+\subsection{Aplicação de Alta Performance: Processamento de Concorrência}
+% Focar no volume de requisições e vazão (throughput).
+
+\subsection{Aplicação Simples: E-commerce (Catálogo e Carrinho)}
+% Focar no CRUD tradicional e na demanda de leitura rápida.
+
+\section{Critérios de Seleção das Abordagens Arquiteturais}
+\label{sec:criterios_arquitetura}
+
+A escolha das estratégias de decomposição constitui a variável independente central deste trabalho. Para analisar as diferentes dimensões técnicas e operacionais sob as quais uma arquitetura monolítica pode ser decomposta, foram selecionadas três abordagens consolidadas na literatura especializada e na prática de engenharia de \textit{software} \cite{richardson2018, newman2020}: (i) Decomposição por Capacidade de Negócio, (ii) Decomposição por Subdomínio (DDD), e (iii) Decomposição por Transações.
+
+A seleção desses três padrões fundamenta-se nas diferenças estruturais de seus critérios de alinhamento para o estabelecimento das fronteiras de serviços (\textit{service boundaries}). Enquanto a primeira abordagem orienta-se pela estrutura dos processos funcionais da organização, a segunda prioriza a segregação de modelos lógicos de dados e contextos delimitados, e a terceira baseia-se na preservação de restrições técnicas de integridade transacional ACID.
+
+\subsection{Decomposição por Capacidade de Negócio}
+
+A decomposição por capacidade de negócio (\textit{Decompose by Business Capability}) fundamenta-se na identificação das funções operacionais e processos que a organização executa para atingir seus objetivos \cite{richardson2018}. Uma capacidade de negócio define a função desempenhada pela organização, independentemente da tecnologia empregada em sua execução.
+
+Nessa estratégia, as fronteiras dos microsserviços são alinhadas às áreas funcionais da organização. Em um sistema corporativo, por exemplo, funções como gestão de estoque, processamento de pedidos e faturamento dão origem a serviços independentes. A principal vantagem teórica dessa abordagem consiste no alinhamento direto entre a estrutura do \textit{software} e a estrutura organizacional, o que favorece a atribuição de equipes autônomas responsáveis pelo ciclo de vida completo de cada serviço \cite{newman2021}.
+
+Entretanto, essa abordagem apresenta limitações quando aplicada a sistemas monolíticos legados que utilizam um banco de dados relacional compartilhado. Como diferentes processos de negócio frequentemente acessam e alteram as mesmas tabelas, a divisão dos serviços baseada apenas na capacidade funcional pode exigir a implementação de transações distribuídas e gerar dependências cruzadas entre os novos serviços.
+
+\subsection{Decomposição por Subdomínio (DDD)}
+
+A decomposição por subdomínio baseia-se nos princípios do \textit{Domain-Driven Design} (DDD), propostos por \citeonline{evans2003} e aplicados à arquitetura de microsserviços por \citeonline{richardson2018}. Nessa abordagem, o domínio do sistema é particionado em subdomínios — classificados em centrais (\textit{core}), de suporte (\textit{supporting}) e genéricos (\textit{generic}) —, sendo cada um associado a um Contexto Delimitado (\textit{Bounded Context}).
+
+O conceito de \textit{Bounded Context} estabelece que cada modelo de dados e vocabulário técnico (\textit{Ubiquitous Language}) possui significado estrito dentro de seus limites lógicos \cite{evans2003}. Por exemplo, a entidade "Cliente" no contexto de vendas possui atributos e regras de negócio distintos da mesma entidade no contexto de atendimento ou faturamento.
+
+No contexto experimental deste trabalho, a decomposição por subdomínio orienta a separação física dos serviços com base no isolamento dos modelos de dados. Essa estratégia busca reduzir o acoplamento conceitual e assegurar que cada microsserviço mantenha a consistência de seu modelo dentro de um repositório de dados privado, eliminando o acesso direto a bancos de dados compartilhados \cite{newman2020}.
+
+\subsection{Decomposição por Transações}
+
+A decomposição por transações (\textit{Decompose by Transactions}) adota um critério técnico focado na consistência dos dados para a definição das fronteiras dos microsserviços \cite{richardson2018}. Diferente das abordagens orientadas a processos ou domínios de negócio, essa estratégia prioriza a análise das restrições ACID (\textit{Atomicity, Consistency, Isolation, Durability}) e do fluxo de operações de escrita no banco de dados.
+
+Na refatoração de uma aplicação monolítica, a divisão de um banco de dados relacional centralizado pode transformar transações locais em transações distribuídas entre diferentes serviços. A coordenação dessas transações via rede adiciona complexidade e reduz a vazão do sistema, exigindo o uso de padrões como Saga ou commit de duas fases (\textit{Two-Phase Commit - 2PC}) \cite{richardson2018, newman2021}.
+
+Para evitar a degradação de desempenho e a complexidade operacional, a decomposição por transações agrupa no mesmo microsserviço os módulos e tabelas que exigem escrita atômica e consistência imediata. Operações que suportam consistência eventual são isoladas em serviços assíncronos. Na matriz experimental desta pesquisa, essa abordagem atua como contraponto técnico voltado à redução de chamadas de rede e à preservação da integridade transacional.
+
+\section{Procedimentos de Migração e Marcos de Avaliação}
+\label{sec:procedimentos_snapshots}
+% Descrever como o experimento será conduzido iterativamente.
+
+\subsection{O Padrão \textit{Strangler Fig} como Roteador}
+% Como o tráfego será desviado sem desligar o monólito.
+
+\subsection{Definição dos \textit{Snapshots} de Transição}
+% Explicar os 4 estágios de medição:
+% Snapshot 0 (Baseline/Monólito)
+% Snapshot 1 (1ª Extração)
+% Snapshot 2 (2ª Extração)
+% Snapshot Final (Decomposição Concluída)
+
+\section{Métricas e Instrumentos de Coleta}
+\label{sec:metricas_coleta}
+% Apresentar as ferramentas (Docker stats, GitHub Actions, Autocannon, Madge/ESLint).
+
+\subsection{Métricas de Agilidade e DevOps}
+% Tempo de entrega (Build) e Tempo de inicialização (Startup time).
+
+\subsection{Métricas de Custo Operacional e Infraestrutura}
+% Uso de CPU, Uso de RAM e Uso de Armazenamento (Tamanho da Imagem).
+
+\subsection{Métricas de Desempenho}
+% Latência de API e Vazão Máxima.
+
+\subsection{Métricas de Manutenibilidade e Complexidade}
+% Linhas de Código (LOC), Número de componentes físicos e Cruzamento de Fronteiras (Modularização).
 
 
 \chapter{Conclusão}

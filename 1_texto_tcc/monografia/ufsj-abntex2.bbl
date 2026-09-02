@@ -5,12 +5,23 @@
 \providecommand{\abntbstabout}[1]{}
 \abntbstabout{v-1.9.7 }
 
-\bibitem[Fowler e Lewis 2014]{fowler2014}
-\abntrefinfo{Fowler e Lewis}{FOWLER; LEWIS}{2014}
-{FOWLER, M.; LEWIS, J. \emph{Microservices: a definition of this new
+\bibitem[Evans 2003]{evans2003}
+\abntrefinfo{Evans}{EVANS}{2003}
+{EVANS, E. \emph{Domain-Driven Design: Tackling Complexity in the Heart of
+  Software}. Boston, MA: Addison-Wesley Professional, 2003.}
+
+\bibitem[Lewis e Fowler 2014]{lewis2014}
+\abntrefinfo{Lewis e Fowler}{LEWIS; FOWLER}{2014}
+{LEWIS, J.; FOWLER, M. \emph{Microservices: a definition of this new
   architectural term}. 2014. Martinfowler.com.
 Dispon{\'\i}vel em: \url{https://martinfowler.com/articles/microservices.html}.
   Acesso em: 18.08.2026.}
+
+\bibitem[Newman 2020]{newman2020}
+\abntrefinfo{Newman}{NEWMAN}{2020}
+{NEWMAN, S. \emph{Monolith to Microservices: Evolutionary Patterns to Transform
+  Your Monolith}. Sebastopol, CA: O'Reilly Media, 2020.
+ISBN 978-1-492-07554-7.}
 
 \bibitem[Newman 2021]{newman2021}
 \abntrefinfo{Newman}{NEWMAN}{2021}
@@ -20,6 +31,7 @@ Dispon{\'\i}vel em: \url{https://martinfowler.com/articles/microservices.html}.
 \bibitem[Richardson 2018]{richardson2018}
 \abntrefinfo{Richardson}{RICHARDSON}{2018}
 {RICHARDSON, C. \emph{Microservices Patterns: With examples in Java}. Shelter
-  Island, NY: Manning Publications, 2018.}
+  Island, NY: Manning Publications, 2018.
+ISBN 9781617294549.}
 
 \end{thebibliography}

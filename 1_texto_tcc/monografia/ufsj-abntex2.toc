@@ -1,21 +1,29 @@
-\changetocdepth {4}
+\changetocdepth {3}
 \babel@toc {brazil}{}\relax 
-\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {1}\MakeTextUppercase []{Introdução}}{9}{chapter.1}%
-\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {2}\MakeTextUppercase []{Fundamentação Teórica}}{10}{chapter.2}%
+\contentsline {chapter}{\chapternumberline {1}Introdução}{9}{chapter.1}%
+\contentsline {chapter}{\chapternumberline {2}Fundamentação Teórica}{10}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Conceituação de Arquitetura Monolítica}{10}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Conceituação de Arquitetura de Microsserviços}{11}{section.2.2}%
 \contentsline {subsection}{\numberline {2.2.1}Características Fundamentais}{11}{subsection.2.2.1}%
 \contentsline {subsection}{\numberline {2.2.2}Desafios da Arquitetura de Microsserviços}{12}{subsection.2.2.2}%
-\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {3}\MakeTextUppercase []{Trabalhos Relacionados}}{14}{chapter.3}%
-\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {4}\MakeTextUppercase []{Metodologia}}{15}{chapter.4}%
-\setlength {\cftchapterindent }{0em} \setlength {\cftchapternumwidth }{\cftlastnumwidth }
-\contentsline {chapter}{\chapternumberline {5}\MakeTextUppercase []{Conclusão}}{16}{chapter.5}%
-\vspace {\cftbeforechapterskip }
-\setlength {\cftchapterindent }{\cftlastnumwidth } \setlength {\cftchapternumwidth }{2em}
-\contentsline {chapter}{\MakeTextUppercase []{Refer\^encias}}{17}{section*.14}%
+\contentsline {chapter}{\chapternumberline {3}Trabalhos Relacionados}{14}{chapter.3}%
+\contentsline {chapter}{\chapternumberline {4}Metodologia}{15}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Desenho da Pesquisa e Abordagem Experimental}{15}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Seleção e Justificativa das Aplicações (Estudos de Caso)}{15}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Aplicação Crítica: Sistema de Execução da Manufatura (MES)}{15}{subsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.2.2}Aplicação de Alta Performance: Processamento de Concorrência}{15}{subsection.4.2.2}%
+\contentsline {subsection}{\numberline {4.2.3}Aplicação Simples: E-commerce (Catálogo e Carrinho)}{15}{subsection.4.2.3}%
+\contentsline {section}{\numberline {4.3}Critérios de Seleção das Abordagens Arquiteturais}{15}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Decomposição por Capacidade de Negócio}{16}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Decomposição por Subdomínio (DDD)}{16}{subsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Decomposição por Transações}{17}{subsection.4.3.3}%
+\contentsline {section}{\numberline {4.4}Procedimentos de Migração e Marcos de Avaliação}{17}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}O Padrão \textit {Strangler Fig} como Roteador}{17}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Definição dos \textit {Snapshots} de Transição}{17}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Métricas e Instrumentos de Coleta}{17}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Métricas de Agilidade e DevOps}{17}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Métricas de Custo Operacional e Infraestrutura}{17}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Métricas de Desempenho}{17}{subsection.4.5.3}%
+\contentsline {subsection}{\numberline {4.5.4}Métricas de Manutenibilidade e Complexidade}{17}{subsection.4.5.4}%
+\contentsline {chapter}{\chapternumberline {5}Conclusão}{18}{chapter.5}%
+\contentsline {chapter}{Refer\^encias}{19}{section*.10}%

@@ -9,10 +9,11 @@ node_modules/
 # Next.js & Build Outputs
 # ==========================================
 .next/
-/out/
-/build/
-/dist/
+out/
+build/
+dist/
 /.vercel
+
 
 # ==========================================
 # Logs & Testing
@@ -44,10 +45,26 @@ Thumbs.db
 *.swo
 
 # ==========================================
-# Arquivos Temporários de Documentos (Word/TCC)
+# Arquivos Temporários de Documentos (Word/TCC/LaTeX)
 # ==========================================
 ~$*.docx
 ~$*.xlsx
 ~$*.pptx
 *.tmp
 *.bak
+
+# LaTeX Build Artifacts
+*.aux
+*.log
+*.bbl
+*.blg
+*.brf
+*.idx
+*.lot
+*.lof
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.out
+
