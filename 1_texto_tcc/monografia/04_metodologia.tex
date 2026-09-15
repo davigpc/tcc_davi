@@ -1,0 +1,47 @@
+\chapter{Metodologia}
+\label{cap:metodologia}
+
+% Introdução breve do capítulo explicando que a pesquisa tem caráter empírico e quantitativo, 
+% focando na comparação de três padrões de decomposição em três aplicações distintas.
+
+Este capítulo descreve a metodologia experimental adotada para conduzir a avaliação comparativa de estratégias de decomposição de monólitos em microsserviços. A pesquisa caracteriza-se por uma abordagem empírico-quantitativa, fundamentada no projeto, implementação, refatoração e instrumentação de três aplicações monolíticas distintas, submetidas a três metodologias de decomposição arquitetural.
+
+A estrutura metodológica foi desenhada para capturar dados empíricos ao longo do processo de migração, utilizando o padrão \textit{Strangler Fig} como mecanismo unificado de extração incremental. A coleta de dados ocorre de forma iterativa por meio de \textit{snapshots} formais, permitindo avaliar o impacto de cada estratégia sob quatro dimensões: agilidade/DevOps, custo/infraestrutura, desempenho e manutenibilidade.
+
+As seções a seguir detalham a estrutura experimental da pesquisa, a justificativa e caracterização dos estudos de caso, os critérios teóricos para seleção dos padrões de decomposição, os procedimentos operacionais da migração incremental por \textit{snapshots} e a matriz de métricas e instrumentos de medição utilizados.
+
+\section{Desenho da Pesquisa e Abordagem Experimental}
+\label{sec:desenho_pesquisa}
+% Explicar a estrutura da matriz de avaliação (3 metodologias x 3 aplicações).
+% Detalhar o uso do padrão Strangler Fig como o mecanismo padrão de extração em todos os experimentos.
+
+\section{Seleção e Justificativa das Aplicações (Estudos de Caso)}
+\label{sec:selecao_aplicacoes}
+% Justificar a escolha de domínios diferentes para testar os gargalos das arquiteturas.
+
+\subsection{Aplicação Crítica: Sistema de Inventário}
+% Focar na necessidade de zero downtime e integridade no apontamento do chão de fábrica.
+
+\subsection{Aplicação de Alta Performance: Processamento de Concorrência}
+% Focar no volume de requisições e vazão (throughput).
+
+\subsection{Aplicação Simples: E-commerce (Catálogo e Carrinho)}
+% Focar no CRUD tradicional e na demanda de leitura rápida.
+
+
+
+
+\section{Procedimentos de Migração e Marcos de Avaliação}
+\label{sec:procedimentos_snapshots}
+% Descrever como o experimento será conduzido iterativamente.
+
+\subsection{O Padrão \textit{Strangler Fig} como Roteador}
+% Como o tráfego será desviado sem desligar o monólito.
+
+\subsection{Definição dos \textit{Snapshots} de Transição}
+% Explicar os 4 estágios de medição:
+% Snapshot 0 (Baseline/Monólito)
+% Snapshot 1 (1ª Extração)
+% Snapshot 2 (2ª Extração)
+% Snapshot Final (Decomposição Concluída)
+

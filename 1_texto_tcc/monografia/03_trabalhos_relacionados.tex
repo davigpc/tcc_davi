@@ -1,0 +1,63 @@
+\chapter{Trabalhos Relacionados}
+
+Nesta seção, são analisados estudos anteriores que investigaram abordagens de decomposição de aplicações monolíticas, técnicas de identificação de microsserviços e avaliações comparativas de estratégias de migração arquitetural. Cada trabalho é apresentado quanto ao seu objetivo, à técnica empregada e aos resultados alcançados, seguido de uma discussão sobre como este trabalho se posiciona em relação às lacunas identificadas.
+
+\citeonline{levcovitz2016} propõem uma técnica para extração de microsserviços a partir de sistemas corporativos monolíticos de grande porte, validada sobre um sistema bancário legado de aproximadamente 750 mil linhas de código. A técnica analisa o esquema relacional do banco de dados, identificando agrupamentos de tabelas fortemente conectadas por chaves estrangeiras e por transações que operam em conjunto, sem exigir a reescrita do código-fonte da aplicação original. Como resultado, os autores demonstram que é possível identificar automaticamente candidatos a microsserviços coerentes com domínios de negócio reais a partir apenas da estrutura de dados, validando a viabilidade de uma decomposição orientada a transações mesmo em sistemas legados de grande escala.
+
+\citeonline{kazanavicius2020} comparam a decomposição de uma mesma aplicação corporativa legada utilizando diferentes métodos de identificação de microsserviços. A metodologia consiste em aplicar múltiplas heurísticas de particionamento ao mesmo sistema e definir critérios de avaliação para julgar as vantagens e desvantagens de cada resultado obtido. Os autores concluem que metodologias distintas produzem particionamentos significativamente diferentes do mesmo sistema, cada um com trade-offs próprios, e propõem um conjunto de critérios qualitativos para orientar a escolha da estratégia mais adequada a um determinado contexto.
+
+\citeonline{wang2024} comparam, de forma independente, oito ferramentas automáticas de decomposição de microsserviços. Os autores aplicam essas ferramentas a quatro aplicações monolíticas selecionadas sistematicamente: três delas já haviam sido utilizadas em pesquisas anteriores sobre decomposição, e uma quarta aplicação foi incluída propositalmente por nunca ter sido decomposta antes, para testar a generalização das ferramentas. Combinando métricas quantitativas de modularidade e de similaridade estrutural com entrevistas junto a desenvolvedores responsáveis por duas das aplicações, os autores constatam que nenhuma ferramenta se destaca de forma consistente em todos os cenários avaliados, isto é, o desempenho de cada uma depende fortemente de características específicas da aplicação analisada. Além disso, destacam que nenhuma das ferramentas avaliadas produz uma decomposição efetivamente executável.
+
+\citeonline{abgaz2023} conduzem uma revisão sistemática da literatura sobre decomposição de monólitos em microsserviços, mapeando 35 estudos primários e propondo um framework de síntese (M2MDF) para organizar as abordagens identificadas. A revisão evidencia que a maioria dos estudos emprega análise estática ou dinâmica de forma isolada, que poucos trabalhos aplicam múltiplas metodologias de decomposição ao mesmo sistema para fins de comparação, e que há escassez de estudos que utilizem aplicações de produção reais como objeto de estudo, predominando o uso de sistemas sintéticos ou de benchmark.
+
+Os estudos relacionados revelam três lacunas que este trabalho busca endereçar. Primeiramente, conforme apontado por \citeonline{abgaz2023}, a literatura concentra-se predominantemente em sistemas sintéticos ou de benchmark; \citeonline{wang2024} reforçam essa preocupação ao mostrar que o desempenho das técnicas de decomposição depende fortemente de características específicas de cada aplicação, o que limita a generalização de conclusões obtidas sobre um conjunto restrito de benchmarks tradicionais. este trabalho utiliza três aplicações open-source desenvolvidas de forma independente por praticantes, com arquitetura e complexidade representativas de sistemas reais, em vez de sistemas sintéticos construídos artificialmente para fins de pesquisa. Além disso, enquanto \citeonline{kazanavicius2020} comparam múltiplas metodologias de decomposição aplicadas a um único sistema, este trabalho estende esse desenho experimental para três sistemas de domínios distintos, o que permite avaliar se as conclusões sobre cada metodologia se generalizam entre domínios com características arquiteturais diferentes. Ainda, enquanto \citeonline{levcovitz2016} limitam-se à identificação estática de candidatos a microsserviços, este trabalho combina métricas estáticas de acoplamento com métricas dinâmicas de desempenho sob carga e de custo de infraestrutura, e efetivamente executa a migração incremental por meio do padrão Strangler Fig, em vez de apenas propor uma decomposição teórica.
+
+\begin{table}[htb]
+\caption{Comparação dos trabalhos relacionados}
+\label{tab:trabalhos_relacionados}
+\centering
+\small
+\begin{tabularx}{\textwidth}{p{2.6cm} X X X X}
+\hline
+\textbf{Trabalho} & \textbf{Objetivo} & \textbf{Técnica} & \textbf{Resultado principal} & \textbf{Lacuna vs. este trabalho} \\
+\hline
+ 
+Levcovitz, Terra e Valente (2016) &
+Extrair microsserviços de um monólito &
+Análise do esquema relacional (FKs/transações) &
+Agrupou tabelas coerentes em 1 sistema bancário &
+1 sistema; sem migração real; sem métricas dinâmicas \\
+\hline
+ 
+Kazanavičius e Mažeika (2020) &
+Comparar metodologias no mesmo sistema &
+Heurísticas de particionamento + critérios qualitativos &
+Metodologias distintas geram partições distintas &
+1 sistema; avaliação qualitativa \\
+\hline
+ 
+Wang, Bornais e Rubin (2024) &
+Comparar ferramentas automáticas &
+8 ferramentas em 4 benchmarks + entrevistas &
+Nenhuma ferramenta domina; depende da aplicação &
+Ferramentas automáticas, não metodologias manuais \\
+\hline
+ 
+Abgaz et al. (2023) &
+Mapear o estado da arte &
+Revisão sistemática (35 estudos) &
+Poucos estudos comparam metodologias no mesmo sistema &
+Revisão; sem dados empíricos próprios \\
+\hline
+ 
+\textbf{Este trabalho} &
+Comparar 3 metodologias em 3 sistemas &
+Strangler Fig + métricas estáticas e dinâmicas &
+\textit{(Cap. 5)} &
+--- \\
+\hline
+\end{tabularx}
+\legend{Fonte: Elaborado pelo autor.}
+\end{table}
+
+A tabela \ref{tab:trabalhos_relacionados} evidencia as principais diferenças entre os trabalhos relacionados e esta pesquisa.
