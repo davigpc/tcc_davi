@@ -34,3 +34,21 @@ As métricas devem ser extraídas e catalogadas iterativamente através de quatr
 ## 7. Estrutura de Artefatos e Dados Brutos
 *   **Armazenamento de Métricas:** Todos os relatórios brutos gerados pelas ferramentas de teste (ex: saídas JSON do `autocannon`, relatórios do `madge` e logs de consumo do `docker stats`) devem ser salvos rigidamente na pasta `2_codigo_pratico/metricas/`, organizados por subpastas correspondentes a cada aplicação e *snapshot*.
 *   **Rastreabilidade por Tags Git:** Cada transição de estado da arquitetura deve corresponder a uma tag formal no repositório (ex: `git tag -a snapshot-0`, `git tag -a snapshot-1`), garantindo que o código exato de cada fase possa ser recuperado e auditado a qualquer momento.
+
+## 8. Estado Atual e Continuidade (atualizado em 2026-09-17)
+> Este é o ponto de retomada para novas sessões. O plano completo e o registro de execução estão em `2_codigo_pratico/roteiro.md` (a seção 11 contém o log cronológico).
+
+*   **Fase atual:** Fase 0 (saneamento do repositório) **concluída**. Próxima: **Fase 1** (baseline executável + poda de dependências de nuvem do e-commerce).
+*   **Monografia:** os capítulos `01_introducao`, `05_resultados_discussoes` e `06_conclusao` ainda são stubs; `00_pretextual` (resumo/abstract) está desatualizado em relação ao escopo 3×3 atual. Não escrever na monografia sem solicitação explícita.
+*   **Código da parte prática:** os três aplicativos são **submódulos git** em `2_codigo_pratico/apps/`, fixados no baseline (Snapshot 0):
+    *   `inventory-api` → fork `davigpc/inventory-api` @ `338b0d7` — papel: **MES / sistema crítico** (NestJS 11 + Prisma + PostgreSQL, hexagonal + DDD).
+    *   `auction` → fork `davigpc/auction` @ `61dc9fa` — papel: **leilões / alta performance** (NestJS 11 + TypeORM + BullMQ + Redis, Socket.IO).
+    *   `ecommerce` → fork `davigpc/nestjs-ecommerce` @ `2a38d54` — papel: **e-commerce / transacional** (NestJS 10 + Mongoose; upstream `3004cf6` + remoção de arquivo vazio `:` inválido no Windows).
+*   **Esqueletos antigos** (`monolito/`, `microsservicos` — catalog/cart/order) foram movidos para `2_codigo_pratico/_archive/` e estão **fora de escopo**.
+*   **Discrepância conhecida:** a seção 6 deste documento cita Fastify/Express, mas os três apps reais usam **NestJS**. Preferir o stack existente dos submódulos; não migrar framework sem decisão explícita.
+*   **Convenções planejadas (ainda a criar):** branches `exp/<app>/<metodo>` e tags `snap/<app>/<metodo>/<n>` no repositório pai.
+*   **Pendências conhecidas:**
+    1. Recriar a tag `snapshot-0` no repo pai fixando os SHAs dos submódulos — a tag atual **não** captura o código do baseline.
+    2. Criar a pasta `2_codigo_pratico/metricas/` e o harness de coleta (Fase 2).
+    3. Executar a poda de nuvem do e-commerce (MongoDB Atlas, Stripe, S3, OAuth, SMTP) conforme seção 5 do roteiro.
+*   **Ferramental de sessão:** `gh` instalado em `C:\Program Files\GitHub CLI\gh.exe` (adicionar ao PATH), autenticado como `davigpc`.
