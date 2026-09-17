@@ -1,0 +1,12 @@
+[submodule "2_codigo_pratico/apps/inventory-api"]
+	path = 2_codigo_pratico/apps/inventory-api
+	url = https://github.com/davigpc/inventory-api.git
+	branch = main
+[submodule "2_codigo_pratico/apps/auction"]
+	path = 2_codigo_pratico/apps/auction
+	url = https://github.com/davigpc/auction.git
+	branch = main
+[submodule "2_codigo_pratico/apps/ecommerce"]
+	path = 2_codigo_pratico/apps/ecommerce
+	url = https://github.com/davigpc/nestjs-ecommerce.git
+	branch = master
