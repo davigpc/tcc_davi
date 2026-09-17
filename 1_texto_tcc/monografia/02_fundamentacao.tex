@@ -86,32 +86,47 @@ Para evitar a degradação de desempenho e a complexidade operacional, a decompo
 % Apresentar as ferramentas (Docker stats, GitHub Actions, Autocannon, Madge/ESLint).
 
 \subsection{Métricas de Agilidade e DevOps}
-% Tempo de entrega (Build) e Tempo de inicialização (Startup time).
+
+
+Para avaliar o impacto da decomposição na operabilidade e no ciclo de vida do software, esta dimensão foca na agilidade de entrega e na inicialização dos serviços:
+\begin{itemize}
+    \item \textbf{Tempo de Construção:} Mensura a duração total dos processos de empacotamento e geração das imagens Docker para cada microsserviço ou snapshot, avaliando a granularidade do pipeline de CI/CD.
+    \item \textbf{Tempo de Inicialização:} Registra o intervalo necessário desde o comando de execução até a prontidão completa do serviço para receber requisições de rede (prontidão de escuta nas portas configuradas).
+\end{itemize}
 
 \subsection{Métricas de Custo Operacional e Infraestrutura}
-% Uso de CPU, Uso de RAM e Uso de Armazenamento (Tamanho da Imagem).
+\label{sec:metricas_infraestrutura}
+
+O consumo de recursos computacionais é monitorado de forma isolada por contêiner para mensurar o \textit{overhead} introduzido pela distribuição da arquitetura:
+\begin{itemize}
+    \item \textbf{Uso de CPU e Memória:} Coletados por meio de ferramentas de monitoramento de contêineres, registrando a média e o pico de consumo de processamento e RAM durante a execução sob carga.
+    \item \textbf{Uso de Armazenamento:} Avalia o impacto do particionamento e da duplicação de dependências analisando o tamanho final das imagens Docker geradas para cada componente da arquitetura.
+\end{itemize}
 
 \subsection{Métricas de Desempenho}
 % Latência de API e Vazão Máxima.
 
+Para avaliar o comportamento dinâmico e o impacto de gargalos operacionais gerados pela transição arquitetural, a pesquisa emprega métricas de desempenho, com ênfase na latência de API e na vazão máxima (\textit{throughput}). O fundamento empírico dessas medições baseia-se na identificação de restrições de desempenho provocadas pela conversão de dependências locais em chamadas de rede. Conforme apontam \citeonline{richardson2018} e \citeonline{newman2020}, a introdução da comunicação interprocessos (IPC) nas fronteiras dos microsserviços adiciona sobrecarga temporal que afeta diretamente a eficiência do sistema.
+
+A latência é quantificada por meio de percentis, que revelam o comportamento sob estresse e a estabilidade nos tempos de resposta da aplicação. Ademais, a vazão máxima mensura o volume limite de requisições processadas por segundo sob condições controladas de concorrência. Nesse sentido, essas métricas permitem correlacionar diretamente a eficiência operacional da aplicação com o grau de acoplamento distribuído e a sobrecarga de rede imposta por cada abordagem de decomposição. 
+
+
+
 \subsection{Métricas de Manutenibilidade e Complexidade}
-% Linhas de Código (LOC), Número de componentes físicos e Cruzamento de Fronteiras (Modularização).
-\subsubsection{Cruzamento de Fronteiras}
-% Definição formal do acoplamento e da métrica de infração de limites.
+\label{sec:metricas_manutenibilidade}
 
-A métrica de cruzamento de fronteiras (\textit{Cross-Domain Calls}) atua como um indicador quantitativo do grau de acoplamento estrutural entre os domínios da aplicação. O fundamento acadêmico para a análise dessa dependência reside no conceito de conascência (\textit{connascence}), definido formalmente como a interdependência na qual a alteração em um elemento de \textit{software} exige a modificação de outro para preservar a corretude geral do sistema \cite{pagejones1992}. Segundo o autor, o objetivo do \textit{design} de arquiteturas modulares deve ser a minimização da conascência através das fronteiras de encapsulamento.
+Para avaliar a evolução estrutural da arquitetura ao longo da refatoração, a pesquisa emprega métricas voltadas à manutenibilidade e complexidade, com destaque para as Linhas de Código (LOC), a contagem de componentes físicos e o cruzamento de fronteiras. O fundamento teórico para a análise desse acoplamento baseia-se no conceito de conascência (\textit{connascence}), definido formalmente como a interdependência na qual a alteração em um elemento de \textit{software} exige a modificação de outro para preservar a corretude do sistema \cite{pagejones1992}. O objetivo central do \textit{design} de arquiteturas modulares é a minimização da conascência e do cruzamento de fronteiras entre domínios distintos.
 
-No contexto do monólito, a importação direta de classes, tipos e funções entre pastas de domínios distintos estabelece, primariamente, conascências de nome e de tipo \cite{pagejones1992}. Tais violações físicas são detectáveis por meio de análise estática do código-fonte. 
-
-Durante o processo de estrangulamento para microsserviços, a manutenção desse alto grau de interdependência lógica revela seu impacto operacional. Conforme alertam \citeonline{newman2020} e \citeonline{richardson2018}, dependências que cruzam as fronteiras de isolamento transformam simples chamadas de código local em complexas comunicações síncronas via rede (\textit{Inter-Process Communication} - IPC). Essa transformação converte a conascência de código em gargalos de latência, resultando em serviços fortemente acoplados que degradam a disponibilidade e o desempenho global da arquitetura sob alta concorrência.
-
-\subsubsection{Acoplamento (Connascence)}
-
-\section{Metodologia de Pesquisa: DSR}
+No monólito, o cruzamento de fronteiras é observado como conascências estáticas de nome e tipo, quantificadas por meio de análise estática do código-fonte. Durante a transição para microsserviços por meio do padrão \textit{Strangler Fig}, a remoção dessas dependências físicas evita o acoplamento indesejado que, conforme alertam \citeonline{newman2020} e \citeonline{richardson2018}, converte simples chamadas locais de código em comunicações síncronas via rede (\textit{Inter-Process Communication} - IPC). Além disso, o rastreamento das Linhas de Código (LOC) e do número de componentes físicos permite mensurar o esforço de refatoração, o dimensionamento dos artefatos e o impacto do isolamento em cada estágio da pesquisa.
 
 \section{Ferramentas}
 \subsection{Docker}
+A plataforma de conteinerização \textit{Docker} foi adotada para garantir o isolamento consistente dos ambientes de execução em todas as fases da pesquisa. Além de prover portabilidade e padronizar o empacotamento dos serviços, o ambiente conteinerizado viabiliza a coleta controlada de métricas de infraestrutura, permitindo extrair o consumo computacional de CPU e o uso de memória RAM por meio do comando \textit{docker stats} durante os testes experimentais.
+
 \subsection{Madge}
+O \textit{Madge} é uma ferramenta de análise estática de código-fonte utilizada para rastrear, analisar e visualizar grafos de dependência em projetos desenvolvidos em JavaScript e TypeScript. No escopo deste trabalho, o \textit{Madge} é empregado para quantificar o acoplamento estático e o cruzamento de fronteiras (\textit{cross-domain calls}), permitindo auditar o número de importações interdomínio que configuram a conascência de código no monólito base e nas etapas de refatoração.
+
 \subsection{Autocannon}
+O \textit{Autocannon} é uma ferramenta de teste de carga e estresse de alta performance voltada para aplicações HTTP em Node.js. Na matriz experimental desta pesquisa, o \textit{Autocannon} atua como o motor de estresse dinâmico para avaliar o desempenho das APIs em cada \textit{snapshot} arquitetural, permitindo mensurar métricas críticas como a latência de resposta e a vazão máxima de requisições por segundo sob condições controladas de concorrência.
 
 
