@@ -2,6 +2,13 @@
 
 Este arquivo define o contexto técnico, o escopo e as diretrizes para os agentes de IA operarem neste repositório de Pesquisa Científica (TCC) voltado à avaliação de padrões de decomposição de monólitos em microsserviços.
 
+> **Memória de sessão:** no início de cada sessão, invoque a skill `memory` e leia `C:\Users\davig\.codex\MEMORY.md`. Registre ali (append) preferências do usuário, decisões e mudanças estruturais relevantes antes de encerrar a sessão.
+
+> **Estilo de Redação do Autor (Monografia):**
+> - **Clareza e objetividade:** Frases diretas e concisas, sem rebuscamento desnecessário, sem jargões acadêmicos inflados (ex: preferir "estrutura 3x3" a "arranjo fatorial 3x3", "permite uma comparação justa" a "assegura comparabilidade justa", "categorias de medição" a "dimensões objetivas").
+> - **Terminologia em português:** Evitar estrangeirismos desnecessários entre parênteses quando houver termo claro em português (ex: "violações de fronteiras lógicas" em vez de "...(Cross-Domain Calls)", "de forma abrupta" em vez de "...(big bang)", "Linhas de Código (LOC)" em vez de "...(Lines of Code - LOC)").
+> - **Enfoque prático e preciso:** Destacar requisitos operacionais e de negócio reais (ex: "demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar"). Sem parênteses explicativos redundantes em listagens.
+
 ## 1. Visão Geral da Pesquisa
 O objetivo é conduzir um estudo comparativo empírico ($3 \times 3$) estruturado na refatoração de três aplicações monolíticas distintas utilizando três metodologias de modelagem arquitetural, avaliadas por meio de *snapshots* incrementais e métricas quantitativas e qualitativas.
 

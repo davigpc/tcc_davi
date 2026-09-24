@@ -8,9 +8,9 @@ Nesta seção, são analisados estudos anteriores que investigaram abordagens de
 
 \citeonline{wang2024} comparam, de forma independente, oito ferramentas automáticas de decomposição de microsserviços. Os autores aplicam essas ferramentas a quatro aplicações monolíticas selecionadas sistematicamente: três delas já haviam sido utilizadas em pesquisas anteriores sobre decomposição, e uma quarta aplicação foi incluída propositalmente por nunca ter sido decomposta antes, para testar a generalização das ferramentas. Combinando métricas quantitativas de modularidade e de similaridade estrutural com entrevistas junto a desenvolvedores responsáveis por duas das aplicações, os autores constatam que nenhuma ferramenta se destaca de forma consistente em todos os cenários avaliados, isto é, o desempenho de cada uma depende fortemente de características específicas da aplicação analisada. Além disso, destacam que nenhuma das ferramentas avaliadas produz uma decomposição efetivamente executável.
 
-\citeonline{abgaz2023} conduzem uma revisão sistemática da literatura sobre decomposição de monólitos em microsserviços, mapeando 35 estudos primários e propondo um framework de síntese (M2MDF) para organizar as abordagens identificadas. A revisão evidencia que a maioria dos estudos emprega análise estática ou dinâmica de forma isolada, que poucos trabalhos aplicam múltiplas metodologias de decomposição ao mesmo sistema para fins de comparação, e que há escassez de estudos que utilizem aplicações de produção reais como objeto de estudo, predominando o uso de sistemas sintéticos ou de benchmark.
+\citeonline{barzotto2022} investigam, por meio de um estudo de caso empírico na indústria financeira, os impactos da decomposição de um módulo crítico (saque em dinheiro em terminais de autoatendimento) de uma aplicação monolítica em Java/Spring para uma arquitetura baseada em microsserviços. Os autores compararam a versão monolítica com a versão decomposta utilizando métricas clássicas de modularidade de código orientado a objetos e testes de estresse de carga via Gatling para medir o consumo de hardware. Os resultados apontaram ganhos de modularidade e redução no consumo computacional após a decomposição. Entretanto, os autores reportaram limitações técnicas na medição de hardware do sistema monolítico legado e avaliaram apenas uma única aplicação com um método de decomposição pontual direcionado por DDD.
 
-Os estudos relacionados revelam três lacunas que este trabalho busca endereçar. Primeiramente, conforme apontado por \citeonline{abgaz2023}, a literatura concentra-se predominantemente em sistemas sintéticos ou de benchmark; \citeonline{wang2024} reforçam essa preocupação ao mostrar que o desempenho das técnicas de decomposição depende fortemente de características específicas de cada aplicação, o que limita a generalização de conclusões obtidas sobre um conjunto restrito de benchmarks tradicionais. este trabalho utiliza três aplicações open-source desenvolvidas de forma independente por praticantes, com arquitetura e complexidade representativas de sistemas reais, em vez de sistemas sintéticos construídos artificialmente para fins de pesquisa. Além disso, enquanto \citeonline{kazanavicius2020} comparam múltiplas metodologias de decomposição aplicadas a um único sistema, este trabalho estende esse desenho experimental para três sistemas de domínios distintos, o que permite avaliar se as conclusões sobre cada metodologia se generalizam entre domínios com características arquiteturais diferentes. Ainda, enquanto \citeonline{levcovitz2016} limitam-se à identificação estática de candidatos a microsserviços, este trabalho combina métricas estáticas de acoplamento com métricas dinâmicas de desempenho sob carga e de custo de infraestrutura, e efetivamente executa a migração incremental por meio do padrão Strangler Fig, em vez de apenas propor uma decomposição teórica.
+Os estudos relacionados revelam lacunas centrais que este trabalho busca explorar. Primeiramente, conforme apontado por \citeonline{abgaz2023}, a literatura concentra-se predominantemente em sistemas sintéticos ou de benchmark; \citeonline{wang2024} reforçam essa preocupação ao mostrar que o desempenho das técnicas de decomposição depende fortemente de características específicas de cada aplicação, o que limita a generalização de conclusões obtidas sobre um conjunto restrito de benchmarks tradicionais. Este trabalho utiliza três aplicações de código aberto desenvolvidas de forma independente, com arquitetura e complexidade representativas de sistemas reais em produção. Além disso, enquanto \citeonline{kazanavicius2020} e \citeonline{barzotto2022} limitam suas investigações empíricas a uma única aplicação e a abordagens isoladas de decomposição, este trabalho estabelece um estudo empírico comparativo em um desenho fatorial $3 \times 3$, avaliando sistematicamente três metodologias de decomposição sobre três sistemas de domínios distintos. Por fim, ao contrário de abordagens puramente analíticas como a de \citeonline{levcovitz2016}, este trabalho efetivamente executa e instrumenta as migrações incrementais mediadas pelo padrão \textit{Strangler Fig}, combinando métricas estáticas de modularidade com ensaios dinâmicos de desempenho e observabilidade de infraestrutura conteinerizada ao longo de múltiplos marcos de transição (\textit{snapshots}).
 
 \begin{table}[htb]
 \caption{Comparação dos trabalhos relacionados}
@@ -49,10 +49,17 @@ Revisão sistemática (35 estudos) &
 Poucos estudos comparam metodologias no mesmo sistema &
 Revisão; sem dados empíricos próprios \\
 \hline
+
+Barzotto e Farias (2022) &
+Avaliar impactos de decomposição na indústria &
+Estudo de caso (Java/Spring) + métricas CK + Gatling &
+Microsserviços apresentaram maior modularidade e menor consumo de recursos &
+1 sistema; 1 metodologia; medições incompletas no monólito \\
+\hline
  
 \textbf{Este trabalho} &
 Comparar 3 metodologias em 3 sistemas &
-Strangler Fig + métricas estáticas e dinâmicas &
+Estudo empírico comparativo ($3 \times 3$) + Strangler Fig + métricas estáticas e dinâmicas &
 \textit{(Cap. 5)} &
 --- \\
 \hline
