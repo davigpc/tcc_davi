@@ -27,7 +27,9 @@ export interface AppConfig {
   seed: { service: string; command: string[] };
   containers: string[];
   images: string[];
-  sourceDir: string;
+  sourceDir?: string;
+  sourceDirs?: string[];
+  codeDir?: string;
   routes: { read: RouteDef[]; write: RouteDef[] };
   load: { connections: number; durationSec: number; pipelining: number; reps: number };
   buildReps: number;
@@ -255,9 +257,22 @@ function walk(dir: string, acc: string[] = []): string[] {
   return acc;
 }
 
+interface SourceRoot {
+  label: string;
+  root: string;
+}
+
+function sourceRoots(cfg: AppConfig): SourceRoot[] {
+  const dirs = cfg.sourceDirs ?? (cfg.sourceDir ? [cfg.sourceDir] : []);
+  return dirs.map((d) => {
+    const root = fromRepo(d);
+    return { label: path.basename(path.dirname(root)), root };
+  });
+}
+
 export function collectLoc(cfg: AppConfig): LocResult {
-  const root = fromRepo(cfg.sourceDir);
-  const files = walk(root).filter((f) => f.endsWith('.ts'));
+  const roots = sourceRoots(cfg);
+  const multi = roots.length > 1;
   const result: LocResult = {
     tool: 'sloc@0.3.2',
     files: 0,
@@ -267,23 +282,27 @@ export function collectLoc(cfg: AppConfig): LocResult {
     byModule: {},
   };
 
-  for (const file of files) {
-    const module = path.relative(root, file).split(path.sep)[0] ?? '_root';
-    const stats = sloc(fs.readFileSync(file, 'utf8'), 'ts') as Record<string, number>;
-    const total = stats.total ?? 0;
-    const source = stats.source ?? 0;
-    const comment = stats.comment ?? 0;
+  for (const { label, root } of roots) {
+    const files = walk(root).filter((f) => f.endsWith('.ts'));
+    for (const file of files) {
+      const seg = path.relative(root, file).split(path.sep)[0] ?? '_root';
+      const module = multi ? `${label}/${seg}` : seg;
+      const stats = sloc(fs.readFileSync(file, 'utf8'), 'ts') as Record<string, number>;
+      const total = stats.total ?? 0;
+      const source = stats.source ?? 0;
+      const comment = stats.comment ?? 0;
 
-    result.files += 1;
-    result.total += total;
-    result.source += source;
-    result.comment += comment;
+      result.files += 1;
+      result.total += total;
+      result.source += source;
+      result.comment += comment;
 
-    const m = (result.byModule[module] ??= { files: 0, total: 0, source: 0, comment: 0 });
-    m.files += 1;
-    m.total += total;
-    m.source += source;
-    m.comment += comment;
+      const m = (result.byModule[module] ??= { files: 0, total: 0, source: 0, comment: 0 });
+      m.files += 1;
+      m.total += total;
+      m.source += source;
+      m.comment += comment;
+    }
   }
   return result;
 }
@@ -325,37 +344,41 @@ export interface CrossDomainResult {
 }
 
 export async function collectCrossDomain(cfg: AppConfig): Promise<CrossDomainResult> {
-  const root = fromRepo(cfg.sourceDir);
-  const res = await madge(root, {
-    fileExtensions: ['ts'],
-    tsConfig: fromRepo(cfg.composeDir, 'tsconfig.json'),
-  });
-  const obj = res.obj() as Record<string, string[]>;
-
-  const moduleOf = (p: string): string => {
-    const norm = p.replace(/\\/g, '/');
-    const isAbs = /^[A-Za-z]:\//.test(norm) || norm.startsWith('/');
-    const rel = isAbs ? path.relative(root, norm).replace(/\\/g, '/') : norm;
-    const seg = rel.split('/');
-    return seg.length > 1 ? seg[0] : '_root';
-  };
-
+  const roots = sourceRoots(cfg);
+  const multi = roots.length > 1;
   const edgeMap = new Map<string, number>();
   const modules = new Set<string>();
   const byModule: Record<string, number> = {};
   let totalEdges = 0;
 
-  for (const [from, deps] of Object.entries(obj)) {
-    const mFrom = moduleOf(from);
-    modules.add(mFrom);
-    for (const to of deps) {
-      const mTo = moduleOf(to);
-      modules.add(mTo);
-      totalEdges += 1;
-      if (mFrom !== mTo) {
-        const key = `${mFrom}->${mTo}`;
-        edgeMap.set(key, (edgeMap.get(key) ?? 0) + 1);
-        byModule[mFrom] = (byModule[mFrom] ?? 0) + 1;
+  for (const { label, root } of roots) {
+    const res = await madge(root, {
+      fileExtensions: ['ts'],
+      tsConfig: path.resolve(root, '..', 'tsconfig.json'),
+    });
+    const obj = res.obj() as Record<string, string[]>;
+
+    const moduleOf = (p: string): string => {
+      const norm = p.replace(/\\/g, '/');
+      const isAbs = /^[A-Za-z]:\//.test(norm) || norm.startsWith('/');
+      const rel = isAbs ? path.relative(root, norm).replace(/\\/g, '/') : norm;
+      const seg = rel.split('/');
+      const first = seg.length > 1 ? seg[0] : '_root';
+      return multi ? `${label}/${first}` : first;
+    };
+
+    for (const [from, deps] of Object.entries(obj)) {
+      const mFrom = moduleOf(from);
+      modules.add(mFrom);
+      for (const to of deps) {
+        const mTo = moduleOf(to);
+        modules.add(mTo);
+        totalEdges += 1;
+        if (mFrom !== mTo) {
+          const key = `${mFrom}->${mTo}`;
+          edgeMap.set(key, (edgeMap.get(key) ?? 0) + 1);
+          byModule[mFrom] = (byModule[mFrom] ?? 0) + 1;
+        }
       }
     }
   }

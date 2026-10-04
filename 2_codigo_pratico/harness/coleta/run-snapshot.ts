@@ -11,6 +11,7 @@ interface Args {
   metodologia?: string;
   snapshot?: string;
   tag?: string;
+  config?: string;
   'skip-build'?: string;
   'build-reps'?: string;
   'load-reps'?: string;
@@ -37,7 +38,8 @@ async function main(): Promise<void> {
     throw new Error('uso: tsx coleta/run-snapshot.ts --app <app> --metodologia <m> --snapshot <s> [--tag <t>]');
   }
 
-  const cfg = readJson<C.AppConfig>(path.join(HARNESS_DIR, 'apps', `${app}.json`));
+  const cfgName = args.config ?? app;
+  const cfg = readJson<C.AppConfig>(path.join(HARNESS_DIR, 'apps', `${cfgName}.json`));
   if (args['build-reps']) cfg.buildReps = Number(args['build-reps']);
   if (args['load-reps']) cfg.load.reps = Number(args['load-reps']);
   if (args['startup-reps']) cfg.startupReps = Number(args['startup-reps']);
@@ -127,6 +129,7 @@ async function main(): Promise<void> {
     tag: args.tag ?? null,
     composeDir: cfg.composeDir,
     composeFile: cfg.composeFile,
+    codeDir: cfg.codeDir,
     load: cfg.load,
     repetitions: { build: cfg.buildReps, startup: cfg.startupReps, load: cfg.load.reps },
   });

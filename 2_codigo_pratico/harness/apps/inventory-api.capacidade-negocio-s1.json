@@ -1,0 +1,57 @@
+{
+  "app": "inventory-api",
+  "metodologias": ["capacidade-negocio"],
+  "composeDir": "2_codigo_pratico/infra/compose",
+  "composeFile": "inventory-api-capacidade-negocio-s1.yml",
+  "codeDir": "2_codigo_pratico/apps/inventory-api",
+  "composeProject": "inventory-api-s1",
+  "baseUrl": "http://localhost:3000",
+  "readinessPath": "/docs",
+  "credentials": { "email": "admin@example.com", "password": "admin123" },
+  "seed": {
+    "service": "monolith",
+    "command": ["node", "dist/src/database/seeds/seed.js"]
+  },
+  "containers": [
+    "inventory_s1_db",
+    "inventory_s1_monolith",
+    "inventory_s1_reports",
+    "inventory_s1_nginx"
+  ],
+  "images": [
+    "inventory-api-s1-monolith",
+    "inventory-api-s1-reports",
+    "nginx:alpine"
+  ],
+  "sourceDirs": [
+    "2_codigo_pratico/apps/inventory-api/src",
+    "2_codigo_pratico/services/inventory-api/reports/src"
+  ],
+  "routes": {
+    "read": [
+      { "name": "reports-movements", "method": "GET", "path": "/api/reports/movements", "auth": true },
+      { "name": "reports-stock", "method": "GET", "path": "/api/reports/stock/{{warehouseId}}", "auth": true },
+      { "name": "products", "method": "GET", "path": "/api/products", "auth": true }
+    ],
+    "write": [
+      {
+        "name": "movements-post",
+        "method": "POST",
+        "path": "/api/movements",
+        "auth": true,
+        "body": {
+          "productId": "{{productId}}",
+          "warehouseId": "{{warehouseId}}",
+          "type": "ENTRADA",
+          "quantity": 1,
+          "notes": "load-test"
+        }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}

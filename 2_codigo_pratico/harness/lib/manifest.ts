@@ -44,6 +44,7 @@ export async function gatherManifest(params: {
   tag?: string | null;
   composeDir: string;
   composeFile: string;
+  codeDir?: string;
   load: unknown;
   repetitions: unknown;
 }): Promise<Manifest> {
@@ -58,7 +59,11 @@ export async function gatherManifest(params: {
     timestampUtc: new Date().toISOString(),
     scriptVersion: pkg.version,
     parentCommit: await firstLine('git', ['rev-parse', 'HEAD'], fromRepo('.')),
-    submoduleSha: await firstLine('git', ['rev-parse', 'HEAD'], fromRepo(params.composeDir)),
+    submoduleSha: await firstLine(
+      'git',
+      ['rev-parse', 'HEAD'],
+      fromRepo(params.codeDir ?? params.composeDir),
+    ),
     host: {
       os: `${os.type()} ${os.release()}`,
       release: os.release(),
