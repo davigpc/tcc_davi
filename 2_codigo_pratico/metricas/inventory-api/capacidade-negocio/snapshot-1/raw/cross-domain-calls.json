@@ -1,0 +1,178 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "inventory-api/_root",
+    "inventory-api/auth",
+    "inventory-api/database",
+    "inventory-api/movements",
+    "inventory-api/products",
+    "inventory-api/shared",
+    "inventory-api/users",
+    "inventory-api/warehouses",
+    "reports/_root",
+    "reports/auth",
+    "reports/database",
+    "reports/reports",
+    "reports/shared"
+  ],
+  "edges": [
+    {
+      "from": "inventory-api/products",
+      "to": "inventory-api/shared",
+      "count": 9
+    },
+    {
+      "from": "inventory-api/warehouses",
+      "to": "inventory-api/shared",
+      "count": 8
+    },
+    {
+      "from": "inventory-api/movements",
+      "to": "inventory-api/shared",
+      "count": 6
+    },
+    {
+      "from": "inventory-api/users",
+      "to": "inventory-api/auth",
+      "count": 6
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/shared",
+      "count": 5
+    },
+    {
+      "from": "inventory-api/users",
+      "to": "inventory-api/database",
+      "count": 3
+    },
+    {
+      "from": "inventory-api/auth",
+      "to": "inventory-api/database",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/auth",
+      "to": "inventory-api/shared",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/shared",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/movements",
+      "to": "inventory-api/database",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/movements",
+      "to": "inventory-api/auth",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/products",
+      "to": "inventory-api/database",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/products",
+      "to": "inventory-api/auth",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/users",
+      "to": "inventory-api/shared",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/warehouses",
+      "to": "inventory-api/database",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/warehouses",
+      "to": "inventory-api/auth",
+      "count": 2
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/shared",
+      "count": 2
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/database",
+      "count": 2
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/auth",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/auth",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/database",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/movements",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/products",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/users",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/warehouses",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/auth",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/database",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/reports",
+      "count": 1
+    },
+    {
+      "from": "reports/auth",
+      "to": "reports/shared",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 73,
+  "totalEdges": 402,
+  "byModule": {
+    "inventory-api/_root": 8,
+    "inventory-api/auth": 4,
+    "inventory-api/movements": 10,
+    "inventory-api/products": 13,
+    "inventory-api/users": 11,
+    "inventory-api/warehouses": 12,
+    "reports/_root": 5,
+    "reports/auth": 1,
+    "reports/reports": 9
+  }
+}

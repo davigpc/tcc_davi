@@ -1,0 +1,35 @@
+{
+  "app": "inventory-api",
+  "metodologia": "capacidade-negocio",
+  "snapshot": "snapshot-1",
+  "tag": "snap/inventory-api/capacidade-negocio/1",
+  "timestampUtc": "2026-10-04T23:04:54.917Z",
+  "scriptVersion": "0.1.0",
+  "parentCommit": "905290fdce2966564fd6b4c8a68fc2d283407a46",
+  "submoduleSha": "50fca6dbb4ad4d8db157bb89e224a2703ad81632",
+  "host": {
+    "os": "Windows_NT 10.0.26200",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5700X3D 8-Core Processor",
+    "logicalProcessors": 16,
+    "totalMemGB": 31.93
+  },
+  "toolchain": {
+    "node": "v22.17.1",
+    "docker": "29.7.2",
+    "dockerCompose": "5.4.0"
+  },
+  "load": {
+    "connections": 20,
+    "durationSec": 10,
+    "pipelining": 1,
+    "reps": 3
+  },
+  "repetitions": {
+    "build": 3,
+    "startup": 3,
+    "load": 3
+  },
+  "operador": "davig"
+}

@@ -1,0 +1,14 @@
+{
+  "inventory-api-s1-monolith": {
+    "bytes": 158943460,
+    "mb": 151.58
+  },
+  "inventory-api-s1-reports": {
+    "bytes": 195688513,
+    "mb": 186.62
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

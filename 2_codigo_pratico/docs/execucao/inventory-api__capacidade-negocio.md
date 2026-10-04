@@ -60,10 +60,36 @@ por ser somente leitura (CQRS parcial) e não possuir dependências reversas.
   (decisão 0001).
 
 ### snapshot-1 (primeira extração — Relatórios)
-- A executar na Etapa C.
+- Pasta: `metricas/inventory-api/capacidade-negocio/snapshot-1/`
+- Tag: `snap/inventory-api/capacidade-negocio/1`
 - Pré-registro: `docs/extracao/inventory-api__capacidade-negocio__s1.plan.md`
 - Registro: `docs/extracao/inventory-api__capacidade-negocio__s1.md`
-- Tag alvo: `snap/inventory-api/capacidade-negocio/1`
+- Serviço extraído: `services/inventory-api/reports/`; gateway `infra/gateway/nginx.conf`;
+  compose `infra/compose/inventory-api-capacidade-negocio-s1.yml`.
+
+**Resultados (mediana de 3 repetições):**
+
+| Dimensão | Métrica | snapshot-0 | snapshot-1 |
+|---|---|---|---|
+| Agilidade | build (`--no-cache`) | 42.549 ms | 121.285 ms |
+| Agilidade | inicialização | 8.841 ms | 10.631 ms |
+| Custo | CPU/RAM repouso (total) | ~2,1 % / ~84 MB | (4 contêineres) |
+| Custo | componentes / containers | 2 / 2 | 4 / 4 |
+| Desempenho | `products` | 562,8 req/s | 323,9 req/s |
+| Desempenho | `reports/movements` | 360,4 req/s | 256,6 req/s |
+| Desempenho | `reports/stock` | 202,3 req/s | 131,3 req/s |
+| Desempenho | `movements` | 309,9 req/s | 223,4 req/s |
+| Manutenibilidade | LOC | 8.783 | 9.165 |
+| Manutenibilidade | cross-domain | 69 / 389 | 73 / 402 |
+
+**Observações:**
+- Build triplicou (mais uma imagem + dependências sem cache); startup +20 %.
+- Vazão caiu em todas as rotas (~28–42 %): salto extra pelo NGINX + concorrência
+  de mais contêineres na mesma máquina.
+- LOC subiu por duplicação de código transversal (`shared`/`auth`/`database`);
+  cross-domain não caiu (o serviço recria arestas entre fronteiras).
+- Paridade funcional confirmada por smoke test: `products` (monólito) e as três
+  rotas de `reports` (serviço) respondem com os mesmos dados do baseline.
 
 ### snapshot-2 (segunda extração)
 - A definir.

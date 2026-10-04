@@ -1,0 +1,99 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 206,
+  "total": 9165,
+  "source": 7219,
+  "comment": 995,
+  "byModule": {
+    "inventory-api/app.module.ts": {
+      "files": 1,
+      "total": 21,
+      "source": 20,
+      "comment": 0
+    },
+    "inventory-api/auth": {
+      "files": 28,
+      "total": 1150,
+      "source": 817,
+      "comment": 207
+    },
+    "inventory-api/database": {
+      "files": 3,
+      "total": 298,
+      "source": 260,
+      "comment": 24
+    },
+    "inventory-api/main.ts": {
+      "files": 1,
+      "total": 38,
+      "source": 38,
+      "comment": 2
+    },
+    "inventory-api/movements": {
+      "files": 31,
+      "total": 1856,
+      "source": 1362,
+      "comment": 311
+    },
+    "inventory-api/products": {
+      "files": 37,
+      "total": 1478,
+      "source": 1221,
+      "comment": 93
+    },
+    "inventory-api/shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    },
+    "inventory-api/users": {
+      "files": 21,
+      "total": 1152,
+      "source": 929,
+      "comment": 107
+    },
+    "inventory-api/warehouses": {
+      "files": 39,
+      "total": 1357,
+      "source": 1117,
+      "comment": 91
+    },
+    "reports/app.module.ts": {
+      "files": 1,
+      "total": 15,
+      "source": 14,
+      "comment": 0
+    },
+    "reports/auth": {
+      "files": 4,
+      "total": 88,
+      "source": 70,
+      "comment": 7
+    },
+    "reports/database": {
+      "files": 2,
+      "total": 33,
+      "source": 29,
+      "comment": 0
+    },
+    "reports/main.ts": {
+      "files": 1,
+      "total": 38,
+      "source": 37,
+      "comment": 1
+    },
+    "reports/reports": {
+      "files": 23,
+      "total": 1257,
+      "source": 983,
+      "comment": 128
+    },
+    "reports/shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    }
+  }
+}

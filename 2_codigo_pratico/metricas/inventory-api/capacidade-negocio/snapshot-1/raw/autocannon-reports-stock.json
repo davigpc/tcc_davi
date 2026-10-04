@@ -1,0 +1,45 @@
+{
+  "route": "reports-stock",
+  "method": "GET",
+  "runs": 3,
+  "requestsPerSec": [
+    160.2,
+    122.6,
+    131.31
+  ],
+  "throughputBytesPerSec": [
+    191116.8,
+    146262.4,
+    156652.8
+  ],
+  "latencyP50": [
+    120,
+    158,
+    145
+  ],
+  "latencyP90": [
+    138,
+    205,
+    186
+  ],
+  "latencyP99": [
+    177,
+    256,
+    241
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    0,
+    0,
+    0
+  ],
+  "totalRequests": [
+    1602,
+    1226,
+    1313
+  ]
+}
