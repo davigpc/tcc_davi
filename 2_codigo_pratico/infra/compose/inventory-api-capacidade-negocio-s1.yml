@@ -1,0 +1,63 @@
+# Compose do experimento: inventory-api / Capacidade de Negócio / snapshot-1
+# Topologia: monólito (sem reports) + serviço de Relatórios + PostgreSQL
+# compartilhado + gateway NGINX (Strangler Fig) na borda.
+name: inventory-api-s1
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: inventory_s1_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  monolith:
+    build:
+      context: ../../apps/inventory-api
+      dockerfile: Dockerfile
+      target: production
+    container_name: inventory_s1_monolith
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      JWT_ACCESS_EXPIRES_IN: ${JWT_ACCESS_EXPIRES_IN:-15m}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+
+  reports:
+    build:
+      context: ../../services/inventory-api/reports
+      dockerfile: Dockerfile
+    container_name: inventory_s1_reports
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      PORT: 3000
+      NODE_ENV: production
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:alpine
+    container_name: inventory_s1_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      - monolith
+      - reports
