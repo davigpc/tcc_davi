@@ -1,0 +1,303 @@
+{
+  "app": "inventory-api",
+  "metodologia": "capacidade-negocio",
+  "snapshot": "snapshot-0",
+  "tag": "snap/inventory-api/capacidade-negocio/0",
+  "timestampUtc": "2026-10-04T20:27:49.684Z",
+  "buildTime": {
+    "medianMs": 42549,
+    "runsMs": [
+      42417,
+      42549,
+      55273
+    ]
+  },
+  "startupTime": {
+    "medianMs": 8841,
+    "runsMs": [
+      8801,
+      9823,
+      8841
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "inventory_app",
+        "samples": 4,
+        "cpuAvgPerc": 1.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 4.02,
+        "memAvgMB": 50.75,
+        "memMinMB": 43.86,
+        "memMaxMB": 71.11
+      },
+      {
+        "container": "inventory_db",
+        "samples": 4,
+        "cpuAvgPerc": 1.21,
+        "cpuMinPerc": 0.01,
+        "cpuMaxPerc": 4.81,
+        "memAvgMB": 35.53,
+        "memMinMB": 35.11,
+        "memMaxMB": 35.87
+      }
+    ],
+    "load": [
+      {
+        "container": "inventory_app",
+        "samples": 5,
+        "cpuAvgPerc": 222.86,
+        "cpuMinPerc": 218.33,
+        "cpuMaxPerc": 225.52,
+        "memAvgMB": 117.64,
+        "memMinMB": 110.3,
+        "memMaxMB": 135.7
+      },
+      {
+        "container": "inventory_db",
+        "samples": 5,
+        "cpuAvgPerc": 18.14,
+        "cpuMinPerc": 17.41,
+        "cpuMaxPerc": 20.32,
+        "memAvgMB": 70.83,
+        "memMinMB": 70.67,
+        "memMaxMB": 70.92
+      }
+    ],
+    "imagensMB": {
+      "inventory-api-app:latest": 151.58,
+      "postgres:15-alpine": 109.92
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "products",
+        "rpsMedian": 562.8,
+        "rpsMin": 545.9,
+        "rpsMax": 562.9,
+        "p50Median": 34,
+        "p50Min": 34,
+        "p50Max": 36,
+        "p90Median": 38,
+        "p90Min": 38,
+        "p90Max": 40,
+        "p99Median": 45,
+        "p99Min": 44,
+        "p99Max": 46,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-movements",
+        "rpsMedian": 360.4,
+        "rpsMin": 331.1,
+        "rpsMax": 360.9,
+        "p50Median": 54,
+        "p50Min": 53,
+        "p50Max": 58,
+        "p90Median": 58,
+        "p90Min": 58,
+        "p90Max": 67,
+        "p99Median": 102,
+        "p99Min": 102,
+        "p99Max": 112,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-stock",
+        "rpsMedian": 202.3,
+        "rpsMin": 199.1,
+        "rpsMax": 202.4,
+        "p50Median": 97,
+        "p50Min": 97,
+        "p50Max": 99,
+        "p90Median": 102,
+        "p90Min": 101,
+        "p90Max": 107,
+        "p99Median": 117,
+        "p99Min": 108,
+        "p99Max": 117,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "movements-post",
+        "rpsMedian": 309.9,
+        "rpsMin": 307,
+        "rpsMax": 318.7,
+        "p50Median": 63,
+        "p50Min": 62,
+        "p50Max": 64,
+        "p90Median": 72,
+        "p90Min": 70,
+        "p90Max": 75,
+        "p99Median": 88,
+        "p99Min": 85,
+        "p99Max": 94,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 8783,
+    "locPorModulo": {
+      "app.module.ts": 23,
+      "auth": 1150,
+      "database": 298,
+      "main.ts": 38,
+      "movements": 1856,
+      "products": 1478,
+      "reports": 1239,
+      "shared": 192,
+      "users": 1152,
+      "warehouses": 1357
+    },
+    "servicos": 2,
+    "containers": 2,
+    "crossDomainEdges": 69,
+    "totalEdges": 389,
+    "crossDomainPorModulo": {
+      "_root": 9,
+      "auth": 4,
+      "movements": 10,
+      "products": 13,
+      "reports": 10,
+      "users": 11,
+      "warehouses": 12
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "products",
+        "to": "shared",
+        "count": 9
+      },
+      {
+        "from": "warehouses",
+        "to": "shared",
+        "count": 8
+      },
+      {
+        "from": "movements",
+        "to": "shared",
+        "count": 6
+      },
+      {
+        "from": "users",
+        "to": "auth",
+        "count": 6
+      },
+      {
+        "from": "reports",
+        "to": "shared",
+        "count": 5
+      },
+      {
+        "from": "users",
+        "to": "database",
+        "count": 3
+      },
+      {
+        "from": "auth",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "auth",
+        "to": "shared",
+        "count": 2
+      },
+      {
+        "from": "_root",
+        "to": "shared",
+        "count": 2
+      },
+      {
+        "from": "movements",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "movements",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "products",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "products",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "reports",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "reports",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "users",
+        "to": "shared",
+        "count": 2
+      },
+      {
+        "from": "warehouses",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "warehouses",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "_root",
+        "to": "auth",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "database",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "movements",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "products",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "reports",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "users",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "warehouses",
+        "count": 1
+      },
+      {
+        "from": "reports",
+        "to": "movements",
+        "count": 1
+      }
+    ]
+  }
+}

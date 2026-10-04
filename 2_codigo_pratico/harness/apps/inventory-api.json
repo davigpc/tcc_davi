@@ -1,0 +1,44 @@
+{
+  "app": "inventory-api",
+  "metodologias": ["capacidade-negocio", "subdominio", "transacoes"],
+  "composeDir": "2_codigo_pratico/apps/inventory-api",
+  "composeFile": "docker-compose.yml",
+  "composeProject": "inventory-api",
+  "baseUrl": "http://localhost:3000",
+  "readinessPath": "/docs",
+  "credentials": { "email": "admin@example.com", "password": "admin123" },
+  "seed": {
+    "service": "app",
+    "command": ["node", "dist/src/database/seeds/seed.js"]
+  },
+  "containers": ["inventory_app", "inventory_db"],
+  "images": ["inventory-api-app:latest", "postgres:15-alpine"],
+  "sourceDir": "2_codigo_pratico/apps/inventory-api/src",
+  "routes": {
+    "read": [
+      { "name": "reports-movements", "method": "GET", "path": "/api/reports/movements", "auth": true },
+      { "name": "reports-stock", "method": "GET", "path": "/api/reports/stock/{{warehouseId}}", "auth": true },
+      { "name": "products", "method": "GET", "path": "/api/products", "auth": true }
+    ],
+    "write": [
+      {
+        "name": "movements-post",
+        "method": "POST",
+        "path": "/api/movements",
+        "auth": true,
+        "body": {
+          "productId": "{{productId}}",
+          "warehouseId": "{{warehouseId}}",
+          "type": "ENTRADA",
+          "quantity": 1,
+          "notes": "load-test"
+        }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}

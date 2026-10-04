@@ -1,0 +1,10 @@
+{
+  "inventory-api-app:latest": {
+    "bytes": 158942718,
+    "mb": 151.58
+  },
+  "postgres:15-alpine": {
+    "bytes": 115261681,
+    "mb": 109.92
+  }
+}

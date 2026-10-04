@@ -295,3 +295,83 @@ Para cada trilha:
   (a pasta estava *untracked*). Após commitar os submódulos, deve-se recriar uma tag
   `snapshot-0` que fixe os SHAs da tabela acima.
 - Próximo passo: **Fase 1** (baseline executável + poda de nuvem do e-commerce).
+
+### Fase 1 — Baseline executável (em andamento)
+
+**Escopo desta rodada:** apenas o `inventory-api` (tracer bullet), conforme
+decisão de travessia app-a-app.
+
+**Ambiente:** registrado em `docs/ambiente.md` (Windows 11, Ryzen 7 5700X3D,
+32 GB, Docker 29.7.2, Compose 5.4.0, Node 22.17.1). `pnpm` ausente no host.
+
+**Executado**
+- Criado `.env` local do inventory-api (segredos aleatórios ≥ 32 chars,
+  `PORT=3000`, Postgres em `5433`). Arquivo gitignored.
+- Build e subida do baseline via `docker compose up -d --build`:
+  `inventory_db` (postgres:15-alpine, healthy) + `inventory_app`
+  (`0.0.0.0:3000`). API em `/api`, Swagger em `/docs`.
+- Seed do baseline via `docker compose run --rm app node dist/src/database/seeds/seed.js`
+  → 2 warehouses, 5 produtos, 9 movimentos.
+- Smoke test das rotas representativas: `POST /api/auth/login` (200),
+  `GET /api/warehouses` (200), `GET /api/products` (200),
+  `GET /api/reports/stock/:id`, `/reports/movements` (total=9),
+  `/reports/alerts` (200), `POST /api/movements` (201).
+
+**Decisões registradas**
+- `docs/decisoes/0001-seed-conteinerizado.md` — seed pelo artefato compilado
+  dentro do contêiner; seed canônico = `src/database/seeds/seed.ts`.
+- `docs/decisoes/0002-pin-pnpm.md` — `RUN npm install -g pnpm@9` no Dockerfile
+  (harmonização de ambiente; pnpm recente quebra o build com
+  `ERR_PNPM_IGNORED_BUILDS` porque o lockfile é v9).
+
+**Achados do baseline (a documentar no cap. 05)**
+- Dois seeds divergentes no repositório (`prisma/seed.ts` × `src/database/seeds/seed.ts`).
+- `Dockerfile` roda `migrate deploy` mas **não** seed.
+- `PrismaService` loga "Conexión a PostgreSQL establecida" **6 vezes** (uma por
+  módulo) — indício de múltiplas instâncias do client / acoplamento a investigar.
+- Resposta HTTP envelopada: `{ data, message, statusCode }`; listagens paginadas
+  aninham a coleção em `data.data`.
+- Strings acentuadas exibem mojibake no console PowerShell (encoding de saída;
+  não afeta os dados persistidos).
+
+**Pendente**
+- Commitar a harmonização do Dockerfile no fork (aguardando autorização).
+- Parar contêineres de esqueleto arquivados (`tcc-mono-*`, `tcc-micro-*`) para
+  não contaminar as métricas de custo/componentes.
+- Etapa B: construir o harness de coleta e produzir o `snapshot-0`.
+
+### Fase 2 — Harness de métricas + snapshot-0 (concluída)
+
+**Harness implementado** em `2_codigo_pratico/harness/` (Node/TypeScript, via `tsx`):
+- `coleta/collectors.ts` — 8 métricas (build, startup, `docker stats`, image-size,
+  `autocannon`, `sloc`, componentes, `madge`).
+- `coleta/run-snapshot.ts` — orquestrador com seed determinístico, descoberta de
+  ids, paridade e manifest.
+- `analise/gerar.ts` — `raw/` → `processed/summary.json` + `tabelas/metricas.tex`
+  + 9 figuras (`vazao-rotas`, `latencia-rotas`, `cpu-repouso-carga`,
+  `ram-repouso-carga`, `loc-modulos`, `cross-domain-modulos`, `imagens`,
+  `vazao-latencia-dispersao`, `cross-domain-heatmap`) + `resumo.md`.
+- `analise/charts.ts` — primitivas SVG (barras, barras agrupadas, linha, dispersão,
+  heatmap) com eixos, legenda, unidades e barras de erro mín–máx.
+- `apps/inventory-api.json` — configuração da aplicação (rotas-alvo, credenciais,
+  parâmetros de carga).
+- `templates/` — modelos de diário, pré-registro e registro de extração.
+
+**Ferramentas:** `autocannon` e `madge` (locais via npm); `sloc` substitui o
+`cloc` (que exige Perl, ausente no Windows). Oito métricas coletadas.
+
+**Snapshot-0 produzido** em
+`metricas/inventory-api/capacidade-negocio/snapshot-0/` (manifest, raw, processed,
+paridade, tabelas, figuras, resumo). Medições com 3 repetições.
+
+**Baseline (valores-chave):**
+- Build (`--no-cache`): ~42,5 s · Startup: ~8,8 s.
+- LOC TypeScript: 8.783 · Componentes: 2 serviços / 2 containers.
+- Chamadas entre fronteiras: 69 de 389 (17,7 %).
+- Vazão/latência (p50): `products` 554,9 req/s · `reports/movements` 357,8 req/s ·
+  `reports/stock/:id` 202,5 req/s · `movements` 331,6 req/s.
+
+**Diário da trilha:** `docs/execucao/inventory-api__capacidade-negocio.md`.
+
+**Pendente (Etapa C):** extrair `reports` (snapshot-1), configurar NGINX
+(Strangler Fig), validar paridade e coletar o snapshot-1.

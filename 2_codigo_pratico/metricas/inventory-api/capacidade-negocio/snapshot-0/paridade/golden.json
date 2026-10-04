@@ -1,0 +1,239 @@
+{
+  "reports-movements": {
+    "route": "/api/reports/movements",
+    "status": 200,
+    "body": {
+      "data": {
+        "data": [
+          {
+            "id": "12ec8448-fea1-42bc-b2b0-e7856900b2dd",
+            "productSku": "MOUSE-WIRELESS",
+            "productName": "Mouse Inalámbrico",
+            "warehouseName": "Almacén Central",
+            "type": "SALIDA",
+            "quantity": 1900,
+            "userName": "operator@example.com",
+            "notes": "Liquidación de stock",
+            "createdAt": "2026-10-04T20:25:04.576Z"
+          },
+          {
+            "id": "af4da809-1e0a-43a8-b760-77a0dfeffb89",
+            "productSku": "LAPTOP001",
+            "productName": "Laptop ProBook",
+            "warehouseName": "Almacén Central",
+            "type": "SALIDA",
+            "quantity": 100,
+            "userName": "operator@example.com",
+            "notes": "Venta a cliente corporate",
+            "createdAt": "2026-10-03T20:25:04.576Z"
+          },
+          {
+            "id": "76fe9b1c-bc77-43f1-89be-dbeafa012867",
+            "productSku": "MONITOR-27",
+            "productName": "Monitor 27\"",
+            "warehouseName": "Almacén Central",
+            "type": "SALIDA",
+            "quantity": 50,
+            "userName": "operator@example.com",
+            "notes": "Venta minorista",
+            "createdAt": "2026-10-03T20:25:04.576Z"
+          },
+          {
+            "id": "679d2b30-3b80-4705-bf5f-49247b33a8e1",
+            "productSku": "MOUSE-WIRELESS",
+            "productName": "Mouse Inalámbrico",
+            "warehouseName": "Almacén Central",
+            "type": "ENTRADA",
+            "quantity": 2000,
+            "userName": "admin@example.com",
+            "notes": "Entrada masiva",
+            "createdAt": "2026-10-01T20:25:04.576Z"
+          },
+          {
+            "id": "f62f677a-ca52-4406-bc1d-6f21e450ada7",
+            "productSku": "TECLADO001",
+            "productName": "Teclado Mecánico",
+            "warehouseName": "Almacén Central",
+            "type": "ENTRADA",
+            "quantity": 1000,
+            "userName": "admin@example.com",
+            "notes": "Gran compra",
+            "createdAt": "2026-10-01T20:25:04.576Z"
+          },
+          {
+            "id": "7a641264-d73d-42c5-80ca-4139c260a9ed",
+            "productSku": "MONITOR-27",
+            "productName": "Monitor 27\"",
+            "warehouseName": "Almacén Central",
+            "type": "ENTRADA",
+            "quantity": 300,
+            "userName": "admin@example.com",
+            "notes": "Compra a proveedor",
+            "createdAt": "2026-10-01T20:25:04.576Z"
+          },
+          {
+            "id": "f9d17198-b903-4fba-a808-6060124a2b15",
+            "productSku": "CABLE-HDMI-2",
+            "productName": "Cable HDMI 2.0",
+            "warehouseName": "Almacén Central",
+            "type": "ENTRADA",
+            "quantity": 500,
+            "userName": "admin@example.com",
+            "notes": "Metros iniciales",
+            "createdAt": "2026-10-01T20:25:04.576Z"
+          },
+          {
+            "id": "da484acd-4da3-479c-8c9c-1b6398aaf579",
+            "productSku": "LAPTOP001",
+            "productName": "Laptop ProBook",
+            "warehouseName": "Almacén Central",
+            "type": "ENTRADA",
+            "quantity": 500,
+            "userName": "admin@example.com",
+            "notes": "Initial stock",
+            "createdAt": "2026-10-01T20:25:04.576Z"
+          },
+          {
+            "id": "0db1210d-7ca8-4ba6-9249-3840052085e0",
+            "productSku": "LAPTOP001",
+            "productName": "Laptop ProBook",
+            "warehouseName": "Almacén Regional",
+            "type": "ENTRADA",
+            "quantity": 200,
+            "userName": "admin@example.com",
+            "notes": "Stock regional",
+            "createdAt": "2026-10-01T20:25:04.576Z"
+          }
+        ],
+        "page": 1,
+        "limit": 10,
+        "total": 9,
+        "totalPages": 1
+      },
+      "message": "OK",
+      "statusCode": 200
+    }
+  },
+  "reports-stock": {
+    "route": "/api/reports/stock/{{warehouseId}}",
+    "status": 200,
+    "body": {
+      "data": {
+        "warehouseId": "b47cec62-d737-4831-bd53-2de3b803cf24",
+        "warehouseName": "Almacén Regional",
+        "items": [
+          {
+            "productId": "447ca6d3-6165-49b4-9281-b37e64445400",
+            "sku": "LAPTOP001",
+            "productName": "Laptop ProBook",
+            "quantity": 200,
+            "minStockAlert": 50,
+            "isLowStock": false
+          },
+          {
+            "productId": "19e05341-6c3d-44d8-8636-9ad94d5702b4",
+            "sku": "MONITOR-27",
+            "productName": "Monitor 27\"",
+            "quantity": 0,
+            "minStockAlert": 30,
+            "isLowStock": true
+          },
+          {
+            "productId": "9c8b620a-5922-4aee-9220-6641b88500e1",
+            "sku": "MOUSE-WIRELESS",
+            "productName": "Mouse Inalámbrico",
+            "quantity": 0,
+            "minStockAlert": 150,
+            "isLowStock": true
+          },
+          {
+            "productId": "58314298-c41e-43f9-a39b-94688d32e1cc",
+            "sku": "TECLADO001",
+            "productName": "Teclado Mecánico",
+            "quantity": 0,
+            "minStockAlert": 100,
+            "isLowStock": true
+          },
+          {
+            "productId": "5fe77c4e-6758-4044-a285-cc65d8b342fb",
+            "sku": "CABLE-HDMI-2",
+            "productName": "Cable HDMI 2.0",
+            "quantity": 0,
+            "minStockAlert": 50,
+            "isLowStock": true
+          }
+        ],
+        "totalProducts": 5,
+        "lowStockCount": 4
+      },
+      "message": "OK",
+      "statusCode": 200
+    }
+  },
+  "products": {
+    "route": "/api/products",
+    "status": 200,
+    "body": {
+      "data": {
+        "data": [
+          {
+            "id": "9c8b620a-5922-4aee-9220-6641b88500e1",
+            "sku": "MOUSE-WIRELESS",
+            "name": "Mouse Inalámbrico",
+            "description": "Mouse inalámbrico 2.4GHz",
+            "unit": "unidad",
+            "minStockAlert": 150,
+            "createdAt": "2026-10-04T20:25:04.558Z",
+            "deletedAt": null
+          },
+          {
+            "id": "58314298-c41e-43f9-a39b-94688d32e1cc",
+            "sku": "TECLADO001",
+            "name": "Teclado Mecánico",
+            "description": "Teclado mecánico RGB",
+            "unit": "unidad",
+            "minStockAlert": 100,
+            "createdAt": "2026-10-04T20:25:04.558Z",
+            "deletedAt": null
+          },
+          {
+            "id": "5fe77c4e-6758-4044-a285-cc65d8b342fb",
+            "sku": "CABLE-HDMI-2",
+            "name": "Cable HDMI 2.0",
+            "description": "Cable HDMI 2.0 certificado",
+            "unit": "metro",
+            "minStockAlert": 50,
+            "createdAt": "2026-10-04T20:25:04.558Z",
+            "deletedAt": null
+          },
+          {
+            "id": "447ca6d3-6165-49b4-9281-b37e64445400",
+            "sku": "LAPTOP001",
+            "name": "Laptop ProBook",
+            "description": "Laptop de alto rendimiento",
+            "unit": "unidad",
+            "minStockAlert": 50,
+            "createdAt": "2026-10-04T20:25:04.557Z",
+            "deletedAt": null
+          },
+          {
+            "id": "19e05341-6c3d-44d8-8636-9ad94d5702b4",
+            "sku": "MONITOR-27",
+            "name": "Monitor 27\"",
+            "description": "Monitor FHD 27 pulgadas",
+            "unit": "unidad",
+            "minStockAlert": 30,
+            "createdAt": "2026-10-04T20:25:04.557Z",
+            "deletedAt": null
+          }
+        ],
+        "page": 1,
+        "limit": 10,
+        "total": 5,
+        "totalPages": 1
+      },
+      "message": "OK",
+      "statusCode": 200
+    }
+  }
+}

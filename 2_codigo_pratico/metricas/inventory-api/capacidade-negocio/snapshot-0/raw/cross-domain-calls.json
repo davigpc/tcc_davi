@@ -1,0 +1,157 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "_root",
+    "auth",
+    "database",
+    "movements",
+    "products",
+    "reports",
+    "shared",
+    "users",
+    "warehouses"
+  ],
+  "edges": [
+    {
+      "from": "products",
+      "to": "shared",
+      "count": 9
+    },
+    {
+      "from": "warehouses",
+      "to": "shared",
+      "count": 8
+    },
+    {
+      "from": "movements",
+      "to": "shared",
+      "count": 6
+    },
+    {
+      "from": "users",
+      "to": "auth",
+      "count": 6
+    },
+    {
+      "from": "reports",
+      "to": "shared",
+      "count": 5
+    },
+    {
+      "from": "users",
+      "to": "database",
+      "count": 3
+    },
+    {
+      "from": "auth",
+      "to": "database",
+      "count": 2
+    },
+    {
+      "from": "auth",
+      "to": "shared",
+      "count": 2
+    },
+    {
+      "from": "_root",
+      "to": "shared",
+      "count": 2
+    },
+    {
+      "from": "movements",
+      "to": "database",
+      "count": 2
+    },
+    {
+      "from": "movements",
+      "to": "auth",
+      "count": 2
+    },
+    {
+      "from": "products",
+      "to": "database",
+      "count": 2
+    },
+    {
+      "from": "products",
+      "to": "auth",
+      "count": 2
+    },
+    {
+      "from": "reports",
+      "to": "database",
+      "count": 2
+    },
+    {
+      "from": "reports",
+      "to": "auth",
+      "count": 2
+    },
+    {
+      "from": "users",
+      "to": "shared",
+      "count": 2
+    },
+    {
+      "from": "warehouses",
+      "to": "database",
+      "count": 2
+    },
+    {
+      "from": "warehouses",
+      "to": "auth",
+      "count": 2
+    },
+    {
+      "from": "_root",
+      "to": "auth",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "database",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "movements",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "products",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "reports",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "users",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "warehouses",
+      "count": 1
+    },
+    {
+      "from": "reports",
+      "to": "movements",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 69,
+  "totalEdges": 389,
+  "byModule": {
+    "_root": 9,
+    "auth": 4,
+    "movements": 10,
+    "products": 13,
+    "reports": 10,
+    "users": 11,
+    "warehouses": 12
+  }
+}
