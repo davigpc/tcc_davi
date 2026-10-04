@@ -375,3 +375,40 @@ paridade, tabelas, figuras, resumo). Medições com 3 repetições.
 
 **Pendente (Etapa C):** extrair `reports` (snapshot-1), configurar NGINX
 (Strangler Fig), validar paridade e coletar o snapshot-1.
+
+### Fase 3 — Trilha 1/9: inventory-api × Capacidade de Negócio (snapshot-1)
+
+**Pré-registro:** `docs/extracao/inventory-api__capacidade-negocio__s1.plan.md`
+(persistência escolhida: banco compartilhado, opção 1).
+**Registro:** `docs/extracao/inventory-api__capacidade-negocio__s1.md`.
+
+**Extraído:** módulo `reports` → serviço `services/inventory-api/reports/`.
+- Monólito sem `reports` (commit `53ce9c7` no fork: 23 arquivos, −1.242 linhas).
+- Vazamento de domínio (`MovementTypeMapper`) resolvido por cópia local (ACL).
+- Gateway `infra/gateway/nginx.conf`; compose
+  `infra/compose/inventory-api-capacidade-negocio-s1.yml`.
+- Paridade funcional confirmada via smoke test (monólito + serviço atrás do NGINX).
+
+**Snapshot-1** em `metricas/inventory-api/capacidade-negocio/snapshot-1/`.
+Tag `snap/inventory-api/capacidade-negocio/1`.
+
+**Principais resultados (0 → 1):**
+| Métrica | s0 | s1 |
+|---|---|---|
+| Build | 42.549 ms | 121.285 ms |
+| Inicialização | 8.841 ms | 10.631 ms |
+| LOC | 8.783 | 9.165 |
+| Componentes | 2 | 4 |
+| Cross-domain | 69/389 | 73/402 |
+| `products` req/s | 562,8 | 323,9 |
+| `reports/stock` req/s | 202,3 | 131,3 |
+
+**Leitura:** build/startup subiram (mais um serviço); vazão caiu em todas as
+rotas (salto extra pelo NGINX + mais contêineres na mesma máquina); LOC e
+cross-domain subiram por duplicação de código transversal. Ressalva metodológica:
+o baseline não tinha NGINX, então o efeito de "extrair o serviço" está somado ao
+de "introduzir o proxy" — a ser discutido no cap. 05.
+
+**Commits (repo pai, branch `exp/inventory-api/capacidade-negocio`):**
+`bf38fbf` (serviço), `a80243e` (gateway/compose), `e722a6a` (harness), `5ffe2ec`
+(coleta/registro).
