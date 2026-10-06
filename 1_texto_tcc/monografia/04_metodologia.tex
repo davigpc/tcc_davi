@@ -40,19 +40,19 @@ Para assegurar a validade externa e a relevância prática dos resultados empír
 
 A padronização na linguagem TypeScript e na plataforma Node.js/NestJS assegura consistência nas comparações de Linhas de Código (LOC), padronização de empacotamento em contêineres e permite uma comparação justa entre os tempos de inicialização e perfis de consumo de recursos.
 
-\subsection{Aplicação Crítica: Sistema de Inventário (\textit{inventory-api})}
-A aplicação \textit{inventory-api} representa um sistema de controle de inventário e execução operacional, análogo aos sistemas MES (\textit{Manufacturing Execution System}) industriais. Nesse contexto, é uma aplicação que demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar. Além disso, a integridade transacional é estrita: transações operacionais de baixa e transferência de materiais exigem consistência imediata entre armazéns, produtos e saldos em estoque, sendo inadmissível o registro de quantidades negativas.
+\subsection{Aplicação Crítica: Sistema de Inventário}
+A aplicação \textit{inventory-api}\footnote{Disponível em: \url{https://github.com/egp1020/inventory-api}.} representa um sistema de controle de inventário e execução operacional, análogo aos sistemas MES (\textit{Manufacturing Execution System}) industriais. Nesse contexto, é uma aplicação que demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar. Além disso, a integridade transacional é estrita: transações operacionais de baixa e transferência de materiais exigem consistência imediata entre armazéns, produtos e saldos em estoque, sendo inadmissível o registro de quantidades negativas.
 
 A arquitetura original do sistema adota os princípios de Arquitetura Hexagonal e \textit{Domain-Driven Design}, operando como um monólito modular estruturado sobre o ORM Prisma e banco de dados relacional PostgreSQL. Os módulos principais incluem autenticação, usuários, armazéns (\textit{warehouses}), catálogo de produtos, movimentações e relatórios analíticos. Esse cenário permite avaliar o impacto da decomposição sobre módulos fortemente amarrados por transações atômicas no banco de dados.
 
 
-\subsection{Aplicação de Alta Concorrência: Monitor de Mercado e Leilões (\textit{auction})}
-A aplicação \textit{auction} reflete o comportamento de plataformas de alta performance voltadas a leilões de cartas colecionáveis e negociação de ativos em tempo real. O domínio impõe elevada concorrência de requisições síncronas de lances (\textit{bids}), atualização de preços em milissegundos e dispersão de eventos para múltiplos clientes conectados via WebSockets.
+\subsection{Aplicação de Alta Concorrência: Monitor de Mercado e Leilões}
+A aplicação \textit{auction}\footnote{Disponível em: \url{https://github.com/schoibs/auction}.} reflete o comportamento de plataformas de alta performance voltadas a leilões de cartas colecionáveis e negociação de ativos em tempo real. O domínio impõe elevada concorrência de requisições síncronas de lances (\textit{bids}), atualização de preços em milissegundos e dispersão de eventos para múltiplos clientes conectados via WebSockets.
 
 O monólito utiliza o ORM TypeORM conectado ao PostgreSQL, auxiliado pelo Redis para controle de filas e processamento de tarefas em segundo plano via BullMQ e transmissão de mensagens em tempo real com Socket.IO. A coexistência de componentes com ciclo de vida assíncrono (fechamento periódico de leilões por agendadores) e operações transacionais críticas de encerramento de lance e transferência de ativos viabiliza a observação empírica da latência sob estresse e da vazão de requisições durante a partição dos serviços.
 
-\subsection{Aplicação Transacional e Catálogo: E-commerce (\textit{ecommerce})}
-A aplicação \textit{ecommerce} representa o arquétipo do varejo digital clássico, caracterizado por assimetria entre fluxos de consulta e fluxos de escrita. Por um lado, o catálogo de produtos exige alta vazão de leitura com dados desnormalizados; por outro, as rotas de carrinho e liquidação de pedidos demandam coordenação de reservas, cálculo de taxas e integração com serviços auxiliares.
+\subsection{Aplicação Transacional e Catálogo: E-commerce}
+A aplicação \textit{ecommerce}\footnote{Disponível em: \url{https://github.com/sappChak/nestjs-ecommerce}.} representa o arquétipo do varejo digital clássico, caracterizado por assimetria entre fluxos de consulta e fluxos de escrita. Por um lado, o catálogo de produtos exige alta vazão de leitura com dados desnormalizados; por outro, as rotas de carrinho e liquidação de pedidos demandam coordenação de reservas, cálculo de taxas e integração com serviços auxiliares.
 
 Desenvolvida sobre o NestJS com o ODM Mongoose conectado a banco de dados orientado a documentos (MongoDB), a base de código organiza-se em mais de 20 controladores modulares que cobrem autenticação, produtos, carrinho, pedidos, estoque e avaliações. Sua inclusão viabiliza investigar os impactos da decomposição arquitetural em modelos orientados a documentos e na gestão de consistência eventual em operações transacionais de finalização de compras.
 

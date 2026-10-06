@@ -3,14 +3,17 @@
 % ---
 
 \chapter{Fundamentação Teórica}
+%Não precisa colocar software em itálico porque já foi incorporado ao português.
+%Precisa indicar mais referência recentes (2021 ou mais novas). A maioria é muito antiga. Buscar no Google Acadẽmico (https://scholar.google.com.br/?hl=pt), IEEE (https://ieeexplore.ieee.org/Xplore/home.jsp) ou ACM (https://dl.acm.org/)
 
-A evolução dos sistemas de informação nas últimas décadas foi acompanhada por transformações significativas nos padrões de arquitetura de \textit{software}. Com o crescimento da complexidade das aplicações e a exigência de entregas contínuas e escaláveis, os modelos tradicionais de desenvolvimento baseados em aplicações monolíticas passaram a apresentar limitações estruturais significativas. Nesse cenário, o estilo arquitetural de microsserviços consolidou-se como uma abordagem proeminente para a construção de sistemas modernos, modulares e desacoplados.
+A evolução dos sistemas de informação nas últimas décadas foi acompanhada por transformações significativas nos padrões de arquitetura de software \cite{velepucha2023}.
+Com o crescimento da complexidade das aplicações e a exigência de entregas contínuas e escaláveis, os modelos tradicionais de desenvolvimento baseados em aplicações monolíticas passaram a apresentar limitações estruturais significativas. Nesse cenário, o estilo arquitetural de microsserviços consolidou-se como uma abordagem proeminente para a construção de sistemas modernos, modulares e desacoplados \cite{newman2020}.
 
 \section{Arquitetura Monolítica}
 
-Historicamente, a maioria dos sistemas de \textit{software} foi desenvolvida sob o paradigma monolítico. De acordo com \citeonline{richardson2018}, uma aplicação monolítica é concebida como uma unidade lógica singular de execução. Em um monólito típico, todos os componentes do sistema, tais como a interface com o usuário, a lógica de negócio e os módulos de acesso a dados, são empacotados e implantados conjuntamente em um único processo computacional.
+Um número considerável de sistemas de software foi desenvolvido sob o paradigma monolítico. De acordo com \citeonline{richardson2018}, uma aplicação monolítica é concebida como uma unidade lógica singular de execução. Em um monólito típico, todos os componentes do sistema, tais como a interface com o usuário, a lógica de negócio e os módulos de acesso a dados, são empacotados e implantados conjuntamente em um único processo computacional.
 
-Embora a arquitetura monolítica apresente vantagens nos estágios iniciais do ciclo de vida do \textit{software}, como a simplicidade de testes locais, a facilidade de implantação inicial e a alta performance de chamadas de função diretas em memória, ela frequentemente enfrenta severos gargalos à medida que o sistema e a organização expandem-se, conforme cita \cite{newman2021}. 
+Embora a arquitetura monolítica apresente vantagens nos estágios iniciais do ciclo de vida do software, como a simplicidade de testes locais, a facilidade de implantação inicial e a alta performance de chamadas de função diretas em memória, ela frequentemente enfrenta severos gargalos à medida que o sistema e a organização expandem-se, conforme cita \cite{newman2021}. 
 
 Um dos principais problemas decorre do alto acoplamento de código e de banco de dados. A proliferação de dependências diretas entre módulos e o compartilhamento de um único esquema de banco de dados relacional tornam o sistema rígido. Nessa estrutura, pequenas alterações em uma funcionalidade específica podem desencadear efeitos colaterais imprevistos em módulos aparentemente não relacionados \cite{richardson2018}.
 
@@ -18,15 +21,17 @@ Adicionalmente, a arquitetura monolítica impõe uma limitação severa à escal
 
 Por fim, manifesta-se o acoplamento no ciclo de implantação. Toda a aplicação precisa ser recompilada, testada integralmente e reimplantada a cada nova atualização, por menor que seja a alteração no código-fonte. Esse fator eleva substancialmente a latência de entrega de novas funcionalidades e aumenta o risco operacional de falha global, onde uma exceção não tratada em um módulo secundário pode derrubar todo o processo da aplicação.
 
+Ressalta-se que, no contexto deste trabalho, um sistema web com arquitetura cliente-servidor (\textit{front-end} e \textit{back-end}), é tratado como sendo monolítico. Apesar de, tecnicamente, um sistema nessa arquitetura gere mais de um processo em execução (normalmente, um processo para o \textit{back-end} e um ou mais processos do \textit{front-end}, cada um em uma máquina de um usuário), cada um desses processos é um sistema monolítico em si, em que todos os requisitos funcionais estão acoplados em uma única unidade de software. 
+
 \section{Arquitetura de Microsserviços}
 
 Para suplantar as limitações estruturais do monólito, \citeonline{lewis2014} definem a arquitetura de microsserviços como uma abordagem em que a aplicação é projetada como um ecossistema de pequenos serviços autônomos. Cada serviço é executado em seu próprio processo computacional e se comunica com os demais por meio de mecanismos leves de rede, tipicamente utilizando APIs fundamentadas no protocolo HTTP com o padrão REST ou barramentos de mensageria assíncrona.
 
-Segundo as diretrizes estabelecidas por \citeonline{newman2021}, os microsserviços são unidades de \textit{software} independentemente implantáveis, fortemente coesas e estruturadas em torno de limites de negócios específicos. Em vez de organizar o código por camadas técnicas horizontais, tais como camada de apresentação, camada de regras de negócio e camada de persistência, os microsserviços alinham a estrutura do \textit{software} às capacidades de negócio da organização, promovendo o desacoplamento e a clareza de responsabilidade de cada componente.
+Segundo \citeonline{newman2021}, microsserviços são unidades de software independentemente implantáveis, fortemente coesas e estruturadas em torno de limites de negócios específicos. Em vez de organizar o código por camadas técnicas horizontais, tais como camada de apresentação, camada de regras de negócio e camada de persistência, os microsserviços alinham a estrutura do software às capacidades de negócio da organização, promovendo o desacoplamento e a clareza de responsabilidade de cada componente. Do ponto de vista da funcionalidade do software, a granularidade de um microsserviço pode variar, podendo contemplar um todo um requisito funcional (cadastro de produto, por exemplo) ou ser equivalente a uma simples função de código (verificação de CPF ou de CEP, por exemplo). 
 
-\subsection{Características Fundamentais}
+%\subsection{Características Fundamentais} Não precisa quebrar em muitas subsseções
 
-A literatura especializada destaca que a transição para microsserviços fundamenta-se em um conjunto de características e princípios arquiteturais estruturantes. A primeira dessas características refere-se à componentização promovida por meio de serviços. Conforme enfatizado por \citeonline{lewis2014}, a componentização tradicional via bibliotecas ligadas em memória é substituída por serviços independentes expostos via rede. Essa mudança assegura que a substituição, atualização ou manutenção de um serviço específico ocorra sem a necessidade de recompactar ou reimplantar os demais componentes do ecossistema.
+A transição para microsserviços fundamenta-se em um conjunto de características e princípios arquiteturais estruturantes \cite{velepucha2023}. A primeira dessas características refere-se à componentização promovida por meio de serviços. Conforme enfatizado por \citeonline{lewis2014}, a componentização tradicional via bibliotecas ligadas em memória é substituída por serviços independentes expostos via rede. Essa mudança assegura que a substituição, atualização ou manutenção de um serviço específico ocorra sem a necessidade de recompactar ou reimplantar os demais componentes do ecossistema.
 
 Em adição à substituição de bibliotecas por serviços de rede, sobressai-se a governança e a descentralização tecnológica. Diferente do monólito, que impõe uma única linguagem e um único \textit{framework} para toda a aplicação, \citeonline{lewis2014} ressaltam que os microsserviços viabilizam a adoção da abordagem da "ferramenta certa para o trabalho", abrindo espaço para o que \citeonline{richardson2018} descreveu historicamente como uma "arquitetura poliglota". Sob essa ótica, \citeonline{newman2020} reforça que cada microsserviço é tecnologicamente agnóstico, garantindo autonomia para escolher a linguagem de programação, o \textit{framework} e as bibliotecas que melhor se adaptem às suas exigências técnicas particulares.
 
@@ -36,9 +41,9 @@ Dessa segregação de dados deriva diretamente a possibilidade de adoção da pe
 
 Por fim, a separação física entre processos contribui de maneira determinante para a resiliência operacional e o isolamento de falhas. Em uma arquitetura monolítica tradicional, uma exceção não tratada pode paralisar todo o processo computacional. Em contrapartida, sob o modelo de microsserviços, a degradação ou a indisponibilidade pontual de um serviço específico não provoca o colapso de toda a aplicação. A adoção de padrões de resiliência impede a propagação de falhas em cascata, permitindo que funcionalidades não afetadas continuem operando normalmente para o usuário final \cite{newman2021}.
 
-\subsection{Desafios da Arquitetura de Microsserviços}
+%\subsection{Desafios da Arquitetura de Microsserviços}
 
-Apesar dos evidentes benefícios de disponibilidade e desacoplamento, a adoção de microsserviços introduz uma nova camada de complexidade inerente aos sistemas distribuídos \cite{lewis2014}. Conforme adverte \citeonline{richardson2018}, a principal contrapartida operacional reside na observabilidade e no diagnóstico de falhas. Enquanto em um monólito a depuração ocorre pela análise de um log único e unificado com a pilha de execução completa (\textit{stack trace}), em microsserviços a execução de uma única requisição de usuário atravessa múltiplos serviços independentes via rede.
+Apesar dos evidentes benefícios de disponibilidade e desacoplamento, a adoção de microsserviços introduz uma nova camada de complexidade inerente aos sistemas distribuídos \cite{lewis2014, soylemez2022}. Conforme adverte \citeonline{richardson2018}, a principal contrapartida operacional reside na observabilidade e no diagnóstico de falhas. Enquanto em um monólito a depuração ocorre pela análise de um log único e unificado com a pilha de execução completa (\textit{stack trace}), em microsserviços a execução de uma única requisição de usuário atravessa múltiplos serviços independentes via rede.
 
 Essa pulverização de processos torna a identificação das causas raízes de erros um desafio complexo. Para contornar essa dificuldade e correlacionar os registros de auditoria espalhados entre diversos \textit{containers}, torna-se indispensável a implementação de técnicas de rastreamento distribuído (\textit{distributed tracing}), injetando identificadores únicos de correlação em todas as chamadas de rede \cite{richardson2018}. Além disso, destacam-se como desafios a latência de rede adicional, a exigência de roteamento eficiente por meio de \textit{API Gateways} e o gerenciamento de transações entre múltiplos repositórios.
 
@@ -46,7 +51,7 @@ Em particular, a substituição de transações ACID locais por modelos de consi
 
 \section{Padrões de Decomposição}
 
-Serão utilizados três diferentes padrões 
+Neste projeto serão utilizados três diferentes padrões de decomposição de softwares monolíticos para microsserviços. Cada um deles é descrito nas seções seguintes. 
 
 
 \subsection{Decomposição por Capacidade de Negócio}
@@ -54,9 +59,9 @@ Serão utilizados três diferentes padrões
 
 A decomposição por capacidade de negócio (\textit{Decompose by Business Capability}) fundamenta-se na identificação das funções operacionais e processos que a organização executa para atingir seus objetivos \cite{richardson2018}. Nesse contexto, uma capacidade de negócio representa o objetivo funcional da organização (o "que" é realizado), em contraste com as tecnologias usadas no momento (o "como" é realizado).
 
-Dessa forma, a conceituação de uma capacidade permanece estável ao longo do tempo, independentemente das transformações nas ferramentas de \textit{software} ou na infraestrutura. Por exemplo, a capacidade de "Gestão de Estoque" ou de "Processamento de Pedidos" representa uma necessidade operacional contínua de uma organização comercial, quer seja executada por meio de registros manuais, por um sistema monolítico legado ou por microsserviços isolados.
+Dessa forma, a conceituação de uma capacidade permanece estável ao longo do tempo, independentemente das transformações nas ferramentas de software ou na infraestrutura. Por exemplo, a capacidade de "Gestão de Estoque" ou de "Processamento de Pedidos" representa uma necessidade operacional contínua de uma organização comercial, quer seja executada por meio de registros manuais, por um sistema monolítico legado ou por microsserviços isolados.
 
-Nessa estratégia, as fronteiras dos microsserviços são alinhadas às áreas funcionais da organização. Em um sistema corporativo, por exemplo, funções como gestão de estoque, processamento de pedidos e faturamento dão origem a serviços independentes. A principal vantagem teórica dessa abordagem consiste no alinhamento direto entre a estrutura do \textit{software} e a estrutura organizacional, o que favorece a atribuição de equipes autônomas responsáveis pelo ciclo de vida completo de cada serviço \cite{newman2021}.
+Nessa estratégia, as fronteiras dos microsserviços são alinhadas às áreas funcionais da organização. Em um sistema corporativo, por exemplo, funções como gestão de estoque, processamento de pedidos e faturamento dão origem a serviços independentes. A principal vantagem teórica dessa abordagem consiste no alinhamento direto entre a estrutura do software e a estrutura organizacional, o que favorece a atribuição de equipes autônomas responsáveis pelo ciclo de vida completo de cada serviço \cite{newman2021}.
 
 Entretanto, essa abordagem apresenta limitações quando aplicada a sistemas monolíticos legados que utilizam um banco de dados relacional compartilhado. Como diferentes processos de negócio frequentemente acessam e alteram as mesmas tabelas, a divisão dos serviços baseada apenas na capacidade funcional pode exigir a implementação de transações distribuídas e gerar dependências cruzadas entre os novos serviços.
 
@@ -85,8 +90,10 @@ Para evitar a degradação de desempenho e a complexidade operacional, a decompo
 \label{sec:metricas_coleta}
 % Apresentar as ferramentas (Docker stats, GitHub Actions, Autocannon, Madge/ESLint).
 
-\subsection{Métricas de Agilidade e DevOps}
+Neste projeto, para avaliar os três padrões de decomposição citados, serão adotadas um conjunto de métricas, cuja descrição de cada uma é apresentada nesta seção.
 
+
+\subsection{Métricas de Agilidade e DevOps}
 
 Para avaliar o impacto da decomposição na operabilidade e no ciclo de vida do software, esta dimensão foca na agilidade de entrega e na inicialização dos serviços:
 \begin{itemize}
@@ -115,9 +122,16 @@ A latência é quantificada por meio de percentis, que revelam o comportamento s
 \subsection{Métricas de Manutenibilidade e Complexidade}
 \label{sec:metricas_manutenibilidade}
 
-Para avaliar a evolução estrutural da arquitetura ao longo da refatoração, a pesquisa emprega métricas voltadas à manutenibilidade e complexidade, com destaque para as Linhas de Código (LOC), a contagem de componentes físicos e o cruzamento de fronteiras. O fundamento teórico para a análise desse acoplamento baseia-se no conceito de conascência (\textit{connascence}), definido formalmente como a interdependência na qual a alteração em um elemento de \textit{software} exige a modificação de outro para preservar a corretude do sistema \cite{pagejones1992}. O objetivo central do \textit{design} de arquiteturas modulares é a minimização da conascência e do cruzamento de fronteiras entre domínios distintos.
+Para avaliar a evolução estrutural da arquitetura ao longo da refatoração, a pesquisa emprega métricas voltadas à manutenibilidade e complexidade, com destaque para as Linhas de Código (LOC), a contagem de componentes físicos e o cruzamento de fronteiras. O fundamento teórico para a análise desse acoplamento baseia-se no conceito de conascência (\textit{connascence}), definido formalmente como a interdependência na qual a alteração em um elemento de software exige a modificação de outro para preservar a corretude do sistema \cite{pagejones1992}. O objetivo central do \textit{design} de arquiteturas modulares é a minimização da conascência e do cruzamento de fronteiras entre domínios distintos.
 
 No monólito, o cruzamento de fronteiras é observado como conascências estáticas de nome e tipo, quantificadas por meio de análise estática do código-fonte. Durante a transição para microsserviços por meio do padrão \textit{Strangler Fig}, a remoção dessas dependências físicas evita o acoplamento indesejado que, conforme alertam \citeonline{newman2020} e \citeonline{richardson2018}, converte simples chamadas locais de código em comunicações síncronas via rede (\textit{Inter-Process Communication} - IPC). Além disso, o rastreamento das Linhas de Código (LOC) e do número de componentes físicos permite mensurar o esforço de refatoração, o dimensionamento dos artefatos e o impacto do isolamento em cada estágio da pesquisa.
+
+\section{Engenharia de Software Experimental}
+\label{sec:eng_software_experimental}
+
+A condução de pesquisas empíricas na área de computação exige o rigor metodológico característico da Engenharia de Software Experimental \cite{wohlin2012}. Conforme discutem \citeonline{kitchenham2002}, abordagens experimentais permitem avaliar tecnologias, métodos e ferramentas de software em ambientes controlados, fornecendo evidências quantitativas sobre os seus reais impactos, benefícios e limitações.
+
+No contexto de refatoração arquitetural, a experimentação controlada por meio de matrizes comparativas e métricas reprodutíveis, como análise estática de código e testes de carga dinâmicos, é fundamental para mitigar vieses subjetivos. Isso possibilita que decisões de migração de monólitos para microsserviços sejam sustentadas por dados empíricos sólidos e mensuráveis.
 
 \section{Ferramentas}
 \subsection{Docker}
@@ -129,4 +143,6 @@ O \textit{Madge} é uma ferramenta de análise estática de código-fonte utiliz
 \subsection{Autocannon}
 O \textit{Autocannon} é uma ferramenta de teste de carga e estresse de alta performance voltada para aplicações HTTP em Node.js. Na matriz experimental desta pesquisa, o \textit{Autocannon} atua como o motor de estresse dinâmico para avaliar o desempenho das APIs em cada \textit{snapshot} arquitetural, permitindo mensurar métricas críticas como a latência de resposta e a vazão máxima de requisições por segundo sob condições controladas de concorrência.
 
+\subsection{NGINX}
+O \textit{NGINX} é um servidor web e proxy reverso de alta performance, projetado para lidar com alto volume de conexões simultâneas com baixo consumo de memória. No escopo desta pesquisa, o \textit{NGINX} atua como o mecanismo operacional do padrão \textit{Strangler Fig}, posicionado na borda da arquitetura para interceptar e redistribuir o tráfego de rede entre a aplicação monolítica e os microsserviços extraídos. Por meio de regras de roteamento baseadas em prefixos de rotas (URIs), o proxy permite direcionar chamadas para os novos contêineres sem exigir modificações nos clientes consumidores.
 
