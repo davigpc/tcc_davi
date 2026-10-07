@@ -66,7 +66,7 @@ Critério: o que precisa cair na **mesma transação** define a fronteira do ser
 
 - A regra "não é possível retirar mais do que há" (ADR-0006) e o cálculo
   dinâmico de estoque (ADR-0008) exigem consistência imediata entre
-  **movimentos, produtos e bodegas** ⇒ formam um único serviço `Estoque`.
+  **movimentos, produtos e armazéns** ⇒ formam um único serviço `Estoque`.
 - `Identity` e `Reports` não participam dessa invariante; `Reports` é leitura.
 
 ## 4. Síntese

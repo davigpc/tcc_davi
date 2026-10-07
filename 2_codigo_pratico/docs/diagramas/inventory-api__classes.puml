@@ -1,0 +1,59 @@
+@startuml inventory-api__classes
+' Diagrama de classes (UML) do inventory-api, contexto Movements, como exemplo
+' do padrao Portas & Adaptadores. Mostra a inversao de dependencia:
+' o caso de uso depende da porta (interface), e o adaptador de infraestrutura
+' a realiza. Baseado em docs/architecture/*.md.
+
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam linetype ortho
+
+title "inventory-api — Diagrama de classes (contexto Movements)"
+
+interface "IStockMovementRepository" as Port <<porta de saida>> {
+  + save(movement: StockMovement): StockMovement
+  + findById(id: UUID): StockMovement
+  + stockOf(productId: UUID, warehouseId: UUID): number
+}
+
+class "StockMovement" as SM <<entidade>> {
+  - id: UUID
+  - productId: UUID
+  - warehouseId: UUID
+  - type: MovementType
+  - quantity: number
+  - createdAt: Date
+  + calculateStock(items: StockMovement[]): number
+}
+
+enum "MovementType" as MT <<objeto de valor>> {
+  ENTRADA
+  SAIDA
+}
+
+class "CreateMovementUseCase" as UC <<caso de uso>> {
+  - repository: IStockMovementRepository
+  + execute(command: CreateMovementCommand): MovementResult
+}
+
+class "MovementsController" as Ctrl <<controlador>> {
+  + create(request: CreateMovementRequest): ApiResponse
+}
+
+class "StockMovementRepositoryAdapter" as Adapter <<adaptador>> {
+  - prisma: PrismaService
+  + save(movement: StockMovement): StockMovement
+}
+
+class "PrismaService" as Prisma <<infraestrutura>>
+
+Ctrl ..> UC : <<use>>
+UC ..> Port : <<use>>
+UC ..> SM : <<create>>
+SM *-- MT
+Adapter ..|> Port : <<realize>>
+Adapter ..> Prisma : <<use>>
+
+@enduml

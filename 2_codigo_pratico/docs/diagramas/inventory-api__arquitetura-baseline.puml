@@ -1,0 +1,57 @@
+@startuml inventory-api-componentes
+title Inventory API — Arquitetura base (componentes)\nHexagonal + DDD (NestJS, Prisma, PostgreSQL)
+
+skinparam shadowing false
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam ArrowFontSize 14
+skinparam nodesep 20
+skinparam ranksep 25
+
+actor "Cliente HTTP\n(ADMIN / OPERATOR)" as Client
+
+node "Servidor Node.js — NestJS (TypeScript)" as Server {
+
+  package "Movements — exemplo das 4 camadas" <<bounded context>> as Mov {
+
+    package "interface" {
+      component "MovementsController" as Ctrl
+    }
+
+    package "application" {
+      component "CreateMovementUseCase" as UC
+    }
+
+    package "domain" {
+      component "StockMovement\n<<entidade>> + MovementType <<VO>>" as Entity
+      interface "IStockMovementRepository\n<<porta>>" as Port
+    }
+
+    package "infrastructure" {
+      component "StockMovementRepositoryAdapter\n<<adaptador>>" as Adapter
+    }
+  }
+
+  component "shared\n(guardas JWT/Roles, filtros, PrismaService)" as Shared
+  component "Demais contextos\nauth · users · warehouses · products · reports" as Others
+}
+
+database "PostgreSQL 15" as DB
+
+' ----- Fluxo e camadas (exemplo) -----
+Client --> Ctrl : HTTP/JSON (REST), Bearer JWT
+Ctrl --> UC : execute(command)
+UC --> Entity : <<use>>
+UC ..> Port : <<use>> (DI via Symbol)
+
+' ----- Inversão de dependência (porta/adaptador) -----
+Adapter ..|> Port : <<realize>>
+Adapter --> Shared : <<use>>
+
+' ----- Persistência -----
+Others ..> Shared
+Shared --> DB : Prisma Client (transações ACID)
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml inventory-api__arquitetura-hexagonal
+' Visao conceitual (UML formal) da arquitetura hexagonal do inventory-api.
+' Abstrai o padrao Portas & Adaptadores: o nucleo (aplicacao + dominio) expoe
+' uma porta de entrada e requer uma porta de saida; adaptadores ligam o nucleo
+' ao mundo externo. Baseado em docs/architecture/*.md do inventory-api.
+
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam ArrowColor #555555
+skinparam linetype ortho
+
+title "inventory-api — Arquitetura hexagonal (Portas e Adaptadores)"
+
+actor "Cliente HTTP\n(ADMIN / OPERATOR)" as Client
+
+component "Adaptador de entrada\nControlador REST\n(MovementsController)" as In
+component "Nucleo da aplicacao\nCasos de uso + Dominio\n(CreateMovementUseCase · StockMovement)" as Core
+component "Adaptador de saida\nRepositorio Prisma\n(StockMovementRepositoryAdapter)" as Repo
+component "Adaptador de saida\nAutenticacao (JWT / Passport)" as Auth
+
+database "PostgreSQL" as DB
+
+interface "Porta de entrada\n(caso de uso)" as PortIn
+interface "Porta de saida\n(IStockMovementRepository)" as PortOut
+
+Client --> In : HTTP / REST
+In ..> PortIn : <<use>>
+
+Core --( PortIn : expoe
+Core )-- PortOut : requer
+
+Repo ..|> PortOut : <<realize>>
+Repo --> DB : Prisma Client
+Auth --> DB
+
+@enduml

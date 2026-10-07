@@ -58,7 +58,7 @@ Os três repositórios selecionados no cap. 04 (`04_metodologia.tex`) e presente
 | ecommerce | Docker; `.env` local | `docker compose -f docker-compose.dev.yml up --build` | (Mongo local — ver seção 5) | API `http://localhost:3001` (Swagger `/api/docs`) |
 
 ### 2.3 Credenciais/dados de teste
-- **inventory-api:** dados via `npm run seed` (usuários ADMIN e OPERATOR, bodegas e produtos de demonstração).
+- **inventory-api:** dados via `npm run seed` (usuários ADMIN e OPERATOR, armazéns e produtos de demonstração).
 - **auction:** `user1@example.com` / `user2@example.com`, senha `password123` (seed cria 3 card-types e cartas).
 - **ecommerce:** a definir após poda (ver seção 5); registrar no `.env` local.
 
@@ -117,7 +117,7 @@ As listas abaixo são **hipóteses iniciais** de serviços resultantes, a serem 
 | **Subdomínio (DDD)** | *Core:* Movements · *Suporte:* Products, Warehouses · *Genérico:* Identity (auth+users), Reports |
 | **Transações** | `Estoque` (Movements + Products + Warehouses — checagem e escrita atômicas) · Identity · Reports (somente leitura) |
 
-*Fundamento transacional:* a regra "não é possível retirar mais do que há" e o cálculo dinâmico de estoque dependem de consistência imediata entre movimentos, produtos e bodegas.
+*Fundamento transacional:* a regra "não é possível retirar mais do que há" e o cálculo dinâmico de estoque dependem de consistência imediata entre movimentos, produtos e armazéns.
 
 ### 4.2 Auction (alta performance / concorrência)
 

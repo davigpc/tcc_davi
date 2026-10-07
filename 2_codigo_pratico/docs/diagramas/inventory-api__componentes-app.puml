@@ -1,0 +1,49 @@
+@startuml inventory-api__componentes-app
+' Diagrama de componentes (UML) da aplicacao inventory-api como um todo.
+' Monolito modular: 6 contextos delimitados + kernel compartilhado + persistencia.
+' Acoplamentos derivados de metricas (madge): todos os contextos usam shared e o
+' Prisma; unicos cruzamentos entre contextos: users -> auth e reports -> movements.
+
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam ArrowColor #555555
+skinparam linetype ortho
+
+title "inventory-api — Diagrama de componentes (aplicação completa)"
+
+component "API REST\n(/api · JWT + papéis)" as API
+
+component "auth\n(login, tokens)" as Auth
+component "users\n(usuários, papéis)" as Users
+component "warehouses\n(armazéns)" as Warehouses
+component "products\n(catálogo)" as Products
+component "movements\n(entradas e saídas)" as Movements
+component "reports\n(consultas)" as Reports
+
+component "shared\n(guardas, filtros, PrismaService)" as Shared
+database "PostgreSQL" as DB
+
+' ----- Despacho para os contextos -----
+API --> Auth
+API --> Users
+API --> Warehouses
+API --> Products
+API --> Movements
+API --> Reports
+
+' ----- Acoplamentos entre contextos -----
+Users ..> Auth : delega autenticação
+Reports ..> Movements : MovementTypeMapper
+
+' ----- Infraestrutura compartilhada -----
+Auth --> Shared
+Users --> Shared
+Warehouses --> Shared
+Products --> Shared
+Movements --> Shared
+Reports --> Shared
+Shared --> DB : Prisma Client
+
+@enduml
