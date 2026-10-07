@@ -6,7 +6,8 @@
   "description": "Harness de coleta e analise de metricas do TCC (3x3 de decomposicao de monolitos).",
   "scripts": {
     "snapshot": "tsx coleta/run-snapshot.ts",
-    "analise": "tsx analise/gerar.ts"
+    "analise": "tsx analise/gerar.ts",
+    "diagramas": "tsx diagramas/render.ts"
   },
   "dependencies": {
     "autocannon": "^8.0.0",
