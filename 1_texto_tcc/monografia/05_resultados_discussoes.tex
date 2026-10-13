@@ -1,12 +1,42 @@
 \chapter{Desenvolvimento}
 \label{cap:desenvolvimento}
 
+\section{Arquitetura de Referência}
+\label{sec:arquitetura_referencia}
+Nessa seção, é apresentada a arquitetura base das aplicações utilizadas na pesquisa. Com base nisso, avaliam-se os módulos, fronteiras e interações entre as partes de cada sistema, de modo que seja possível identificar os pontos de emprego de cada uma das metodologias sem ferir o funcionamento e o fluxo das aplicações.
+
+A padronização na linguagem TypeScript e na plataforma Node.js/NestJS assegura consistência nas comparações de Linhas de Código (LOC), no empacotamento em contêineres e permite uma comparação justa entre os tempos de inicialização e os perfis de consumo de recursos.
+
+\subsection*{Sistema de Inventário}
+
+O sistema de inventário foi desenvolvido como um monólito modular em NestJS, seguindo os princípios de Arquitetura Hexagonal e \textit{Domain-Driven Design}. A aplicação é organizada em quatro camadas por contexto: interface, aplicação, domínio e infraestrutura. Os seis contextos delimitados são autenticação, usuários, armazéns, produtos, movimentações e relatórios. Cada contexto possui seus próprios controladores REST, casos de uso, entidades e adaptadores de persistência.
+
+O núcleo compartilhado concentra as preocupações da base da aplicação, como autenticação e autorização, tratamento de exceções e acesso a dados. A persistência apoia-se em um único banco relacional, acessado por um mapeador objeto-relacional, e as operações que alteram o estoque exigem garantias transacionais.
+
+A Figura \ref{fig:inventario_arquitetura} demonstra a arquitetura base do sistema.
+
+\begin{figure}[h]
+    \centering
+    \caption{Arquitetura base do sistema de inventário.}
+    \label{fig:inventario_arquitetura}
+    \includegraphics[width=0.7\textwidth]{figuras/inventario__arquitetura.png}
+    \legend{Elaborado pelo autor (2026).}
+\end{figure}
+
+\subsection*{Sistema de Leilões}
+
+O monólito utiliza o ORM TypeORM conectado ao PostgreSQL, auxiliado pelo Redis para controle de filas e processamento de tarefas em segundo plano via BullMQ e transmissão de mensagens em tempo real com Socket.IO. A coexistência de componentes com ciclo de vida assíncrono e de operações transacionais críticas de encerramento de lance e transferência de ativos permite observar a latência sob estresse e a vazão de requisições durante a partição dos serviços.
+
+\subsection*{E-commerce}
+
+Desenvolvida sobre o NestJS com o ODM Mongoose conectado a um banco de dados orientado a documentos (MongoDB), a base de código organiza-se em mais de 20 controladores modulares que cobrem autenticação, produtos, carrinho, pedidos, estoque e avaliações. Sua estrutura permite investigar os impactos da decomposição em modelos orientados a documentos e na gestão de consistência eventual das operações de finalização de compras.
+
 \section{Infraestrutura de Experimentação e Coleta de Métricas}
 \label{sec:infra_experimental}
 
 Para comparar as metodologias de forma precisa, é necessário configurar o ambiente para que os testes sejam feitos em cima das mesmas condições. Nesse sentido, antes de comparar as métricas, foi construída uma infraestrutura de automação, responsável por subir as aplicações, gerar a carga e coletar as métricas. Essa infraestrutura concentra os procedimentos de execução e de coleta em um único conjunto de scripts, de modo que para realizar um novo teste, não é necessário refazer manualmente o processo.
 
-Com base nisso, as medições foram realizadas em um único ambiente fixo: Windows 11, processador AMD Ryzen 7 5700X3D, 32 GB de memória, Docker Engine 29.7.2 e Docker Compose v5.4.0. Manter o ambiente permite comparar tempos de construção e perfis de consumo de recursos entre snapshots. Também, foram adotadas regras de isolamento, como manter os recursos atribuídos ao Docker constantes e encerrar contêineres externos ao experimento antes de cada medição, para não afetar a amostragem de processamento e de memória nem a contagem de componentes.
+Com base nisso, as medições foram realizadas em um ambiente padrão: Windows 11, processador AMD Ryzen 7 5700X3D, 32 GB de memória, Docker Engine 29.7.2 e Docker Compose v5.4.0. Manter o ambiente permite comparar tempos de construção e perfis de consumo de recursos entre snapshots. Também, foram adotadas regras de isolamento, como manter os recursos atribuídos ao Docker constantes e encerrar contêineres externos ao experimento antes de cada medição, para não afetar a amostragem de processamento e de memória nem a contagem de componentes.
 
 A execução de cada aplicação se apoia em contêineres Docker orquestrados por \texttt{docker compose}. Cada aplicação sobe com seus serviços de apoio, como banco de dados e, quando aplicável, cache e proxy reverso. Para que a referência base das aplicações iniciais e decomposições partam do mesmo estado, um script de \emph{seed} determinístico popula o banco com um conjunto equivalente de dados de demonstração. As portas são fixadas por aplicação, conforme uma tabela de portas própria para o experimento, de modo a evitar colisões e preservar a reprodutibilidade.
 
@@ -14,40 +44,27 @@ A coleta cobre oito métricas, distribuídas nas quatro categorias de medição 
 
 Cada métrica é amostrada três vezes, e o conjunto de resultados brutos e processados é armazenado por aplicação, metodologia e snapshot. As tabelas e figuras apresentadas neste capítulo são geradas automaticamente a partir desses arquivos, o que mantém a rastreabilidade entre a medição e os valores apresentados.
 
-\section{Arquitetura de Referência}
-\label{sec:arquitetura_referencia}
-
-Nessa seção, é apresentada a arquitetura base das aplicações utilizadas na pesquisa. Com base nisso, avaliam-se os módulos, fronteiras e interações entre as partes de cada sistema, de modo que seja possível identificar os pontos de emprego de cada uma das metodologias sem ferir o funcionamento e o fluxo das aplicações.
-
-\subsection*{Sistema de Inventário}
-
-\begin{figure}[htb]
-\caption{Diagrama de componentes do sistema de inventário (Snapshot 0).}
-\label{fig:inventario_arquitetura}
-\includegraphics[width=\textwidth]{figuras/inventario__arquitetura.png}
-\legend{Fonte: elaborado pelo autor (2026).}
-\end{figure}
-
-O sistema de inventário é um monólito modular desenvolvido em NestJS (TypeScript), no qual cada contexto delimitado do domínio ocupa um módulo próprio, conforme o ADR-0002. A organização interna segue a arquitetura hexagonal: cada módulo é dividido em quatro camadas --- interface, aplicação, domínio e infraestrutura. A camada de interface expõe os controladores HTTP; a de aplicação orquestra os casos de uso; a de domínio concentra as entidades, os objetos de valor e as portas; e a de infraestrutura implementa essas portas com os adaptadores. As dependências apontam de fora para dentro: a interface conhece a aplicação, que conhece o domínio, enquanto a infraestrutura depende das interfaces de porta definidas pelo domínio. Essa inversão de dependência mantém o domínio isolado dos frameworks e do banco, o que permite extrair um módulo como serviço sem reescrever suas regras.
-
-A Figura \ref{fig:inventario_arquitetura} detalha o módulo \texttt{movements} como representante dessa estrutura. O \texttt{MovementsController} recebe a requisição e aciona o \texttt{CreateMovementUseCase}; o caso de uso opera sobre a entidade \texttt{StockMovement} e o objeto de valor \texttt{MovementType} e depende da porta \texttt{IStockMovementRepository}, não de uma implementação concreta. O \texttt{StockMovementRepositoryAdapter}, na infraestrutura, realiza essa porta e acessa o banco. É nesse módulo que está a regra central do sistema: o estoque é calculado como a soma das entradas menos a das saídas, e a escrita exige transação atômica para impedir retiradas acima do disponível (ADR-0006 e ADR-0008). Os demais contextos --- \texttt{auth}, \texttt{users}, \texttt{warehouses}, \texttt{products} e \texttt{reports} --- seguem a mesma estrutura de quatro camadas e aparecem resumidos no diagrama.
-
-Duas responsabilidades são comuns a todos os módulos e ficam concentradas no núcleo transversal \texttt{shared}: as guardas de autenticação e papéis (\texttt{JwtAuthGuard} e \texttt{RolesGuard}), os filtros e interceptores que padronizam erros e respostas, e o \texttt{PrismaService}, que encapsula o acesso ao banco. A persistência é feita em um único PostgreSQL, acessado por meio do Prisma, com transações atômicas nos casos de escrita. Os contextos dependem desse núcleo, mas não entre si, de modo que as fronteiras lógicas permanecem isoladas.
-
-Na borda, o sistema expõe uma única interface REST sob \texttt{/api}, protegida por token JWT e papéis. O acesso é feito por um cliente HTTP com dois perfis, \texttt{ADMIN} e \texttt{OPERATOR}, que compartilham as mesmas rotas com permissões distintas. Essa arquitetura serve de referência comum às três metodologias, pois os seis contextos e suas quatro camadas formam o ponto de partida idêntico para cada decomposição.
-
-\subsection*{Sistema de Leilões}
-
-\subsection*{E-commerce}
 
 \section{Decomposição por Capacidade de Negócio}
 \label{sec:metodologia_capacidade}
 
 \subsection*{Sistema de Inventário}
 
+Sob a decomposição por capacidade de negócio, os seis módulos foram agrupados pelo que a organização faz de fato. Nesse sentido, o agrupamento resultou em três capacidades, sendo elas a capacidade de Administração/Identidade, Controle de Estoque e Relatórios. A capacidade de Relatórios foi a primeira a ser extraída, por concentrar apenas consultas de leitura e não possuir dependências de entrada, ou seja, nenhum outro módulo a importa. No monólito referência, a análise estática registrou 69 dependências cruzando fronteiras de módulo, de um total de 389, sendo a maior parte delas apontando para o núcleo compartilhado.
+
+A extração seguiu o padrão \textit{Strangler Fig} mediado por NGINX, com roteamento por prefixo de caminho: as requisições para \texttt{/api/reports/} passaram a ser encaminhadas ao novo serviço e as demais permaneceram no monólito. Adotou-se o banco de leitura compartilhado, com o serviço apontando para o mesmo PostgreSQL apenas para leitura. Como dificuldade, o módulo de relatórios dependia do mapeamento de tipos de movimentação (\texttt{MovementTypeMapper}), isto é, o único cruzamento entre domínios no monólito e foi resolvido por uma cópia local do mapeamento, funcionando como camada anticorrupção.
+
+A Tabela \ref{tab:comp_inventory-api_capacidade-negocio_snapshots} apresenta as métricas ao longo dos snapshots e a Tabela \ref{tab:comp_capacidade-negocio_variacoes} consolida a variação acumulada com a média da metodologia.
+
+%\input{tabelas/inventory-api__capacidade-negocio__snapshots.tex}
+
+%\input{tabelas/capacidade-negocio__variacoes.tex}
+
 \subsection*{Sistema de Leilões}
 
+
 \subsection*{E-commerce}
+
 
 \section{Decomposição por Subdomínio (DDD)}
 \label{sec:metodologia_subdominio}
@@ -69,6 +86,9 @@ Na borda, o sistema expõe uma única interface REST sob \texttt{/api}, protegid
 
 \section{Comparação entre as Metodologias}
 \label{sec:comparacao_metodologias}
+
+
+%\input{tabelas/_metodologias.tex}
 
 \section{Síntese do Capítulo}
 \label{sec:sintese_capitulo}
