@@ -1,0 +1,21 @@
+{
+  "services": [
+    "estoque_db",
+    "estoque",
+    "reports",
+    "identity_db",
+    "identity",
+    "nginx"
+  ],
+  "serviceCount": 6,
+  "runningContainers": [
+    "inventory_final_nginx",
+    "inventory_final_reports",
+    "inventory_final_estoque",
+    "inventory_final_identity",
+    "inventory_final_estoque_db",
+    "inventory_final_identity_db"
+  ],
+  "containerCount": 6,
+  "imageCount": 5
+}

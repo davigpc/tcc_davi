@@ -3,24 +3,24 @@
   \centering
   \caption{Inventário — métricas por snapshot (Capacidade de Negócio).}
   \label{tab:comp_inventory-api_capacidade-negocio_snapshots}
-  \begin{tabular}{lrr}
+  \begin{tabular}{lrrrr}
     \hline
-    \textbf{Métrica} & \textbf{S0} & \textbf{S1} \\
+    \textbf{Métrica} & \textbf{S0} & \textbf{S1} & \textbf{S2} & \textbf{Final} \\
     \hline
-    \multicolumn{3}{l}{\textit{Agilidade}} \\
-    Tempo de construção (ms) & 46.746 & 116.353 \\
-    Tempo de inicialização (ms) & 9.155 & 10.594 \\
-    \multicolumn{3}{l}{\textit{Custo}} \\
-    CPU total (repouso / carga, \%) & 2,22 / 241 & 2,78 / 242,65 \\
-    RAM total (repouso / carga, MB) & 86,28 / 188,47 & 149,36 / 306,32 \\
-    Imagens da aplicação (MB) & 151,6 & 363,3 \\
-    Componentes / contêineres & 2 / 2 & 4 / 4 \\
-    \multicolumn{3}{l}{\textit{Desempenho}} \\
-    Vazão (média das rotas, req/s) & 355,3 & 227,4 \\
-    Latência p50 (média das rotas, ms) & 62,6 & 92,7 \\
-    \multicolumn{3}{l}{\textit{Manutenibilidade}} \\
-    Linhas de Código & 8.783 & 9.165 \\
-    Chamadas entre fronteiras & 69 de 389 & 73 de 402 \\
+    \multicolumn{5}{l}{\textit{Agilidade}} \\
+    Tempo de construção (ms) & 46.746 & 116.353 & 108.405 & 138.371 \\
+    Tempo de inicialização (ms) & 9.155 & 10.594 & 13.166 & 12.051 \\
+    \multicolumn{5}{l}{\textit{Custo}} \\
+    CPU total (repouso / carga, \%) & 2,22 / 241 & 2,78 / 242,65 & 6,24 / 255,44 & 6,6 / 405,78 \\
+    RAM total (repouso / carga, MB) & 86,28 / 188,47 & 149,36 / 306,32 & 186,85 / 352,72 & 203,6 / 445,1 \\
+    Imagens da aplicação (MB) & 151,6 & 363,3 & 551,1 & 586,2 \\
+    Componentes / contêineres & 2 / 2 & 4 / 4 & 5 / 5 & 6 / 6 \\
+    \multicolumn{5}{l}{\textit{Desempenho}} \\
+    Vazão (média das rotas, req/s) & 355,3 & 227,4 & 266,3 & 360,1 \\
+    Latência p50 (média das rotas, ms) & 62,6 & 92,7 & 77,9 & 55,2 \\
+    \multicolumn{5}{l}{\textit{Manutenibilidade}} \\
+    Linhas de Código & 8.783 & 9.165 & 9.796 & 9.599 \\
+    Chamadas entre fronteiras & 69 de 389 & 73 de 402 & 78 de 414 & 78 de 416 \\
     \hline
   \end{tabular}
   \legend{Fonte: medição automatizada do experimento (média de três execuções).}

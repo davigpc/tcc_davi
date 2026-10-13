@@ -24,7 +24,9 @@ export interface AppConfig {
   baseUrl: string;
   readinessPath: string;
   credentials: { email: string; password: string };
-  seed: { service: string; command: string[] };
+  seed:
+    | { service: string; command: string[] }
+    | Array<{ service: string; command: string[] }>;
   containers: string[];
   images: string[];
   sourceDir?: string;
@@ -83,10 +85,13 @@ export async function collectStartupTime(cfg: AppConfig): Promise<{ reps: number
 
 // ---------- 3. Seed ----------
 export async function seedDatabase(cfg: AppConfig): Promise<void> {
-  const r = await compose(cfg, ['run', '--rm', cfg.seed.service, ...cfg.seed.command], {
-    timeoutMs: 180000,
-  });
-  if (r.code !== 0) throw new Error(`seed failed:\n${r.stderr || r.stdout}`);
+  const seeds = Array.isArray(cfg.seed) ? cfg.seed : [cfg.seed];
+  for (const s of seeds) {
+    const r = await compose(cfg, ['run', '--rm', s.service, ...s.command], {
+      timeoutMs: 180000,
+    });
+    if (r.code !== 0) throw new Error(`seed failed (${s.service}):\n${r.stderr || r.stdout}`);
+  }
 }
 
 // ---------- 4. Docker stats ----------
