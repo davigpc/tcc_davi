@@ -412,3 +412,41 @@ de "introduzir o proxy" — a ser discutido no cap. 05.
 **Commits (repo pai, branch `exp/inventory-api/capacidade-negocio`):**
 `bf38fbf` (serviço), `a80243e` (gateway/compose), `e722a6a` (harness), `5ffe2ec`
 (coleta/registro).
+
+### Trilha 1/9 — inventory-api × Capacidade de Negócio (snapshot-2)
+
+**Extraído:** capacidade **Administração/Identidade** (`auth` + `users`) →
+`services/inventory-api/identity/`. O monólito removeu `auth`/`users`, mantendo
+apenas os guardas de JWT locais (autenticação *stateless*).
+Gateway `infra/gateway/nginx-capacidade-s2.conf`; compose
+`infra/compose/inventory-api-capacidade-negocio-s2.yml`. Persistência ainda
+**compartilhada**. Registro: `docs/extracao/...__s2.md`.
+Tag `snap/inventory-api/capacidade-negocio/2`.
+
+**Principais resultados (1 → 2):** build 116,4 s → 108,4 s (estável);
+startup 10,6 s → 13,2 s; componentes 4 → 5; LOC 9.165 → 9.796; cross-domain
+73/402 → 78/414. Vazão **subiu** em todas as rotas (products 311,6 → 379,4 req/s),
+contrariando a hipótese (variância + remoção dos guardas do processo do monólito).
+
+### Trilha 1/9 — inventory-api × Capacidade de Negócio (snapshot-final)
+
+**Extraído:** capacidade **Controle de Estoque** (`warehouses` + `products` +
+`movements`) → `services/inventory-api/estoque/`. O monólito é **desativado**.
+**Persistência isolada** (banco por serviço: `inventory_identity`,
+`inventory_estoque`) e comunicação interserviços por **HTTP** (camada
+anticorrupção): Identidade↔Estoque validam-se mutuamente; Relatórios lê o
+Estoque. Compose `infra/compose/inventory-api-capacidade-negocio-final.yml`
+(2 PostgreSQL + 3 serviços + NGINX); gateway `nginx-capacidade-final.conf`.
+Registro: `docs/extracao/...__final.md`. Tag `snap/inventory-api/capacidade-negocio/final`.
+
+**Principais resultados (2 → final):** build 108,4 s → 138,4 s; startup 13,2 s →
+12,1 s; componentes/containers 5 → 6; LOC 9.796 → 9.599; cross-domain 78/414 →
+78/416; CPU sob carga 255 % → 406 %; RAM sob carga 353 → 445 MB. Vazão subiu em
+todas as rotas (reports/stock 165 → 347 req/s). 
+
+**Status:** trilha 1/9 **concluída** (s0 → s1 → s2 → final). Próximo passo:
+iniciar a trilha seguinte (ex.: `auction` ou `inventory-api` × Subdomínio).
+
+**Ambiente:** o `npm run` no PowerShell engole os `--`; usar
+`npx tsx coleta/run-snapshot.ts --app ... --metodologia ... --config ... --snapshot ...`.
+

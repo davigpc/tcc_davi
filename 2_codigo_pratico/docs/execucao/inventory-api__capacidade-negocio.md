@@ -127,8 +127,48 @@ por ser somente leitura (CQRS parcial) e não possuir dependências reversas.
 - Paridade confirmada: login/users (Identidade), products/movements (monólito) e
   reports (serviço) respondem como no baseline.
 
-### snapshot-final (decomposição concluída)
-- A definir.
+### snapshot-final (decomposição concluída — Controle de Estoque + persistência isolada)
+- Pasta: `metricas/inventory-api/capacidade-negocio/snapshot-final/`
+- Tag: `snap/inventory-api/capacidade-negocio/final`
+- Pré-registro: `docs/extracao/inventory-api__capacidade-negocio__final.plan.md`
+- Registro: `docs/extracao/inventory-api__capacidade-negocio__final.md`
+- Serviço extraído: `services/inventory-api/estoque/`; o monólito é **desativado**.
+- **Persistência isolada**: banco por serviço (`inventory_identity`,
+  `inventory_estoque`); Relatórios sem banco. Acessos cruzados por HTTP
+  (anticorrupção); `stock_movements.user_email` denormalizado.
+- Compose final: `infra/compose/inventory-api-capacidade-negocio-final.yml`
+  (2 PostgreSQL + Identidade + Estoque + Relatórios + NGINX);
+  gateway `infra/gateway/nginx-capacidade-final.conf`.
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | snapshot-2 | snapshot-final |
+|---|---|---|---|
+| Agilidade | build (`--no-cache`) | 108.405 ms | 138.371 ms |
+| Agilidade | inicialização | 13.166 ms | 12.051 ms |
+| Custo | CPU total (repouso / carga) | 6,24 % / 255,4 % | 6,6 % / 405,8 % |
+| Custo | RAM total (repouso / carga) | 186,9 / 352,7 MB | 203,6 / 445,1 MB |
+| Custo | componentes / containers | 5 / 5 | 6 / 6 |
+| Desempenho | `products` | 379,4 req/s | 469,8 req/s |
+| Desempenho | `reports/movements` | 301,0 req/s | 328,7 req/s |
+| Desempenho | `reports/stock` | 165,2 req/s | 347,4 req/s |
+| Desempenho | `movements` | 219,4 req/s | 294,4 req/s |
+| Manutenibilidade | LOC (só serviços) | 9.796 | 9.599 |
+| Manutenibilidade | cross-domain | 78 / 414 | 78 / 416 |
+
+**Observações:**
+- Persistência isolada custou recursos (2 bancos dedicados, +1 serviço): RAM/CPU
+  sob carga subiram.
+- A vazão **subiu** em todas as rotas (contrariando a hipótese de cascata HTTP):
+  Relatórios agrega em memória sem conexão de banco; ressalva de variância.
+- Cross-domain estático ficou ~igual; o acoplamento de rede (HTTP) não é medido
+  pelo `madge`.
+- Paridade confirmada (login/users, products/movements, reports/stock/alerts/movements,
+  incl. validações cruzadas via HTTP).
+
+**Status da trilha:** `inventory-api` × Capacidade de Negócio **concluída**
+(s0 → s1 → s2 → final).
+
 
 
 ## Desvios e dificuldades
