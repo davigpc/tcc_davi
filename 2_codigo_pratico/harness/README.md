@@ -55,6 +55,6 @@ Opções: `--skip-build`, `--build-reps N`, `--load-reps N`, `--startup-reps N`.
 ## Controles de validade
 
 - Seed determinístico (reset da massa de dados) antes de cada medição de escrita.
-- Parâmetros de carga fixos (conexões, duração, pipelining) e N repetições com mediana.
+- Parâmetros de carga fixos (conexões, duração, pipelining) e N repetições com média (e faixa min–máx).
 - Mesmo host e limites de Docker fixos entre snapshots.
 - `manifest.json` grava proveniência completa por execução.

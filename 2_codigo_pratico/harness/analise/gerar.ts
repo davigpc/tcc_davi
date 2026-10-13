@@ -1,6 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import { readJson, writeJson, writeText, ensureDir, median, mean, round } from '../lib/util.js';
+import { readJson, writeJson, writeText, ensureDir, mean, round } from '../lib/util.js';
 import { barChart, scatterChart, heatmap } from './charts.js';
 
 interface StatsSample {
@@ -12,16 +12,16 @@ interface StatsSample {
 
 interface LoadStats {
   route: string;
-  rpsMedian: number;
+  rpsMean: number;
   rpsMin: number;
   rpsMax: number;
-  p50Median: number;
+  p50Mean: number;
   p50Min: number;
   p50Max: number;
-  p90Median: number;
+  p90Mean: number;
   p90Min: number;
   p90Max: number;
-  p99Median: number;
+  p99Mean: number;
   p99Min: number;
   p99Max: number;
   non2xxTotal: number;
@@ -84,16 +84,16 @@ function loadStats(outBase: string, name: string): LoadStats {
   }>(path.join(outBase, 'raw', `autocannon-${name}.json`));
   return {
     route: s.route,
-    rpsMedian: round(median(s.requestsPerSec)),
+    rpsMean: round(mean(s.requestsPerSec)),
     rpsMin: round(Math.min(...s.requestsPerSec, Infinity)),
     rpsMax: round(Math.max(...s.requestsPerSec, 0)),
-    p50Median: round(median(s.latencyP50)),
+    p50Mean: round(mean(s.latencyP50)),
     p50Min: round(Math.min(...s.latencyP50, Infinity)),
     p50Max: round(Math.max(...s.latencyP50, 0)),
-    p90Median: round(median(s.latencyP90)),
+    p90Mean: round(mean(s.latencyP90)),
     p90Min: round(Math.min(...s.latencyP90, Infinity)),
     p90Max: round(Math.max(...s.latencyP90, 0)),
-    p99Median: round(median(s.latencyP99)),
+    p99Mean: round(mean(s.latencyP99)),
     p99Min: round(Math.min(...s.latencyP99, Infinity)),
     p99Max: round(Math.max(...s.latencyP99, 0)),
     non2xxTotal: s.non2xx.reduce((a, b) => a + b, 0),
@@ -110,8 +110,8 @@ export interface Summary {
   snapshot: string;
   tag: string | null;
   timestampUtc: string;
-  buildTime: { medianMs: number; runsMs: number[] };
-  startupTime: { medianMs: number; runsMs: number[] };
+  buildTime: { meanMs: number; runsMs: number[] };
+  startupTime: { meanMs: number; runsMs: number[] };
   custo: { idle: CostStats[]; load: CostStats[]; imagensMB: Record<string, number> };
   desempenho: { leitura: LoadStats[]; escrita: LoadStats[] };
   manutenibilidade: {
@@ -158,8 +158,8 @@ export function generate(outBase: string): Summary {
     snapshot: String(manifest.snapshot),
     tag: (manifest.tag as string) ?? null,
     timestampUtc: String(manifest.timestampUtc),
-    buildTime: { medianMs: median(build.runsMs), runsMs: build.runsMs },
-    startupTime: { medianMs: median(startup.runsMs), runsMs: startup.runsMs },
+    buildTime: { meanMs: round(mean(build.runsMs), 0), runsMs: build.runsMs },
+    startupTime: { meanMs: round(mean(startup.runsMs), 0), runsMs: startup.runsMs },
     custo: {
       idle: containers.map((c) => aggregateStats(idle, c)),
       load: containers.map((c) => aggregateStats(load, c)),
@@ -197,7 +197,7 @@ function writeFigures(outBase: string, s: Summary): void {
     barChart({
       title: `Vazao por rota — ${s.snapshot}`,
       categories: labels,
-      series: [{ name: 'req/s', values: routes.map((r) => r.rpsMedian) }],
+      series: [{ name: 'req/s', values: routes.map((r) => r.rpsMean) }],
       horizontal: true,
       valueUnit: 'req/s',
     }),
@@ -209,9 +209,9 @@ function writeFigures(outBase: string, s: Summary): void {
       title: `Latencia por rota — ${s.snapshot}`,
       categories: labels,
       series: [
-        { name: 'p50', values: routes.map((r) => r.p50Median), errors: { min: routes.map((r) => r.p50Min), max: routes.map((r) => r.p50Max) } },
-        { name: 'p90', values: routes.map((r) => r.p90Median), errors: { min: routes.map((r) => r.p90Min), max: routes.map((r) => r.p90Max) } },
-        { name: 'p99', values: routes.map((r) => r.p99Median), errors: { min: routes.map((r) => r.p99Min), max: routes.map((r) => r.p99Max) } },
+        { name: 'p50', values: routes.map((r) => r.p50Mean), errors: { min: routes.map((r) => r.p50Min), max: routes.map((r) => r.p50Max) } },
+        { name: 'p90', values: routes.map((r) => r.p90Mean), errors: { min: routes.map((r) => r.p90Min), max: routes.map((r) => r.p90Max) } },
+        { name: 'p99', values: routes.map((r) => r.p99Mean), errors: { min: routes.map((r) => r.p99Min), max: routes.map((r) => r.p99Max) } },
       ],
       valueUnit: 'ms',
     }),
@@ -291,7 +291,7 @@ function writeFigures(outBase: string, s: Summary): void {
     'vazao-latencia-dispersao.svg',
     scatterChart({
       title: `Vazao x latencia — ${s.snapshot}`,
-      points: routes.map((r) => ({ x: r.p50Median, y: r.rpsMedian, label: r.route })),
+      points: routes.map((r) => ({ x: r.p50Mean, y: r.rpsMean, label: r.route })),
       xLabel: 'Latencia p50 (ms)',
       yLabel: 'Vazao (req/s)',
     }),
@@ -322,16 +322,18 @@ function texTable(s: Summary): string {
     rows.push(`    ${texEsc(dim)} & ${texEsc(met)} & ${texEsc(val)} \\\\`);
   };
 
-  add('Agilidade', 'Tempo de build (mediana)', `${s.buildTime.medianMs} ms`);
-  add('Agilidade', 'Tempo de inicializacao (mediana)', `${s.startupTime.medianMs} ms`);
-  for (const c of s.custo.idle) {
-    add('Custo', `CPU repouso ${c.container}`, `${c.cpuAvgPerc} %`);
-    add('Custo', `RAM repouso ${c.container}`, `${c.memAvgMB} MB`);
-  }
+  add('Agilidade', 'Tempo de build (media)', `${s.buildTime.meanMs} ms`);
+  add('Agilidade', 'Tempo de inicializacao (media)', `${s.startupTime.meanMs} ms`);
+  const totalCpuIdle = round(s.custo.idle.reduce((a, c) => a + c.cpuAvgPerc, 0));
+  const totalCpuLoad = round(s.custo.load.reduce((a, c) => a + c.cpuAvgPerc, 0));
+  const totalMemIdle = round(s.custo.idle.reduce((a, c) => a + c.memAvgMB, 0));
+  const totalMemLoad = round(s.custo.load.reduce((a, c) => a + c.memAvgMB, 0));
+  add('Custo', 'CPU total (repouso / carga)', `${totalCpuIdle} % / ${totalCpuLoad} %`);
+  add('Custo', 'RAM total (repouso / carga)', `${totalMemIdle} MB / ${totalMemLoad} MB`);
   for (const [img, mb] of Object.entries(s.custo.imagensMB)) add('Custo', `Imagem ${img}`, `${mb} MB`);
   for (const x of [...s.desempenho.leitura, ...s.desempenho.escrita]) {
-    add('Desempenho', `Vazao ${x.route}`, `${x.rpsMedian} req/s`);
-    add('Desempenho', `Latencia p50/p90/p99 ${x.route}`, `${x.p50Median} / ${x.p90Median} / ${x.p99Median} ms`);
+    add('Desempenho', `Vazao ${x.route}`, `${x.rpsMean} req/s`);
+    add('Desempenho', `Latencia p50/p90/p99 ${x.route}`, `${x.p50Mean} / ${x.p90Mean} / ${x.p99Mean} ms`);
   }
   add('Manutenibilidade', 'LOC total', `${s.manutenibilidade.locTotal}`);
   add('Manutenibilidade', 'Servicos/containers', `${s.manutenibilidade.servicos} / ${s.manutenibilidade.containers}`);
@@ -360,18 +362,18 @@ function markdown(s: Summary): string {
     '',
     `- Tag: ${s.tag ?? '(sem tag)'}`,
     `- Coletado em: ${s.timestampUtc}`,
-    `- Build (mediana): ${s.buildTime.medianMs} ms`,
-    `- Inicializacao (mediana): ${s.startupTime.medianMs} ms`,
+    `- Build (media): ${s.buildTime.meanMs} ms`,
+    `- Inicializacao (media): ${s.startupTime.meanMs} ms`,
     `- LOC total: ${s.manutenibilidade.locTotal}`,
     `- Chamadas entre fronteiras: ${s.manutenibilidade.crossDomainEdges} de ${s.manutenibilidade.totalEdges}`,
     `- Servicos/containers: ${s.manutenibilidade.servicos} / ${s.manutenibilidade.containers}`,
     '',
-    '## Desempenho (mediana; min-max entre parenteses)',
+    '## Desempenho (media; min-max entre parenteses)',
     '| Rota | req/s | p50 | p90 | p99 | non2xx |',
     '|---|---|---|---|---|---|',
     ...[...s.desempenho.leitura, ...s.desempenho.escrita].map(
       (x) =>
-        `| ${x.route} | ${x.rpsMedian} (${x.rpsMin}-${x.rpsMax}) | ${x.p50Median} | ${x.p90Median} | ${x.p99Median} | ${x.non2xxTotal} |`,
+        `| ${x.route} | ${x.rpsMean} (${x.rpsMin}-${x.rpsMax}) | ${x.p50Mean} | ${x.p90Mean} | ${x.p99Mean} | ${x.non2xxTotal} |`,
     ),
     '',
   ];

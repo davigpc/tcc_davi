@@ -7,6 +7,7 @@
   "scripts": {
     "snapshot": "tsx coleta/run-snapshot.ts",
     "analise": "tsx analise/gerar.ts",
+    "comparar": "tsx analise/comparar.ts",
     "diagramas": "tsx diagramas/render.ts"
   },
   "dependencies": {
