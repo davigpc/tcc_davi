@@ -52,26 +52,27 @@ exp(inventory/capacidade/s1): registro de extracao
 
 | Métrica | snapshot-0 | snapshot-1 | Variação |
 |---|---|---|---|
-| Build (mediana, `--no-cache`) | 42.549 ms | 121.285 ms | +185 % |
-| Inicialização (mediana) | 8.841 ms | 10.631 ms | +20 % |
+| Build (média, `--no-cache`) | 46.746 ms | 116.353 ms | +149 % |
+| Inicialização (média) | 9.155 ms | 10.594 ms | +16 % |
 | LOC (TypeScript) | 8.783 | 9.165 | +382 |
 | Componentes / containers | 2 / 2 | 4 / 4 | +2 |
 | Chamadas entre fronteiras | 69 de 389 | 73 de 402 | +4 |
-| `products` (vazão) | 562,8 req/s | 323,9 req/s | −42 % |
-| `reports/movements` (vazão) | 360,4 req/s | 256,6 req/s | −29 % |
-| `reports/stock` (vazão) | 202,3 req/s | 131,3 req/s | −35 % |
-| `movements` (vazão) | 309,9 req/s | 223,4 req/s | −28 % |
-| Latência p50 (faixa) | 34–97 ms | 60–145 ms | ≈ +1,7× |
+| `products` (vazão) | 557,2 req/s | 311,6 req/s | −44 % |
+| `reports/movements` (vazão) | 350,8 req/s | 245,6 req/s | −30 % |
+| `reports/stock` (vazão) | 201,3 req/s | 138,0 req/s | −31 % |
+| `movements` (vazão) | 311,9 req/s | 214,5 req/s | −31 % |
+| Latência p50 (faixa) | 34,7–97,7 ms | 61,7–141,0 ms | ≈ +1,5× |
 
 ## Previsto × realizado
 
-- **Agilidade:** previsto "subir um pouco" no build/startup. O startup subiu ~20 %
-  (confirmado), mas o **build triplicou** (+185 %), acima do previsto: além de
-  compilar mais um serviço, o build sem cache baixa dependências de cada imagem.
+- **Agilidade:** previsto "subir um pouco" no build/startup. O startup subiu ~16 %
+  (confirmado), mas o **build apresentou aumento significativo** (+149 %), acima do
+  previsto: além de compilar mais um serviço, o build sem cache baixa dependências
+  de cada imagem.
 - **Custo/Infra:** previsto "um contêiner com CPU/RAM baixos". Confirmado em
   natureza (novo serviço leve), mas o número de **componentes dobrou** (2→4).
 - **Desempenho:** previsto "melhorar levemente ou ficar estável". **Não se
-  confirmou:** houve queda em **todas** as rotas (~28–42 %). Fatores prováveis:
+  confirmou:** houve queda em **todas** as rotas (~30–44 %). Fatores prováveis:
   (a) toda requisição passa por um salto extra pelo NGINX; (b) mais contêineres
   concorrendo pelos mesmos recursos da máquina; (c) o serviço de relatórios tem
   seu próprio cliente Prisma, somando pressão ao banco.

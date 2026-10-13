@@ -22,20 +22,20 @@ por ser somente leitura (CQRS parcial) e não possuir dependências reversas.
 - Tag: `snap/inventory-api/capacidade-negocio/0`
 - Manifest: commit pai `5cf2664`, submódulo `338b0d7`, Docker 29.7.2, Node v22.17.1.
 
-**Resultados (mediana de 3 repetições):**
+**Resultados (média de 3 repetições):**
 
 | Dimensão | Métrica | Valor |
 |---|---|---|
-| Agilidade | Tempo de build (`--no-cache`) | 42.549 ms (≈ 42,5 s) |
-| Agilidade | Tempo de inicialização | 8.779 ms (≈ 8,8 s) |
-| Custo | CPU/RAM repouso `inventory_app` | 1,01 % / 50,5 MB |
-| Custo | CPU/RAM repouso `inventory_db` | 1,13 % / 33,3 MB |
+| Agilidade | Tempo de build (`--no-cache`) | 46.746 ms (≈ 46,7 s) |
+| Agilidade | Tempo de inicialização | 9.155 ms (≈ 9,2 s) |
+| Custo | CPU total (repouso / carga) | 2,22 % / 241,0 % |
+| Custo | RAM total (repouso / carga) | 86,3 MB / 188,5 MB |
 | Custo | Imagem `inventory-api-app` | 151,6 MB |
 | Custo | Imagem `postgres:15-alpine` | 109,9 MB |
-| Desempenho | `GET products` | 554,9 req/s · p50/p90/p99 35/38/43 ms |
-| Desempenho | `GET reports/movements` | 357,8 req/s · 54/60/104 ms |
-| Desempenho | `GET reports/stock/:id` | 202,5 req/s · 98/101/112 ms |
-| Desempenho | `POST movements` | 331,6 req/s · 59/65/75 ms |
+| Desempenho | `GET products` | 557,2 req/s · p50/p90/p99 34,7/38,7/45 ms |
+| Desempenho | `GET reports/movements` | 350,8 req/s · 55/61/105,3 ms |
+| Desempenho | `GET reports/stock/:id` | 201,3 req/s · 97,7/103,3/114 ms |
+| Desempenho | `POST movements` | 311,9 req/s · 63/72,3/89 ms |
 | Manutenibilidade | LOC (TypeScript) | 8.783 linhas |
 | Manutenibilidade | Componentes / containers | 2 serviços / 2 containers |
 | Manutenibilidade | Chamadas entre fronteiras | 69 de 389 (17,7 %) |
@@ -67,24 +67,25 @@ por ser somente leitura (CQRS parcial) e não possuir dependências reversas.
 - Serviço extraído: `services/inventory-api/reports/`; gateway `infra/gateway/nginx.conf`;
   compose `infra/compose/inventory-api-capacidade-negocio-s1.yml`.
 
-**Resultados (mediana de 3 repetições):**
+**Resultados (média de 3 repetições):**
 
 | Dimensão | Métrica | snapshot-0 | snapshot-1 |
 |---|---|---|---|
-| Agilidade | build (`--no-cache`) | 42.549 ms | 121.285 ms |
-| Agilidade | inicialização | 8.841 ms | 10.631 ms |
-| Custo | CPU/RAM repouso (total) | ~2,1 % / ~84 MB | (4 contêineres) |
+| Agilidade | build (`--no-cache`) | 46.746 ms | 116.353 ms |
+| Agilidade | inicialização | 9.155 ms | 10.594 ms |
+| Custo | CPU total (repouso / carga) | 2,22 % / 241,0 % | 2,78 % / 242,7 % |
+| Custo | RAM total (repouso / carga) | 86,3 MB / 188,5 MB | 149,4 MB / 306,3 MB |
 | Custo | componentes / containers | 2 / 2 | 4 / 4 |
-| Desempenho | `products` | 562,8 req/s | 323,9 req/s |
-| Desempenho | `reports/movements` | 360,4 req/s | 256,6 req/s |
-| Desempenho | `reports/stock` | 202,3 req/s | 131,3 req/s |
-| Desempenho | `movements` | 309,9 req/s | 223,4 req/s |
+| Desempenho | `products` | 557,2 req/s | 311,6 req/s |
+| Desempenho | `reports/movements` | 350,8 req/s | 245,6 req/s |
+| Desempenho | `reports/stock` | 201,3 req/s | 138,0 req/s |
+| Desempenho | `movements` | 311,9 req/s | 214,5 req/s |
 | Manutenibilidade | LOC | 8.783 | 9.165 |
 | Manutenibilidade | cross-domain | 69 / 389 | 73 / 402 |
 
 **Observações:**
-- Build triplicou (mais uma imagem + dependências sem cache); startup +20 %.
-- Vazão caiu em todas as rotas (~28–42 %): salto extra pelo NGINX + concorrência
+- Build com aumento significativo (mais uma imagem + dependências sem cache); startup +16 %.
+- Vazão caiu em todas as rotas (~30–44 %): salto extra pelo NGINX + concorrência
   de mais contêineres na mesma máquina.
 - LOC subiu por duplicação de código transversal (`shared`/`auth`/`database`);
   cross-domain não caiu (o serviço recria arestas entre fronteiras).
