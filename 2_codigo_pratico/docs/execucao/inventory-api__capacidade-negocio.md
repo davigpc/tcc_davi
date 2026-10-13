@@ -92,11 +92,44 @@ por ser somente leitura (CQRS parcial) e não possuir dependências reversas.
 - Paridade funcional confirmada por smoke test: `products` (monólito) e as três
   rotas de `reports` (serviço) respondem com os mesmos dados do baseline.
 
-### snapshot-2 (segunda extração)
-- A definir.
+### snapshot-2 (segunda extração — Administração/Identidade)
+- Pasta: `metricas/inventory-api/capacidade-negocio/snapshot-2/`
+- Tag: `snap/inventory-api/capacidade-negocio/2`
+- Pré-registro: `docs/extracao/inventory-api__capacidade-negocio__s2.plan.md`
+- Registro: `docs/extracao/inventory-api__capacidade-negocio__s2.md`
+- Serviço extraído: `services/inventory-api/identity/` (auth + users); gateway
+  `infra/gateway/nginx-capacidade-s2.conf`; compose
+  `infra/compose/inventory-api-capacidade-negocio-s2.yml`.
+- O monólito removeu `auth`/`users`, mantendo apenas os guardas de JWT locais
+  (autenticação *stateless*).
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | snapshot-1 | snapshot-2 |
+|---|---|---|---|
+| Agilidade | build (`--no-cache`) | 116.353 ms | 108.405 ms |
+| Agilidade | inicialização | 10.594 ms | 13.166 ms |
+| Custo | CPU total (repouso / carga) | 2,78 % / 242,7 % | 6,24 % / 255,4 % |
+| Custo | RAM total (repouso / carga) | 149,4 / 306,3 MB | 186,9 / 352,7 MB |
+| Custo | componentes / containers | 4 / 4 | 5 / 5 |
+| Desempenho | `products` | 311,6 req/s | 379,4 req/s |
+| Desempenho | `reports/movements` | 245,6 req/s | 301,0 req/s |
+| Desempenho | `reports/stock` | 138,0 req/s | 165,2 req/s |
+| Desempenho | `movements` | 214,5 req/s | 219,4 req/s |
+| Manutenibilidade | LOC | 9.165 | 9.796 |
+| Manutenibilidade | cross-domain | 73 / 402 | 78 / 414 |
+
+**Observações:**
+- Startup subiu (+24 %); build estável (dentro da variância do `--no-cache`).
+- Vazão **aumentou** em todas as rotas (contrariando a hipótese): a extração da
+  Identidade retirou do processo do monólito os guardas/JWT.
+- LOC e cross-domain subiram por duplicação de `shared`/`database`/guardas.
+- Paridade confirmada: login/users (Identidade), products/movements (monólito) e
+  reports (serviço) respondem como no baseline.
 
 ### snapshot-final (decomposição concluída)
 - A definir.
+
 
 ## Desvios e dificuldades
 - Ajustes no harness durante a primeira medição: (a) o `madge` devolve caminhos
