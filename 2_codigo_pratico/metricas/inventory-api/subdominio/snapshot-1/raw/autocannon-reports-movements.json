@@ -1,0 +1,45 @@
+{
+  "route": "reports-movements",
+  "method": "GET",
+  "runs": 3,
+  "requestsPerSec": [
+    254.6,
+    273.4,
+    276.61
+  ],
+  "throughputBytesPerSec": [
+    703232,
+    755097.6,
+    764006.4
+  ],
+  "latencyP50": [
+    75,
+    70,
+    68
+  ],
+  "latencyP90": [
+    85,
+    77,
+    78
+  ],
+  "latencyP99": [
+    148,
+    138,
+    136
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    0,
+    0,
+    0
+  ],
+  "totalRequests": [
+    2546,
+    2734,
+    2766
+  ]
+}

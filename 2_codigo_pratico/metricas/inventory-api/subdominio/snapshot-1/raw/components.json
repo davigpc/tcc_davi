@@ -1,0 +1,19 @@
+{
+  "services": [
+    "db",
+    "identity",
+    "monolith",
+    "reports",
+    "nginx"
+  ],
+  "serviceCount": 5,
+  "runningContainers": [
+    "inventory_sub_s1_nginx",
+    "inventory_sub_s1_monolith",
+    "inventory_sub_s1_reports",
+    "inventory_sub_s1_identity",
+    "inventory_sub_s1_db"
+  ],
+  "containerCount": 5,
+  "imageCount": 4
+}

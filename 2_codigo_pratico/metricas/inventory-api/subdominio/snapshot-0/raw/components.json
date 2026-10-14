@@ -1,0 +1,13 @@
+{
+  "services": [
+    "db",
+    "app"
+  ],
+  "serviceCount": 2,
+  "runningContainers": [
+    "inventory_app",
+    "inventory_db"
+  ],
+  "containerCount": 2,
+  "imageCount": 2
+}

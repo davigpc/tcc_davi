@@ -1,0 +1,98 @@
+[
+  {
+    "ts": "2026-10-14T23:18:12.990Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.04%",
+    "Container": "3ebbf9344b952595cc12af5e27869482a0f8570d27804d2c29bda5f0c6517ca5",
+    "ID": "3ebbf9344b95",
+    "MemPerc": "0.44%",
+    "MemUsage": "69.8MiB / 15.58GiB",
+    "Name": "inventory_app",
+    "NetIO": "36.6kB / 36.3kB",
+    "PIDs": "31"
+  },
+  {
+    "ts": "2026-10-14T23:18:12.990Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.01%",
+    "Container": "6ca891d200c99823fd552de0cc3e184ce861b844b69072691a31e914043c645b",
+    "ID": "6ca891d200c9",
+    "MemPerc": "0.21%",
+    "MemUsage": "33.02MiB / 15.58GiB",
+    "Name": "inventory_db",
+    "NetIO": "47.2kB / 45.4kB",
+    "PIDs": "14"
+  },
+  {
+    "ts": "2026-10-14T23:18:17.180Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.01%",
+    "Container": "3ebbf9344b952595cc12af5e27869482a0f8570d27804d2c29bda5f0c6517ca5",
+    "ID": "3ebbf9344b95",
+    "MemPerc": "0.28%",
+    "MemUsage": "44.75MiB / 15.58GiB",
+    "Name": "inventory_app",
+    "NetIO": "36.9kB / 36.4kB",
+    "PIDs": "31"
+  },
+  {
+    "ts": "2026-10-14T23:18:17.180Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.02%",
+    "Container": "6ca891d200c99823fd552de0cc3e184ce861b844b69072691a31e914043c645b",
+    "ID": "6ca891d200c9",
+    "MemPerc": "0.21%",
+    "MemUsage": "33.35MiB / 15.58GiB",
+    "Name": "inventory_db",
+    "NetIO": "47.2kB / 45.4kB",
+    "PIDs": "14"
+  },
+  {
+    "ts": "2026-10-14T23:18:21.014Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.00%",
+    "Container": "3ebbf9344b952595cc12af5e27869482a0f8570d27804d2c29bda5f0c6517ca5",
+    "ID": "3ebbf9344b95",
+    "MemPerc": "0.28%",
+    "MemUsage": "44.35MiB / 15.58GiB",
+    "Name": "inventory_app",
+    "NetIO": "36.9kB / 36.4kB",
+    "PIDs": "31"
+  },
+  {
+    "ts": "2026-10-14T23:18:21.014Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.08%",
+    "Container": "6ca891d200c99823fd552de0cc3e184ce861b844b69072691a31e914043c645b",
+    "ID": "6ca891d200c9",
+    "MemPerc": "0.21%",
+    "MemUsage": "34.05MiB / 15.58GiB",
+    "Name": "inventory_db",
+    "NetIO": "47.2kB / 45.4kB",
+    "PIDs": "14"
+  },
+  {
+    "ts": "2026-10-14T23:18:25.199Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.00%",
+    "Container": "3ebbf9344b952595cc12af5e27869482a0f8570d27804d2c29bda5f0c6517ca5",
+    "ID": "3ebbf9344b95",
+    "MemPerc": "0.28%",
+    "MemUsage": "44.31MiB / 15.58GiB",
+    "Name": "inventory_app",
+    "NetIO": "36.9kB / 36.4kB",
+    "PIDs": "30"
+  },
+  {
+    "ts": "2026-10-14T23:18:25.199Z",
+    "BlockIO": "0B / 0B",
+    "CPUPerc": "0.02%",
+    "Container": "6ca891d200c99823fd552de0cc3e184ce861b844b69072691a31e914043c645b",
+    "ID": "6ca891d200c9",
+    "MemPerc": "0.22%",
+    "MemUsage": "34.38MiB / 15.58GiB",
+    "Name": "inventory_db",
+    "NetIO": "47.2kB / 45.4kB",
+    "PIDs": "14"
+  }
+]

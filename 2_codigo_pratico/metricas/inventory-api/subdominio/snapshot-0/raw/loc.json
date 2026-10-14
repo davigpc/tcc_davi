@@ -1,0 +1,69 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 189,
+  "total": 8783,
+  "source": 6901,
+  "comment": 967,
+  "byModule": {
+    "app.module.ts": {
+      "files": 1,
+      "total": 23,
+      "source": 22,
+      "comment": 0
+    },
+    "auth": {
+      "files": 28,
+      "total": 1150,
+      "source": 817,
+      "comment": 207
+    },
+    "database": {
+      "files": 3,
+      "total": 298,
+      "source": 260,
+      "comment": 24
+    },
+    "main.ts": {
+      "files": 1,
+      "total": 38,
+      "source": 38,
+      "comment": 2
+    },
+    "movements": {
+      "files": 31,
+      "total": 1856,
+      "source": 1362,
+      "comment": 311
+    },
+    "products": {
+      "files": 37,
+      "total": 1478,
+      "source": 1221,
+      "comment": 93
+    },
+    "reports": {
+      "files": 21,
+      "total": 1239,
+      "source": 974,
+      "comment": 120
+    },
+    "shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    },
+    "users": {
+      "files": 21,
+      "total": 1152,
+      "source": 929,
+      "comment": 107
+    },
+    "warehouses": {
+      "files": 39,
+      "total": 1357,
+      "source": 1117,
+      "comment": 91
+    }
+  }
+}

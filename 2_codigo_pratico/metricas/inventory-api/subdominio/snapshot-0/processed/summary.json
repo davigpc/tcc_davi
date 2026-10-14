@@ -1,0 +1,303 @@
+{
+  "app": "inventory-api",
+  "metodologia": "subdominio",
+  "snapshot": "snapshot-0",
+  "tag": "snap/inventory-api/subdominio/0",
+  "timestampUtc": "2026-10-14T23:20:53.863Z",
+  "buildTime": {
+    "meanMs": 57212,
+    "runsMs": [
+      39000,
+      70564,
+      62072
+    ]
+  },
+  "startupTime": {
+    "meanMs": 9847,
+    "runsMs": [
+      10390,
+      9328,
+      9823
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "inventory_app",
+        "samples": 4,
+        "cpuAvgPerc": 0.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.04,
+        "memAvgMB": 50.8,
+        "memMinMB": 44.31,
+        "memMaxMB": 69.8
+      },
+      {
+        "container": "inventory_db",
+        "samples": 4,
+        "cpuAvgPerc": 0.03,
+        "cpuMinPerc": 0.01,
+        "cpuMaxPerc": 0.08,
+        "memAvgMB": 33.7,
+        "memMinMB": 33.02,
+        "memMaxMB": 34.38
+      }
+    ],
+    "load": [
+      {
+        "container": "inventory_app",
+        "samples": 4,
+        "cpuAvgPerc": 225.76,
+        "cpuMinPerc": 223.39,
+        "cpuMaxPerc": 228.39,
+        "memAvgMB": 121.15,
+        "memMinMB": 115.7,
+        "memMaxMB": 128.4
+      },
+      {
+        "container": "inventory_db",
+        "samples": 4,
+        "cpuAvgPerc": 19.06,
+        "cpuMinPerc": 18.77,
+        "cpuMaxPerc": 19.48,
+        "memAvgMB": 67.93,
+        "memMinMB": 67.71,
+        "memMaxMB": 68.2
+      }
+    ],
+    "imagensMB": {
+      "inventory-api-app:latest": 151.59,
+      "postgres:15-alpine": 109.92
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "products",
+        "rpsMean": 564.34,
+        "rpsMin": 561.8,
+        "rpsMax": 567.21,
+        "p50Mean": 34,
+        "p50Min": 34,
+        "p50Max": 34,
+        "p90Mean": 38,
+        "p90Min": 38,
+        "p90Max": 38,
+        "p99Mean": 57,
+        "p99Min": 44,
+        "p99Max": 64,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-movements",
+        "rpsMean": 382.4,
+        "rpsMin": 359.8,
+        "rpsMax": 398.8,
+        "p50Mean": 50,
+        "p50Min": 48,
+        "p50Max": 53,
+        "p90Mean": 56.67,
+        "p90Min": 53,
+        "p90Max": 63,
+        "p99Mean": 96,
+        "p99Min": 91,
+        "p99Max": 104,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-stock",
+        "rpsMean": 200.3,
+        "rpsMin": 198.5,
+        "rpsMax": 201.8,
+        "p50Mean": 97.67,
+        "p50Min": 97,
+        "p50Max": 98,
+        "p90Mean": 104.67,
+        "p90Min": 103,
+        "p90Max": 107,
+        "p99Mean": 121,
+        "p99Min": 116,
+        "p99Max": 129,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "movements-post",
+        "rpsMean": 339.77,
+        "rpsMin": 332.9,
+        "rpsMax": 343.6,
+        "p50Mean": 58,
+        "p50Min": 57,
+        "p50Max": 59,
+        "p90Mean": 63,
+        "p90Min": 61,
+        "p90Max": 66,
+        "p99Mean": 74,
+        "p99Min": 70,
+        "p99Max": 78,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 8783,
+    "locPorModulo": {
+      "app.module.ts": 23,
+      "auth": 1150,
+      "database": 298,
+      "main.ts": 38,
+      "movements": 1856,
+      "products": 1478,
+      "reports": 1239,
+      "shared": 192,
+      "users": 1152,
+      "warehouses": 1357
+    },
+    "servicos": 2,
+    "containers": 2,
+    "crossDomainEdges": 69,
+    "totalEdges": 389,
+    "crossDomainPorModulo": {
+      "_root": 9,
+      "auth": 4,
+      "movements": 10,
+      "products": 13,
+      "reports": 10,
+      "users": 11,
+      "warehouses": 12
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "products",
+        "to": "shared",
+        "count": 9
+      },
+      {
+        "from": "warehouses",
+        "to": "shared",
+        "count": 8
+      },
+      {
+        "from": "movements",
+        "to": "shared",
+        "count": 6
+      },
+      {
+        "from": "users",
+        "to": "auth",
+        "count": 6
+      },
+      {
+        "from": "reports",
+        "to": "shared",
+        "count": 5
+      },
+      {
+        "from": "users",
+        "to": "database",
+        "count": 3
+      },
+      {
+        "from": "auth",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "auth",
+        "to": "shared",
+        "count": 2
+      },
+      {
+        "from": "_root",
+        "to": "shared",
+        "count": 2
+      },
+      {
+        "from": "movements",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "movements",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "products",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "products",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "reports",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "reports",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "users",
+        "to": "shared",
+        "count": 2
+      },
+      {
+        "from": "warehouses",
+        "to": "database",
+        "count": 2
+      },
+      {
+        "from": "warehouses",
+        "to": "auth",
+        "count": 2
+      },
+      {
+        "from": "_root",
+        "to": "auth",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "database",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "movements",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "products",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "reports",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "users",
+        "count": 1
+      },
+      {
+        "from": "_root",
+        "to": "warehouses",
+        "count": 1
+      },
+      {
+        "from": "reports",
+        "to": "movements",
+        "count": 1
+      }
+    ]
+  }
+}
