@@ -23,6 +23,10 @@ A Figura \ref{fig:inventario_arquitetura} demonstra a arquitetura base do sistem
     \legend{Elaborado pelo autor (2026).}
 \end{figure}
 
+A Tabela \ref{tab:metricas-inventario-s0} reúne as métricas do sistema de inventário no estado inicial (Snapshot 0), que serve de referência para as três metodologias de decomposição.
+
+\input{tabelas/metricas-inventario-s0.tex}
+
 \subsection*{Sistema de Leilões}
 
 O monólito utiliza o ORM TypeORM conectado ao PostgreSQL, auxiliado pelo Redis para controle de filas e processamento de tarefas em segundo plano via BullMQ e transmissão de mensagens em tempo real com Socket.IO. A coexistência de componentes com ciclo de vida assíncrono e de operações transacionais críticas de encerramento de lance e transferência de ativos permite observar a latência sob estresse e a vazão de requisições durante a partição dos serviços.
@@ -52,13 +56,17 @@ Cada métrica é amostrada três vezes, e o conjunto de resultados brutos e proc
 
 Sob a decomposição por capacidade de negócio, os seis módulos foram agrupados pelo que a organização faz de fato. Nesse sentido, o agrupamento resultou em três capacidades, sendo elas a capacidade de Administração/Identidade, Controle de Estoque e Relatórios. A capacidade de Relatórios foi a primeira a ser extraída, por concentrar apenas consultas de leitura e não possuir dependências de entrada, ou seja, nenhum outro módulo a importa. No monólito referência, a análise estática registrou 69 dependências cruzando fronteiras de módulo, de um total de 389, sendo a maior parte delas apontando para o núcleo compartilhado.
 
-A extração seguiu o padrão \textit{Strangler Fig} mediado por NGINX, com roteamento por prefixo de caminho: as requisições para \texttt{/api/reports/} passaram a ser encaminhadas ao novo serviço e as demais permaneceram no monólito. Adotou-se o banco de leitura compartilhado, com o serviço apontando para o mesmo PostgreSQL apenas para leitura. Como dificuldade, o módulo de relatórios dependia do mapeamento de tipos de movimentação (\texttt{MovementTypeMapper}), isto é, o único cruzamento entre domínios no monólito e foi resolvido por uma cópia local do mapeamento, funcionando como camada anticorrupção.
+A extração seguiu o padrão \textit{Strangler Fig} mediado por NGINX, com roteamento por prefixo de caminho: as requisições para \texttt{/api/reports/} passaram a ser encaminhadas ao novo serviço e as demais permaneceram no monólito. Adotou-se o banco de leitura compartilhado, com o serviço apontando para o mesmo PostgreSQL apenas para leitura. Como dificuldade, o módulo de relatórios dependia do mapeamento de tipos de movimentação (\texttt{MovementTypeMapper}), isto é, o único cruzamento entre domínios no monólito, e foi resolvido por uma cópia local do mapeamento, funcionando como camada anticorrupção.
 
-A Tabela \ref{tab:comp_inventory-api_capacidade-negocio_snapshots} apresenta as métricas ao longo dos snapshots e a Tabela \ref{tab:comp_capacidade-negocio_variacoes} consolida a variação acumulada com a média da metodologia.
+A segunda capacidade extraída foi a de Administração/Identidade, que reúne a autenticação e o cadastro de usuários. Essa capacidade é pré-requisito de todos os módulos, pois cada controlador depende dos guardas de autenticação. Para extraí-la sem interromper o restante, o serviço de Identidade passou a responder por \texttt{/api/auth} e \texttt{/api/users}, enquanto o monólito manteve apenas uma cópia local dos guardas de token. Como a validação do token é feita de forma isolada, o monólito não precisa consultar a Identidade a cada requisição. Nessa fase, a persistência ainda era compartilhada entre os serviços.
 
-%\input{tabelas/inventory-api__capacidade-negocio__snapshots.tex}
+A terceira e última extração foi a da capacidade de Controle de Estoque, que agrupa armazéns, produtos e movimentações, e o monólito foi desativado. Nessa etapa adotou-se a persistência isolada prevista na metodologia: a Identidade e o Estoque passaram a ter bancos próprios, e o serviço de Relatórios deixou de ter banco. Como os serviços já não compartilham tabelas, os acessos cruzados passaram a ocorrer por chamadas HTTP. A Identidade valida o armazém no Estoque ao cadastrar um usuário, e o Estoque valida o usuário na Identidade ao registrar uma movimentação, guardando o e-mail do usuário junto ao movimento. Essa separação evidenciou acoplamentos de dados que o banco compartilhado mantinha ocultos e foi a principal dificuldade da trilha. O serviço de Relatórios, por sua vez, consulta os dados do Estoque e os agrega em memória.
 
-%\input{tabelas/capacidade-negocio__variacoes.tex}
+A Tabela \ref{tab:comp_inventory-api_capacidade-negocio_snapshots} apresenta as métricas ao longo das quatro fases e a Tabela \ref{tab:comp_capacidade-negocio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 47 segundos no baseline para 138 segundos no estado final, como consequência da construção de imagens independentes. O consumo de memória e de processamento cresceu de forma contínua, com aumento significativo do processamento sob carga na fase final, quando passaram a existir dois bancos dedicados. A vazão média das rotas caiu após a primeira extração, em razão do salto adicional pelo proxy, e se recuperou nas fases seguintes. O número de componentes subiu de dois para seis. As Linhas de Código cresceram até a segunda extração, por duplicação de código transversal, e caíram no estado final, quando o monólito deixou de compor a solução. As chamadas entre fronteiras medidas pela análise estática variaram pouco, pois o acoplamento entre serviços passou a ocorrer pela rede e não é capturado por essa análise.
+
+\input{tabelas/inventory-api__capacidade-negocio__snapshots.tex}
+
+\input{tabelas/capacidade-negocio__variacoes.tex}
 
 \subsection*{Sistema de Leilões}
 
