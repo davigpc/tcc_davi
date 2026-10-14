@@ -59,6 +59,24 @@ suporte e, por fim, o núcleo — invertendo a ordem da Capacidade de Negócio.
 - Persistência **compartilhada** (um PostgreSQL), sem comunicação interserviços.
 
 ## Pendências
-- snapshots s2 (suporte: `products` + `warehouses`) e final (núcleo: `movements`,
-  persistência isolada, monólito desativado).
+- snapshot final (núcleo: `movements`, persistência isolada, monólito desativado).
 - Seções "Aprendizado sobre decomposição" dos registros: a preencher pelo autor.
+
+### snapshot-2 (contexto de suporte: products + warehouses)
+- Pasta: `metricas/inventory-api/subdominio/snapshot-2/`
+- Tag: `snap/inventory-api/subdominio/2`
+- Submódulo: `7b9b464`.
+- Serviço novo: `services/inventory-api/support/` (armazéns + produtos).
+- O monólito passou a conter apenas o núcleo `movements`.
+- Persistência ainda **compartilhada** (sem chamadas de rede internas).
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | s0 | s1 | s2 |
+|---|---|---|---|---|
+| Agilidade | Build | 57.212 ms | 108.628 ms | 103.700 ms |
+| Agilidade | Inicialização | 9.847 ms | 10.056 ms | 9.626 ms |
+| Manutenibilidade | LOC | 8.783 | 9.796 | 10.310 |
+| Manutenibilidade | Componentes / contêineres | 2 / 2 | 5 / 5 | 6 / 6 |
+| Manutenibilidade | Chamadas entre fronteiras | 69/389 | 78/414 | 85/429 |
+

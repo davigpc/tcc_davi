@@ -1,0 +1,242 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "identity/_root",
+    "identity/auth",
+    "identity/database",
+    "identity/shared",
+    "identity/users",
+    "inventory-api/_root",
+    "inventory-api/auth",
+    "inventory-api/database",
+    "inventory-api/movements",
+    "inventory-api/shared",
+    "reports/_root",
+    "reports/auth",
+    "reports/database",
+    "reports/reports",
+    "reports/shared",
+    "support/_root",
+    "support/auth",
+    "support/database",
+    "support/internal",
+    "support/products",
+    "support/shared",
+    "support/warehouses"
+  ],
+  "edges": [
+    {
+      "from": "support/products",
+      "to": "support/shared",
+      "count": 9
+    },
+    {
+      "from": "support/warehouses",
+      "to": "support/shared",
+      "count": 8
+    },
+    {
+      "from": "inventory-api/movements",
+      "to": "inventory-api/shared",
+      "count": 6
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/auth",
+      "count": 6
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/shared",
+      "count": 5
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/database",
+      "count": 3
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/shared",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/movements",
+      "to": "inventory-api/database",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/movements",
+      "to": "inventory-api/auth",
+      "count": 2
+    },
+    {
+      "from": "support/_root",
+      "to": "support/shared",
+      "count": 2
+    },
+    {
+      "from": "support/products",
+      "to": "support/database",
+      "count": 2
+    },
+    {
+      "from": "support/products",
+      "to": "support/auth",
+      "count": 2
+    },
+    {
+      "from": "support/warehouses",
+      "to": "support/database",
+      "count": 2
+    },
+    {
+      "from": "support/warehouses",
+      "to": "support/auth",
+      "count": 2
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/shared",
+      "count": 2
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/database",
+      "count": 2
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/auth",
+      "count": 2
+    },
+    {
+      "from": "identity/auth",
+      "to": "identity/database",
+      "count": 2
+    },
+    {
+      "from": "identity/auth",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/auth",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/database",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/movements",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/auth",
+      "to": "inventory-api/shared",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/auth",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/database",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/internal",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/products",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/warehouses",
+      "count": 1
+    },
+    {
+      "from": "support/auth",
+      "to": "support/shared",
+      "count": 1
+    },
+    {
+      "from": "support/internal",
+      "to": "support/database",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/auth",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/database",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/reports",
+      "count": 1
+    },
+    {
+      "from": "reports/auth",
+      "to": "reports/shared",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/auth",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/database",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/users",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 85,
+  "totalEdges": 429,
+  "byModule": {
+    "inventory-api/_root": 5,
+    "inventory-api/auth": 1,
+    "inventory-api/movements": 10,
+    "support/_root": 7,
+    "support/auth": 1,
+    "support/internal": 1,
+    "support/products": 13,
+    "support/warehouses": 12,
+    "reports/_root": 5,
+    "reports/auth": 1,
+    "reports/reports": 9,
+    "identity/_root": 5,
+    "identity/auth": 4,
+    "identity/users": 11
+  }
+}

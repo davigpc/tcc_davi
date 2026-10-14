@@ -1,0 +1,22 @@
+{
+  "inventory-api-sub-s2-monolith": {
+    "bytes": 158883861,
+    "mb": 151.52
+  },
+  "inventory-api-sub-s2-support": {
+    "bytes": 195786454,
+    "mb": 186.72
+  },
+  "inventory-api-sub-s2-reports": {
+    "bytes": 195750127,
+    "mb": 186.68
+  },
+  "inventory-api-sub-s2-identity": {
+    "bytes": 196925172,
+    "mb": 187.8
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

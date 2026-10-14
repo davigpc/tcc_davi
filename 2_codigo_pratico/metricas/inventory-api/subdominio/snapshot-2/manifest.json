@@ -1,0 +1,35 @@
+{
+  "app": "inventory-api",
+  "metodologia": "subdominio",
+  "snapshot": "snapshot-2",
+  "tag": "snap/inventory-api/subdominio/2",
+  "timestampUtc": "2026-10-14T23:45:09.558Z",
+  "scriptVersion": "0.1.0",
+  "parentCommit": "d11442c9d0ec1cd947bb5fb03aa02d93811e8364",
+  "submoduleSha": "7b9b464ac1dbc321b15d8d78123d5d001b681d10",
+  "host": {
+    "os": "Windows_NT 10.0.26200",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5700X3D 8-Core Processor",
+    "logicalProcessors": 16,
+    "totalMemGB": 31.93
+  },
+  "toolchain": {
+    "node": "v22.17.1",
+    "docker": "29.7.2",
+    "dockerCompose": "5.4.0"
+  },
+  "load": {
+    "connections": 20,
+    "durationSec": 10,
+    "pipelining": 1,
+    "reps": 3
+  },
+  "repetitions": {
+    "build": 3,
+    "startup": 3,
+    "load": 3
+  },
+  "operador": "davig"
+}
