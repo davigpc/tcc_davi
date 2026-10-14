@@ -1,1 +1,0 @@
-export { WarehouseRepositoryAdapter } from './adapters';
