@@ -204,13 +204,14 @@ function texSnapshotsTable(
   \\centering
   \\caption{${texEsc(appLabel)} — métricas por snapshot (${texEsc(metLabel)}).}
   \\label{tab:comp_${app}_${metodologia}_snapshots}
+  \\resizebox{\\textwidth}{!}{%
   \\begin{tabular}{l${'r'.repeat(cols)}}
     \\hline
     \\textbf{Métrica} & ${head} \\\\
     \\hline
 ${rows.join('\n')}
     \\hline
-  \\end{tabular}
+  \\end{tabular}}
   \\legend{Fonte: medição automatizada do experimento (média de três execuções).}
 \\end{table}
 `;
