@@ -450,3 +450,44 @@ iniciar a trilha seguinte (ex.: `auction` ou `inventory-api` × Subdomínio).
 **Ambiente:** o `npm run` no PowerShell engole os `--`; usar
 `npx tsx coleta/run-snapshot.ts --app ... --metodologia ... --config ... --snapshot ...`.
 
+---
+
+## 12. Trilhas de decomposição (registro consolidado)
+
+> A trilha 1/9 (inventory-api × Capacidade de Negócio) é registrada na branch
+> `exp/inventory-api/capacidade-negocio`. Abaixo, o registro da trilha 2/9.
+
+### Trilha 2/9 — inventory-api × Subdomínio (DDD) (concluída)
+
+**Branch:** `exp/inventory-api/subdominio` (repo pai a partir de `main`; submódulo
+a partir do baseline `50fca6d`). Coleta com o harness evoluído (média, `sourceDirs`).
+
+**Ordem (4 snapshots):** s1 genéricos (`reports` + `identity`) → s2 suporte
+(`products` + `warehouses`) → final núcleo (`movements`). Persistência
+**compartilhada** até s2 e **isolada** no final, com comunicação por HTTP.
+
+**Registros:** `docs/extracao/inventory-api__subdominio__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/inventory-api__subdominio.md`.
+
+**Serviços:** `services/inventory-api/{reports,identity,support,movements}/`.
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | s0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 57.212 ms | 108.628 ms | 103.700 ms | 122.958 ms |
+| Inicialização | 9.847 ms | 10.056 ms | 9.626 ms | 12.540 ms |
+| LOC | 8.783 | 9.796 | 10.310 | 10.079 |
+| Componentes / contêineres | 2 / 2 | 5 / 5 | 6 / 6 | 8 / 8 |
+| Cross-domain | 69/389 | 78/414 | 85/429 | 85/431 |
+
+**Achado central:** separar o núcleo (`movements`) do suporte
+(`products`/`warehouses`) quebra a invariante transacional de estoque
+(ADR-0006/0008) e força validação HTTP cruzada (movimento → produto/armazém no
+Suporte; usuário na Identidade) — contraste direto com a Capacidade de Negócio,
+que mantinha os três agrupados.
+
+**Tags:** `snap/inventory-api/subdominio/{0,1,2,final}`.
+
+**Status:** concluída (s0 → s1 → s2 → final). Próximo: a terceira metodologia do
+inventário (Transações) ou iniciar as trilhas do `auction`.

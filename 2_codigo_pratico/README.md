@@ -8,19 +8,38 @@ O planejamento completo está em [`roteiro.md`](./roteiro.md).
 
 ## Estrutura
 
+A branch `main` centraliza **o texto do TCC e o ferramental**; a implementação individual
+de cada decomposição (código dos serviços, configuração de infraestrutura e medições brutas)
+fica nas branches de trilha, recuperável por tag.
+
 ```
 2_codigo_pratico/
 ├── roteiro.md            # Plano de execução da parte prática
 ├── README.md             # Este arquivo
 ├── .gitmodules           # Submódulos dos 3 aplicativos
-├── apps/                 # Aplicações (submódulos git)
+├── apps/                 # Aplicações no baseline (submódulos git)
 │   ├── inventory-api/    # Sistema de Inventário (crítico / MES)
 │   ├── auction/          # Leilões (alta performance / concorrência)
 │   └── ecommerce/        # E-commerce (transacional / CRUD)
-├── infra/                # Scripts e configuração de infraestrutura
-├── _archive/             # Esqueletos antigos (fora do escopo ativo)
-└── metricas/             # (a criar) dados brutos por app/metodologia/snapshot
+├── docs/                 # Documentação metodológica e diagramas
+│   ├── ambiente.md
+│   ├── decisoes/
+│   ├── diagramas/
+│   └── metodologia/
+├── harness/              # Ferramental de medição (reutilizado por todas as trilhas)
+├── metricas/
+│   └── comparativos/     # Dados sintetizados (alimentam as tabelas do capítulo 5)
+└── _archive/             # Esqueletos antigos (fora do escopo ativo)
 ```
+
+### O que fica fora da `main` (branches de trilha)
+
+Cada trilha (`exp/<app>/<metodologia>`) e suas tags `snap/<app>/<metodologia>/<n>` guardam:
+
+- `services/` — o código dos serviços extraídos em cada decomposição;
+- `infra/` — `docker compose` e configuração de gateway (NGINX) por snapshot;
+- `metricas/<app>/<metodologia>/<snapshot>/` — medições brutas e processadas;
+- `docs/execucao/` e `docs/extracao/` — diários e registros de cada extração.
 
 > As pastas `_archive/monolito/` e `_archive/microsservicos/` contêm esqueletos antigos
 > (catalog/cart/order) que **não** fazem parte do escopo atual. Foram preservados apenas
