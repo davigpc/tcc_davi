@@ -491,3 +491,32 @@ que mantinha os três agrupados.
 
 **Status:** concluída (s0 → s1 → s2 → final). Próximo: a terceira metodologia do
 inventário (Transações) ou iniciar as trilhas do `auction`.
+
+---
+
+## 13. Consolidação em `main` (estratégia de branches)
+
+A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:
+
+- `1_texto_tcc/**` (monografia, tabelas e figuras), `roteiro.md`, `README.md`;
+- `2_codigo_pratico/harness/**` (ferramental reutilizado por todas as trilhas);
+- `2_codigo_pratico/metricas/comparativos/**` (resultados consolidados);
+- `2_codigo_pratico/docs/{metodologia,diagramas}/`, `docs/ambiente.md`, `docs/decisoes/`;
+- `2_codigo_pratico/apps/**` fixados no baseline (`snapshot-0`).
+
+A implementação individual de cada decomposição permanece nas branches de trilha
+`exp/<app>/<metodologia>` e nas tags `snap/<app>/<metodologia>/<n>`:
+
+- `2_codigo_pratico/services/**` (código dos serviços extraídos);
+- `2_codigo_pratico/infra/**` (compose e gateway por snapshot);
+- `2_codigo_pratico/metricas/<app>/<metodologia>/<snapshot>/**` (medição bruta);
+- `2_codigo_pratico/docs/{execucao,extracao}/**` (diários e registros de extração).
+
+Consequência prática: `npm run comparar` e a reconferência de medições brutas exigem
+a branch da trilha correspondente; em `main` estão disponíveis apenas os comparativos.
+
+As trilhas Capacidade de Negócio (1/9) e Subdomínio (2/9) do `inventory-api` foram
+consolidadas em `main` (merge `7f23187`) e a seção 5.4 do capítulo 5 (Subdomínio ×
+Sistema de Inventário) foi escrita. Próximo passo: preencher as seções "Aprendizado
+sobre decomposição" dos registros e dar seguimento às trilhas (Transações do
+inventário ou início do `auction`).
