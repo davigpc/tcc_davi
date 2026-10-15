@@ -1,0 +1,135 @@
+# Compose do experimento: inventory-api / Subdomínio (DDD) / snapshot-final
+# Decomposição concluída com PERSISTÊNCIA ISOLADA (banco por serviço) e
+# comunicação interserviços via HTTP (camada anticorrupção).
+# Topologia: Identidade (auth+users) + Suporte (warehouses+products)
+# + Movimentações (núcleo: stock_movements) + Relatórios (sem banco)
+# + 3 PostgreSQL + gateway NGINX. O monólito é desativado.
+name: inventory-api-sub-final
+
+services:
+  identity_db:
+    image: postgres:15-alpine
+    container_name: inventory_sub_final_identity_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: inventory_identity
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d inventory_identity"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  support_db:
+    image: postgres:15-alpine
+    container_name: inventory_sub_final_support_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: inventory_support
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d inventory_support"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  movements_db:
+    image: postgres:15-alpine
+    container_name: inventory_sub_final_movements_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: inventory_movements
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d inventory_movements"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  identity:
+    build:
+      context: ../../services/inventory-api/identity
+      dockerfile: Dockerfile
+    container_name: inventory_sub_final_identity
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@identity_db:5432/inventory_identity
+      SUPPORT_URL: http://support:3000
+      JWT_ACCESS_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      JWT_ACCESS_EXPIRES_IN: ${JWT_ACCESS_EXPIRES_IN:-15m}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-7d}
+      PORT: 3000
+      NODE_ENV: production
+    depends_on:
+      identity_db:
+        condition: service_healthy
+
+  support:
+    build:
+      context: ../../services/inventory-api/support
+      dockerfile: Dockerfile
+    container_name: inventory_sub_final_support
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@support_db:5432/inventory_support
+      MOVEMENTS_URL: http://movements:3000
+      JWT_ACCESS_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      PORT: 3000
+      NODE_ENV: production
+    depends_on:
+      support_db:
+        condition: service_healthy
+
+  movements:
+    build:
+      context: ../../services/inventory-api/movements
+      dockerfile: Dockerfile
+    container_name: inventory_sub_final_movements
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@movements_db:5432/inventory_movements
+      IDENTITY_URL: http://identity:3000
+      SUPPORT_URL: http://support:3000
+      JWT_ACCESS_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      PORT: 3000
+      NODE_ENV: production
+    depends_on:
+      movements_db:
+        condition: service_healthy
+
+  reports:
+    build:
+      context: ../../services/inventory-api/reports
+      dockerfile: Dockerfile
+    container_name: inventory_sub_final_reports
+    restart: unless-stopped
+    environment:
+      SUPPORT_URL: http://support:3000
+      MOVEMENTS_URL: http://movements:3000
+      JWT_ACCESS_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      PORT: 3000
+      NODE_ENV: production
+    depends_on:
+      - support
+      - movements
+
+  nginx:
+    image: nginx:alpine
+    container_name: inventory_sub_final_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-subdominio-final.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      - identity
+      - support
+      - movements
+      - reports

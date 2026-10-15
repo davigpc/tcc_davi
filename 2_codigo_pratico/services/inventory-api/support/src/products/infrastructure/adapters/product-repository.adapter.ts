@@ -11,6 +11,8 @@ import { IProductRepository } from '@products/domain/ports';
 @Injectable()
 export class ProductRepositoryAdapter implements IProductRepository {
   private readonly logger = new Logger(ProductRepositoryAdapter.name);
+  private readonly movementsUrl =
+    process.env.MOVEMENTS_URL || 'http://movements:3000';
 
   constructor(private readonly prisma: PrismaService) {}
 
@@ -170,9 +172,19 @@ export class ProductRepositoryAdapter implements IProductRepository {
   }
 
   async hasMovements(productId: string): Promise<boolean> {
-    const count = await this.prisma.stockMovement.count({
-      where: { productId },
-    });
-    return count > 0;
+    // Camada anticorrupção: os movimentos pertencem ao serviço de Movimentações
+    // (núcleo). Consulta pela API interna via HTTP.
+    const res = await fetch(
+      `${this.movementsUrl}/api/internal/movements?productId=${productId}&limit=1`,
+    );
+    if (!res.ok) {
+      throw new Error(
+        `movements service error ${res.status} for product ${productId}`,
+      );
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body: any = await res.json();
+    const payload = body?.data ?? body;
+    return Number(payload?.total ?? 0) > 0;
   }
 }

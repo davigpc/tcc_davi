@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum MovementType {
+  ENTRADA
+  SALIDA
+}
+
+// ─── Models (propriedade do serviço de Movimentações — núcleo / DDD) ─────────
+// Sem integridade referencial com produtos/armazéns/usuários (bancos separados):
+// productId, warehouseId e userEmail são referências lógicas denormalizadas.
+
+model StockMovement {
+  id          String       @id @default(uuid())
+  productId   String       @map("product_id")
+  warehouseId String       @map("warehouse_id")
+  userId      String       @map("user_id")
+  userEmail   String?      @map("user_email")
+  type        MovementType
+  quantity    Int
+  notes       String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  @@index([warehouseId, productId])
+  @@index([productId, warehouseId, createdAt])
+  @@index([createdAt])
+  @@map("stock_movements")
+}
