@@ -1,0 +1,256 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "identity/_root",
+    "identity/auth",
+    "identity/database",
+    "identity/internal",
+    "identity/shared",
+    "identity/users",
+    "movements/_root",
+    "movements/auth",
+    "movements/database",
+    "movements/internal",
+    "movements/movements",
+    "movements/shared",
+    "reports/_root",
+    "reports/auth",
+    "reports/database",
+    "reports/reports",
+    "reports/shared",
+    "support/_root",
+    "support/auth",
+    "support/database",
+    "support/internal",
+    "support/products",
+    "support/shared",
+    "support/warehouses"
+  ],
+  "edges": [
+    {
+      "from": "support/products",
+      "to": "support/shared",
+      "count": 9
+    },
+    {
+      "from": "support/warehouses",
+      "to": "support/shared",
+      "count": 8
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/auth",
+      "count": 6
+    },
+    {
+      "from": "movements/movements",
+      "to": "movements/shared",
+      "count": 6
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/shared",
+      "count": 5
+    },
+    {
+      "from": "identity/auth",
+      "to": "identity/database",
+      "count": 2
+    },
+    {
+      "from": "identity/auth",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/database",
+      "count": 2
+    },
+    {
+      "from": "support/_root",
+      "to": "support/shared",
+      "count": 2
+    },
+    {
+      "from": "support/products",
+      "to": "support/database",
+      "count": 2
+    },
+    {
+      "from": "support/products",
+      "to": "support/auth",
+      "count": 2
+    },
+    {
+      "from": "support/warehouses",
+      "to": "support/database",
+      "count": 2
+    },
+    {
+      "from": "support/warehouses",
+      "to": "support/auth",
+      "count": 2
+    },
+    {
+      "from": "movements/_root",
+      "to": "movements/shared",
+      "count": 2
+    },
+    {
+      "from": "movements/movements",
+      "to": "movements/database",
+      "count": 2
+    },
+    {
+      "from": "movements/movements",
+      "to": "movements/auth",
+      "count": 2
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/shared",
+      "count": 2
+    },
+    {
+      "from": "reports/reports",
+      "to": "reports/auth",
+      "count": 2
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/auth",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/database",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/internal",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/users",
+      "count": 1
+    },
+    {
+      "from": "identity/internal",
+      "to": "identity/database",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/auth",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/database",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/internal",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/products",
+      "count": 1
+    },
+    {
+      "from": "support/_root",
+      "to": "support/warehouses",
+      "count": 1
+    },
+    {
+      "from": "support/auth",
+      "to": "support/shared",
+      "count": 1
+    },
+    {
+      "from": "support/internal",
+      "to": "support/database",
+      "count": 1
+    },
+    {
+      "from": "movements/_root",
+      "to": "movements/auth",
+      "count": 1
+    },
+    {
+      "from": "movements/_root",
+      "to": "movements/database",
+      "count": 1
+    },
+    {
+      "from": "movements/_root",
+      "to": "movements/internal",
+      "count": 1
+    },
+    {
+      "from": "movements/_root",
+      "to": "movements/movements",
+      "count": 1
+    },
+    {
+      "from": "movements/auth",
+      "to": "movements/shared",
+      "count": 1
+    },
+    {
+      "from": "movements/internal",
+      "to": "movements/database",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/auth",
+      "count": 1
+    },
+    {
+      "from": "reports/_root",
+      "to": "reports/reports",
+      "count": 1
+    },
+    {
+      "from": "reports/auth",
+      "to": "reports/shared",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 85,
+  "totalEdges": 431,
+  "byModule": {
+    "identity/_root": 6,
+    "identity/auth": 4,
+    "identity/internal": 1,
+    "identity/users": 10,
+    "support/_root": 7,
+    "support/auth": 1,
+    "support/internal": 1,
+    "support/products": 13,
+    "support/warehouses": 12,
+    "movements/_root": 6,
+    "movements/auth": 1,
+    "movements/internal": 1,
+    "movements/movements": 10,
+    "reports/_root": 4,
+    "reports/auth": 1,
+    "reports/reports": 7
+  }
+}

@@ -80,3 +80,24 @@ suporte e, por fim, o núcleo — invertendo a ordem da Capacidade de Negócio.
 | Manutenibilidade | Componentes / contêineres | 2 / 2 | 5 / 5 | 6 / 6 |
 | Manutenibilidade | Chamadas entre fronteiras | 69/389 | 78/414 | 85/429 |
 
+### snapshot-final (núcleo: movements; persistência isolada)
+- Pasta: `metricas/inventory-api/subdominio/snapshot-final/`
+- Tag: `snap/inventory-api/subdominio/final`
+- Submódulo: `7b9b464`.
+- Serviço novo: `services/inventory-api/movements/`. Monólito **desativado**.
+- **Persistência isolada** (3 bancos) e comunicação por **HTTP** (ACL).
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | s0 | s1 | s2 | final |
+|---|---|---|---|---|---|
+| Agilidade | Build | 57.212 ms | 108.628 ms | 103.700 ms | 122.958 ms |
+| Agilidade | Inicialização | 9.847 ms | 10.056 ms | 9.626 ms | 12.540 ms |
+| Manutenibilidade | LOC | 8.783 | 9.796 | 10.310 | 10.079 |
+| Manutenibilidade | Componentes / contêineres | 2 / 2 | 5 / 5 | 6 / 6 | 8 / 8 |
+| Manutenibilidade | Chamadas entre fronteiras | 69/389 | 78/414 | 85/429 | 85/431 |
+
+## Pendências
+- Seções "Aprendizado sobre decomposição" dos registros: a preencher pelo autor.
+- Comparativo: `metricas/comparativos/subdominio__variacoes.tex`.
+

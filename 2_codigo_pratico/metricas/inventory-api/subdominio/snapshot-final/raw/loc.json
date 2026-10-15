@@ -1,0 +1,177 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 244,
+  "total": 10079,
+  "source": 7945,
+  "comment": 1086,
+  "byModule": {
+    "identity/app.module.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 16,
+      "comment": 0
+    },
+    "identity/auth": {
+      "files": 28,
+      "total": 1150,
+      "source": 817,
+      "comment": 207
+    },
+    "identity/database": {
+      "files": 3,
+      "total": 86,
+      "source": 69,
+      "comment": 5
+    },
+    "identity/internal": {
+      "files": 2,
+      "total": 35,
+      "source": 25,
+      "comment": 7
+    },
+    "identity/main.ts": {
+      "files": 1,
+      "total": 40,
+      "source": 39,
+      "comment": 1
+    },
+    "identity/shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    },
+    "identity/users": {
+      "files": 21,
+      "total": 1163,
+      "source": 934,
+      "comment": 114
+    },
+    "support/app.module.ts": {
+      "files": 1,
+      "total": 19,
+      "source": 18,
+      "comment": 0
+    },
+    "support/auth": {
+      "files": 4,
+      "total": 90,
+      "source": 72,
+      "comment": 7
+    },
+    "support/database": {
+      "files": 3,
+      "total": 104,
+      "source": 86,
+      "comment": 5
+    },
+    "support/internal": {
+      "files": 2,
+      "total": 42,
+      "source": 28,
+      "comment": 9
+    },
+    "support/main.ts": {
+      "files": 1,
+      "total": 40,
+      "source": 39,
+      "comment": 1
+    },
+    "support/products": {
+      "files": 37,
+      "total": 1490,
+      "source": 1230,
+      "comment": 97
+    },
+    "support/shared": {
+      "files": 7,
+      "total": 195,
+      "source": 161,
+      "comment": 14
+    },
+    "support/warehouses": {
+      "files": 39,
+      "total": 1357,
+      "source": 1117,
+      "comment": 91
+    },
+    "movements/app.module.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 16,
+      "comment": 0
+    },
+    "movements/auth": {
+      "files": 4,
+      "total": 90,
+      "source": 72,
+      "comment": 7
+    },
+    "movements/database": {
+      "files": 3,
+      "total": 95,
+      "source": 74,
+      "comment": 7
+    },
+    "movements/internal": {
+      "files": 2,
+      "total": 67,
+      "source": 51,
+      "comment": 10
+    },
+    "movements/main.ts": {
+      "files": 1,
+      "total": 40,
+      "source": 39,
+      "comment": 1
+    },
+    "movements/movements": {
+      "files": 31,
+      "total": 1919,
+      "source": 1406,
+      "comment": 327
+    },
+    "movements/shared": {
+      "files": 7,
+      "total": 195,
+      "source": 161,
+      "comment": 14
+    },
+    "reports/app.module.ts": {
+      "files": 1,
+      "total": 13,
+      "source": 12,
+      "comment": 0
+    },
+    "reports/auth": {
+      "files": 4,
+      "total": 88,
+      "source": 70,
+      "comment": 7
+    },
+    "reports/database": {
+      "files": 2,
+      "total": 33,
+      "source": 29,
+      "comment": 0
+    },
+    "reports/main.ts": {
+      "files": 1,
+      "total": 38,
+      "source": 37,
+      "comment": 1
+    },
+    "reports/reports": {
+      "files": 23,
+      "total": 1272,
+      "source": 1005,
+      "comment": 130
+    },
+    "reports/shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    }
+  }
+}

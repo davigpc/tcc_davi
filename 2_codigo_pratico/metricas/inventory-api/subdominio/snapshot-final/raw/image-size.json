@@ -1,0 +1,26 @@
+{
+  "inventory-api-sub-final-identity": {
+    "bytes": 196899840,
+    "mb": 187.78
+  },
+  "inventory-api-sub-final-support": {
+    "bytes": 195764495,
+    "mb": 186.7
+  },
+  "inventory-api-sub-final-movements": {
+    "bytes": 195742250,
+    "mb": 186.67
+  },
+  "inventory-api-sub-final-reports": {
+    "bytes": 195750222,
+    "mb": 186.68
+  },
+  "postgres:15-alpine": {
+    "bytes": 115261681,
+    "mb": 109.92
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

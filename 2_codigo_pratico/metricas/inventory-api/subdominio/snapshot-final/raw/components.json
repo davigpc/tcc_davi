@@ -1,0 +1,25 @@
+{
+  "services": [
+    "identity_db",
+    "movements_db",
+    "movements",
+    "identity",
+    "support_db",
+    "support",
+    "reports",
+    "nginx"
+  ],
+  "serviceCount": 8,
+  "runningContainers": [
+    "inventory_sub_final_nginx",
+    "inventory_sub_final_reports",
+    "inventory_sub_final_identity",
+    "inventory_sub_final_movements",
+    "inventory_sub_final_support",
+    "inventory_sub_final_identity_db",
+    "inventory_sub_final_support_db",
+    "inventory_sub_final_movements_db"
+  ],
+  "containerCount": 8,
+  "imageCount": 6
+}
