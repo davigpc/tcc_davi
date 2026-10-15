@@ -79,6 +79,18 @@ A Tabela \ref{tab:comp_inventory-api_capacidade-negocio_snapshots} apresenta as 
 
 \subsection*{Sistema de Inventário}
 
+Sob a decomposição por subdomínio, os seis módulos foram classificados pelo valor estratégico que entregam ao negócio, e não pela cadeia de processos da organização. A classificação separou o núcleo do sistema, formado pelas movimentações, dos domínios de suporte, produtos e armazéns, e dos genéricos, que reúnem a identidade e os relatórios. O núcleo é o que carrega o diferencial competitivo e concentra as regras de negócio; o suporte é necessário ao funcionamento, mas não diferencia o sistema; e os genéricos poderiam ser atendidos por componentes prontos. No monólito de referência, a análise estática registrou 69 dependências cruzando fronteiras de módulo, de um total de 389, sendo a maior parte direcionada ao núcleo compartilhado.
+
+A extração seguiu a ordem inversa à da Capacidade de Negócio. Saíram primeiro os dois domínios genéricos, Relatórios e Identidade, por serem os de menor valor estratégico e menor risco. A extração seguiu o padrão \textit{Strangler Fig} mediado por NGINX, com roteamento por prefixo de caminho, e os serviços apontavam para o mesmo PostgreSQL. Na etapa seguinte, saiu o suporte, com produtos e armazéns, de modo que o monólito passou a conter apenas o núcleo. Até essa fase, a persistência permanecia compartilhada e não havia comunicação em rede entre os serviços.
+
+A etapa final extraiu o núcleo e isolou a persistência, com um banco por serviço e comunicação por chamadas HTTP. Esse arranjo revelou a principal dificuldade da trilha: a regra de estoque exige, ao registrar uma movimentação, a checagem do produto e do armazém, que na decomposição por subdomínio passaram a pertencer ao serviço de suporte. Como o núcleo ficou separado do suporte, registrar uma movimentação passou a depender de validações remotas: o produto e o armazém no Suporte e o usuário na Identidade. Esse é o contraste direto com a Capacidade de Negócio, que mantinha movimentações, produtos e armazéns agrupados e preservava a verificação dentro de um único processo.
+
+A Tabela \ref{tab:comp_inventory-api_subdominio_snapshots} apresenta as métricas ao longo das quatro fases e a Tabela \ref{tab:comp_subdominio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 57 segundos no baseline para cerca de 123 segundos no estado final, em razão da construção de imagens independentes. O tempo de inicialização variou pouco até a segunda extração e subiu no estado final, quando passaram a existir três bancos. O número de componentes cresceu de dois para oito. As Linhas de Código subiram até a extração do suporte, por duplicação de código transversal, e caíram no estado final, quando o monólito deixou de compor a solução. As chamadas entre fronteiras medidas pela análise estática variaram pouco, pois o acoplamento entre serviços passou a ocorrer pela rede e não é capturado por essa análise. A vazão média das rotas apresentou leve recuperação no estado final e a latência média caiu em relação ao baseline. Vale registrar que a primeira extração desta trilha coincide, em topologia e em números, com a segunda fase da Capacidade de Negócio, o que reforça que o efeito medido até ali decorre da estrutura resultante e não da metodologia empregada.
+
+\input{tabelas/inventory-api__subdominio__snapshots.tex}
+
+\input{tabelas/subdominio__variacoes.tex}
+
 \subsection*{Sistema de Leilões}
 
 \subsection*{E-commerce}
