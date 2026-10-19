@@ -43,8 +43,12 @@ const texEsc = (s: string): string =>
 
 const deltaPct = (a: number, b: number): number => (a === 0 ? 0 : ((b - a) / a) * 100);
 
-const fmtDelta = (d: number): string =>
-  d < 0 ? `$-$ ${fmtNum(Math.abs(d), 0)} \\%` : `+${fmtNum(d, 0)} \\%`;
+const fmtSigned = (n: number, digits: number, unit: string): string =>
+  n < 0 ? `$-$ ${fmtNum(Math.abs(n), digits)} ${unit}` : `+${fmtNum(n, digits)} ${unit}`;
+
+const fmtDelta = (d: number): string => fmtSigned(d, 0, '\\%');
+
+const fmtDeltaPp = (d: number): string => fmtSigned(d, 2, 'p.p.');
 
 const fmtDeltaPair = (d: number[]): string => d.map(fmtDelta).join(' / ');
 
@@ -85,8 +89,8 @@ const ROWS: Row[] = [
     categoria: 'Custo',
     valores: (s) => [cpuIdle(s), cpuLoad(s)],
     fmtValor: (v) => `${fmtNum(v[0])} / ${fmtNum(v[1])}`,
-    deltas: (a, b) => [deltaPct(cpuIdle(a), cpuIdle(b)), deltaPct(cpuLoad(a), cpuLoad(b))],
-    fmtDelta: fmtDeltaPair,
+    deltas: (a, b) => [cpuIdle(b) - cpuIdle(a), deltaPct(cpuLoad(a), cpuLoad(b))],
+    fmtDelta: (d) => `${fmtDeltaPp(d[0])} / ${fmtDelta(d[1])}`,
   },
   {
     label: 'RAM total (repouso / carga, MB)',
@@ -168,37 +172,125 @@ const snapshotLabel = (nome: string): string => {
   return nome;
 };
 
+interface BaselineRef {
+  metodologia: string;
+  snapshot: string;
+}
+
+interface CanonicalBaseline {
+  summary: Summary;
+  ref: BaselineRef;
+  label: string;
+}
+
+const BASELINES_PATH = fromRepo(
+  '2_codigo_pratico',
+  'harness',
+  'analise',
+  'baselines.json',
+);
+
+const snapshotsJsonPath = (app: string, metodologia: string): string =>
+  path.join(COMPARATIVOS_DIR, `${app}__${metodologia}__snapshots.json`);
+
 function listSnapshots(app: string, metodologia: string): SnapshotData[] {
   const base = path.join(METRICAS_DIR, app, metodologia);
-  if (!fs.existsSync(base)) return [];
-  return fs
-    .readdirSync(base, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && d.name.startsWith('snapshot'))
-    .map((d) => ({ nome: d.name, summaryPath: path.join(base, d.name, 'processed', 'summary.json') }))
-    .filter((d) => fs.existsSync(d.summaryPath))
-    .sort((a, b) => snapshotOrder(a.nome) - snapshotOrder(b.nome))
-    .map((d) => ({ nome: d.nome, summary: readJson<Summary>(d.summaryPath) }));
+  if (fs.existsSync(base)) {
+    const fromDisk = fs
+      .readdirSync(base, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && d.name.startsWith('snapshot'))
+      .map((d) => ({
+        nome: d.name,
+        summaryPath: path.join(base, d.name, 'processed', 'summary.json'),
+      }))
+      .filter((d) => fs.existsSync(d.summaryPath))
+      .sort((a, b) => snapshotOrder(a.nome) - snapshotOrder(b.nome))
+      .map((d) => ({ nome: d.nome, summary: readJson<Summary>(d.summaryPath) }));
+    if (fromDisk.length) return fromDisk;
+  }
+
+  const jsonPath = snapshotsJsonPath(app, metodologia);
+  if (!fs.existsSync(jsonPath)) return [];
+  const data = readJson<{ snapshots: SnapshotData[] }>(jsonPath);
+  return (data.snapshots ?? [])
+    .map((s) => ({ nome: s.nome, summary: s.summary }))
+    .sort((a, b) => snapshotOrder(a.nome) - snapshotOrder(b.nome));
+}
+
+function loadBaselines(): Record<string, BaselineRef> {
+  if (!fs.existsSync(BASELINES_PATH)) return {};
+  return readJson<Record<string, BaselineRef>>(BASELINES_PATH);
+}
+
+function resolveCanonicalBaseline(
+  app: string,
+  baselines: Record<string, BaselineRef>,
+): CanonicalBaseline | null {
+  const ref = baselines[app];
+  if (!ref) return null;
+  const found = listSnapshots(app, ref.metodologia).find((s) => s.nome === ref.snapshot);
+  if (!found) {
+    console.warn(`[warn] baseline canônico não encontrado para ${app}: ${ref.metodologia}/${ref.snapshot}`);
+    return null;
+  }
+  const metLabel = METODOLOGIA_LABEL[ref.metodologia] ?? ref.metodologia;
+  return {
+    summary: found.summary,
+    ref,
+    label: `${metLabel} / ${snapshotLabel(ref.snapshot)}`,
+  };
+}
+
+function discoverAppMetodologias(): Array<{ app: string; metodologia: string }> {
+  const pairs = new Map<string, { app: string; metodologia: string }>();
+  const add = (app: string, metodologia: string): void => {
+    pairs.set(`${app}__${metodologia}`, { app, metodologia });
+  };
+
+  for (const app of fs.readdirSync(METRICAS_DIR, { withFileTypes: true })) {
+    if (!app.isDirectory() || app.name === 'comparativos') continue;
+    const appDir = path.join(METRICAS_DIR, app.name);
+    for (const met of fs.readdirSync(appDir, { withFileTypes: true })) {
+      if (met.isDirectory()) add(app.name, met.name);
+    }
+  }
+
+  for (const file of fs.readdirSync(COMPARATIVOS_DIR)) {
+    const m = file.match(/^(.+)__(.+)__snapshots\.json$/);
+    if (m) add(m[1], m[2]);
+  }
+
+  return [...pairs.values()].sort((a, b) =>
+    a.app === b.app
+      ? a.metodologia.localeCompare(b.metodologia)
+      : a.app.localeCompare(b.app),
+  );
 }
 
 function texSnapshotsTable(
   app: string,
   metodologia: string,
   snaps: SnapshotData[],
+  baseline: CanonicalBaseline | null,
 ): string {
   const cols = snaps.length;
   const head = snaps.map((s) => `\\textbf{${snapshotLabel(s.nome)}}`).join(' & ');
+  const summaries = snaps.map((s, i) => (i === 0 && baseline ? baseline.summary : s.summary));
   const rows: string[] = [];
   for (const cat of CATEGORIAS) {
     const catRows = ROWS.filter((r) => r.categoria === cat);
     if (!catRows.length) continue;
     rows.push(`    \\multicolumn{${cols + 1}}{l}{\\textit{${texEsc(cat)}}} \\\\`);
     for (const r of catRows) {
-      const cells = snaps.map((s) => r.fmtValor(r.valores(s.summary))).join(' & ');
+      const cells = summaries.map((s) => r.fmtValor(r.valores(s))).join(' & ');
       rows.push(`    ${texEsc(r.label)} & ${cells} \\\\`);
     }
   }
   const appLabel = APP_LABEL[app] ?? app;
   const metLabel = METODOLOGIA_LABEL[metodologia] ?? metodologia;
+  const baselineNote = baseline
+    ? ` S0 = baseline canônico (${texEsc(baseline.label)}); demais snapshots medidos nesta trilha.`
+    : '';
   return `% Gerado automaticamente por harness/analise/comparar.ts
 \\begin{table}[htb]
   \\centering
@@ -212,20 +304,30 @@ function texSnapshotsTable(
 ${rows.join('\n')}
     \\hline
   \\end{tabular}}
-  \\legend{Fonte: medição automatizada do experimento (média de três execuções).}
+  \\legend{Fonte: medição automatizada do experimento (média de três execuções).${baselineNote}}
 \\end{table}
 `;
 }
 
-interface VariacaoMetodologia {
-  metodologia: string;
-  apps: Array<{ app: string; deltas: number[][] }>;
+interface AppDelta {
+  app: string;
+  deltas: number[][];
+  baselineLabel: string | null;
 }
 
-function collectAppDeltas(app: string, metodologia: string): number[][] | null {
+interface VariacaoMetodologia {
+  metodologia: string;
+  apps: AppDelta[];
+}
+
+function collectAppDeltas(
+  app: string,
+  metodologia: string,
+  baseline: CanonicalBaseline | null,
+): number[][] | null {
   const snaps = listSnapshots(app, metodologia);
   if (snaps.length < 2) return null;
-  const first = snaps[0].summary;
+  const first = baseline?.summary ?? snaps[0].summary;
   const last = snaps[snaps.length - 1].summary;
   return ROWS.map((r) => r.deltas(first, last));
 }
@@ -250,10 +352,19 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
     }
   }
   const metLabel = METODOLOGIA_LABEL[v.metodologia] ?? v.metodologia;
+  const baselineLabels = [
+    ...new Set(v.apps.map((a) => a.baselineLabel).filter((x): x is string => x !== null)),
+  ];
+  const canonical = baselineLabels.length === 1 && v.apps.every((a) => a.baselineLabel !== null);
+  const baselinePhrase = canonical ? 'S0 canônico' : 'S0';
+  const baselineNote = canonical
+    ? ` S0 canônico: ${texEsc(baselineLabels[0])}.`
+    : '';
+  const cpuNote = ' A variação de CPU em repouso é expressa em pontos percentuais (p.p.); as demais, em variação relativa.';
   return `% Gerado automaticamente por harness/analise/comparar.ts
 \\begin{table}[htb]
   \\centering
-  \\caption{Variação acumulada por aplicação — ${texEsc(metLabel)} (S0 $\\rightarrow$ último snapshot).}
+  \\caption{Variação acumulada por aplicação — ${texEsc(metLabel)} (${baselinePhrase} $\\rightarrow$ último snapshot).}
   \\label{tab:comp_${v.metodologia}_variacoes}
   \\begin{tabular}{l${'r'.repeat(appNames.length + 1)}}
     \\hline
@@ -262,7 +373,7 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
 ${rows.join('\n')}
     \\hline
   \\end{tabular}
-  \\legend{Fonte: elaborado pelo autor (2026) a partir da medição automatizada.}
+  \\legend{Fonte: elaborado pelo autor (2026) a partir da medição automatizada.${baselineNote}${cpuNote}}
 \\end{table}
 `;
 }
@@ -284,8 +395,14 @@ function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
   const rows: string[] = [];
   const overall: number[] = [];
   for (let i = 0; i < ROWS.length; i++) {
-    const perMet = metodologias.map((m) => mean(m.apps.map((a) => mean(a.deltas[i]))));
-    const norm = minMaxNormalize(perMet);
+    const dimsPerMet = metodologias.map((m) => m.apps.map((a) => a.deltas[i]));
+    const dims = dimsPerMet[0]?.[0]?.length ?? 1;
+    const normPerDim: number[][] = [];
+    for (let j = 0; j < dims; j++) {
+      const perMet = dimsPerMet.map((appDeltas) => mean(appDeltas.map((d) => d[j])));
+      normPerDim.push(minMaxNormalize(perMet));
+    }
+    const norm = metodologias.map((_, mi) => mean(normPerDim.map((x) => x[mi])));
     overall.push(mean(norm));
     rows.push(`    ${texEsc(ROWS[i].label)} & ${norm.map((x) => fmtNum(x, 2)).join(' & ')} \\\\`);
   }
@@ -318,38 +435,44 @@ function main(): void {
   ensureDir(COMPARATIVOS_DIR);
   ensureDir(MONOGRAFIA_TABELAS_DIR);
 
-  const apps = fs
-    .readdirSync(METRICAS_DIR, { withFileTypes: true })
-    .filter((d) => d.isDirectory() && d.name !== 'comparativos')
-    .map((d) => d.name);
+  const baselines = loadBaselines();
+  const appsDeltasByMet = new Map<string, AppDelta[]>();
 
-  const variacoes: VariacaoMetodologia[] = [];
-  const metodologiasSet = new Set<string>();
+  for (const { app, metodologia } of discoverAppMetodologias()) {
+    const snaps = listSnapshots(app, metodologia);
+    if (!snaps.length) continue;
+    const baseline = resolveCanonicalBaseline(app, baselines);
+    const snapFile = `${app}__${metodologia}__snapshots.tex`;
+    writeBoth(snapFile, texSnapshotsTable(app, metodologia, snaps, baseline));
+    writeJson(path.join(COMPARATIVOS_DIR, `${app}__${metodologia}__snapshots.json`), {
+      app,
+      metodologia,
+      s0Canonico: baseline
+        ? {
+            label: baseline.label,
+            metodologia: baseline.ref.metodologia,
+            snapshot: baseline.ref.snapshot,
+            summary: baseline.summary,
+          }
+        : null,
+      snapshots: snaps.map((s) => ({ nome: s.nome, summary: s.summary })),
+    });
+    console.log(`[ok] ${snapFile}`);
 
-  for (const app of apps) {
-    const base = path.join(METRICAS_DIR, app);
-    for (const met of fs.readdirSync(base, { withFileTypes: true }).filter((d) => d.isDirectory())) {
-      const metodologia = met.name;
-      const snaps = listSnapshots(app, metodologia);
-      if (!snaps.length) continue;
-      metodologiasSet.add(metodologia);
-      const snapFile = `${app}__${metodologia}__snapshots.tex`;
-      writeBoth(snapFile, texSnapshotsTable(app, metodologia, snaps));
-      writeJson(path.join(COMPARATIVOS_DIR, `${app}__${metodologia}__snapshots.json`), {
-        app,
-        metodologia,
-        snapshots: snaps.map((s) => ({ nome: s.nome, summary: s.summary })),
-      });
-      console.log(`[ok] ${snapFile}`);
-    }
+    const deltas = collectAppDeltas(app, metodologia, baseline);
+    if (!deltas) continue;
+    const list = appsDeltasByMet.get(metodologia) ?? [];
+    list.push({ app, deltas, baselineLabel: baseline?.label ?? null });
+    list.sort((a, b) => a.app.localeCompare(b.app));
+    appsDeltasByMet.set(metodologia, list);
   }
 
-  for (const metodologia of metodologiasSet) {
-    const appsDeltas = apps
-      .map((app) => ({ app, deltas: collectAppDeltas(app, metodologia) }))
-      .filter((x): x is { app: string; deltas: number[][] } => x.deltas !== null);
-    if (!appsDeltas.length) continue;
-    const v: VariacaoMetodologia = { metodologia, apps: appsDeltas };
+  const variacoes: VariacaoMetodologia[] = [];
+  for (const metodologia of [...appsDeltasByMet.keys()].sort()) {
+    const v: VariacaoMetodologia = {
+      metodologia,
+      apps: appsDeltasByMet.get(metodologia) ?? [],
+    };
     variacoes.push(v);
     const file = `${metodologia}__variacoes.tex`;
     writeBoth(file, texVariacoesTable(v));

@@ -481,6 +481,10 @@ diário `docs/execucao/inventory-api__subdominio.md`.
 | Componentes / contêineres | 2 / 2 | 5 / 5 | 6 / 6 | 8 / 8 |
 | Cross-domain | 69/389 | 78/414 | 85/429 | 85/431 |
 
+> A coluna `s0` acima é a medição própria desta trilha. As variações consolidadas
+> em `comparativos/` usam o **S0 canônico** de Capacidade de Negócio
+> (`capacidade-negocio/snapshot-0`), conforme o ADR-0003.
+
 **Achado central:** separar o núcleo (`movements`) do suporte
 (`products`/`warehouses`) quebra a invariante transacional de estoque
 (ADR-0006/0008) e força validação HTTP cruzada (movimento → produto/armazém no
