@@ -498,6 +498,45 @@ inventário (Transações) ou iniciar as trilhas do `auction`.
 
 ---
 
+### Trilha 3/9 — inventory-api × Transações (ACID) (concluída)
+
+**Branch:** `exp/inventory-api/transacoes` (repo pai e submódulo, a partir do
+baseline `50fca6d`). S0 canônico (ADR-0003), sem remedição.
+
+**Ordem:** s1 grupo atômico `Estoque` (warehouses + products + movements) →
+s2 `Identity` (auth + users) → final `Reports` (somente leitura). Persistência
+**compartilhada** até o s2 e **isolada** no final, com comunicação por HTTP.
+
+**Registros:** `docs/extracao/inventory-api__transacoes__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/inventory-api__transacoes.md`.
+
+**Serviços:** `services/inventory-api/{estoque,identity,reports}/` (reaproveitados
+do estado final da Capacidade; o Estoque roda com o `prisma db push` desativado
+enquanto o banco é compartilhado).
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | S0 canônico | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 46.746 ms | 75.321 ms | 99.791 ms | 111.724 ms |
+| Inicialização | 9.155 ms | 9.788 ms | 12.537 ms | 14.028 ms |
+| LOC | 8.783 | 9.431 | 9.856 | 9.599 |
+| Componentes / contêineres | 2 / 2 | 4 / 4 | 5 / 5 | 6 / 6 |
+| Cross-domain | 69/389 | 77/408 | 81/419 | 78/416 |
+
+**Achado central:** o grupo atômico sai primeiro, então o caminho de escrita
+(`POST /movements`) deixa de ser local já no s1 — antes das trilhas de Capacidade
+e Subdomínio. O estado final **converge** para a mesma topologia da Capacidade
+(mesmos serviços, LOC e cross-domain), porque a invariante ACID domina o
+agrupamento. A diferença está na trajetória e no momento em que o custo é pago.
+
+**Tags:** `snap/inventory-api/transacoes/{1,2,final}`.
+
+**Status:** concluída. Próximo: iniciar as trilhas do `auction` (Capacidade,
+Subdomínio ou Transações) ou fechar a linha do inventário no capítulo 05.
+
+---
+
 ## 13. Consolidação em `main` (estratégia de branches)
 
 A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:

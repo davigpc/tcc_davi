@@ -393,7 +393,7 @@ function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
 `;
   }
   const rows: string[] = [];
-  const overall: number[] = [];
+  const overallAcc: number[][] = metodologias.map(() => []);
   for (let i = 0; i < ROWS.length; i++) {
     const dimsPerMet = metodologias.map((m) => m.apps.map((a) => a.deltas[i]));
     const dims = dimsPerMet[0]?.[0]?.length ?? 1;
@@ -403,9 +403,10 @@ function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
       normPerDim.push(minMaxNormalize(perMet));
     }
     const norm = metodologias.map((_, mi) => mean(normPerDim.map((x) => x[mi])));
-    overall.push(mean(norm));
+    norm.forEach((x, mi) => overallAcc[mi].push(x));
     rows.push(`    ${texEsc(ROWS[i].label)} & ${norm.map((x) => fmtNum(x, 2)).join(' & ')} \\\\`);
   }
+  const overall = overallAcc.map((v) => mean(v));
   const header = nomes.map((n) => `\\textbf{${texEsc(METODOLOGIA_LABEL[n] ?? n)}}`).join(' & ');
   return `% Gerado automaticamente por harness/analise/comparar.ts
 \\begin{table}[htb]

@@ -1,2 +1,25 @@
 % Gerado automaticamente por harness/analise/comparar.ts
-% Tabela de comparação entre metodologias: pendente (necessário >= 2 metodologias com >= 2 snapshots).
+\begin{table}[htb]
+  \centering
+  \caption{Média normalizada da variação por metodologia (min--max por métrica).}
+  \label{tab:comp_metodologias}
+  \begin{tabular}{lrrr}
+    \hline
+    \textbf{Métrica} & \textbf{Capacidade de Negócio} & \textbf{Subdomínio (DDD)} & \textbf{Transações} \\
+    \hline
+    Tempo de construção (ms) & 1 & 0,42 & 0 \\
+    Tempo de inicialização (ms) & 0 & 0,25 & 1 \\
+    CPU total (repouso / carga, \%) & 0,78 & 0,08 & 0,5 \\
+    RAM total (repouso / carga, MB) & 0,1 & 1 & 0 \\
+    Imagens da aplicação (MB) & 0 & 1 & 0 \\
+    Componentes / contêineres & 0 & 1 & 0 \\
+    Vazão (média das rotas, req/s) & 0 & 1 & 0,43 \\
+    Latência p50 (média das rotas, ms) & 1 & 0 & 0,54 \\
+    Linhas de Código & 0 & 1 & 0 \\
+    Chamadas entre fronteiras & 0 & 1 & 0 \\
+    \hline
+    \textbf{Média geral} & \textbf{0,29} & \textbf{0,67} & \textbf{0,25} \\
+    \hline
+  \end{tabular}
+  \legend{Fonte: elaborado pelo autor (2026). Valores normalizados (0--1) por métrica entre metodologias.}
+\end{table}
