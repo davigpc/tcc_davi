@@ -11,14 +11,15 @@ Nesta seção, são analisados estudos anteriores que investigaram abordagens de
 \citeonline{barzotto2022} investigam, por meio de um estudo de caso empírico na indústria financeira, os impactos da decomposição de um módulo crítico (saque em dinheiro em terminais de autoatendimento) de uma aplicação monolítica em Java/Spring para uma arquitetura baseada em microsserviços. Os autores compararam a versão monolítica com a versão decomposta utilizando métricas clássicas de modularidade de código orientado a objetos e testes de estresse de carga via Gatling para medir o consumo de hardware. Os resultados apontaram ganhos de modularidade e redução no consumo computacional após a decomposição. Entretanto, os autores reportaram limitações técnicas na medição de hardware do sistema monolítico legado e avaliaram apenas uma única aplicação com um método de decomposição pontual direcionado por DDD.
 
 
-\begin{table}[h]
+\begin{table}[htbp]
 \caption{Comparação dos trabalhos relacionados}
 \label{tab:trabalhos_relacionados}
 \centering
 \small
-\begin{tabularx}{\textwidth}{p{2.6cm} X X X X}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.4cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
 \hline
-\textbf{Trabalho} & \textbf{Objetivo} & \textbf{Técnica} & \textbf{Resultado principal} & \textbf{Lacuna vs. este trabalho} \\
+\textbf{Trabalho} & \textbf{Objetivo} & \textbf{Técnica} & \textbf{Resultado principal} & \textbf{Lacuna em relação a este trabalho} \\
 \hline
  
 Levcovitz, Terra e Valente (2016) &

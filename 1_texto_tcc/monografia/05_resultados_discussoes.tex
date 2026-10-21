@@ -100,6 +100,22 @@ A Tabela \ref{tab:comp_inventory-api_subdominio_snapshots} apresenta as métrica
 
 \subsection*{Sistema de Inventário}
 
+Na decomposição por transações, o agrupamento parte do que precisa ser gravado de forma atômica. No sistema de inventário, a regra que impede retirar mais do que existe (ADR-0006) e o cálculo de estoque a partir das movimentações (ADR-0008) exigem que a verificação de produto e de armazém e a escrita do movimento ocorram na mesma transação. Por isso, armazéns, produtos e movimentações formaram um único serviço, o Estoque. A Identidade e os Relatórios ficaram fora dessa fronteira: a primeira fornece o usuário referenciado pelo movimento, e os segundos apenas leem os dados. No monólito de referência, a análise estática registrou 69 dependências cruzando fronteiras de módulo, de um total de 389.
+
+A ordem de extração foi o oposto da adotada na Capacidade de Negócio: o grupo atômico saiu primeiro, para que a invariante fosse preservada em um único processo desde o início. A extração seguiu o padrão \textit{Strangler Fig} mediado por NGINX, com as rotas de armazéns, produtos e movimentações desviadas para o novo serviço. Nessa fase, a persistência era compartilhada, e o Estoque passou a validar o usuário no monólito por um endpoint interno. Para manter o e-mail do usuário no histórico de movimentações, foi adicionada a coluna \texttt{user\_email} à tabela de movimentos, já que a Identidade ainda não era um serviço separado.
+
+A segunda extração foi a da Identidade. O monólito manteve apenas os Relatórios e uma cópia local dos guardas de autenticação, que validam o token sem consultar outro serviço. O Estoque passou a validar o usuário na Identidade, e a Identidade passou a validar o armazém no Estoque, ambas por chamadas HTTP. A persistência continuou compartilhada, de modo que os Relatórios seguiam lendo os dados de estoque diretamente no banco.
+
+Na etapa final, os Relatórios foram extraídos, o monólito foi desativado e a persistência foi isolada, com um banco para a Identidade e outro para o Estoque. O serviço de Relatórios deixou de ter banco e passou a consultar a API interna do Estoque. A principal dificuldade da trilha foi o acoplamento entre movimento e usuário: como o usuário deixou de estar no mesmo banco do movimento, sua validação passou a ser remota e o e-mail foi desnormalizado no registro da movimentação. É a mesma dificuldade observada na Capacidade de Negócio, mas aqui ela aparece desde a primeira extração.
+
+As Tabelas \ref{tab:comp_inventory-api_transacoes_snapshots} e \ref{tab:comp_transacoes_variacoes} apresentam as métricas ao longo das fases e a variação acumulada da metodologia. O tempo de construção subiu de cerca de 47 segundos no baseline canônico para cerca de 112 segundos no estado final, em razão da construção de imagens independentes. O tempo de inicialização subiu de cerca de 9 segundos para cerca de 14 segundos. O número de componentes cresceu de dois para seis. As Linhas de Código subiram até a segunda extração, por duplicação de código transversal, e caíram no estado final, quando o monólito deixou de compor a solução. As chamadas entre fronteiras medidas pela análise estática variaram pouco, pois o acoplamento entre serviços passou a ocorrer pela rede e não é capturado por essa análise. No estado final, a vazão média das rotas ficou cerca de 8\% acima do baseline e a latência mediana caiu cerca de 18\%.
+
+O estado final coincide com o da Capacidade de Negócio: mesma topologia, mesmas 9.599 Linhas de Código e as mesmas 78 de 416 chamadas entre fronteiras. A diferença está na trajetória. Nesta trilha, o grupo atômico saiu na primeira extração, e o caminho de escrita passou a depender da rede antes das demais metodologias; na Capacidade, a escrita permaneceu local até o estado final. O resultado indica que, neste domínio, o critério de transações converge para a mesma fronteira da capacidade, porque a invariante de estoque domina o agrupamento. A comparação relevante deixa de ser o formato final e passa a ser quando o custo é pago e por quanto tempo a consistência da escrita depende de um único processo.
+
+\input{tabelas/inventory-api__transacoes__snapshots.tex}
+
+\input{tabelas/transacoes__variacoes.tex}
+
 \subsection*{Sistema de Leilões}
 
 \subsection*{E-commerce}
@@ -107,7 +123,7 @@ A Tabela \ref{tab:comp_inventory-api_subdominio_snapshots} apresenta as métrica
 \section{Comparação entre as Metodologias}
 \label{sec:comparacao_metodologias}
 
-A Tabela \ref{tab:comp_metodologias} compara as metodologias pela média normalizada (0--1) das variações acumuladas em relação ao S0 canônico. Como a direção desejável varia entre as métricas (menor custo e latência, maior vazão), a média geral deve ser lida como síntese descritiva, não como um ranking de qualidade.
+A Tabela \ref{tab:comp_metodologias} reúne a variação acumulada de cada metodologia entre o S0 canônico e o estado final. Como a direção desejável varia entre as métricas (menor custo e latência, maior vazão), a comparação deve ser feita por métrica, e não por uma média geral.
 
 \input{tabelas/_metodologias.tex}
 
