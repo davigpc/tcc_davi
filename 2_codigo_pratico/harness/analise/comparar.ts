@@ -273,9 +273,20 @@ function texSnapshotsTable(
   snaps: SnapshotData[],
   baseline: CanonicalBaseline | null,
 ): string {
-  const cols = snaps.length;
-  const head = snaps.map((s) => `\\textbf{${snapshotLabel(s.nome)}}`).join(' & ');
-  const summaries = snaps.map((s, i) => (i === 0 && baseline ? baseline.summary : s.summary));
+  const replaceFirst = baseline !== null && snaps[0]?.nome === 'snapshot-0';
+  const prependBaseline = baseline !== null && !replaceFirst;
+  const cols = snaps.length + (prependBaseline ? 1 : 0);
+  const heads = [
+    ...(prependBaseline ? [`\\textbf{${snapshotLabel('snapshot-0')}}`] : []),
+    ...snaps.map((s) => `\\textbf{${snapshotLabel(s.nome)}}`),
+  ];
+  const head = heads.join(' & ');
+  const summaries = [
+    ...(prependBaseline && baseline ? [baseline.summary] : []),
+    ...snaps.map((s, i) =>
+      i === 0 && replaceFirst && baseline ? baseline.summary : s.summary,
+    ),
+  ];
   const rows: string[] = [];
   for (const cat of CATEGORIAS) {
     const catRows = ROWS.filter((r) => r.categoria === cat);

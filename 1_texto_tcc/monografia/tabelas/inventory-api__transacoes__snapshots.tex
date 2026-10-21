@@ -4,24 +4,24 @@
   \caption{Inventário — métricas por snapshot (Transações).}
   \label{tab:comp_inventory-api_transacoes_snapshots}
   \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lrrr}
+  \begin{tabular}{lrrrr}
     \hline
-    \textbf{Métrica} & \textbf{S1} & \textbf{S2} & \textbf{Final} \\
+    \textbf{Métrica} & \textbf{S0} & \textbf{S1} & \textbf{S2} & \textbf{Final} \\
     \hline
-    \multicolumn{4}{l}{\textit{Agilidade}} \\
-    Tempo de construção (ms) & 46.746 & 99.791 & 111.724 \\
-    Tempo de inicialização (ms) & 9.155 & 12.537 & 14.028 \\
-    \multicolumn{4}{l}{\textit{Custo}} \\
-    CPU total (repouso / carga, \%) & 2,22 / 241 & 3,13 / 247,83 & 1,75 / 433,39 \\
-    RAM total (repouso / carga, MB) & 86,28 / 188,47 & 185,32 / 327,95 & 203,03 / 421,79 \\
-    Imagens da aplicação (MB) & 151,6 & 551,3 & 586,6 \\
-    Componentes / contêineres & 2 / 2 & 5 / 5 & 6 / 6 \\
-    \multicolumn{4}{l}{\textit{Desempenho}} \\
-    Vazão (média das rotas, req/s) & 355,3 & 314 & 384,2 \\
-    Latência p50 (média das rotas, ms) & 62,6 & 67,8 & 51,6 \\
-    \multicolumn{4}{l}{\textit{Manutenibilidade}} \\
-    Linhas de Código & 8.783 & 9.856 & 9.599 \\
-    Chamadas entre fronteiras & 69 de 389 & 81 de 419 & 78 de 416 \\
+    \multicolumn{5}{l}{\textit{Agilidade}} \\
+    Tempo de construção (ms) & 46.746 & 75.321 & 99.791 & 111.724 \\
+    Tempo de inicialização (ms) & 9.155 & 9.788 & 12.537 & 14.028 \\
+    \multicolumn{5}{l}{\textit{Custo}} \\
+    CPU total (repouso / carga, \%) & 2,22 / 241 & 1,95 / 259,31 & 3,13 / 247,83 & 1,75 / 433,39 \\
+    RAM total (repouso / carga, MB) & 86,28 / 188,47 & 146,86 / 305,28 & 185,32 / 327,95 & 203,03 / 421,79 \\
+    Imagens da aplicação (MB) & 151,6 & 363,5 & 551,3 & 586,6 \\
+    Componentes / contêineres & 2 / 2 & 4 / 4 & 5 / 5 & 6 / 6 \\
+    \multicolumn{5}{l}{\textit{Desempenho}} \\
+    Vazão (média das rotas, req/s) & 355,3 & 329,5 & 314 & 384,2 \\
+    Latência p50 (média das rotas, ms) & 62,6 & 64,9 & 67,8 & 51,6 \\
+    \multicolumn{5}{l}{\textit{Manutenibilidade}} \\
+    Linhas de Código & 8.783 & 9.431 & 9.856 & 9.599 \\
+    Chamadas entre fronteiras & 69 de 389 & 77 de 408 & 81 de 419 & 78 de 416 \\
     \hline
   \end{tabular}}
   \legend{Fonte: medição automatizada do experimento (média de três execuções). S0 = baseline canônico (Capacidade de Negócio / S0); demais snapshots medidos nesta trilha.}
