@@ -1,0 +1,45 @@
+{
+  "route": "movements-post",
+  "method": "POST",
+  "runs": 3,
+  "requestsPerSec": [
+    289.3,
+    311.61,
+    349.6
+  ],
+  "throughputBytesPerSec": [
+    164348.8,
+    176985.6,
+    198604.8
+  ],
+  "latencyP50": [
+    66,
+    61,
+    56
+  ],
+  "latencyP90": [
+    77,
+    74,
+    60
+  ],
+  "latencyP99": [
+    94,
+    83,
+    71
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    0,
+    0,
+    0
+  ],
+  "totalRequests": [
+    2893,
+    3116,
+    3496
+  ]
+}

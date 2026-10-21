@@ -1,0 +1,438 @@
+{
+  "app": "inventory-api",
+  "metodologia": "transacoes",
+  "snapshot": "snapshot-2",
+  "tag": "snap/inventory-api/transacoes/2",
+  "timestampUtc": "2026-10-21T20:08:55.029Z",
+  "buildTime": {
+    "meanMs": 99791,
+    "runsMs": [
+      82323,
+      99609,
+      117442
+    ]
+  },
+  "startupTime": {
+    "meanMs": 12537,
+    "runsMs": [
+      17795,
+      10355,
+      9460
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "inventory_transacoes_s2_nginx",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memAvgMB": 12.86,
+        "memMinMB": 12.82,
+        "memMaxMB": 12.95
+      },
+      {
+        "container": "inventory_transacoes_s2_monolith",
+        "samples": 4,
+        "cpuAvgPerc": 2.22,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 8.85,
+        "memAvgMB": 42.64,
+        "memMinMB": 37.55,
+        "memMaxMB": 57.58
+      },
+      {
+        "container": "inventory_transacoes_s2_identity",
+        "samples": 4,
+        "cpuAvgPerc": 0.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.04,
+        "memAvgMB": 39.14,
+        "memMinMB": 34.27,
+        "memMaxMB": 53.66
+      },
+      {
+        "container": "inventory_transacoes_s2_estoque",
+        "samples": 4,
+        "cpuAvgPerc": 0.02,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.06,
+        "memAvgMB": 42.94,
+        "memMinMB": 38.12,
+        "memMaxMB": 57.35
+      },
+      {
+        "container": "inventory_transacoes_s2_db",
+        "samples": 4,
+        "cpuAvgPerc": 0.88,
+        "cpuMinPerc": 0.01,
+        "cpuMaxPerc": 3.47,
+        "memAvgMB": 47.74,
+        "memMinMB": 47.36,
+        "memMaxMB": 47.98
+      }
+    ],
+    "load": [
+      {
+        "container": "inventory_transacoes_s2_nginx",
+        "samples": 4,
+        "cpuAvgPerc": 4.98,
+        "cpuMinPerc": 4.82,
+        "cpuMaxPerc": 5.23,
+        "memAvgMB": 14.13,
+        "memMinMB": 14.07,
+        "memMaxMB": 14.19
+      },
+      {
+        "container": "inventory_transacoes_s2_monolith",
+        "samples": 4,
+        "cpuAvgPerc": 224.2,
+        "cpuMinPerc": 217.16,
+        "cpuMaxPerc": 232.46,
+        "memAvgMB": 85.86,
+        "memMinMB": 66.35,
+        "memMaxMB": 100
+      },
+      {
+        "container": "inventory_transacoes_s2_identity",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memAvgMB": 34.03,
+        "memMinMB": 34.03,
+        "memMaxMB": 34.03
+      },
+      {
+        "container": "inventory_transacoes_s2_estoque",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memAvgMB": 111.8,
+        "memMinMB": 111.8,
+        "memMaxMB": 111.8
+      },
+      {
+        "container": "inventory_transacoes_s2_db",
+        "samples": 4,
+        "cpuAvgPerc": 18.65,
+        "cpuMinPerc": 17.6,
+        "cpuMaxPerc": 19.23,
+        "memAvgMB": 82.13,
+        "memMinMB": 81.85,
+        "memMaxMB": 82.52
+      }
+    ],
+    "imagensMB": {
+      "inventory-api-transacoes-s2-monolith": 151.51,
+      "inventory-api-transacoes-s2-estoque": 186.8,
+      "inventory-api-transacoes-s2-identity": 187.86,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "products",
+        "rpsMean": 439.1,
+        "rpsMin": 407.8,
+        "rpsMax": 457.7,
+        "p50Mean": 43.67,
+        "p50Min": 42,
+        "p50Max": 46,
+        "p90Mean": 50.33,
+        "p90Min": 47,
+        "p90Max": 57,
+        "p99Mean": 84.33,
+        "p99Min": 79,
+        "p99Max": 93,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-movements",
+        "rpsMean": 315.14,
+        "rpsMin": 305.3,
+        "rpsMax": 320.11,
+        "p50Mean": 60.33,
+        "p50Min": 59,
+        "p50Max": 62,
+        "p90Mean": 69,
+        "p90Min": 67,
+        "p90Max": 72,
+        "p99Mean": 118,
+        "p99Min": 115,
+        "p99Max": 124,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-stock",
+        "rpsMean": 184.9,
+        "rpsMin": 183.3,
+        "rpsMax": 187.4,
+        "p50Mean": 106.33,
+        "p50Min": 105,
+        "p50Max": 107,
+        "p90Mean": 111.67,
+        "p90Min": 109,
+        "p90Max": 114,
+        "p99Mean": 119,
+        "p99Min": 114,
+        "p99Max": 123,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "movements-post",
+        "rpsMean": 316.84,
+        "rpsMin": 289.3,
+        "rpsMax": 349.6,
+        "p50Mean": 61,
+        "p50Min": 56,
+        "p50Max": 66,
+        "p90Mean": 70.33,
+        "p90Min": 60,
+        "p90Max": 77,
+        "p99Mean": 82.67,
+        "p99Min": 71,
+        "p99Max": 94,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 9856,
+    "locPorModulo": {
+      "inventory-api/app.module.ts": 15,
+      "inventory-api/auth": 88,
+      "inventory-api/database": 298,
+      "inventory-api/main.ts": 38,
+      "inventory-api/reports": 1255,
+      "inventory-api/shared": 192,
+      "estoque/app.module.ts": 21,
+      "estoque/auth": 90,
+      "estoque/database": 132,
+      "estoque/internal": 86,
+      "estoque/main.ts": 40,
+      "estoque/movements": 1887,
+      "estoque/products": 1478,
+      "estoque/shared": 195,
+      "estoque/warehouses": 1357,
+      "identity/app.module.ts": 17,
+      "identity/auth": 1150,
+      "identity/database": 86,
+      "identity/internal": 35,
+      "identity/main.ts": 40,
+      "identity/shared": 192,
+      "identity/users": 1164
+    },
+    "servicos": 5,
+    "containers": 5,
+    "crossDomainEdges": 81,
+    "totalEdges": 419,
+    "crossDomainPorModulo": {
+      "inventory-api/_root": 5,
+      "inventory-api/auth": 1,
+      "inventory-api/reports": 9,
+      "estoque/_root": 8,
+      "estoque/auth": 1,
+      "estoque/internal": 1,
+      "estoque/movements": 10,
+      "estoque/products": 13,
+      "estoque/warehouses": 12,
+      "identity/_root": 6,
+      "identity/auth": 4,
+      "identity/internal": 1,
+      "identity/users": 10
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "estoque/products",
+        "to": "estoque/shared",
+        "count": 9
+      },
+      {
+        "from": "estoque/warehouses",
+        "to": "estoque/shared",
+        "count": 8
+      },
+      {
+        "from": "estoque/movements",
+        "to": "estoque/shared",
+        "count": 6
+      },
+      {
+        "from": "identity/users",
+        "to": "identity/auth",
+        "count": 6
+      },
+      {
+        "from": "inventory-api/reports",
+        "to": "inventory-api/shared",
+        "count": 5
+      },
+      {
+        "from": "inventory-api/_root",
+        "to": "inventory-api/shared",
+        "count": 2
+      },
+      {
+        "from": "inventory-api/reports",
+        "to": "inventory-api/database",
+        "count": 2
+      },
+      {
+        "from": "inventory-api/reports",
+        "to": "inventory-api/auth",
+        "count": 2
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/shared",
+        "count": 2
+      },
+      {
+        "from": "estoque/movements",
+        "to": "estoque/database",
+        "count": 2
+      },
+      {
+        "from": "estoque/movements",
+        "to": "estoque/auth",
+        "count": 2
+      },
+      {
+        "from": "estoque/products",
+        "to": "estoque/database",
+        "count": 2
+      },
+      {
+        "from": "estoque/products",
+        "to": "estoque/auth",
+        "count": 2
+      },
+      {
+        "from": "estoque/warehouses",
+        "to": "estoque/database",
+        "count": 2
+      },
+      {
+        "from": "estoque/warehouses",
+        "to": "estoque/auth",
+        "count": 2
+      },
+      {
+        "from": "identity/auth",
+        "to": "identity/database",
+        "count": 2
+      },
+      {
+        "from": "identity/auth",
+        "to": "identity/shared",
+        "count": 2
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/shared",
+        "count": 2
+      },
+      {
+        "from": "identity/users",
+        "to": "identity/shared",
+        "count": 2
+      },
+      {
+        "from": "identity/users",
+        "to": "identity/database",
+        "count": 2
+      },
+      {
+        "from": "inventory-api/_root",
+        "to": "inventory-api/auth",
+        "count": 1
+      },
+      {
+        "from": "inventory-api/_root",
+        "to": "inventory-api/database",
+        "count": 1
+      },
+      {
+        "from": "inventory-api/_root",
+        "to": "inventory-api/reports",
+        "count": 1
+      },
+      {
+        "from": "inventory-api/auth",
+        "to": "inventory-api/shared",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/auth",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/database",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/internal",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/movements",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/products",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/warehouses",
+        "count": 1
+      },
+      {
+        "from": "estoque/auth",
+        "to": "estoque/shared",
+        "count": 1
+      },
+      {
+        "from": "estoque/internal",
+        "to": "estoque/database",
+        "count": 1
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/auth",
+        "count": 1
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/database",
+        "count": 1
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/internal",
+        "count": 1
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/users",
+        "count": 1
+      },
+      {
+        "from": "identity/internal",
+        "to": "identity/database",
+        "count": 1
+      }
+    ]
+  }
+}

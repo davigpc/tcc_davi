@@ -1,0 +1,228 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "estoque/_root",
+    "estoque/auth",
+    "estoque/database",
+    "estoque/internal",
+    "estoque/movements",
+    "estoque/products",
+    "estoque/shared",
+    "estoque/warehouses",
+    "identity/_root",
+    "identity/auth",
+    "identity/database",
+    "identity/internal",
+    "identity/shared",
+    "identity/users",
+    "inventory-api/_root",
+    "inventory-api/auth",
+    "inventory-api/database",
+    "inventory-api/reports",
+    "inventory-api/shared"
+  ],
+  "edges": [
+    {
+      "from": "estoque/products",
+      "to": "estoque/shared",
+      "count": 9
+    },
+    {
+      "from": "estoque/warehouses",
+      "to": "estoque/shared",
+      "count": 8
+    },
+    {
+      "from": "estoque/movements",
+      "to": "estoque/shared",
+      "count": 6
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/auth",
+      "count": 6
+    },
+    {
+      "from": "inventory-api/reports",
+      "to": "inventory-api/shared",
+      "count": 5
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/shared",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/reports",
+      "to": "inventory-api/database",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/reports",
+      "to": "inventory-api/auth",
+      "count": 2
+    },
+    {
+      "from": "estoque/_root",
+      "to": "estoque/shared",
+      "count": 2
+    },
+    {
+      "from": "estoque/movements",
+      "to": "estoque/database",
+      "count": 2
+    },
+    {
+      "from": "estoque/movements",
+      "to": "estoque/auth",
+      "count": 2
+    },
+    {
+      "from": "estoque/products",
+      "to": "estoque/database",
+      "count": 2
+    },
+    {
+      "from": "estoque/products",
+      "to": "estoque/auth",
+      "count": 2
+    },
+    {
+      "from": "estoque/warehouses",
+      "to": "estoque/database",
+      "count": 2
+    },
+    {
+      "from": "estoque/warehouses",
+      "to": "estoque/auth",
+      "count": 2
+    },
+    {
+      "from": "identity/auth",
+      "to": "identity/database",
+      "count": 2
+    },
+    {
+      "from": "identity/auth",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/shared",
+      "count": 2
+    },
+    {
+      "from": "identity/users",
+      "to": "identity/database",
+      "count": 2
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/auth",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/database",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/_root",
+      "to": "inventory-api/reports",
+      "count": 1
+    },
+    {
+      "from": "inventory-api/auth",
+      "to": "inventory-api/shared",
+      "count": 1
+    },
+    {
+      "from": "estoque/_root",
+      "to": "estoque/auth",
+      "count": 1
+    },
+    {
+      "from": "estoque/_root",
+      "to": "estoque/database",
+      "count": 1
+    },
+    {
+      "from": "estoque/_root",
+      "to": "estoque/internal",
+      "count": 1
+    },
+    {
+      "from": "estoque/_root",
+      "to": "estoque/movements",
+      "count": 1
+    },
+    {
+      "from": "estoque/_root",
+      "to": "estoque/products",
+      "count": 1
+    },
+    {
+      "from": "estoque/_root",
+      "to": "estoque/warehouses",
+      "count": 1
+    },
+    {
+      "from": "estoque/auth",
+      "to": "estoque/shared",
+      "count": 1
+    },
+    {
+      "from": "estoque/internal",
+      "to": "estoque/database",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/auth",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/database",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/internal",
+      "count": 1
+    },
+    {
+      "from": "identity/_root",
+      "to": "identity/users",
+      "count": 1
+    },
+    {
+      "from": "identity/internal",
+      "to": "identity/database",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 81,
+  "totalEdges": 419,
+  "byModule": {
+    "inventory-api/_root": 5,
+    "inventory-api/auth": 1,
+    "inventory-api/reports": 9,
+    "estoque/_root": 8,
+    "estoque/auth": 1,
+    "estoque/internal": 1,
+    "estoque/movements": 10,
+    "estoque/products": 13,
+    "estoque/warehouses": 12,
+    "identity/_root": 6,
+    "identity/auth": 4,
+    "identity/internal": 1,
+    "identity/users": 10
+  }
+}

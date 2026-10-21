@@ -1,0 +1,141 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 227,
+  "total": 9856,
+  "source": 7776,
+  "comment": 1059,
+  "byModule": {
+    "inventory-api/app.module.ts": {
+      "files": 1,
+      "total": 15,
+      "source": 14,
+      "comment": 0
+    },
+    "inventory-api/auth": {
+      "files": 4,
+      "total": 88,
+      "source": 70,
+      "comment": 7
+    },
+    "inventory-api/database": {
+      "files": 3,
+      "total": 298,
+      "source": 260,
+      "comment": 24
+    },
+    "inventory-api/main.ts": {
+      "files": 1,
+      "total": 38,
+      "source": 38,
+      "comment": 2
+    },
+    "inventory-api/reports": {
+      "files": 23,
+      "total": 1255,
+      "source": 983,
+      "comment": 126
+    },
+    "inventory-api/shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    },
+    "estoque/app.module.ts": {
+      "files": 1,
+      "total": 21,
+      "source": 20,
+      "comment": 0
+    },
+    "estoque/auth": {
+      "files": 4,
+      "total": 90,
+      "source": 72,
+      "comment": 7
+    },
+    "estoque/database": {
+      "files": 3,
+      "total": 132,
+      "source": 108,
+      "comment": 7
+    },
+    "estoque/internal": {
+      "files": 2,
+      "total": 86,
+      "source": 67,
+      "comment": 10
+    },
+    "estoque/main.ts": {
+      "files": 1,
+      "total": 40,
+      "source": 39,
+      "comment": 1
+    },
+    "estoque/movements": {
+      "files": 31,
+      "total": 1887,
+      "source": 1383,
+      "comment": 319
+    },
+    "estoque/products": {
+      "files": 37,
+      "total": 1478,
+      "source": 1221,
+      "comment": 93
+    },
+    "estoque/shared": {
+      "files": 7,
+      "total": 195,
+      "source": 161,
+      "comment": 14
+    },
+    "estoque/warehouses": {
+      "files": 39,
+      "total": 1357,
+      "source": 1117,
+      "comment": 91
+    },
+    "identity/app.module.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 16,
+      "comment": 0
+    },
+    "identity/auth": {
+      "files": 28,
+      "total": 1150,
+      "source": 817,
+      "comment": 207
+    },
+    "identity/database": {
+      "files": 3,
+      "total": 86,
+      "source": 69,
+      "comment": 5
+    },
+    "identity/internal": {
+      "files": 2,
+      "total": 35,
+      "source": 25,
+      "comment": 7
+    },
+    "identity/main.ts": {
+      "files": 1,
+      "total": 40,
+      "source": 39,
+      "comment": 1
+    },
+    "identity/shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    },
+    "identity/users": {
+      "files": 21,
+      "total": 1164,
+      "source": 935,
+      "comment": 114
+    }
+  }
+}

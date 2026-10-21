@@ -1,0 +1,19 @@
+{
+  "services": [
+    "db",
+    "estoque",
+    "identity",
+    "monolith",
+    "nginx"
+  ],
+  "serviceCount": 5,
+  "runningContainers": [
+    "inventory_transacoes_s2_nginx",
+    "inventory_transacoes_s2_monolith",
+    "inventory_transacoes_s2_identity",
+    "inventory_transacoes_s2_estoque",
+    "inventory_transacoes_s2_db"
+  ],
+  "containerCount": 5,
+  "imageCount": 4
+}
