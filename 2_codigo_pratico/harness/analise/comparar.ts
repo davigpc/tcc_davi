@@ -345,12 +345,14 @@ function collectAppDeltas(
 
 function texVariacoesTable(v: VariacaoMetodologia): string {
   const appNames = v.apps.map((a) => a.app);
+  const withMean = appNames.length > 1;
+  const ncols = appNames.length + (withMean ? 1 : 0);
   const header = appNames.map((a) => `\\textbf{${texEsc(APP_LABEL[a] ?? a)}}`).join(' & ');
   const rows: string[] = [];
   for (const cat of CATEGORIAS) {
     const catRows = ROWS.filter((r) => r.categoria === cat);
     if (!catRows.length) continue;
-    rows.push(`    \\multicolumn{${appNames.length + 2}}{l}{\\textit{${texEsc(cat)}}} \\\\`);
+    rows.push(`    \\multicolumn{${ncols + 1}}{l}{\\textit{${texEsc(cat)}}} \\\\`);
     for (let i = 0; i < ROWS.length; i++) {
       const r = ROWS[i];
       if (r.categoria !== cat) continue;
@@ -359,7 +361,7 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
       const medVec = Array.from({ length: len }, (_, j) =>
         mean(v.apps.map((a) => a.deltas[i][j])),
       );
-      rows.push(`    ${texEsc(r.label)} & ${cells} & ${r.fmtDelta(medVec)} \\\\`);
+      rows.push(`    ${texEsc(r.label)} & ${cells}${withMean ? ` & ${r.fmtDelta(medVec)}` : ''} \\\\`);
     }
   }
   const metLabel = METODOLOGIA_LABEL[v.metodologia] ?? v.metodologia;
@@ -377,9 +379,9 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
   \\centering
   \\caption{Variação acumulada por aplicação — ${texEsc(metLabel)} (${baselinePhrase} $\\rightarrow$ último snapshot).}
   \\label{tab:comp_${v.metodologia}_variacoes}
-  \\begin{tabular}{l${'r'.repeat(appNames.length + 1)}}
+  \\begin{tabular}{l${'r'.repeat(ncols)}}
     \\hline
-    \\textbf{Métrica} & ${header} & \\textbf{Média} \\\\
+    \\textbf{Métrica} & ${header}${withMean ? ' & \\textbf{Média}' : ''} \\\\
     \\hline
 ${rows.join('\n')}
     \\hline
@@ -387,13 +389,6 @@ ${rows.join('\n')}
   \\legend{Fonte: elaborado pelo autor (2026) a partir da medição automatizada.${baselineNote}${cpuNote}}
 \\end{table}
 `;
-}
-
-function minMaxNormalize(values: number[]): number[] {
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  if (max === min) return values.map(() => 0.5);
-  return values.map((v) => (v - min) / (max - min));
 }
 
 function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
@@ -404,36 +399,47 @@ function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
 `;
   }
   const rows: string[] = [];
-  const overallAcc: number[][] = metodologias.map(() => []);
-  for (let i = 0; i < ROWS.length; i++) {
-    const dimsPerMet = metodologias.map((m) => m.apps.map((a) => a.deltas[i]));
-    const dims = dimsPerMet[0]?.[0]?.length ?? 1;
-    const normPerDim: number[][] = [];
-    for (let j = 0; j < dims; j++) {
-      const perMet = dimsPerMet.map((appDeltas) => mean(appDeltas.map((d) => d[j])));
-      normPerDim.push(minMaxNormalize(perMet));
+  for (const cat of CATEGORIAS) {
+    const catRows = ROWS.map((r, i) => ({ r, i })).filter((x) => x.r.categoria === cat);
+    if (!catRows.length) continue;
+    rows.push(`    \\multicolumn{${nomes.length + 1}}{l}{\\textit{${texEsc(cat)}}} \\\\`);
+    for (const { r, i } of catRows) {
+      const cells = metodologias.map((m) => {
+        const deltas = m.apps.map((a) => a.deltas[i]).filter((d): d is number[] => Array.isArray(d));
+        if (!deltas.length) return '--';
+        const len = deltas[0].length;
+        const med = Array.from({ length: len }, (_, j) => mean(deltas.map((d) => d[j])));
+        return r.fmtDelta(med);
+      });
+      rows.push(`    ${texEsc(r.label)} & ${cells.join(' & ')} \\\\`);
     }
-    const norm = metodologias.map((_, mi) => mean(normPerDim.map((x) => x[mi])));
-    norm.forEach((x, mi) => overallAcc[mi].push(x));
-    rows.push(`    ${texEsc(ROWS[i].label)} & ${norm.map((x) => fmtNum(x, 2)).join(' & ')} \\\\`);
   }
-  const overall = overallAcc.map((v) => mean(v));
   const header = nomes.map((n) => `\\textbf{${texEsc(METODOLOGIA_LABEL[n] ?? n)}}`).join(' & ');
+  const baselineLabels = [
+    ...new Set(
+      metodologias
+        .flatMap((m) => m.apps.map((a) => a.baselineLabel))
+        .filter((x): x is string => x !== null),
+    ),
+  ];
+  const baselineNote =
+    baselineLabels.length === 1 ? ` S0 canônico: ${texEsc(baselineLabels[0])}.` : '';
+  const cpuNote =
+    ' A variação de CPU em repouso é expressa em pontos percentuais (p.p.); as demais, em variação relativa.';
   return `% Gerado automaticamente por harness/analise/comparar.ts
 \\begin{table}[htb]
   \\centering
-  \\caption{Média normalizada da variação por metodologia (min--max por métrica).}
+  \\caption{Variação acumulada por metodologia (S0 canônico $\\rightarrow$ último snapshot).}
   \\label{tab:comp_metodologias}
+  \\resizebox{\\textwidth}{!}{%
   \\begin{tabular}{l${'r'.repeat(nomes.length)}}
     \\hline
     \\textbf{Métrica} & ${header} \\\\
     \\hline
 ${rows.join('\n')}
     \\hline
-    \\textbf{Média geral} & ${overall.map((x) => `\\textbf{${fmtNum(x, 2)}}`).join(' & ')} \\\\
-    \\hline
-  \\end{tabular}
-  \\legend{Fonte: elaborado pelo autor (2026). Valores normalizados (0--1) por métrica entre metodologias.}
+  \\end{tabular}}
+  \\legend{Fonte: elaborado pelo autor (2026) a partir da medição automatizada.${baselineNote}${cpuNote}}
 \\end{table}
 `;
 }
