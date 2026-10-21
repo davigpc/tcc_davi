@@ -1,0 +1,449 @@
+{
+  "app": "inventory-api",
+  "metodologia": "transacoes",
+  "snapshot": "snapshot-final",
+  "tag": "snap/inventory-api/transacoes/final",
+  "timestampUtc": "2026-10-21T20:20:38.939Z",
+  "buildTime": {
+    "meanMs": 111724,
+    "runsMs": [
+      118472,
+      101874,
+      114825
+    ]
+  },
+  "startupTime": {
+    "meanMs": 14028,
+    "runsMs": [
+      10914,
+      9783,
+      21387
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "inventory_transacoes_final_nginx",
+        "samples": 4,
+        "cpuAvgPerc": 0.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.05,
+        "memAvgMB": 12.83,
+        "memMinMB": 12.81,
+        "memMaxMB": 12.84
+      },
+      {
+        "container": "inventory_transacoes_final_reports",
+        "samples": 4,
+        "cpuAvgPerc": 0.03,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.1,
+        "memAvgMB": 33.4,
+        "memMinMB": 33.33,
+        "memMaxMB": 33.46
+      },
+      {
+        "container": "inventory_transacoes_final_identity",
+        "samples": 4,
+        "cpuAvgPerc": 0.02,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.07,
+        "memAvgMB": 36.3,
+        "memMinMB": 36.21,
+        "memMaxMB": 36.44
+      },
+      {
+        "container": "inventory_transacoes_final_estoque",
+        "samples": 4,
+        "cpuAvgPerc": 0.86,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 3.38,
+        "memAvgMB": 39.82,
+        "memMinMB": 39.65,
+        "memMaxMB": 40.01
+      },
+      {
+        "container": "inventory_transacoes_final_identity_db",
+        "samples": 4,
+        "cpuAvgPerc": 0.02,
+        "cpuMinPerc": 0.01,
+        "cpuMaxPerc": 0.04,
+        "memAvgMB": 33.59,
+        "memMinMB": 33.54,
+        "memMaxMB": 33.74
+      },
+      {
+        "container": "inventory_transacoes_final_estoque_db",
+        "samples": 4,
+        "cpuAvgPerc": 0.81,
+        "cpuMinPerc": 0.02,
+        "cpuMaxPerc": 3.15,
+        "memAvgMB": 47.09,
+        "memMinMB": 46.9,
+        "memMaxMB": 47.48
+      }
+    ],
+    "load": [
+      {
+        "container": "inventory_transacoes_final_nginx",
+        "samples": 4,
+        "cpuAvgPerc": 6.51,
+        "cpuMinPerc": 6.29,
+        "cpuMaxPerc": 6.68,
+        "memAvgMB": 14,
+        "memMinMB": 13.96,
+        "memMaxMB": 14.07
+      },
+      {
+        "container": "inventory_transacoes_final_reports",
+        "samples": 4,
+        "cpuAvgPerc": 114.74,
+        "cpuMinPerc": 96.76,
+        "cpuMaxPerc": 163.08,
+        "memAvgMB": 134.3,
+        "memMinMB": 88.38,
+        "memMaxMB": 152.9
+      },
+      {
+        "container": "inventory_transacoes_final_identity",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memAvgMB": 36.21,
+        "memMinMB": 36.21,
+        "memMaxMB": 36.21
+      },
+      {
+        "container": "inventory_transacoes_final_estoque",
+        "samples": 4,
+        "cpuAvgPerc": 295.11,
+        "cpuMinPerc": 253,
+        "cpuMaxPerc": 310.63,
+        "memAvgMB": 133.68,
+        "memMinMB": 130.1,
+        "memMaxMB": 136.2
+      },
+      {
+        "container": "inventory_transacoes_final_identity_db",
+        "samples": 4,
+        "cpuAvgPerc": 0.91,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 3.62,
+        "memAvgMB": 36.17,
+        "memMinMB": 36.07,
+        "memMaxMB": 36.46
+      },
+      {
+        "container": "inventory_transacoes_final_estoque_db",
+        "samples": 4,
+        "cpuAvgPerc": 16.12,
+        "cpuMinPerc": 15.08,
+        "cpuMaxPerc": 18.12,
+        "memAvgMB": 67.43,
+        "memMinMB": 67.27,
+        "memMaxMB": 67.78
+      }
+    ],
+    "imagensMB": {
+      "inventory-api-transacoes-final-identity": 187.86,
+      "inventory-api-transacoes-final-estoque": 186.81,
+      "inventory-api-transacoes-final-reports": 186.76,
+      "postgres:15-alpine": 109.92,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "products",
+        "rpsMean": 478.2,
+        "rpsMin": 475.9,
+        "rpsMax": 480.9,
+        "p50Mean": 40.33,
+        "p50Min": 40,
+        "p50Max": 41,
+        "p90Mean": 44.33,
+        "p90Min": 44,
+        "p90Max": 45,
+        "p99Mean": 68,
+        "p99Min": 52,
+        "p99Max": 77,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-movements",
+        "rpsMean": 368.2,
+        "rpsMin": 354.4,
+        "rpsMax": 377.2,
+        "p50Mean": 52.33,
+        "p50Min": 52,
+        "p50Max": 53,
+        "p90Mean": 60.33,
+        "p90Min": 58,
+        "p90Max": 64,
+        "p99Mean": 74.33,
+        "p99Min": 66,
+        "p99Max": 81,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "reports-stock",
+        "rpsMean": 375.6,
+        "rpsMin": 370.2,
+        "rpsMax": 380.5,
+        "p50Mean": 52,
+        "p50Min": 52,
+        "p50Max": 52,
+        "p90Mean": 58,
+        "p90Min": 57,
+        "p90Max": 59,
+        "p99Mean": 68.33,
+        "p99Min": 66,
+        "p99Max": 71,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "movements-post",
+        "rpsMean": 314.97,
+        "rpsMin": 297.5,
+        "rpsMax": 328.6,
+        "p50Mean": 61.67,
+        "p50Min": 59,
+        "p50Max": 65,
+        "p90Mean": 69.67,
+        "p90Min": 66,
+        "p90Max": 75,
+        "p99Mean": 81.33,
+        "p99Min": 74,
+        "p99Max": 95,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 9599,
+    "locPorModulo": {
+      "identity/app.module.ts": 17,
+      "identity/auth": 1150,
+      "identity/database": 86,
+      "identity/internal": 35,
+      "identity/main.ts": 40,
+      "identity/shared": 192,
+      "identity/users": 1164,
+      "estoque/app.module.ts": 21,
+      "estoque/auth": 90,
+      "estoque/database": 132,
+      "estoque/internal": 86,
+      "estoque/main.ts": 40,
+      "estoque/movements": 1887,
+      "estoque/products": 1478,
+      "estoque/shared": 195,
+      "estoque/warehouses": 1357,
+      "reports/app.module.ts": 13,
+      "reports/auth": 88,
+      "reports/database": 33,
+      "reports/main.ts": 38,
+      "reports/reports": 1265,
+      "reports/shared": 192
+    },
+    "servicos": 6,
+    "containers": 6,
+    "crossDomainEdges": 78,
+    "totalEdges": 416,
+    "crossDomainPorModulo": {
+      "identity/_root": 6,
+      "identity/auth": 4,
+      "identity/internal": 1,
+      "identity/users": 10,
+      "estoque/_root": 8,
+      "estoque/auth": 1,
+      "estoque/internal": 1,
+      "estoque/movements": 10,
+      "estoque/products": 13,
+      "estoque/warehouses": 12,
+      "reports/_root": 4,
+      "reports/auth": 1,
+      "reports/reports": 7
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "estoque/products",
+        "to": "estoque/shared",
+        "count": 9
+      },
+      {
+        "from": "estoque/warehouses",
+        "to": "estoque/shared",
+        "count": 8
+      },
+      {
+        "from": "identity/users",
+        "to": "identity/auth",
+        "count": 6
+      },
+      {
+        "from": "estoque/movements",
+        "to": "estoque/shared",
+        "count": 6
+      },
+      {
+        "from": "reports/reports",
+        "to": "reports/shared",
+        "count": 5
+      },
+      {
+        "from": "identity/auth",
+        "to": "identity/database",
+        "count": 2
+      },
+      {
+        "from": "identity/auth",
+        "to": "identity/shared",
+        "count": 2
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/shared",
+        "count": 2
+      },
+      {
+        "from": "identity/users",
+        "to": "identity/shared",
+        "count": 2
+      },
+      {
+        "from": "identity/users",
+        "to": "identity/database",
+        "count": 2
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/shared",
+        "count": 2
+      },
+      {
+        "from": "estoque/movements",
+        "to": "estoque/database",
+        "count": 2
+      },
+      {
+        "from": "estoque/movements",
+        "to": "estoque/auth",
+        "count": 2
+      },
+      {
+        "from": "estoque/products",
+        "to": "estoque/database",
+        "count": 2
+      },
+      {
+        "from": "estoque/products",
+        "to": "estoque/auth",
+        "count": 2
+      },
+      {
+        "from": "estoque/warehouses",
+        "to": "estoque/database",
+        "count": 2
+      },
+      {
+        "from": "estoque/warehouses",
+        "to": "estoque/auth",
+        "count": 2
+      },
+      {
+        "from": "reports/_root",
+        "to": "reports/shared",
+        "count": 2
+      },
+      {
+        "from": "reports/reports",
+        "to": "reports/auth",
+        "count": 2
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/auth",
+        "count": 1
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/database",
+        "count": 1
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/internal",
+        "count": 1
+      },
+      {
+        "from": "identity/_root",
+        "to": "identity/users",
+        "count": 1
+      },
+      {
+        "from": "identity/internal",
+        "to": "identity/database",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/auth",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/database",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/internal",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/movements",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/products",
+        "count": 1
+      },
+      {
+        "from": "estoque/_root",
+        "to": "estoque/warehouses",
+        "count": 1
+      },
+      {
+        "from": "estoque/auth",
+        "to": "estoque/shared",
+        "count": 1
+      },
+      {
+        "from": "estoque/internal",
+        "to": "estoque/database",
+        "count": 1
+      },
+      {
+        "from": "reports/_root",
+        "to": "reports/auth",
+        "count": 1
+      },
+      {
+        "from": "reports/_root",
+        "to": "reports/reports",
+        "count": 1
+      },
+      {
+        "from": "reports/auth",
+        "to": "reports/shared",
+        "count": 1
+      }
+    ]
+  }
+}
