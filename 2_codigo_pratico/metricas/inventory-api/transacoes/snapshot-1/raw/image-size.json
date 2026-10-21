@@ -1,0 +1,14 @@
+{
+  "inventory-api-transacoes-s1-monolith": {
+    "bytes": 158910594,
+    "mb": 151.55
+  },
+  "inventory-api-transacoes-s1-estoque": {
+    "bytes": 195876430,
+    "mb": 186.8
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

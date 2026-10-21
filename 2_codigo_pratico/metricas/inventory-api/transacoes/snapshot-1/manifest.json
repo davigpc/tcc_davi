@@ -1,0 +1,35 @@
+{
+  "app": "inventory-api",
+  "metodologia": "transacoes",
+  "snapshot": "snapshot-1",
+  "tag": "snap/inventory-api/transacoes/1",
+  "timestampUtc": "2026-10-21T19:57:16.940Z",
+  "scriptVersion": "0.1.0",
+  "parentCommit": "a6adfb1cb5005e4ad75b995b4ba583a25716e18e",
+  "submoduleSha": "0848e7e",
+  "host": {
+    "os": "Windows_NT 10.0.26200",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 5700X3D 8-Core Processor",
+    "logicalProcessors": 16,
+    "totalMemGB": 31.93
+  },
+  "toolchain": {
+    "node": "v22.17.1",
+    "docker": "29.7.2",
+    "dockerCompose": "5.4.0"
+  },
+  "load": {
+    "connections": 20,
+    "durationSec": 10,
+    "pipelining": 1,
+    "reps": 3
+  },
+  "repetitions": {
+    "build": 3,
+    "startup": 3,
+    "load": 3
+  },
+  "operador": "davig"
+}

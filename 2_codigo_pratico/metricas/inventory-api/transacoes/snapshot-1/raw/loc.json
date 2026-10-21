@@ -1,0 +1,111 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 211,
+  "total": 9431,
+  "source": 7424,
+  "comment": 1028,
+  "byModule": {
+    "inventory-api/app.module.ts": {
+      "files": 1,
+      "total": 19,
+      "source": 18,
+      "comment": 0
+    },
+    "inventory-api/auth": {
+      "files": 28,
+      "total": 1150,
+      "source": 817,
+      "comment": 207
+    },
+    "inventory-api/database": {
+      "files": 3,
+      "total": 298,
+      "source": 260,
+      "comment": 24
+    },
+    "inventory-api/internal": {
+      "files": 2,
+      "total": 41,
+      "source": 30,
+      "comment": 8
+    },
+    "inventory-api/main.ts": {
+      "files": 1,
+      "total": 38,
+      "source": 38,
+      "comment": 2
+    },
+    "inventory-api/reports": {
+      "files": 23,
+      "total": 1255,
+      "source": 983,
+      "comment": 126
+    },
+    "inventory-api/shared": {
+      "files": 7,
+      "total": 192,
+      "source": 161,
+      "comment": 12
+    },
+    "inventory-api/users": {
+      "files": 21,
+      "total": 1152,
+      "source": 929,
+      "comment": 107
+    },
+    "estoque/app.module.ts": {
+      "files": 1,
+      "total": 21,
+      "source": 20,
+      "comment": 0
+    },
+    "estoque/auth": {
+      "files": 4,
+      "total": 90,
+      "source": 72,
+      "comment": 7
+    },
+    "estoque/database": {
+      "files": 3,
+      "total": 132,
+      "source": 108,
+      "comment": 7
+    },
+    "estoque/internal": {
+      "files": 2,
+      "total": 86,
+      "source": 67,
+      "comment": 10
+    },
+    "estoque/main.ts": {
+      "files": 1,
+      "total": 40,
+      "source": 39,
+      "comment": 1
+    },
+    "estoque/movements": {
+      "files": 31,
+      "total": 1887,
+      "source": 1383,
+      "comment": 319
+    },
+    "estoque/products": {
+      "files": 37,
+      "total": 1478,
+      "source": 1221,
+      "comment": 93
+    },
+    "estoque/shared": {
+      "files": 7,
+      "total": 195,
+      "source": 161,
+      "comment": 14
+    },
+    "estoque/warehouses": {
+      "files": 39,
+      "total": 1357,
+      "source": 1117,
+      "comment": 91
+    }
+  }
+}
