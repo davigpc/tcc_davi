@@ -73,6 +73,9 @@ Thumbs.db
 # ==========================================
 /skills/
 
+# Memoria de sessao (repositorio privado separado)
+.opencode/memory/
+
 # ==========================================
 # Diagramas - PlantUML (jar baixado sob demanda)
 # ==========================================

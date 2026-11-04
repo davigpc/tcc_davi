@@ -9,7 +9,10 @@ description: >-
 # Memory
 
 ## Memory File
-C:\Users\davig\.codex\MEMORY.md
+../../memory/MEMORY.md
+
+Caminho absoluto no repo: `.opencode/memory/MEMORY.md`. Em um clone novo, se o diretório não existir, rode:
+`git clone https://github.com/davigpc/tcc_davi-memory.git .opencode/memory`
 
 ## On Conversation Start (MUST DO FIRST)
 Read the memory file. If it doesn't exist, create empty and note "no prior memory".

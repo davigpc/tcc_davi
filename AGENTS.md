@@ -2,7 +2,7 @@
 
 Este arquivo define o contexto técnico, o escopo e as diretrizes para os agentes de IA operarem neste repositório de Pesquisa Científica (TCC) voltado à avaliação de padrões de decomposição de monólitos em microsserviços.
 
-> **Memória de sessão:** no início de cada sessão, invoque a skill `memory` e leia `C:\Users\davig\.codex\MEMORY.md`. Registre ali (append) preferências do usuário, decisões e mudanças estruturais relevantes antes de encerrar a sessão.
+> **Memória de sessão:** no início de cada sessão, invoque a skill `memory` e leia `.opencode/memory/MEMORY.md` (repositório privado `davigpc/tcc_davi-memory`, clonado em `.opencode/memory/`). Registre ali (append) preferências do usuário, decisões e mudanças estruturais relevantes antes de encerrar a sessão. Em um clone novo, se a pasta não existir: `git clone https://github.com/davigpc/tcc_davi-memory.git .opencode/memory`.
 
 > **Estilo de Redação do Autor (Monografia):**
 > - **Guia completo:** seguir `1_texto_tcc/guia_estilo.md`, derivado da revisão do orientador de 04/11/2026. Ele consolida as regras abaixo com exemplos antes/depois.
