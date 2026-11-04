@@ -5,9 +5,13 @@ Este arquivo define o contexto técnico, o escopo e as diretrizes para os agente
 > **Memória de sessão:** no início de cada sessão, invoque a skill `memory` e leia `C:\Users\davig\.codex\MEMORY.md`. Registre ali (append) preferências do usuário, decisões e mudanças estruturais relevantes antes de encerrar a sessão.
 
 > **Estilo de Redação do Autor (Monografia):**
+> - **Guia completo:** seguir `1_texto_tcc/guia_estilo.md`, derivado da revisão do orientador de 04/11/2026. Ele consolida as regras abaixo com exemplos antes/depois.
 > - **Clareza e objetividade:** Frases diretas e concisas, sem rebuscamento desnecessário, sem jargões acadêmicos inflados (ex: preferir "estrutura 3x3" a "arranjo fatorial 3x3", "permite uma comparação justa" a "assegura comparabilidade justa", "categorias de medição" a "dimensões objetivas").
+> - **Verbo no lugar de nominalização:** evitar "manifesta-se o acoplamento", "sobressai-se a governança"; preferir "toda a aplicação precisa ser recompilada", "outra diferença é...".
+> - **Sem conectores de preenchimento:** evitar "Adicionalmente", "Em adição", "Sob essa ótica", "No que tange", "Nesse sentido", "Vale ressaltar". Preferir "Outro problema é...", "Além disso...", "Com relação a...".
+> - **Sem adjetivos não mensuráveis:** cortar "substancial", "determinante", "evidente", "incontestável", "operacional", "global", "crítico", "robusto", "proeminente".
 > - **Terminologia em português:** Evitar estrangeirismos desnecessários entre parênteses quando houver termo claro em português (ex: "violações de fronteiras lógicas" em vez de "...(Cross-Domain Calls)", "de forma abrupta" em vez de "...(big bang)", "Linhas de Código (LOC)" em vez de "...(Lines of Code - LOC)").
-> - **Enfoque prático e preciso:** Destacar requisitos operacionais e de negócio reais (ex: "demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar"). Sem parênteses explicativos redundantes em listagens.
+> - **Enfoque prático e preciso:** Destacar requisitos operacionais e de negócio reais (ex: "demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar"). Sem parênteses explicativos redundantes em listagens. Preservar termos que são critério metodológico (ACID, invariante, snapshot, bounded context).
 
 ## 1. Visão Geral da Pesquisa
 O objetivo é conduzir um estudo comparativo empírico ($3 \times 3$) estruturado na refatoração de três aplicações monolíticas distintas utilizando três metodologias de modelagem arquitetural, avaliadas por meio de *snapshots* incrementais e métricas quantitativas e qualitativas.
