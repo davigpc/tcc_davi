@@ -1,0 +1,66 @@
+@startuml ecommerce__arquitetura-baseline
+' Diagrama de componentes (UML) da aplicacao ecommerce como um todo.
+' Monolito modular NestJS recortado para o fluxo transacional de venda de
+' produtos: identidade, catalogo, carrinho, pedido, estoque e pagamento.
+' Baseline do experimento com provedores locais de pagamento, armazenamento
+' e e-mail. Acoplamentos derivados da analise estatica (madge).
+
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam ArrowFontSize 13
+skinparam linetype ortho
+skinparam nodesep 30
+skinparam ranksep 35
+
+skinparam component {
+  BackgroundColor #1F2D3D
+  BorderColor #1F2D3D
+  FontColor #FFFFFF
+}
+skinparam database {
+  BackgroundColor #1F2D3D
+  BorderColor #1F2D3D
+  FontColor #FFFFFF
+}
+skinparam ArrowColor #6B7A90
+skinparam ArrowFontColor #1F2D3D
+
+component "API REST\n(/api · JWT + papéis)" as API
+
+component "Identidade e acesso\nauth · users · address · token" as Identity
+component "Catálogo\nproducts · search · storages" as Catalog
+component "Fluxo de compra\ncart · item · order\ninventory · stripe (pagamento local)" as Commerce
+component "Comunicação e apoio\nemail (transporte local) · health" as Support
+
+component "shared\n(guardas, filtros, cache, configuração)" as Shared
+database "MongoDB 7\n(replica set)" as Mongo
+database "Redis 7\n(cache)" as Redis
+
+' ----- Despacho da API para os grupos -----
+API --> Identity
+API --> Catalog
+API --> Commerce
+API --> Support
+
+' ----- Principais fluxos entre grupos -----
+Commerce ..> Catalog : itens e catálogo
+Commerce ..> Identity : usuário e cliente
+Commerce ..> Support : e-mail
+Catalog ..> Support : imagens
+Identity ..> Support : foto de perfil
+
+' ----- Infraestrutura compartilhada -----
+Identity ..> Shared
+Catalog ..> Shared
+Commerce ..> Shared
+Support ..> Shared
+Shared --> Mongo : Mongoose
+Shared --> Redis : cache
+
+' ----- Posicionamento em 2x2 -----
+Identity -[hidden]down- Commerce
+Catalog -[hidden]down- Support
+
+@enduml

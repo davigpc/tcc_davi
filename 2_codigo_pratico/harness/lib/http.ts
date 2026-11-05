@@ -51,7 +51,11 @@ export async function waitForHttp(
   throw new Error(`service not ready at ${url} within ${timeoutMs}ms`);
 }
 
-export async function login(baseUrl: string, email: string, password: string): Promise<string> {
+export async function loginResponse(
+  baseUrl: string,
+  email: string,
+  password: string,
+): Promise<{ token: string; body: unknown }> {
   const res = await httpRequest(`${baseUrl}/api/auth/login`, {
     method: 'POST',
     body: { email, password },
@@ -59,8 +63,12 @@ export async function login(baseUrl: string, email: string, password: string): P
   if (res.status !== 200 && res.status !== 201) {
     throw new Error(`login failed (${res.status}): ${JSON.stringify(res.body)}`);
   }
-  const data = res.body as { data?: { accessToken?: string } };
-  const token = data?.data?.accessToken;
+  const data = res.body as { accessToken?: string; data?: { accessToken?: string } };
+  const token = data?.data?.accessToken ?? data?.accessToken;
   if (!token) throw new Error(`login response has no accessToken: ${JSON.stringify(res.body)}`);
-  return token;
+  return { token, body: res.body };
+}
+
+export async function login(baseUrl: string, email: string, password: string): Promise<string> {
+  return (await loginResponse(baseUrl, email, password)).token;
 }

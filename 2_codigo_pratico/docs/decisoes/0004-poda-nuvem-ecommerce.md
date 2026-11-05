@@ -24,8 +24,8 @@ do fork.
 | Stripe | implementação local em `src/modules/stripe` (customer, payment intent, assinatura e webhook sem assinatura) |
 | AWS S3 | disco local em `uploads/`, servido em `/uploads` |
 | SMTP | transporte local em memória, com `verify()` compatível com o `MailerService` |
-| Google OAuth | controller removido do `AuthModule` (a rota deixa de existir) |
-| Twilio | não estava importado no `main.module`; arquivos mantidos (código morto) |
+| Google OAuth | removido no recorte de escopo (ADR-0005) |
+| Twilio | removido no recorte de escopo (ADR-0005) |
 | PM2 cluster (2 instâncias) | `node dist/main.js`, um processo, para comparabilidade com inventory/auction |
 
 ## Alterações
@@ -89,5 +89,5 @@ Health check: `GET http://localhost:3001/api/health/db`.
   transações, porque o driver se conecta como standalone. O caminho canônico é
   o container.
 - `uploads/` é efêmero (sem volume): o seed recria os arquivos a cada execução.
-- `VerificationModule` (Twilio) e `ShippingModule` continuam no repositório,
-  mas não estão no grafo do `main.module`; não fazem chamadas externas.
+- O recorte de escopo (ADR-0005) removeu `verification`, `google.auth` e os
+  placeholders de `shipping`; o baseline atual tem 13 controladores.

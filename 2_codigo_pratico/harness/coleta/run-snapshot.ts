@@ -1,7 +1,8 @@
+import fs from 'node:fs';
 import path from 'node:path';
 import { HARNESS_DIR, fromRepo } from '../lib/paths.js';
 import { ensureDir, readJson, writeJson } from '../lib/util.js';
-import { httpRequest, login } from '../lib/http.js';
+import { httpRequest, loginResponse } from '../lib/http.js';
 import { gatherManifest } from '../lib/manifest.js';
 import * as C from './collectors.js';
 import { generate } from '../analise/gerar.js';
@@ -49,22 +50,51 @@ async function main(): Promise<void> {
   const paridadeDir = path.join(outBase, 'paridade');
   ensureDir(rawDir);
   ensureDir(paridadeDir);
+  for (const file of fs.readdirSync(rawDir)) {
+    fs.rmSync(path.join(rawDir, file), { force: true });
+  }
 
   console.log(`\n=== snapshot: ${app} / ${metodologia} / ${snapshot} ===`);
   console.log(`saida: ${outBase}\n`);
 
   let token = '';
   let ids: Record<string, string> = {};
+  let lastLoginBody: unknown = null;
+
+  const doLogin = async (): Promise<string> => {
+    const result = await loginResponse(
+      cfg.baseUrl,
+      cfg.credentials.email,
+      cfg.credentials.password,
+    );
+    lastLoginBody = result.body;
+    return result.token;
+  };
 
   const discoverIds = async (t: string): Promise<Record<string, string>> => {
-    const w = await httpRequest(`${cfg.baseUrl}/api/warehouses`, { token: t });
-    const p = await httpRequest(`${cfg.baseUrl}/api/products`, { token: t });
-    return C.resolveIdsFromApi(w.body, p.body);
+    if (!cfg.ids) {
+      const w = await httpRequest(`${cfg.baseUrl}/api/warehouses`, { token: t });
+      const p = await httpRequest(`${cfg.baseUrl}/api/products`, { token: t });
+      return C.resolveIdsFromApi(w.body, p.body);
+    }
+    const out: Record<string, string> = {};
+    for (const [key, spec] of Object.entries(cfg.ids)) {
+      let value: unknown;
+      if (spec.from === 'login') {
+        value = C.pickPath(lastLoginBody, spec.path);
+      } else if (spec.url) {
+        const res = await httpRequest(`${cfg.baseUrl}${spec.url}`, { token: t });
+        value = C.pickPath(res.body, spec.path);
+      }
+      out[key] = value == null ? '' : String(value);
+    }
+    return out;
   };
+
   const readCtx = async (): Promise<C.LoadContext> => ({ token, ids });
   const writeCtx = async (): Promise<C.LoadContext> => {
     await C.seedDatabase(cfg);
-    const t = await login(cfg.baseUrl, cfg.credentials.email, cfg.credentials.password);
+    const t = await doLogin();
     return { token: t, ids: await discoverIds(t) };
   };
 
@@ -82,11 +112,12 @@ async function main(): Promise<void> {
   await C.seedDatabase(cfg);
 
   console.log('[4/11] login + descoberta de ids + paridade');
-  token = await login(cfg.baseUrl, cfg.credentials.email, cfg.credentials.password);
+  token = await doLogin();
   ids = await discoverIds(token);
   writeJson(path.join(paridadeDir, 'golden.json'), await C.captureParity(cfg, ids, token));
 
-  console.log('[5/11] docker stats (repouso)');
+  console.log('[5/11] docker stats (repouso) — aguardando estabilizacao');
+  await new Promise((resolve) => setTimeout(resolve, 10000));
   writeJson(path.join(rawDir, 'docker-stats-idle.json'), await C.sampleDockerStats(cfg.statsIdleSec));
 
   console.log('[6/11] autocannon (rotas de leitura)');
@@ -136,7 +167,7 @@ async function main(): Promise<void> {
   writeJson(path.join(outBase, 'manifest.json'), manifest);
 
   console.log('\n--- analise (derivacao) ---');
-  generate(outBase);
+  generate(outBase, cfg.routes.write.map((r) => r.name));
   console.log('\n✅ snapshot concluido\n');
 }
 

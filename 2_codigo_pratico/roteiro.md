@@ -29,7 +29,7 @@ Avaliar, sob as quatro dimensões de métricas definidas no cap. 02 (Agilidade/D
 | Matriz experimental | 3 × 3 completo (9 trilhas) |
 | Organização do código | `2_codigo_pratico/apps/` consolidado |
 | Versionamento dos apps | Git submodules (forks dos upstreams) |
-| E-commerce | Manter íntegro, porém podar dependências de nuvem com stubs locais documentados |
+| E-commerce | Recorte para o fluxo transacional (ADR-0005) + poda de nuvem com stubs locais documentados |
 
 ---
 
@@ -47,7 +47,7 @@ Os três repositórios selecionados no cap. 04 (`04_metodologia.tex`) e presente
 
 - **inventory-api:** `auth`, `users`, `warehouses`, `products`, `movements`, `reports`. O próprio repo se declara *modular monolith* (ADR-0017) com DDD e CQRS parcial no módulo `reports` (ADR-0011) e transações Prisma no `movements` (ADR-0006).
 - **auction:** `auth`, `users`, `cards`, `card-types`, `auctions`, `bids`, `auction-jobs` (worker), `realtime`, `health`.
-- **ecommerce:** `auth`, `user`, `token`, `verification`, `address`, `cart`, `item`, `product`, `offering`, `inventory`, `order`, `stripe`, `shipping`, `review`, `wishlist`, `chat`, `search`, `email`, `storages`, `renting`, `health` (21 controllers, 14 schemas).
+- **ecommerce (recortado, ADR-0005):** `auth`, `user`, `token`, `address`, `cart`, `item`, `product`, `inventory`, `order`, `stripe`, `shipping` (enum/DTO), `search`, `email`, `storages`, `health` (13 controllers). O upstream tinha também `verification`, `offering`, `renting`, `review`, `wishlist` e `chat` (21 controllers), removidos no recorte.
 
 ### 2.2 Como executar cada baseline
 
@@ -133,8 +133,8 @@ As listas abaixo são **hipóteses iniciais** de serviços resultantes, a serem 
 
 | Metodologia | Serviços candidatos |
 |---|---|
-| **Capacidade de Negócio** | Identidade · Catálogo · Carrinho · Pedido/Checkout · Estoque · Envio |
-| **Subdomínio (DDD)** | *Core:* Order/Cart/Checkout · *Suporte:* Catalog (product/item/offering) · *Genérico:* Auth/User, Storage/Email |
+| **Capacidade de Negócio** | Identidade · Catálogo · Carrinho · Pedido/Checkout · Estoque |
+| **Subdomínio (DDD)** | *Core:* Cart/Order/Checkout · *Suporte:* Catalog (product) · *Genérico:* Auth/User, Storage/Email |
 | **Transações** | `Checkout` (Cart + Order + Pagamento + Reserva de Estoque) · Catalog · Identity |
 
 *Fundamento transacional:* a conclusão do pedido acopla carrinho, criação do pedido, pagamento e baixa de estoque.
@@ -238,7 +238,7 @@ Para cada trilha:
 
 | Risco/Pendência | Impacto | Mitigação |
 |---|---|---|
-| Complexidade do e-commerce (21 controllers) | Alto esforço de poda e paridade | Documentar remoções; stubs locais |
+| Complexidade do e-commerce (13 controllers) | Alto esforço de poda e paridade | Documentar remoções; stubs locais |
 | Colisão de portas entre apps | Impossibilita execução simultânea | Tabela de portas única por experimento |
 | `.git` aninhado / clones duplicados | Quebra a estratégia de tags | Submódulos com SHAs pinados |
 | Esforço das 9 trilhas | Prazo | Fases e paridade mínima por snapshot |
@@ -613,9 +613,20 @@ inventário ou início do `auction`).
 
 **Pendente**
 
+- Re-medir o S0 após o recorte de escopo (em andamento).
 - Configuração do harness (`harness/apps/ecommerce.json`) e adaptação do
-  `discoverIds` (hoje ele consulta `/api/warehouses` e `/api/products`, formato
-  do inventário) para medir o S0.
+  `discoverIds`: **concluído** (config com `ids`, `crossDomainDirs` e `tsConfig`).
 - Commit no fork + atualização do ponteiro do submódulo no pai + recriação da
-  tag `snapshot-0` (aguardando autorização).
+  tag `snapshot-0`: **concluído** (`f0dfcc2` no fork, `b4c2359` no pai).
+
+### Recorte de escopo do e-commerce (ADR-0005)
+
+Em 05/11/2026 o e-commerce foi recortado para o fluxo transacional de venda de
+produtos. Foram removidos `renting`, `offerings`, `chat`, `review`, `wishlist`,
+`verification`, `google.auth` e os placeholders de `shipping` (o enum e os DTOs
+de frete continuam, pois o carrinho os usa). O `ItemTypes` passou a ter apenas
+`Product`. São 13 controladores (~12 registrados no `main.module`).
+
+O S0 é re-medido com o app enxuto e a tag `snapshot-0` é movida para o novo
+commit. Detalhes em `docs/decisoes/0005-recorte-ecommerce.md`.
 

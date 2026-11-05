@@ -126,7 +126,10 @@ export interface Summary {
   };
 }
 
-export function generate(outBase: string): Summary {
+export function generate(
+  outBase: string,
+  writeRoutes: string[] = ['movements-post'],
+): Summary {
   const raw = (f: string): string => path.join(outBase, 'raw', f);
   const optional = <T>(f: string, fallback: T): T => (fs.existsSync(f) ? readJson<T>(f) : fallback);
   const manifest = readJson<Record<string, unknown>>(path.join(outBase, 'manifest.json'));
@@ -146,8 +149,10 @@ export function generate(outBase: string): Summary {
   }>(raw('cross-domain-calls.json'));
 
   const rawNames = fs.readdirSync(path.join(outBase, 'raw')).filter((f) => f.startsWith('autocannon-'));
-  const readNames = rawNames.filter((f) => !f.includes('movements-post')).map((f) => f.replace('autocannon-', '').replace('.json', ''));
-  const writeNames = rawNames.filter((f) => f.includes('movements-post')).map((f) => f.replace('autocannon-', '').replace('.json', ''));
+  const nameOf = (f: string): string => f.replace('autocannon-', '').replace('.json', '');
+  const isWrite = (f: string): boolean => writeRoutes.includes(nameOf(f));
+  const readNames = rawNames.filter((f) => !isWrite(f)).map(nameOf);
+  const writeNames = rawNames.filter((f) => isWrite(f)).map(nameOf);
   const toStats = (names: string[]): LoadStats[] => names.map((n) => loadStats(outBase, n));
 
   const containers = Object.keys(idle.reduce<Record<string, true>>((a, s) => ((a[s.Name] = true), a), {}));
@@ -319,7 +324,7 @@ function writeFigures(outBase: string, s: Summary): void {
 function texTable(s: Summary): string {
   const rows: string[] = [];
   const add = (dim: string, met: string, val: string): void => {
-    rows.push(`    ${texEsc(dim)} & ${texEsc(met)} & ${texEsc(val)} \\\\`);
+    rows.push(`    ${texEsc(dim)} & ${texEsc(met)} & ${texEsc(val)} \\\\ \\hline`);
   };
 
   add('Agilidade', 'Tempo de build (media)', `${s.buildTime.meanMs} ms`);
@@ -341,18 +346,19 @@ function texTable(s: Summary): string {
 
   return `% Gerado automaticamente por harness/analise/gerar.ts
 % app: ${s.app} | metodologia: ${s.metodologia} | snapshot: ${s.snapshot}
-\\begin{table}[htb]
+\\begin{quadro}[htb]
   \\centering
-  \\caption{Metricas (${texEsc(s.app)}, ${texEsc(s.metodologia)}, ${texEsc(s.snapshot)}).}
-  \\label{tab:metricas-${texEsc(s.app)}-${texEsc(s.metodologia)}-${texEsc(s.snapshot)}}
-  \\begin{tabular}{llr}
+  \\caption{Métricas (${texEsc(s.app)}, ${texEsc(s.metodologia)}, ${texEsc(s.snapshot)}).}
+  \\label{qua:metricas-${texEsc(s.app)}-${texEsc(s.metodologia)}-${texEsc(s.snapshot)}}
+  \\renewcommand{\\arraystretch}{1.15}
+  \\begin{tabular}{|l|l|r|}
     \\hline
-    \\textbf{Dimensao} & \\textbf{Metrica} & \\textbf{Valor} \\\\
+    \\textbf{Dimensão} & \\textbf{Métrica} & \\textbf{Valor} \\\\
     \\hline
 ${rows.join('\n')}
-    \\hline
   \\end{tabular}
-\\end{table}
+  \\fonte{medição automatizada do experimento (média de três execuções).}
+\\end{quadro}
 `;
 }
 

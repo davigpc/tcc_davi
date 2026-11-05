@@ -1,0 +1,71 @@
+{
+  "app": "ecommerce",
+  "metodologias": ["capacidade-negocio", "subdominio", "transacoes"],
+  "composeDir": "2_codigo_pratico/apps/ecommerce",
+  "composeFile": "docker-compose.experiment.yml",
+  "composeProject": "ecommerce",
+  "baseUrl": "http://localhost:3001",
+  "readinessPath": "/api/health/db",
+  "credentials": { "email": "buyer@example.com", "password": "password123" },
+  "seed": {
+    "service": "api",
+    "command": ["node", "scripts/seed-local.js"]
+  },
+  "containers": ["ecommerce_api", "ecommerce_mongo", "ecommerce_redis"],
+  "images": ["ecommerce-api:latest", "mongo:7", "redis:7-alpine"],
+  "sourceDirs": ["2_codigo_pratico/apps/ecommerce/src"],
+  "crossDomainDirs": ["2_codigo_pratico/apps/ecommerce/src/modules"],
+  "tsConfig": "2_codigo_pratico/apps/ecommerce/tsconfig.json",
+  "sharedModuleAlias": "shared",
+  "ids": {
+    "userId": { "from": "login", "path": "user._id" },
+    "productId": { "url": "/api/products?page=1&size=10", "path": "[0]._id" }
+  },
+  "routes": {
+    "read": [
+      {
+        "name": "products",
+        "method": "GET",
+        "path": "/api/products?page=1&size=10"
+      },
+      {
+        "name": "product-by-id",
+        "method": "GET",
+        "path": "/api/products/{{productId}}"
+      }
+    ],
+    "write": [
+      {
+        "name": "orders",
+        "method": "POST",
+        "path": "/api/orders",
+        "auth": true,
+        "body": {
+          "customer": "{{userId}}",
+          "items": [
+            {
+              "id": "{{productId}}",
+              "type": "Product",
+              "quantity": 1
+            }
+          ],
+          "amount": 101,
+          "billing_details": {
+            "name": "Seed Buyer",
+            "email": "buyer@example.com",
+            "address": "Rua 1",
+            "city": "São João del-Rei",
+            "postcode": "36300-000",
+            "phone": "+550000000000"
+          },
+          "order_notes": "load-test"
+        }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}

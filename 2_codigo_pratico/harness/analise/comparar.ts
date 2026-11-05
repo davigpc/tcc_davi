@@ -58,7 +58,7 @@ const ramIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + c.memA
 const ramLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + c.memAvgMB, 0);
 const imgTotal = (s: Summary): number =>
   Object.entries(s.custo.imagensMB)
-    .filter(([nome]) => !/postgres/i.test(nome))
+    .filter(([nome]) => !/postgres|mongo|redis/i.test(nome))
     .reduce((a, [, mb]) => a + mb, 0);
 const rotas = (s: Summary): Summary['desempenho']['leitura'] => [
   ...s.desempenho.leitura,
@@ -291,32 +291,30 @@ function texSnapshotsTable(
   for (const cat of CATEGORIAS) {
     const catRows = ROWS.filter((r) => r.categoria === cat);
     if (!catRows.length) continue;
-    rows.push(`    \\multicolumn{${cols + 1}}{l}{\\textit{${texEsc(cat)}}} \\\\`);
+    rows.push(`    \\multicolumn{${cols + 1}}{|l|}{\\textbf{${texEsc(cat)}}} \\\\`);
+    rows.push(`    \\hline`);
     for (const r of catRows) {
       const cells = summaries.map((s) => r.fmtValor(r.valores(s))).join(' & ');
       rows.push(`    ${texEsc(r.label)} & ${cells} \\\\`);
     }
+    rows.push(`    \\hline`);
   }
   const appLabel = APP_LABEL[app] ?? app;
   const metLabel = METODOLOGIA_LABEL[metodologia] ?? metodologia;
-  const baselineNote = baseline
-    ? ` S0 = baseline canônico (${texEsc(baseline.label)}); demais snapshots medidos nesta trilha.`
-    : '';
   return `% Gerado automaticamente por harness/analise/comparar.ts
-\\begin{table}[htb]
+\\begin{quadro}[htb]
   \\centering
-  \\caption{${texEsc(appLabel)} — métricas por snapshot (${texEsc(metLabel)}).}
-  \\label{tab:comp_${app}_${metodologia}_snapshots}
-  \\resizebox{\\textwidth}{!}{%
-  \\begin{tabular}{l${'r'.repeat(cols)}}
+  \\caption{${texEsc(appLabel)} --- métricas por snapshot --- ${texEsc(metLabel)}.}
+  \\label{qua:comp_${app}_${metodologia}_snapshots}
+  \\renewcommand{\\arraystretch}{1.15}
+  \\begin{tabularx}{\\textwidth}{|>{\\raggedright\\arraybackslash}X${'|r'.repeat(cols)}|}
     \\hline
     \\textbf{Métrica} & ${head} \\\\
     \\hline
 ${rows.join('\n')}
-    \\hline
-  \\end{tabular}}
-  \\legend{Fonte: medição automatizada do experimento (média de três execuções).${baselineNote}}
-\\end{table}
+  \\end{tabularx}
+  \\fonte{medição automatizada do experimento (média de três execuções).}
+\\end{quadro}
 `;
 }
 
@@ -352,7 +350,8 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
   for (const cat of CATEGORIAS) {
     const catRows = ROWS.filter((r) => r.categoria === cat);
     if (!catRows.length) continue;
-    rows.push(`    \\multicolumn{${ncols + 1}}{l}{\\textit{${texEsc(cat)}}} \\\\`);
+    rows.push(`    \\multicolumn{${ncols + 1}}{|l|}{\\textbf{${texEsc(cat)}}} \\\\`);
+    rows.push(`    \\hline`);
     for (let i = 0; i < ROWS.length; i++) {
       const r = ROWS[i];
       if (r.categoria !== cat) continue;
@@ -363,31 +362,23 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
       );
       rows.push(`    ${texEsc(r.label)} & ${cells}${withMean ? ` & ${r.fmtDelta(medVec)}` : ''} \\\\`);
     }
+    rows.push(`    \\hline`);
   }
   const metLabel = METODOLOGIA_LABEL[v.metodologia] ?? v.metodologia;
-  const baselineLabels = [
-    ...new Set(v.apps.map((a) => a.baselineLabel).filter((x): x is string => x !== null)),
-  ];
-  const canonical = baselineLabels.length === 1 && v.apps.every((a) => a.baselineLabel !== null);
-  const baselinePhrase = canonical ? 'S0 canônico' : 'S0';
-  const baselineNote = canonical
-    ? ` S0 canônico: ${texEsc(baselineLabels[0])}.`
-    : '';
-  const cpuNote = ' A variação de CPU em repouso é expressa em pontos percentuais (p.p.); as demais, em variação relativa.';
   return `% Gerado automaticamente por harness/analise/comparar.ts
-\\begin{table}[htb]
+\\begin{quadro}[htb]
   \\centering
-  \\caption{Variação acumulada por aplicação — ${texEsc(metLabel)} (${baselinePhrase} $\\rightarrow$ último snapshot).}
-  \\label{tab:comp_${v.metodologia}_variacoes}
-  \\begin{tabular}{l${'r'.repeat(ncols)}}
+  \\caption{Variação acumulada por aplicação --- ${texEsc(metLabel)}.}
+  \\label{qua:comp_${v.metodologia}_variacoes}
+  \\renewcommand{\\arraystretch}{1.15}
+  \\begin{tabular}{|l${'|r'.repeat(ncols)}|}
     \\hline
     \\textbf{Métrica} & ${header}${withMean ? ' & \\textbf{Média}' : ''} \\\\
     \\hline
 ${rows.join('\n')}
-    \\hline
   \\end{tabular}
-  \\legend{Fonte: elaborado pelo autor (2026) a partir da medição automatizada.${baselineNote}${cpuNote}}
-\\end{table}
+  \\fonte{medição automatizada do experimento (média de três execuções).}
+\\end{quadro}
 `;
 }
 
@@ -402,7 +393,8 @@ function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
   for (const cat of CATEGORIAS) {
     const catRows = ROWS.map((r, i) => ({ r, i })).filter((x) => x.r.categoria === cat);
     if (!catRows.length) continue;
-    rows.push(`    \\multicolumn{${nomes.length + 1}}{l}{\\textit{${texEsc(cat)}}} \\\\`);
+    rows.push(`    \\multicolumn{${nomes.length + 1}}{|l|}{\\textbf{${texEsc(cat)}}} \\\\`);
+    rows.push(`    \\hline`);
     for (const { r, i } of catRows) {
       const cells = metodologias.map((m) => {
         const deltas = m.apps.map((a) => a.deltas[i]).filter((d): d is number[] => Array.isArray(d));
@@ -413,34 +405,24 @@ function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
       });
       rows.push(`    ${texEsc(r.label)} & ${cells.join(' & ')} \\\\`);
     }
+    rows.push(`    \\hline`);
   }
   const header = nomes.map((n) => `\\textbf{${texEsc(METODOLOGIA_LABEL[n] ?? n)}}`).join(' & ');
-  const baselineLabels = [
-    ...new Set(
-      metodologias
-        .flatMap((m) => m.apps.map((a) => a.baselineLabel))
-        .filter((x): x is string => x !== null),
-    ),
-  ];
-  const baselineNote =
-    baselineLabels.length === 1 ? ` S0 canônico: ${texEsc(baselineLabels[0])}.` : '';
-  const cpuNote =
-    ' A variação de CPU em repouso é expressa em pontos percentuais (p.p.); as demais, em variação relativa.';
   return `% Gerado automaticamente por harness/analise/comparar.ts
-\\begin{table}[htb]
+\\begin{quadro}[htb]
   \\centering
-  \\caption{Variação acumulada por metodologia (S0 canônico $\\rightarrow$ último snapshot).}
-  \\label{tab:comp_metodologias}
-  \\resizebox{\\textwidth}{!}{%
-  \\begin{tabular}{l${'r'.repeat(nomes.length)}}
+  \\caption{Variação acumulada por metodologia (S0 $\\rightarrow$ último snapshot).}
+  \\label{qua:comp_metodologias}
+  \\renewcommand{\\arraystretch}{1.15}
+  \\setlength{\\tabcolsep}{4pt}
+  \\begin{tabularx}{\\textwidth}{|>{\\raggedright\\arraybackslash}X${'|r'.repeat(nomes.length)}|}
     \\hline
     \\textbf{Métrica} & ${header} \\\\
     \\hline
 ${rows.join('\n')}
-    \\hline
-  \\end{tabular}}
-  \\legend{Fonte: elaborado pelo autor (2026) a partir da medição automatizada.${baselineNote}${cpuNote}}
-\\end{table}
+  \\end{tabularx}
+  \\fonte{elaborado pelo autor (2026) a partir da medição automatizada.}
+\\end{quadro}
 `;
 }
 

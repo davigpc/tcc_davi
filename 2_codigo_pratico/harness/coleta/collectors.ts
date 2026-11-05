@@ -38,6 +38,10 @@ export interface AppConfig {
   startupReps: number;
   statsIdleSec: number;
   statsLoadSec: number;
+  ids?: Record<string, { from?: 'login'; url?: string; path: string }>;
+  crossDomainDirs?: string[];
+  tsConfig?: string;
+  sharedModuleAlias?: string;
 }
 
 const compose = (cfg: AppConfig, args: string[], opts: { timeoutMs?: number } = {}) =>
@@ -159,13 +163,25 @@ function resolveTemplate(tpl: string, ids: Record<string, string>): string {
   return tpl.replace(/\{\{(\w+)\}\}/g, (_, k) => ids[k] ?? '');
 }
 
+function resolveValue(value: unknown, ids: Record<string, string>): unknown {
+  if (typeof value === 'string') return resolveTemplate(value, ids);
+  if (Array.isArray(value)) return value.map((item) => resolveValue(item, ids));
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [
+        k,
+        resolveValue(v, ids),
+      ]),
+    );
+  }
+  return value;
+}
+
 function resolveBody(
   body: Record<string, unknown>,
   ids: Record<string, string>,
 ): Record<string, unknown> {
-  return Object.fromEntries(
-    Object.entries(body).map(([k, v]) => [k, typeof v === 'string' ? resolveTemplate(v, ids) : v]),
-  );
+  return resolveValue(body, ids) as Record<string, unknown>;
 }
 
 export interface LoadContext {
@@ -275,6 +291,15 @@ function sourceRoots(cfg: AppConfig): SourceRoot[] {
   });
 }
 
+function crossDomainRoots(cfg: AppConfig): SourceRoot[] {
+  const dirs =
+    cfg.crossDomainDirs ?? cfg.sourceDirs ?? (cfg.sourceDir ? [cfg.sourceDir] : []);
+  return dirs.map((d) => {
+    const root = fromRepo(d);
+    return { label: path.basename(path.dirname(root)), root };
+  });
+}
+
 export function collectLoc(cfg: AppConfig): LocResult {
   const roots = sourceRoots(cfg);
   const multi = roots.length > 1;
@@ -349,7 +374,7 @@ export interface CrossDomainResult {
 }
 
 export async function collectCrossDomain(cfg: AppConfig): Promise<CrossDomainResult> {
-  const roots = sourceRoots(cfg);
+  const roots = crossDomainRoots(cfg);
   const multi = roots.length > 1;
   const edgeMap = new Map<string, number>();
   const modules = new Set<string>();
@@ -359,7 +384,9 @@ export async function collectCrossDomain(cfg: AppConfig): Promise<CrossDomainRes
   for (const { label, root } of roots) {
     const res = await madge(root, {
       fileExtensions: ['ts'],
-      tsConfig: path.resolve(root, '..', 'tsconfig.json'),
+      tsConfig: cfg.tsConfig
+        ? fromRepo(cfg.tsConfig)
+        : path.resolve(root, '..', 'tsconfig.json'),
     });
     const obj = res.obj() as Record<string, string[]>;
 
@@ -368,7 +395,12 @@ export async function collectCrossDomain(cfg: AppConfig): Promise<CrossDomainRes
       const isAbs = /^[A-Za-z]:\//.test(norm) || norm.startsWith('/');
       const rel = isAbs ? path.relative(root, norm).replace(/\\/g, '/') : norm;
       const seg = rel.split('/');
-      const first = seg.length > 1 ? seg[0] : '_root';
+      const first =
+        seg[0] === '..' && cfg.sharedModuleAlias
+          ? cfg.sharedModuleAlias
+          : seg.length > 1
+            ? seg[0]
+            : '_root';
       return multi ? `${label}/${first}` : first;
     };
 
@@ -427,4 +459,16 @@ export function resolveIdsFromApi(
   const wh = (warehouses as { data?: { data?: Array<{ id: string }> } })?.data?.data?.[0]?.id ?? '';
   const pr = (products as { data?: { data?: Array<{ id: string }> } })?.data?.data?.[0]?.id ?? '';
   return { warehouseId: wh, productId: pr };
+}
+
+export function pickPath(obj: unknown, expr: string): unknown {
+  return expr.split('.').reduce<unknown>((acc, part) => {
+    if (acc == null) return undefined;
+    const m = part.match(/^(\w*)\[(\d+)\]$/);
+    if (m) {
+      const base = m[1] ? (acc as Record<string, unknown>)[m[1]] : acc;
+      return Array.isArray(base) ? base[Number(m[2])] : undefined;
+    }
+    return (acc as Record<string, unknown>)[part];
+  }, obj);
 }
