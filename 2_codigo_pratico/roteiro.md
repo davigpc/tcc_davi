@@ -563,3 +563,59 @@ consolidadas em `main` (merge `7f23187`) e a seção 5.4 do capítulo 5 (Subdom�
 Sistema de Inventário) foi escrita. Próximo passo: preencher as seções "Aprendizado
 sobre decomposição" dos registros e dar seguimento às trilhas (Transações do
 inventário ou início do `auction`).
+
+---
+
+## 14. Baseline do e-commerce (poda de nuvem)
+
+**Status:** concluído e validado em 05/11/2026.
+**Branch do fork:** `baseline/poda-nuvem` (parte de `master`).
+**Registro completo:** `docs/decisoes/0004-poda-nuvem-ecommerce.md`.
+
+**Substituições**
+
+| Integração | Substituto local |
+|---|---|
+| MongoDB Atlas | `mongo:7` em container, replica set `rs0` (necessário para as transações do pedido) |
+| Redis externo | `redis:7-alpine` |
+| Stripe | implementação local (`cus_local_*`, `pi_local_*`, `sub_local_*`) e webhook sem assinatura |
+| AWS S3 | disco local (`uploads/`) servido em `/uploads` |
+| SMTP | transporte local em memória |
+| Google OAuth | controller removido do `AuthModule` |
+| Twilio | já era código morto (fora do `main.module`) |
+| PM2 cluster | `node dist/main.js` (um processo) |
+
+**Arquivos principais**
+
+- `docker-compose.experiment.yml`: API + Mongo (replica set) + Redis.
+- `scripts/seed-local.js`: seed determinístico (apaga o banco, registra usuário,
+  cria 2 produtos, 1 offering e 1 pedido).
+- `Dockerfile`: produção com `COPY scripts` e `CMD node dist/main.js`.
+- `.example.env` saneado; `.production.env` e `.development.env` locais
+  (gitignored).
+
+**Bugs do upstream corrigidos no caminho**
+
+- `order-confirmation.hbs` não existia (o serviço o referenciava).
+- `ProductService.updateProductStock` não aguardava o `updateOne`; a transação
+  commitava antes da baixa de estoque.
+- O contexto do e-mail de confirmação usava campos inexistentes no pedido.
+
+**Validação**
+
+- Build da imagem e `docker compose up` com os três containers.
+- `GET /api/health/db` → 200.
+- Registro de usuário sem chamada externa.
+- Upload de imagem servido em `/uploads/...` → 200.
+- Pedido criado com payment intent local.
+- Webhook local: pedido `paid`, estoque 10 → 8, e-mail registrado no transporte
+  local.
+
+**Pendente**
+
+- Configuração do harness (`harness/apps/ecommerce.json`) e adaptação do
+  `discoverIds` (hoje ele consulta `/api/warehouses` e `/api/products`, formato
+  do inventário) para medir o S0.
+- Commit no fork + atualização do ponteiro do submódulo no pai + recriação da
+  tag `snapshot-0` (aguardando autorização).
+
