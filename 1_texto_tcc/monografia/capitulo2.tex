@@ -1,0 +1,34 @@
+\chapter{Revisão de Literatura}\label{cap:metodologia}
+
+Aqui entra sua revisão de literatura, citando os artigos necessários. Os comandos para citar são:
+
+\begin{itemize}
+	\item \texttt{\textbackslash cite\{autor\}}: para citar o texto, como em \verb|\cite{ibge1993}|, que imprime \cite{ibge1993}.
+	\item \texttt{\textbackslash textcite\{autor\}}: para citar o autor no texto, como em \verb|\textcite{ibge1993}|, que imprime \textcite{ibge1993}.
+	\item \texttt{\textbackslash citeyear\{autor\}}: para citar apenas o ano da publicação, como em \verb|\citeyear{ibge1993}|, que imprime \citeyear{ibge1993}.
+	\item \texttt{\textbackslash parencite\{autor\}}: para citar o texto entre parênteses, como em \verb|\parencite{ibge1993}|, que imprime \parencite{ibge1993}.
+	\item \texttt{\textbackslash footcite\{autor\}}: para citar o texto em uma nota de rodapé, como em \verb|\footcite{ibge1993}|, que imprime \footcite{ibge1993}.
+	\item \texttt{\textbackslash fullcite\{autor\}}: para citar a referência completa, como em \verb|\fullcite{ibge1993}|, que imprime \fullcite{ibge1993}.
+	\item \texttt{\textbackslash citetitle\{autor\}}: para citar apenas o título da publicação, como em \verb|\citetitle{ibge1993}|, que imprime \citetitle{ibge1993}.
+	\item \texttt{\textbackslash citeurl\{autor\}}: para citar a URL da publicação, como em \verb|\citeurl{babel}|, que imprime \citeurl{babel}.
+\end{itemize}
+
+As referências estão todas no arquivo \texttt{bibliografia.bib}. Para adicionar uma nova referência, basta adicionar uma nova entrada no arquivo \texttt{bibliografia.bib} e citá-la no texto.
+
+Note que citar só partes da referência não conta como citação lá no capítulo de Referências, como por exemplo a citação da url do pacote babel.
+Para resolver, basta citá-la antes, como por exemplo:
+
+\begin{center}
+\begin{verbatim}
+	A Babel é uma ferramenta de internacionalização de documentos
+	\cite{babel}, e pode ser consultada em \citeurl{babel}.		
+\end{verbatim}
+\end{center}
+
+que irá imprimir:
+
+\begin{center}
+	A Babel é uma ferramenta de internacionalização de documentos \cite{babel}, e pode ser consultada em \citeurl{babel}.	
+\end{center}
+
+Assim, agora nas Referências constará 1 citação para Babel.

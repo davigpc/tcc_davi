@@ -1,0 +1,13 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{busca\PYGZus{}binaria}\PYG{p}{(}\PYG{n}{arr}\PYG{p}{,} \PYG{n}{alvo}\PYG{p}{):}
+    \PYG{n}{inicio}\PYG{p}{,} \PYG{n}{fim} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{arr}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}
+    \PYG{k}{while} \PYG{n}{inicio} \PYG{o}{\PYGZlt{}=} \PYG{n}{fim}\PYG{p}{:}
+        \PYG{n}{meio} \PYG{o}{=} \PYG{p}{(}\PYG{n}{inicio} \PYG{o}{+} \PYG{n}{fim}\PYG{p}{)} \PYG{o}{//} \PYG{l+m+mi}{2}
+        \PYG{k}{if} \PYG{n}{arr}\PYG{p}{[}\PYG{n}{meio}\PYG{p}{]} \PYG{o}{==} \PYG{n}{alvo}\PYG{p}{:}
+            \PYG{k}{return} \PYG{n}{meio}
+        \PYG{k}{elif} \PYG{n}{arr}\PYG{p}{[}\PYG{n}{meio}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{n}{alvo}\PYG{p}{:}
+            \PYG{n}{inicio} \PYG{o}{=} \PYG{n}{meio} \PYG{o}{+} \PYG{l+m+mi}{1}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n}{fim} \PYG{o}{=} \PYG{n}{meio} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}
+    \PYG{k}{return} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}
+\end{MintedVerbatim}

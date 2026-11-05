@@ -11,7 +11,7 @@ Com o crescimento da complexidade das aplicações e a exigência de entregas co
 
 \section{Arquitetura Monolítica}
 
-Um número considerável de sistemas de software foi desenvolvido sob o paradigma monolítico. De acordo com \citeonline{richardson2018}, uma aplicação monolítica é concebida como uma unidade lógica singular de execução. Em um monólito típico, todos os componentes do sistema, tais como a interface com o usuário, a lógica de negócio e os módulos de acesso a dados, são empacotados e implantados conjuntamente em um único processo computacional.
+Um número considerável de sistemas de software foi desenvolvido sob o paradigma monolítico. De acordo com \textcite{richardson2018}, uma aplicação monolítica é concebida como uma unidade lógica singular de execução. Em um monólito típico, todos os componentes do sistema, tais como a interface com o usuário, a lógica de negócio e os módulos de acesso a dados, são empacotados e implantados conjuntamente em um único processo computacional.
 
 Embora a arquitetura monolítica apresente vantagens nos estágios iniciais do ciclo de vida do software, como a simplicidade de testes locais, a facilidade de implantação inicial e a alta performance de chamadas de função diretas em memória, ela frequentemente enfrenta severos gargalos à medida que o sistema e a organização expandem-se, conforme cita \cite{newman2021}.
 
@@ -25,9 +25,9 @@ Ressalta-se que, no contexto deste trabalho, um sistema web com arquitetura clie
 
 \section{Arquitetura de Microsserviços}
 
-Para suplantar as limitações da arquitetura monolítica, \citeonline{lewis2014} definem a arquitetura de microsserviços como uma abordagem em que a aplicação é projetada como um ecossistema de pequenos serviços autônomos. Cada serviço é executado em seu próprio processo computacional e se comunica com os demais por meio de protocolos na rede.
+Para suplantar as limitações da arquitetura monolítica, \textcite{lewis2014} definem a arquitetura de microsserviços como uma abordagem em que a aplicação é projetada como um ecossistema de pequenos serviços autônomos. Cada serviço é executado em seu próprio processo computacional e se comunica com os demais por meio de protocolos na rede.
 
-Segundo \citeonline{newman2021}, microsserviços são unidades de software independentemente implantáveis, fortemente coesas e estruturadas em torno de limites de negócios específicos. Em vez de organizar o código por camadas técnicas horizontais, tais como camada de visão, de regras de negócio (controle), modelo e persistência, os microsserviços alinham a estrutura do software às capacidades de negócio da organização, promovendo o desacoplamento e a clareza de responsabilidade de cada componente, conforme mostrado na Figura \ref{fig_mono_x_micro}. Do ponto de vista da funcionalidade do software, a granularidade de um microsserviço pode variar, podendo contemplar um todo um requisito funcional (cadastro de produto, por exemplo) ou ser equivalente a uma simples função de código (verificação de CPF ou de CEP, por exemplo).
+Segundo \textcite{newman2021}, microsserviços são unidades de software independentemente implantáveis, fortemente coesas e estruturadas em torno de limites de negócios específicos. Em vez de organizar o código por camadas técnicas horizontais, tais como camada de visão, de regras de negócio (controle), modelo e persistência, os microsserviços alinham a estrutura do software às capacidades de negócio da organização, promovendo o desacoplamento e a clareza de responsabilidade de cada componente, conforme mostrado na Figura \ref{fig_mono_x_micro}. Do ponto de vista da funcionalidade do software, a granularidade de um microsserviço pode variar, podendo contemplar um todo um requisito funcional (cadastro de produto, por exemplo) ou ser equivalente a uma simples função de código (verificação de CPF ou de CEP, por exemplo).
 
 \begin{figure}
     \centering
@@ -38,7 +38,7 @@ Segundo \citeonline{newman2021}, microsserviços são unidades de software indep
 
 %\subsection{Características Fundamentais} Não precisa quebrar em muitas subsseções
 
-A transição para microsserviços se fundamenta em um conjunto de características e princípios arquiteturais estruturantes \cite{velepucha2023}. A primeira dessas características refere-se à componentização, que, conforme \citeonline{lewis2014}, significa a substituição da modularização local tradicional por serviços independentes expostos via rede. Essa mudança assegura que a substituição, atualização ou manutenção de um serviço específico ocorra sem a necessidade de recompactar ou reimplantar os demais componentes do ecossistema.
+A transição para microsserviços se fundamenta em um conjunto de características e princípios arquiteturais estruturantes \cite{velepucha2023}. A primeira dessas características refere-se à componentização, que, conforme \textcite{lewis2014}, significa a substituição da modularização local tradicional por serviços independentes expostos via rede. Essa mudança assegura que a substituição, atualização ou manutenção de um serviço específico ocorra sem a necessidade de recompactar ou reimplantar os demais componentes do ecossistema.
 
 Outra diferença provocada pela substituição de módulos por serviços de rede é a presença de múltiplas tecnologias na construção da aplicação. Enquanto o monólito geralmente é construído com uma única linguagem e/ou um único \textit{framework} para toda a aplicação, os microsserviços viabilizam a adoção de diversas tecnologias, formando uma chamada "arquitetura poliglota" \cite{richardson2018}. Dessa forma, cada microsserviço é construído com a linguagem ou biblioteca que melhor se adapta à funcionalidade implementada.
 
@@ -75,7 +75,7 @@ Entretanto, essa abordagem apresenta limitações quando aplicada a sistemas mon
 \subsection{Decomposição por Subdomínio (DDD)}
 % Visão de fronteiras lógicas e isolamento de dados.
 
-A decomposição por subdomínio baseia-se nos princípios do \textit{Domain-Driven Design} (DDD), propostos por \citeonline{evans2003} e aplicados à arquitetura de microsserviços por \citeonline{richardson2018}. Nessa abordagem, o domínio do sistema é particionado em subdomínios, classificados em centrais, de suporte e genéricos, sendo cada um associado a um Contexto Delimitado (\textit{Bounded Context}).
+A decomposição por subdomínio baseia-se nos princípios do \textit{Domain-Driven Design} (DDD), propostos por \textcite{evans2003} e aplicados à arquitetura de microsserviços por \textcite{richardson2018}. Nessa abordagem, o domínio do sistema é particionado em subdomínios, classificados em centrais, de suporte e genéricos, sendo cada um associado a um Contexto Delimitado (\textit{Bounded Context}).
 
 O conceito de \textit{Bounded Context} estabelece que cada modelo de dados e vocabulário técnico possui significado estrito dentro de seus limites lógicos \cite{evans2003}. Por exemplo, a entidade "Cliente" no contexto de vendas possui atributos e regras de negócio distintos da mesma entidade no contexto de atendimento ou faturamento.
 
@@ -116,7 +116,7 @@ O consumo de recursos computacionais é monitorado de forma isolada por contêin
 \subsection{Métricas de Desempenho}
 % Latência de API e Vazão Máxima.
 
-Para avaliar o comportamento dinâmico e o impacto de gargalos operacionais gerados pela transição arquitetural, a pesquisa emprega métricas de desempenho, com ênfase na latência de API e na vazão máxima (\textit{throughput}). O fundamento empírico dessas medições baseia-se na identificação de restrições de desempenho provocadas pela conversão de dependências locais em chamadas de rede. Conforme apontam \citeonline{richardson2018} e \citeonline{newman2020}, a introdução da comunicação interprocessos (IPC) nas fronteiras dos microsserviços adiciona sobrecarga temporal que afeta diretamente a eficiência do sistema.
+Para avaliar o comportamento dinâmico e o impacto de gargalos operacionais gerados pela transição arquitetural, a pesquisa emprega métricas de desempenho, com ênfase na latência de API e na vazão máxima (\textit{throughput}). O fundamento empírico dessas medições baseia-se na identificação de restrições de desempenho provocadas pela conversão de dependências locais em chamadas de rede. Conforme apontam \textcite{richardson2018} e \textcite{newman2020}, a introdução da comunicação interprocessos (IPC) nas fronteiras dos microsserviços adiciona sobrecarga temporal que afeta diretamente a eficiência do sistema.
 
 A latência é quantificada por meio de percentis, que revelam o comportamento sob estresse e a estabilidade nos tempos de resposta da aplicação. Ademais, a vazão máxima mensura o volume limite de requisições processadas por segundo sob condições controladas de concorrência. Nesse sentido, essas métricas permitem correlacionar diretamente a eficiência operacional da aplicação com o grau de acoplamento distribuído e a sobrecarga de rede imposta por cada abordagem de decomposição.
 
@@ -127,12 +127,12 @@ A latência é quantificada por meio de percentis, que revelam o comportamento s
 
 Para avaliar a evolução estrutural da arquitetura ao longo da refatoração, a pesquisa emprega métricas voltadas à manutenibilidade e complexidade, com destaque para as Linhas de Código (LOC), a contagem de componentes físicos e o cruzamento de fronteiras. O fundamento teórico para a análise desse acoplamento baseia-se no conceito de conascência (\textit{connascence}), definido formalmente como a interdependência na qual a alteração em um elemento de software exige a modificação de outro para preservar a corretude do sistema \cite{pagejones1992}. O objetivo central do \textit{design} de arquiteturas modulares é a minimização da conascência e do cruzamento de fronteiras entre domínios distintos.
 
-No monólito, o cruzamento de fronteiras é observado como conascências estáticas de nome e tipo, quantificadas por meio de análise estática do código-fonte. Durante a transição para microsserviços por meio do padrão \textit{Strangler Fig}, a remoção dessas dependências físicas evita o acoplamento indesejado que, conforme alertam \citeonline{newman2020} e \citeonline{richardson2018}, converte simples chamadas locais de código em comunicações síncronas via rede (\textit{Inter-Process Communication} - IPC). Além disso, o rastreamento das Linhas de Código (LOC) e do número de componentes físicos permite mensurar o esforço de refatoração, o dimensionamento dos artefatos e o impacto do isolamento em cada estágio da pesquisa.
+No monólito, o cruzamento de fronteiras é observado como conascências estáticas de nome e tipo, quantificadas por meio de análise estática do código-fonte. Durante a transição para microsserviços por meio do padrão \textit{Strangler Fig}, a remoção dessas dependências físicas evita o acoplamento indesejado que, conforme alertam \textcite{newman2020} e \textcite{richardson2018}, converte simples chamadas locais de código em comunicações síncronas via rede (\textit{Inter-Process Communication} - IPC). Além disso, o rastreamento das Linhas de Código (LOC) e do número de componentes físicos permite mensurar o esforço de refatoração, o dimensionamento dos artefatos e o impacto do isolamento em cada estágio da pesquisa.
 
 \section{Engenharia de Software Experimental}
 \label{sec:eng_software_experimental}
 
-A condução de pesquisas empíricas na área de computação exige o rigor metodológico característico da Engenharia de Software Experimental \cite{wohlin2012}. Conforme discutem \citeonline{kitchenham2002}, abordagens experimentais permitem avaliar tecnologias, métodos e ferramentas de software em ambientes controlados, fornecendo evidências quantitativas sobre os seus reais impactos, benefícios e limitações.
+A condução de pesquisas empíricas na área de computação exige o rigor metodológico característico da Engenharia de Software Experimental \cite{wohlin2012}. Conforme discutem \textcite{kitchenham2002}, abordagens experimentais permitem avaliar tecnologias, métodos e ferramentas de software em ambientes controlados, fornecendo evidências quantitativas sobre os seus reais impactos, benefícios e limitações.
 
 No contexto de refatoração arquitetural, a experimentação controlada por meio de matrizes comparativas e métricas reprodutíveis, como análise estática de código e testes de carga dinâmicos, é fundamental para mitigar vieses subjetivos. Isso possibilita que decisões de migração de monólitos para microsserviços sejam sustentadas por dados empíricos sólidos e mensuráveis.
 

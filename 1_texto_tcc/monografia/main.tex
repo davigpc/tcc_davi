@@ -1,0 +1,122 @@
+%% =========================================================================
+%% ufsj-abnTeX2 v-1.3 (2026/10/19): Modelo de Trabalho de Conclusão de
+%% Curso do Bacharelado em Ciência da Computação da UFSJ, baseado no abnTeX2.
+%% Copyright 2024-2026 Daniel Madeira -- LPPL 1.3c (ver README.md)
+%%
+%% COMO USAR ESTE ARQUIVO
+%%  - Preencha apenas os campos dos blocos numerados de 1 a 5, marcados com
+%%    >>> PREENCHER <<<. Os blocos marcados com (OPCIONAL) podem ser
+%%    apagados ou comentados com %.
+%%  - Escreva o texto do trabalho nos arquivos capitulo*.tex (bloco 6).
+%%  - NÃO altere a formatação: ela é definida pela classe ufsj-abntex2.cls,
+%%    conforme a IN do curso (https://ccomp.ufsj.edu.br/documentos).
+%%  - Campos obrigatórios não preenchidos aparecem em vermelho no PDF e
+%%    geram avisos "Campo obrigatorio nao preenchido" no log.
+%%  - Capa, folha de rosto, folha de aprovação, listas e sumário são
+%%    gerados automaticamente. As listas de ilustrações, quadros, tabelas e
+%%    algoritmos só aparecem se o trabalho tiver esses elementos.
+%% =========================================================================
+
+\documentclass{ufsj-abntex2}
+
+% Se precisar de algum pacote extra, carregue-o aqui com \usepackage.
+
+% =========================================================================
+% 1. DADOS DO TRABALHO                                    >>> PREENCHER <<<
+% =========================================================================
+\titulo{TÍTULO DO TRABALHO}
+\autor{Davi Gomes Pinto Coelho}
+\data{2026}                 % ex.: 2026
+\datadefesa{DIA de MÊS de ANO}       % ex.: 15 de julho de 2026
+
+% =========================================================================
+% 2. BANCA EXAMINADORA                                    >>> PREENCHER <<<
+%    Formato: {Nome completo}{Instituição}
+% =========================================================================
+\orientador{Prof. Dr. Matheus Carvalho Viana}{UFSJ}
+\coorientador{NOME DO COORIENTADOR}{UFSJ}   % (OPCIONAL) apague se não houver
+\avaliador{NOME DO AVALIADOR}{UFSJ}         % repita a linha para cada membro
+\avaliador{NOME DO OUTRO AVALIADOR}{UFSJ}
+
+% =========================================================================
+% 3. REFERÊNCIAS                                          >>> PREENCHER <<<
+%    Cadastre suas referências no arquivo abaixo (formato BibLaTeX).
+% =========================================================================
+\addbibresource{bibliografia.bib}
+
+% =========================================================================
+% 4. RESUMO E ABSTRACT                                    >>> PREENCHER <<<
+%    Formato: {texto}{palavras-chave separadas por ponto}
+% =========================================================================
+\textoresumo{%
+ A evolução dos sistemas de informação frequentemente conduz aplicações construídas sob arquiteturas monolíticas a gargalos de acoplamento, complexidade de manutenção e limitações de escalabilidade. A transição para microsserviços surge como alternativa para viabilizar o desacoplamento e a evolução independente dos serviços, mas a escolha da estratégia de decomposição ainda carece de validação empírica consistente na literatura. Este trabalho apresenta um estudo empírico comparativo estruturado em uma matriz $3 \times 3$, avaliando o impacto de três metodologias de decomposição arquitetural (por Capacidade de Negócio, por Subdomínio com \textit{Domain-Driven Design} e por Transações com foco em restrições ACID) aplicadas a três sistemas monolíticos de código aberto em TypeScript e NestJS, representativos de domínios distintos: controle de inventário de missão crítica, plataforma de leilões com alta concorrência em tempo real e comércio eletrônico transacional. A migração incremental é conduzida por meio do padrão \textit{Strangler Fig} mediado por proxy reverso NGINX na borda, com coleta de dados quantitativos em quatro marcos de transição. A avaliação contempla quatro categorias de medição: agilidade e DevOps, custo operacional e infraestrutura, desempenho de requisições sob estresse de carga e manutenibilidade estrutural do código.
+}{Microsserviços. Decomposição de Monólitos. Estudo Empírico. Strangler Fig. Desempenho de Software.}
+
+\textoabstract{%
+ The evolution of information systems often leads applications built on monolithic architectures to coupling bottlenecks, high maintenance complexity, and scalability limitations. Transitioning to microservices emerges as an alternative to foster decoupling and independent service evolution; however, the choice of decomposition strategy still lacks consistent empirical validation in the literature. This work presents an empirical comparative study structured in a $3 \times 3$ matrix, evaluating the impact of three architectural decomposition methodologies (by Business Capability, by Subdomain with Domain-Driven Design, and by Transactions focusing on ACID constraints) applied to three open-source monolithic systems in TypeScript and NestJS, representative of distinct domains: mission-critical inventory management, high-concurrency real-time auctions, and transactional e-commerce. Incremental migration is conducted using the Strangler Fig pattern mediated by an edge NGINX reverse proxy, with quantitative data collection across four transition milestones (snapshots). The evaluation covers four measurement categories: agility and DevOps, operational cost and infrastructure, request performance under stress testing, and structural code maintainability.
+}{Microservices. Monolith Decomposition. Empirical Study. Strangler Fig. Software Performance.}
+
+% =========================================================================
+% 5. ELEMENTOS OPCIONAIS                                         (OPCIONAL)
+%    Apague ou comente (%) os que não quiser usar.
+% =========================================================================
+\textodedicatoria{%
+ Dedico este trabalho à minha mãe, meu pai e meu cachorro\dots
+}
+
+\textoagradecimentos{%
+ Agradeço ao café por me manter acordado durante as longas noites de estudo.
+ Também sou grato à internet, por fornecer respostas rápidas para dúvidas
+ inesperadas. Por fim, agradeço às playlists de música instrumental, que
+ ajudaram a manter o foco e a inspiração ao longo deste trabalho.
+}
+
+% Formato: {texto}{autor}
+\textoepigrafe{%
+ Uma mente que se abre a uma nova ideia nunca mais volta ao tamanho original.
+}{Albert Einstein}
+
+% Lista de abreviaturas e siglas. Formato: \sigla{SIGLA}{significado}
+\sigla{ABNT}{Associação Brasileira de Normas Técnicas}
+\sigla{abnTeX}{ABsurdas Normas para TeX}
+
+% Lista de símbolos. Formato: \simbolo{$símbolo$}{significado}
+\simbolo{$\Gamma$}{Letra grega Gama}
+\simbolo{$\Lambda$}{Lambda}
+\simbolo{$\zeta$}{Letra grega minúscula zeta}
+\simbolo{$\in$}{Pertence}
+
+% =========================================================================
+% A PARTIR DAQUI, ALTERE APENAS A LISTA DE CAPÍTULOS E O BLOCO 7
+% =========================================================================
+\begin{document}
+
+% Capa, folha de rosto, folha de aprovação, dedicatória, agradecimentos,
+% epígrafe, resumos, listas e sumário (gerados automaticamente)
+\elementospretextuais
+
+% =========================================================================
+% 6. CAPÍTULOS                                            >>> PREENCHER <<<
+%    Um arquivo .tex por capítulo; acrescente ou remova linhas conforme
+%    necessário.
+% =========================================================================
+\include{capitulo3}
+
+\include{01_introducao}
+\include{02_fundamentacao}
+\include{03_trabalhos_relacionados}
+\include{04_metodologia}
+\include{05_resultados_discussoes}
+\include{06_conclusao}
+
+% Referências (geradas automaticamente a partir do bloco 3)
+\elementospostextuais
+
+% =========================================================================
+% 7. APÊNDICES E ANEXOS                                          (OPCIONAL)
+%    Comente (%) a linha correspondente se não houver.
+% =========================================================================
+\include{apendices}
+\include{anexos}
+
+\end{document}

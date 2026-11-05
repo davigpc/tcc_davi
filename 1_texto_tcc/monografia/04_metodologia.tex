@@ -4,62 +4,68 @@
 % Introdução breve do capítulo explicando que a pesquisa tem caráter empírico e quantitativo, 
 % focando na comparação de três padrões de decomposição em três aplicações distintas.
 
-Este capítulo descreve a metodologia de pesquisa adotada para conduzir este estudo empírico comparativo sobre estratégias de decomposição de monólitos em microsserviços. A pesquisa fundamenta-se nas diretrizes da Engenharia de Software Experimental, estruturando-se a partir da refatoração e instrumentação sistemática de três aplicações monolíticas de código aberto, submetidas a três metodologias distintas de decomposição arquitetural em uma matriz $3 \times 3$.
+Este capítulo descreve a metodologia de pesquisa adotada para conduzir este estudo empírico comparativo sobre estratégias de decomposição de monólitos em microsserviços. A pesquisa é baseada na Engenharia de Software Experimental, estruturando-se a partir da refatoração de três aplicações monolíticas de código aberto, submetidas a três metodologias distintas de decomposição arquitetural.
 
-A estrutura metodológica foi desenhada para coletar e analisar dados empíricos quantitativos ao longo do processo de migração, utilizando o padrão \textit{Strangler Fig} como mecanismo unificado de extração incremental. A observação empírica ocorre de forma iterativa por meio de marcos formais de transição (\textit{snapshots}), permitindo avaliar o impacto de cada estratégia sob quatro dimensões objetivas: agilidade/DevOps, custo operacional e infraestrutura, desempenho sob carga e manutenibilidade estrutural.
+A metodologia foi desenhada para que seja possível coletar e analisar dados de experimentos quantitativos ao longo do processo de migração, utilizando o padrão \textit{Strangler Fig} como mecanismo para a extração incremental. A observação dos experimentos ocorre de forma iterativa por meio de marcos de transição (\textit{snapshots}), o que permite avaliar o impacto de cada estratégia em quatro categorias: agilidade, infraestrutura, desempenho e manutenibilidade.
 
-As seções a seguir detalham o desenho experimental do estudo empírico comparativo, a caracterização e seleção dos estudos de caso, os critérios de decomposição, os procedimentos operacionais de transição por \textit{snapshots} e os instrumentos de coleta de dados.
+As seções a seguir detalham o desenho do experimento do estudo comparativo, a caracterização e seleção dos estudos de caso, os critérios de decomposição, os procedimentos operacionais de transição por \textit{snapshots} e os instrumentos de coleta de dados.
 
 \section{Desenho da Pesquisa e Abordagem Experimental}
 \label{sec:desenho_pesquisa}
 
-A pesquisa é orientada pelo paradigma da Engenharia de Software Experimental, adotando uma estrutura $3 \times 3$ que cruza três objetos de estudo distintos com três tratamentos arquiteturais independentes. Essa divisão permite avaliar se os efeitos decorrentes de cada estratégia de decomposição são consistentes entre domínios heterogêneos de aplicação ou se dependem fortemente das características intrínsecas do sistema sob refatoração.
+A pesquisa é orientada pelo paradigma da Engenharia de Software Experimental, adotando uma estrutura $3 \times 3$ que cruza três objetos de estudo distintos com três tratamentos arquiteturais independentes. Essa divisão permite avaliar se os efeitos decorrentes de cada estratégia de decomposição são consistentes entre domínios diferentes de aplicação ou se dependem fortemente das características próprias do sistema sob refatoração.
 
 O experimento fundamenta-se na definição explícita de variáveis independentes e dependentes:
 \begin{itemize}
     \item \textbf{Variáveis Independentes:}
     \begin{enumerate}
-        \item{Metodologia de Decomposição Arquitetural:} Decomposição por Capacidade de Negócio, Decomposição por Subdomínio (\textit{Domain-Driven Design}) e Decomposição por Transações (restrições ACID).
+        \item{Metodologia de Decomposição Arquitetural:} Decomposição por Capacidade de Negócio, Decomposição por Subdomínio e Decomposição por Transações.
         \item{Domínio e Características da Aplicação:} Sistema de Inventário, Sistema de Leilões e Sistema de E-commerce.
     \end{enumerate}
-    \item \textbf{Variáveis Dependentes:} O impacto de cada abordagem é quantificado por meio das quatro categorias de medição definidas na Seção \ref{sec:metricas_coleta}:
+    \item \textbf{Variáveis Dependentes:} O impacto de cada abordagem é medido por meio das quatro categorias de medição definidas na Seção \ref{sec:metricas_coleta}:
     \begin{enumerate}
-        \item{Agilidade e DevOps:} Tempo de compilação/construção de imagens Docker e tempo de inicialização dos serviços até a prontidão de rede;
-        \item{Custo e Infraestrutura:} Consumo de processamento (CPU), consumo de memória RAM e volume de armazenamento ocupado por imagens conteinerizadas;
-        \item{Desempenho Sob Carga:} Vazão máxima de requisições por segundo e percentis de latência de resposta ($p_{50}$, $p_{90}$, $p_{99}$) sob concorrência controlada;
-        \item{Manutenibilidade e Acoplamento:} Linhas de Código (LOC), contagem de componentes físicos e violações de fronteiras lógicas.
+        \item{Agilidade:} Tempo de compilação e construção de imagens Docker e tempo de inicialização dos serviços;
+        \item{Infraestrutura:} Consumo de processamento (CPU), consumo de memória RAM e volume de armazenamento;
+        \item{Desempenho:} Vazão máxima de requisições por segundo e percentis de latência de resposta ($p_{50}$, $p_{90}$, $p_{99}$);
+        \item{Manutenibilidade:} Linhas de Código (LOC), contagem de componentes físicos e violações de fronteiras lógicas.
     \end{enumerate}
 \end{itemize}
 
-O protocolo experimental prevê a execução de nove trilhas de refatoração independentes, partindo do mesmo ponto de partida para cada aplicação. Cada trilha é submetida a testes padronizados de estresse sintético e avaliação estática de código a cada tranformação.
+A metodologia prevê a execução de nove trilhas de refatoração independentes, partindo do mesmo ponto para cada aplicação. Cada trilha é submetida a testes padronizados de estresse e avaliação estática de código a cada tranformação.
 
-\section{Seleção e Justificativa das Aplicações (Estudos de Caso)}
+\section{Seleção e Justificativa das Aplicações}
 \label{sec:selecao_aplicacoes}
 
-Para assegurar a validade externa e a relevância prática dos resultados empíricos, evitou-se o uso de sistemas de teste puramente artificiais. Com base nisso, foram selecionadas três aplicações monolíticas de código aberto desenvolvidas em TypeScript com o ecossistema NestJS, representativas de classes arquiteturais e requisitos não funcionais distintos encontrados na indústria de software.
+Para assegurar a validade e a relevância prática dos resultados, evitou-se o uso de sistemas de teste artificiais. Com base nisso, foram selecionadas três aplicações monolíticas de código aberto desenvolvidas em TypeScript com o ecossistema NestJS, que representam propostas e requisitos não funcionais diferentes encontrados na indústria de software.
 
 \begin{itemize}
-    \item \textbf{Aplicação Crítica: Sistema de Inventário.} A aplicação \textit{inventory-api}\footnote{Disponível em: \url{https://github.com/egp1020/inventory-api}.} representa um sistema de controle de inventário e execução operacional, análogo aos sistemas MES (\textit{Manufacturing Execution System}) industriais. Nesse contexto, é uma aplicação que demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar. Além disso, a integridade transacional é estrita: transações operacionais de baixa e transferência de materiais exigem consistência imediata entre armazéns, produtos e saldos em estoque, sendo inadmissível o registro de quantidades negativas.
-    \item \textbf{Aplicação de Alta Concorrência: Monitor de Mercado e Leilões.} A aplicação \textit{auction}\footnote{Disponível em: \url{https://github.com/schoibs/auction}.} reflete o comportamento de plataformas de alta performance voltadas a leilões de cartas colecionáveis e negociação de ativos em tempo real. O domínio impõe elevada concorrência de requisições síncronas de lances (\textit{bids}), atualização de preços em milissegundos e dispersão de eventos para múltiplos clientes conectados via WebSockets.
-    \item \textbf{Aplicação Transacional e Catálogo: E-commerce.} A aplicação \textit{ecommerce}\footnote{Disponível em: \url{https://github.com/sappChak/nestjs-ecommerce}.} representa o arquétipo do varejo digital clássico, caracterizado por assimetria entre fluxos de consulta e fluxos de escrita. Por um lado, o catálogo de produtos exige alta vazão de leitura com dados desnormalizados; por outro, as rotas de carrinho e liquidação de pedidos demandam coordenação de reservas, cálculo de taxas e integração com serviços auxiliares.
+    \item \textbf{Aplicação Crítica: Sistema de Inventário.} A aplicação \textit{inventory-api}\footnote{Disponível em: \url{https://github.com/egp1020/inventory-api}.} representa um sistema de controle de inventário e execução operacional, similar aos sistemas MES (\textit{Manufacturing Execution System}) industriais. Nesse contexto, é uma aplicação que demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar. Além disso, a integridade das transações nos bancos de dados é fundamental: transações operacionais de baixa e transferência de materiais exigem atualizações imediatas entre armazéns, produtos e saldos em estoque, sendo inadmissível o registro de quantidades negativas.
+    
+    \item \textbf{Aplicação de Alta Concorrência: Monitor de Mercado e Leilões.} A aplicação \textit{auction}\footnote{Disponível em: \url{https://github.com/schoibs/auction}.} representa o comportamento de plataformas de alta performance voltadas a leilões de cartas colecionáveis e negociação de ativos em tempo real. Esse contexto apresenta elevada concorrência de requisições síncronas de lances (\textit{bids}), atualização de preços em milissegundos e dispersão de eventos para múltiplos clientes conectados via WebSockets.
+    
+    \item \textbf{Aplicação Transacional e Catálogo: E-commerce.} A aplicação \textit{ecommerce}\footnote{Disponível em: \url{https://github.com/sappChak/nestjs-ecommerce}.} simboliza o varejo digital clássico, em que o volume de leitura supera em muito o de escrita, e cada carga exige uma estratégia própria. Por um lado, o catálogo de produtos exige alta vazão de leitura com dados desnormalizados, enquanto o carrinho e a finalização de pedidos precisam coordenar reservas, calcular taxas e acionar serviços auxiliares.
 \end{itemize}
 
 \section{Procedimentos de Migração e Marcos de Avaliação}
 \label{sec:procedimentos_snapshots}
 
-A condução prática das refatorações segue uma abordagem evolutiva controlada, mitigando interrupções no funcionamento global do sistema e permitindo aferir os impactos parciais de cada etapa de extração.
+A condução das refatorações segue uma abordagem de evolução controlada, reduzindo interrupções no funcionamento global do sistema e permitindo aferir os impactos parciais de cada etapa de extração.
 
-A transição arquitetural de cada monólito para microsserviços é mediada pelo padrão \textit{Strangler Fig} \cite{fowler2004}, suportado por um proxy reverso configurado na borda com o software NGINX.
+A transição da arquitetura de cada monólito para microsserviços é mediada pelo padrão \textit{Strangler Fig} \cite{fowler2004}, suportado por um proxy reverso configurado com o software NGINX.
 
-O proxy atua como um ponto único de entrada de tráfego de rede para a aplicação. Nos estágios iniciais, a totalidade das requisições externas é encaminhada diretamente ao monólito. Conforme módulos específicos são extraídos para microsserviços autônomos conteinerizados, as regras de roteamento baseadas em prefixos de caminhos de URI (\textit{path-based routing}) são reconfiguradas dinamicamente no proxy. O tráfego direcionado aos módulos refatorados passa a ser interceptado e despachado para os novos contêineres, sem que o monólito precise ser completamente desativado ou reescrito de forma abrupta.
+O proxy atua como um ponto único de entrada de tráfego de rede para a aplicação. Nos estágios iniciais, as requisições são encaminhadas diretamente ao monólito. Conforme módulos específicos são extraídos para microsserviços independentes, as regras de roteamento baseadas em prefixos de caminhos são reconfigurados dinamicamente no proxy. O tráfego direcionado aos módulos refatorados passa a ser interceptado e direcionado para os novos contêineres, sem que o monólito precise ser completamente desativado ou reescrito totalmente.
 
-Para assegurar a rastreabilidade experimental e a auditabilidade dos dados gerados, cada uma das 9 trilhas é particionada em quatro estados temporais, denominados \textit{snapshots}:
+Para permitir que as mudanças e impactos sejam avaliados e rastreáveis, cada uma das 9 trilhas é dividida em quatro estados temporais, denominados \textit{snapshots}:
+
 \begin{enumerate}
-    \item \textbf{Snapshot 0 (Baseline Monolítico):} Corresponde ao código original da aplicação monolítica em execução, sem qualquer intervenção arquitetural na base de serviços. Serve como linha de base referencial para todas as métricas quantitativas;
+    \item \textbf{Snapshot 0 (Baseline Monolítico):} Corresponde ao código original da aplicação monolítica em execução, sem qualquer intervenção de arquitetura na base de serviços. Serve como linha de base para todas as métricas quantitativas;
+    
     \item \textbf{Snapshot 1 (Primeira Extração Incremental):} Representa a extração inicial de um módulo funcional selecionado segundo as diretrizes de cada metodologia (tipicamente um serviço de menor acoplamento ou de suporte), operando de forma desacoplada atrás do proxy reverso;
-    \item \textbf{Snapshot 2 (Segunda Extração Incremental):} Representa a evolução do estrangulamento com a segregação de um segundo domínio ou capacidade operacional, ampliando as fronteiras de rede e a comunicação interserviços;
-    \item \textbf{Snapshot Final (Decomposição Concluída):} Estado final em que todos os módulos previstos pela respectiva metodologia foram completamente desacoplados em microsserviços autônomos com persistência isolada, desativando os componentes migrados do monólito legado.
+    
+    \item \textbf{Snapshot 2 (Segunda Extração Incremental):} Representa a evolução da migração com a separação de um segundo domínio ou capacidade operacional, ampliando as fronteiras de rede e a comunicação interserviços;
+    
+    \item \textbf{Snapshot Final (Decomposição Concluída):} Estado final em que todos os módulos previstos pela respectiva metodologia foram desacoplados em microsserviços independentes com persistência individual, desativando os componentes migrados do monólito.
 \end{enumerate}
 
-Cada marco de transição é fixado por meio de tags no repositório de versionamento de código e submetido aos mesmos cenários de estresse de carga e amostragem de telemetria, para que os dados de desempenho, custo e acoplamento sejam correlacionados com a evolução da arquitetura.
+Cada marco de transição é feito por meio de tags no repositório de versionamento de código e submetido aos mesmos cenários de estresse de carga e amostragem de dados, para que as informações de desempenho, custo e acoplamento possam ser avaliadas conforme a evolução da arquitetura.
 
