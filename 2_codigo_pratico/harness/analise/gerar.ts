@@ -1,6 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import { readJson, writeJson, writeText, ensureDir, mean, round } from '../lib/util.js';
+import { readJson, writeJson, writeText, ensureDir, mean, median, round } from '../lib/util.js';
 import { barChart, scatterChart, heatmap } from './charts.js';
 
 interface StatsSample {
@@ -30,10 +30,12 @@ interface LoadStats {
 interface CostStats {
   container: string;
   samples: number;
-  cpuAvgPerc: number;
+  // CPU/RAM usam a mediana: a janela de repouso pode capturar um pico pontual
+  // de manutencao do banco (indice/checkpoint) que distorceria a media.
+  cpuMedPerc: number;
   cpuMinPerc: number;
   cpuMaxPerc: number;
-  memAvgMB: number;
+  memMedMB: number;
   memMinMB: number;
   memMaxMB: number;
 }
@@ -64,10 +66,10 @@ function aggregateStats(samples: StatsSample[], container: string): CostStats {
   return {
     container,
     samples: rows.length,
-    cpuAvgPerc: round(mean(cpu)),
+    cpuMedPerc: round(median(cpu)),
     cpuMinPerc: round(Math.min(...cpu, Infinity)),
     cpuMaxPerc: round(Math.max(...cpu, 0)),
-    memAvgMB: round(mean(mem)),
+    memMedMB: round(median(mem)),
     memMinMB: round(Math.min(...mem, Infinity)),
     memMaxMB: round(Math.max(...mem, 0)),
   };
@@ -233,8 +235,8 @@ function writeFigures(outBase: string, s: Summary): void {
       title: `CPU por container (repouso x carga) — ${s.snapshot}`,
       categories: contLabels,
       series: [
-        { name: 'Repouso', values: contLabels.map((c) => idleMap.get(c)?.cpuAvgPerc ?? 0), errors: { min: contLabels.map((c) => idleMap.get(c)?.cpuMinPerc ?? 0), max: contLabels.map((c) => idleMap.get(c)?.cpuMaxPerc ?? 0) } },
-        { name: 'Carga', values: contLabels.map((c) => loadMap.get(c)?.cpuAvgPerc ?? 0), errors: { min: contLabels.map((c) => loadMap.get(c)?.cpuMinPerc ?? 0), max: contLabels.map((c) => loadMap.get(c)?.cpuMaxPerc ?? 0) } },
+        { name: 'Repouso', values: contLabels.map((c) => idleMap.get(c)?.cpuMedPerc ?? 0), errors: { min: contLabels.map((c) => idleMap.get(c)?.cpuMinPerc ?? 0), max: contLabels.map((c) => idleMap.get(c)?.cpuMaxPerc ?? 0) } },
+        { name: 'Carga', values: contLabels.map((c) => loadMap.get(c)?.cpuMedPerc ?? 0), errors: { min: contLabels.map((c) => loadMap.get(c)?.cpuMinPerc ?? 0), max: contLabels.map((c) => loadMap.get(c)?.cpuMaxPerc ?? 0) } },
       ],
       valueUnit: '%',
     }),
@@ -246,8 +248,8 @@ function writeFigures(outBase: string, s: Summary): void {
       title: `RAM por container (repouso x carga) — ${s.snapshot}`,
       categories: contLabels,
       series: [
-        { name: 'Repouso', values: contLabels.map((c) => idleMap.get(c)?.memAvgMB ?? 0) },
-        { name: 'Carga', values: contLabels.map((c) => loadMap.get(c)?.memAvgMB ?? 0) },
+        { name: 'Repouso', values: contLabels.map((c) => idleMap.get(c)?.memMedMB ?? 0) },
+        { name: 'Carga', values: contLabels.map((c) => loadMap.get(c)?.memMedMB ?? 0) },
       ],
       valueUnit: 'MB',
     }),
@@ -329,10 +331,10 @@ function texTable(s: Summary): string {
 
   add('Agilidade', 'Tempo de build (media)', `${s.buildTime.meanMs} ms`);
   add('Agilidade', 'Tempo de inicializacao (media)', `${s.startupTime.meanMs} ms`);
-  const totalCpuIdle = round(s.custo.idle.reduce((a, c) => a + c.cpuAvgPerc, 0));
-  const totalCpuLoad = round(s.custo.load.reduce((a, c) => a + c.cpuAvgPerc, 0));
-  const totalMemIdle = round(s.custo.idle.reduce((a, c) => a + c.memAvgMB, 0));
-  const totalMemLoad = round(s.custo.load.reduce((a, c) => a + c.memAvgMB, 0));
+  const totalCpuIdle = round(s.custo.idle.reduce((a, c) => a + c.cpuMedPerc, 0));
+  const totalCpuLoad = round(s.custo.load.reduce((a, c) => a + c.cpuMedPerc, 0));
+  const totalMemIdle = round(s.custo.idle.reduce((a, c) => a + c.memMedMB, 0));
+  const totalMemLoad = round(s.custo.load.reduce((a, c) => a + c.memMedMB, 0));
   add('Custo', 'CPU total (repouso / carga)', `${totalCpuIdle} % / ${totalCpuLoad} %`);
   add('Custo', 'RAM total (repouso / carga)', `${totalMemIdle} MB / ${totalMemLoad} MB`);
   for (const [img, mb] of Object.entries(s.custo.imagensMB)) add('Custo', `Imagem ${img}`, `${mb} MB`);

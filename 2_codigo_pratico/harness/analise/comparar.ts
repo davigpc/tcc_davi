@@ -52,10 +52,10 @@ const fmtDeltaPp = (d: number): string => fmtSigned(d, 2, 'p.p.');
 
 const fmtDeltaPair = (d: number[]): string => d.map(fmtDelta).join(' / ');
 
-const cpuIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + c.cpuAvgPerc, 0);
-const cpuLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + c.cpuAvgPerc, 0);
-const ramIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + c.memAvgMB, 0);
-const ramLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + c.memAvgMB, 0);
+const cpuIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + c.cpuMedPerc, 0);
+const cpuLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + c.cpuMedPerc, 0);
+const ramIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + c.memMedMB, 0);
+const ramLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + c.memMedMB, 0);
 const imgTotal = (s: Summary): number =>
   Object.entries(s.custo.imagensMB)
     .filter(([nome]) => !/postgres|mongo|redis/i.test(nome))
