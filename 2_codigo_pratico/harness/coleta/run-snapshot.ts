@@ -117,7 +117,9 @@ async function main(): Promise<void> {
   writeJson(path.join(paridadeDir, 'golden.json'), await C.captureParity(cfg, ids, token));
 
   console.log('[5/11] docker stats (repouso) — aguardando estabilizacao');
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  // 90 s: o seed recria os indices do Mongo e o pico de CPU (indice/checkpoint)
+  // ocorre ~55 s depois; amostrar antes disso infla o repouso.
+  await new Promise((resolve) => setTimeout(resolve, 90000));
   writeJson(path.join(rawDir, 'docker-stats-idle.json'), await C.sampleDockerStats(cfg.statsIdleSec));
 
   console.log('[6/11] autocannon (rotas de leitura)');
