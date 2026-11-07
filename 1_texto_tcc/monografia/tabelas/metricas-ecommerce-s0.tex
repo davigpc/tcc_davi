@@ -1,0 +1,29 @@
+\begin{quadro}[htb]
+  \centering
+  \caption{Métricas do sistema de e-commerce no baseline (Snapshot 0).}
+  \label{qua:metricas-ecommerce-s0}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{|l|r|}
+    \hline
+    \textbf{Métrica} & \textbf{Valor} \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Agilidade e DevOps}} \\ \hline
+    Tempo de construção (média) & 117.342 ms \\
+    Tempo de inicialização (média) & 8.032 ms \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Custo e Infraestrutura}} \\ \hline
+    CPU total (repouso / carga) & 0,92 \% / 119,87 \% \\
+    RAM total (repouso / carga) & 279,2 MB / 457,3 MB \\
+    Imagem da aplicação & 98,67 MB \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Desempenho}} \\ \hline
+    \texttt{products} --- vazão & 3.071,5 req/s \\
+    \texttt{products} --- latência p50/p90/p99 & 6,0 / 7,3 / 9,7 ms \\
+    \texttt{product-by-id} --- vazão & 3.223,3 req/s \\
+    \texttt{product-by-id} --- latência p50/p90/p99 & 5,0 / 7,0 / 9,7 ms \\
+    \texttt{orders} --- vazão & 445,3 req/s \\
+    \texttt{orders} --- latência p50/p90/p99 & 42,7 / 56,0 / 67,3 ms \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Manutenibilidade}} \\ \hline
+    Linhas de Código & 4.820 \\
+    Componentes / contêineres & 3 / 3 \\
+    Chamadas entre fronteiras & 79 de 207 \\ \hline
+  \end{tabular}
+  \fonte{medição automatizada do experimento (média de três execuções).}
+\end{quadro}

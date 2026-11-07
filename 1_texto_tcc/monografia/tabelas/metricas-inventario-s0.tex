@@ -1,34 +1,32 @@
 % Fonte: metricas/inventory-api/capacidade-negocio/snapshot-0/tabelas/metricas.tex
-\begin{table}[htb]
+\begin{quadro}[htb]
   \centering
-  \caption{Métricas do sistema de inventário no baseline canônico (Snapshot 0).}
-  \label{tab:metricas-inventario-s0}
-  \small
-  \begin{tabular}{llr}
+  \caption{Métricas do sistema de inventário no baseline (Snapshot 0).}
+  \label{qua:metricas-inventario-s0}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{|l|r|}
     \hline
-    \textbf{Categoria} & \textbf{Métrica} & \textbf{Valor} \\
-    \hline
-    \multicolumn{3}{l}{\textit{Agilidade e DevOps}} \\
-    & Tempo de construção (média) & 46.746 ms \\
-    & Tempo de inicialização (média) & 9.155 ms \\
-    \multicolumn{3}{l}{\textit{Custo e Infraestrutura}} \\
-    & CPU total (repouso / carga) & 2,22 \% / 241,0 \% \\
-    & RAM total (repouso / carga) & 86,3 MB / 188,5 MB \\
-    & Imagem da aplicação & 151,6 MB \\
-    \multicolumn{3}{l}{\textit{Desempenho}} \\
-    & \texttt{products} --- vazão & 557,2 req/s \\
-    & \texttt{products} --- latência p50/p90/p99 & 34,7 / 38,7 / 45,0 ms \\
-    & \texttt{reports/movements} --- vazão & 350,8 req/s \\
-    & \texttt{reports/movements} --- latência p50/p90/p99 & 55,0 / 61,0 / 105,3 ms \\
-    & \texttt{reports/stock} --- vazão & 201,3 req/s \\
-    & \texttt{reports/stock} --- latência p50/p90/p99 & 97,7 / 103,3 / 114,0 ms \\
-    & \texttt{movements} --- vazão & 311,9 req/s \\
-    & \texttt{movements} --- latência p50/p90/p99 & 63,0 / 72,3 / 89,0 ms \\
-    \multicolumn{3}{l}{\textit{Manutenibilidade}} \\
-    & Linhas de Código & 8.783 \\
-    & Componentes / contêineres & 2 / 2 \\
-    & Chamadas entre fronteiras & 69 de 389 \\
-    \hline
+    \textbf{Métrica} & \textbf{Valor} \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Agilidade e DevOps}} \\ \hline
+    Tempo de construção (média) & 46.746 ms \\
+    Tempo de inicialização (média) & 9.155 ms \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Custo e Infraestrutura}} \\ \hline
+    CPU total (repouso / carga) & 2,22 \% / 241,0 \% \\
+    RAM total (repouso / carga) & 86,3 MB / 188,5 MB \\
+    Imagem da aplicação & 151,6 MB \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Desempenho}} \\ \hline
+    \texttt{products} --- vazão & 557,2 req/s \\
+    \texttt{products} --- latência p50/p90/p99 & 34,7 / 38,7 / 45,0 ms \\
+    \texttt{reports/movements} --- vazão & 350,8 req/s \\
+    \texttt{reports/movements} --- latência p50/p90/p99 & 55,0 / 61,0 / 105,3 ms \\
+    \texttt{reports/stock} --- vazão & 201,3 req/s \\
+    \texttt{reports/stock} --- latência p50/p90/p99 & 97,7 / 103,3 / 114,0 ms \\
+    \texttt{movements} --- vazão & 311,9 req/s \\
+    \texttt{movements} --- latência p50/p90/p99 & 63,0 / 72,3 / 89,0 ms \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Manutenibilidade}} \\ \hline
+    Linhas de Código & 8.783 \\
+    Componentes / contêineres & 2 / 2 \\
+    Chamadas entre fronteiras & 69 de 389 \\ \hline
   \end{tabular}
-  \legend{Fonte: medição automatizada do experimento (média de três execuções).}
-\end{table}
+  \fonte{medição automatizada do experimento (média de três execuções).}
+\end{quadro}

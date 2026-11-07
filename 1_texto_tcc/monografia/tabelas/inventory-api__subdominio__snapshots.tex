@@ -1,28 +1,26 @@
 % Gerado automaticamente por harness/analise/comparar.ts
-\begin{table}[htb]
+\begin{quadro}[htb]
   \centering
-  \caption{Inventário — métricas por snapshot — Subdomínio.}
-  \label{tab:comp_inventory-api_subdominio_snapshots}
-  \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lrrrr}
+  \caption{Inventário --- métricas por snapshot --- Subdomínio.}
+  \label{qua:comp_inventory-api_subdominio_snapshots}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|r|r|r|r|}
     \hline
-    \textbf{Métrica} & \textbf{S0} & \textbf{S1} & \textbf{S2} & \textbf{Final} \\
-    \hline
-    \multicolumn{5}{l}{\textit{Agilidade}} \\
+    \textbf{Métrica} & \textbf{S0} & \textbf{S1} & \textbf{S2} & \textbf{Final} \\ \hline
+    \multicolumn{5}{|l|}{\textbf{Agilidade}} \\ \hline
     Tempo de construção (ms) & 46.746 & 108.628 & 103.700 & 122.958 \\
-    Tempo de inicialização (ms) & 9.155 & 10.056 & 9.626 & 12.540 \\
-    \multicolumn{5}{l}{\textit{Custo}} \\
+    Tempo de inicialização (ms) & 9.155 & 10.056 & 9.626 & 12.540 \\ \hline
+    \multicolumn{5}{|l|}{\textbf{Custo}} \\ \hline
     CPU total (repouso / carga, \%) & 2,22 / 241 & 4,03 / 249,96 & 2,78 / 251,4 & 2,52 / 370,73 \\
     RAM total (repouso / carga, MB) & 86,28 / 188,47 & 184,79 / 333,04 & 224,2 / 318,21 & 268,4 / 538,18 \\
     Imagens da aplicação (MB) & 151,6 & 551,2 & 737,8 & 772,9 \\
-    Componentes / contêineres & 2 / 2 & 5 / 5 & 6 / 6 & 8 / 8 \\
-    \multicolumn{5}{l}{\textit{Desempenho}} \\
+    Componentes / contêineres & 2 / 2 & 5 / 5 & 6 / 6 & 8 / 8 \\ \hline
+    \multicolumn{5}{|l|}{\textbf{Desempenho}} \\ \hline
     Vazão (média das rotas, req/s) & 355,3 & 319,7 & 304 & 415,9 \\
-    Latência p50 (média das rotas, ms) & 62,6 & 70,4 & 70,1 & 47,4 \\
-    \multicolumn{5}{l}{\textit{Manutenibilidade}} \\
+    Latência p50 (média das rotas, ms) & 62,6 & 70,4 & 70,1 & 47,4 \\ \hline
+    \multicolumn{5}{|l|}{\textbf{Manutenibilidade}} \\ \hline
     Linhas de Código & 8.783 & 9.796 & 10.310 & 10.079 \\
-    Chamadas entre fronteiras & 69 de 389 & 78 de 414 & 85 de 429 & 85 de 431 \\
-    \hline
-  \end{tabular}}
-  \legend{Fonte: medição automatizada do experimento (média de três execuções).}
-\end{table}
+    Chamadas entre fronteiras & 69 de 389 & 78 de 414 & 85 de 429 & 85 de 431 \\ \hline
+  \end{tabularx}
+  \fonte{medição automatizada do experimento (média de três execuções).}
+\end{quadro}
