@@ -1,0 +1,26 @@
+{
+  "ecommerce-s2-monolith": {
+    "bytes": 103428827,
+    "mb": 98.64
+  },
+  "ecommerce-s2-catalogo": {
+    "bytes": 92734802,
+    "mb": 88.44
+  },
+  "ecommerce-s2-clientes": {
+    "bytes": 93371734,
+    "mb": 89.05
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

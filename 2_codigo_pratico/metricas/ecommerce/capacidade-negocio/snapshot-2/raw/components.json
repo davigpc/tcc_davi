@@ -1,0 +1,21 @@
+{
+  "services": [
+    "redis",
+    "mongo",
+    "catalogo",
+    "clientes",
+    "monolith",
+    "nginx"
+  ],
+  "serviceCount": 6,
+  "runningContainers": [
+    "ecommerce_s2_nginx",
+    "ecommerce_s2_monolith",
+    "ecommerce_s2_catalogo",
+    "ecommerce_s2_clientes",
+    "ecommerce_s2_redis",
+    "ecommerce_s2_mongo"
+  ],
+  "containerCount": 6,
+  "imageCount": 6
+}

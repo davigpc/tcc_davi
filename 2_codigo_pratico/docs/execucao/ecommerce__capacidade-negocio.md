@@ -107,7 +107,74 @@ escrita, e o comparativo soma as duas listas.
   imagem criada no seed servida em `/uploads/`, pedido e webhook concluindo com
   estoque de 50 → 49, e carrinho com subtotal e item populado corretos.
 
+### snapshot-2 (segunda extração — Clientes)
+
+- Pasta: `metricas/ecommerce/capacidade-negocio/snapshot-2/`
+- Tag: `snap/ecommerce/capacidade-negocio/2`
+- Pré-registro: `docs/extracao/ecommerce__capacidade-negocio__s2.plan.md`
+- Registro: `docs/extracao/ecommerce__capacidade-negocio__s2.md`
+- Serviço extraído: `services/ecommerce/clientes/` (auth, token, user, address,
+  storages); gateway `infra/gateway/nginx-capacidade-s2.conf`; compose
+  `infra/compose/ecommerce-capacidade-negocio-s2.yml`.
+- Topologia: NGINX na porta pública 3001; monólito em 3002; Catálogo e Clientes
+  em 3001 interno; MongoDB e volume `uploads` compartilhados.
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | snapshot-1 | snapshot-2 |
+|---|---|---|---|
+| Agilidade | build (`--no-cache`) | 115.512 ms | 121.707 ms |
+| Agilidade | inicialização | 8.546 ms | 8.634 ms |
+| Custo | CPU total (repouso / carga) | 0,62 % / 177,19 % | 0,61 % / 157,72 % |
+| Custo | RAM total (repouso / carga) | 341,4 / 474,1 MB | 407,3 / 541,0 MB |
+| Custo | imagens da aplicação | 212,2 MB | 301,3 MB |
+| Custo | componentes / containers | 5 / 5 | 6 / 6 |
+| Desempenho | `products` | 2.996,6 req/s · p50 6,7 ms | 3.004,2 req/s · p50 6,3 ms |
+| Desempenho | `product-by-id` | 3.208,4 req/s · p50 6,0 ms | 3.204,3 req/s · p50 6,0 ms |
+| Desempenho | `orders` | 452,1 req/s · p50 41,3 ms | 497,3 req/s · p50 38,3 ms |
+| Manutenibilidade | LOC | 5.169 | 5.464 |
+| Manutenibilidade | cross-domain | 80 / 210 | 74 / 211 |
+
+**Observações:**
+- O build subiu 5,4 %, a primeira alta da trilha: três imagens de aplicação, com
+  a de Clientes (89,1 MB, por causa do `argon2`) somando ao total. O startup
+  subiu só 1,0 %.
+- A CPU sob carga **caiu** 11,0 %, contra a hipótese. O Clientes não recebe
+  nenhuma requisição da carga medida e fica em 0 %; o Catálogo e o NGINX absorvem
+  as leituras. O processo a mais custa RAM (+19,3 % em repouso), não CPU.
+- As leituras ficaram estáveis (abaixo de 0,5 %) e a escrita subiu 10,0 %
+  (p50 −3 ms). A rota não atravessa o Clientes: a hipótese mais provável é o
+  monólito menor (4.404 → 2.945 linhas), sem medição isolada da causa.
+- O cross-domain caiu de 80 para 74 — o primeiro corte real da trilha. O monólito
+  perdeu 25 arestas (auth, token, user e a importação de `user` em `stripe`) e o
+  Clientes reintroduziu 19 internamente.
+- Paridade funcional confirmada pelo gateway: registro, login, `GET /api/users`,
+  endereço, foto de perfil servida em `/uploads/` pelo Catálogo, pedido com
+  `stripe_cus_id` vindo do JWT verificado localmente, webhook pago baixando
+  estoque e assinatura atualizada pela rota interna do Clientes.
+
 ## Desvios e dificuldades
+
+- **Guarda de token sem o `TokenService`.** O `JwtAuthenticationGuard` injetava o
+  serviço de tokens, que saiu com a capacidade. Como a verificação é stateless, o
+  monólito ganhou um `AccessTokenGuard` com `JwtService` e um `AccessTokenModule`
+  compartilhado entre pedido e cobrança. Sem isso, o `POST /api/orders` precisaria
+  de uma chamada HTTP por requisição.
+- **`argon2` na imagem do Clientes.** O `npm ci` da imagem `node:22-slim`
+  compilou o módulo nativo sem dependências extras; a imagem ficou em 89,1 MB,
+  maior que a do Catálogo.
+- **`UserModule` importava `AuthModule` com `forwardRef` sem usar.** A importação
+  saiu junto com o serviço, o que apagou uma aresta circular que existia no
+  baseline.
+- **Cookie de refresh com `secure: true`.** Como `NODE_ENV=production`, o cookie
+  não é enviado em HTTP puro e `GET /api/auth/refresh` responde 401 sem sessão
+  segura. Comportamento herdado do baseline, mantido para não alterar o contrato.
+- **`GET /api/address/:userId` nunca devolve os endereços criados.** O filtro usa
+  um campo `user` que o DTO não preenche; é defeito do código original, mantido
+  sem correção para preservar a paridade.
+- **Seed precisa do `SEED_BASE_URL` no gateway.** Rodar o seed dentro do monólito
+  funciona porque `SEED_BASE_URL=http://nginx`; sem isso o registro bateria no
+  monólito, que já não tem as rotas de autenticação.
 
 - **Modelo `Product` ausente no monólito.** Depois de remover o `ProductModule`,
   o seed falhou em `POST /api/orders` com `MissingSchemaError: Schema hasn't been
@@ -134,5 +201,16 @@ escrita, e o comparativo soma as duas listas.
 
 ## Síntese para o capítulo 05
 
-(será escrita depois dos três snapshots desta trilha, com a comparação
-s0 → s1 → s2 → final)
+Até o snapshot-2, a decomposição por Capacidade de Negócio no e-commerce separou
+duas das quatro capacidades. O Catálogo (s1) não reduziu o acoplamento estático
+(79 → 80): o serviço recriou as arestas internas e o monólito passou a importar o
+modelo de leitura de produto. O efeito de desempenho também foi pequeno, apesar
+do salto do gateway. Clientes (s2) produziu o primeiro corte real de acoplamento
+(80 → 74), porque as arestas de entrada do grafo — autenticação, token e usuário —
+saíram do monólito, e o custo apareceu em infraestrutura (6 componentes,
++89,1 MB de imagem, +19,3 % de RAM em repouso). Nenhuma rota medida atravessa o
+novo serviço, então a comparação de desempenho do s2 mede apenas o custo indireto
+da extração.
+
+Falta o snapshot final (Vendas + Comunicação, com banco isolado) para fechar a
+comparação s0 → s1 → s2 → final.
