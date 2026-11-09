@@ -40,6 +40,7 @@ export interface AppConfig {
   statsLoadSec: number;
   ids?: Record<string, { from?: 'login'; url?: string; path: string }>;
   crossDomainDirs?: string[];
+  crossDomain?: Array<{ label: string; dir: string; tsConfig?: string }>;
   tsConfig?: string;
   sharedModuleAlias?: string;
 }
@@ -281,6 +282,7 @@ function walk(dir: string, acc: string[] = []): string[] {
 interface SourceRoot {
   label: string;
   root: string;
+  tsConfig?: string;
 }
 
 function sourceRoots(cfg: AppConfig): SourceRoot[] {
@@ -292,6 +294,16 @@ function sourceRoots(cfg: AppConfig): SourceRoot[] {
 }
 
 function crossDomainRoots(cfg: AppConfig): SourceRoot[] {
+  // Configuração explícita por serviço: necessária quando a árvore tem
+  // subpastas (src/modules) e o rótulo do serviço não pode ser inferido do
+  // caminho. Cada raiz usa o próprio tsconfig para resolver os aliases.
+  if (cfg.crossDomain?.length) {
+    return cfg.crossDomain.map((entry) => ({
+      label: entry.label,
+      root: fromRepo(entry.dir),
+      tsConfig: entry.tsConfig,
+    }));
+  }
   const dirs =
     cfg.crossDomainDirs ?? cfg.sourceDirs ?? (cfg.sourceDir ? [cfg.sourceDir] : []);
   return dirs.map((d) => {
@@ -381,12 +393,14 @@ export async function collectCrossDomain(cfg: AppConfig): Promise<CrossDomainRes
   const byModule: Record<string, number> = {};
   let totalEdges = 0;
 
-  for (const { label, root } of roots) {
+  for (const { label, root, tsConfig } of roots) {
     const res = await madge(root, {
       fileExtensions: ['ts'],
-      tsConfig: cfg.tsConfig
-        ? fromRepo(cfg.tsConfig)
-        : path.resolve(root, '..', 'tsconfig.json'),
+      tsConfig: tsConfig
+        ? fromRepo(tsConfig)
+        : cfg.tsConfig
+          ? fromRepo(cfg.tsConfig)
+          : path.resolve(root, '..', 'tsconfig.json'),
     });
     const obj = res.obj() as Record<string, string[]>;
 
