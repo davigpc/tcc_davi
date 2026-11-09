@@ -4,23 +4,32 @@
   \caption{Variação acumulada por aplicação --- Capacidade de Negócio.}
   \label{qua:comp_capacidade-negocio_variacoes}
   \renewcommand{\arraystretch}{1.15}
-  \begin{tabular}{|l|r|}
+  \begin{tabular}{|l|r|r|r|}
     \hline
-    \textbf{Métrica} & \textbf{Inventário} \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Agilidade}} \\ \hline
-    Tempo de construção (ms) & +196 \% \\
-    Tempo de inicialização (ms) & +32 \% \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Custo}} \\ \hline
-    CPU total (repouso / carga, \%) & +4,38 p.p. / +68 \% \\
-    RAM total (repouso / carga, MB) & +136 \% / +136 \% \\
-    Imagens da aplicação (MB) & +287 \% \\
-    Componentes / contêineres & +4 \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Desempenho}} \\ \hline
-    Vazão (média das rotas, req/s) & +1 \% \\
-    Latência p50 (média das rotas, ms) & $-$ 12 \% \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Manutenibilidade}} \\ \hline
-    Linhas de Código & +9 \% \\
-    Chamadas entre fronteiras & +13 \% \\ \hline
+    \textbf{Métrica} & \textbf{E-commerce} & \textbf{Inventário} & \textbf{Média} \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Agilidade}} \\
+    \hline
+    Tempo de construção (ms) & +4 \% & +196 \% & +100 \% \\
+    Tempo de inicialização (ms) & +7 \% & +32 \% & +20 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Custo}} \\
+    \hline
+    CPU total (repouso / carga, \%) & $-$ 0,31 p.p. / +32 \% & +4,38 p.p. / +68 \% & +2,04 p.p. / +50 \% \\
+    RAM total (repouso / carga, MB) & +46 \% / +18 \% & +136 \% / +136 \% & +91 \% / +77 \% \\
+    Imagens da aplicação (MB) & +205 \% & +287 \% & +246 \% \\
+    Componentes / contêineres & +3 & +4 & +4 \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Desempenho}} \\
+    \hline
+    Vazão (média das rotas, req/s) & $-$ 1 \% & +1 \% & +0 \% \\
+    Latência p50 (média das rotas, ms) & $-$ 6 \% & $-$ 12 \% & $-$ 9 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Manutenibilidade}} \\
+    \hline
+    Linhas de Código & +13 \% & +9 \% & +11 \% \\
+    Chamadas entre fronteiras & $-$ 6 \% & +13 \% & +3 \% \\
+    \hline
   \end{tabular}
   \fonte{medição automatizada do experimento (média de três execuções).}
 \end{quadro}
