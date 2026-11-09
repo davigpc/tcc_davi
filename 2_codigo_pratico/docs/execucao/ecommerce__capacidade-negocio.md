@@ -153,8 +153,74 @@ escrita, e o comparativo soma as duas listas.
   `stripe_cus_id` vindo do JWT verificado localmente, webhook pago baixando
   estoque e assinatura atualizada pela rota interna do Clientes.
 
+### snapshot final (Vendas + Comunicação, banco isolado)
+
+- Pasta: `metricas/ecommerce/capacidade-negocio/snapshot-final/`
+- Tag: `snap/ecommerce/capacidade-negocio/final`
+- Pré-registro: `docs/extracao/ecommerce__capacidade-negocio__final.plan.md`
+- Registro: `docs/extracao/ecommerce__capacidade-negocio__final.md`
+- Serviços: `services/ecommerce/{vendas,comunicacao}/`; gateway
+  `infra/gateway/nginx-capacidade-final.conf`; compose
+  `infra/compose/ecommerce-capacidade-negocio-final.yml`.
+- Topologia: quatro serviços e um MongoDB por serviço (`catalogo_db`,
+  `clientes_db`, `vendas_db` com réplica `rs0`), Redis só no Catálogo, NGINX na
+  porta 3001. O monólito foi desativado.
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | snapshot-2 | final |
+|---|---|---|---|
+| Agilidade | build (`--no-cache`) | 121.707 ms | 88.234 ms |
+| Agilidade | inicialização | 8.634 ms | 8.801 ms |
+| Custo | CPU total (repouso / carga) | 0,61 % / 157,72 % | 1,06 % / 156,06 % |
+| Custo | RAM total (repouso / carga) | 407,3 / 541,0 MB | 771,3 / 907,8 MB |
+| Custo | imagens da aplicação | 301,3 MB | 388,8 MB |
+| Custo | componentes / containers | 6 / 6 | 9 / 9 |
+| Desempenho | `products` | 3.004,2 req/s · p50 6,3 ms | 2.917,9 req/s · p50 6,3 ms |
+| Desempenho | `product-by-id` | 3.204,3 req/s · p50 6,0 ms | 3.080,7 req/s · p50 6,0 ms |
+| Desempenho | `orders` | 497,3 req/s · p50 38,3 ms | 556,8 req/s · p50 35,0 ms |
+| Manutenibilidade | LOC | 5.464 | 5.328 |
+| Manutenibilidade | cross-domain | 74 / 211 | 76 / 206 |
+
+**Observações:**
+- O build **caiu 27,5 %**, contra a hipótese: o monólito era a imagem mais
+  pesada e as quatro imagens menores são construídas em paralelo. O startup subiu
+  1,9 %.
+- A RAM quase dobrou (+89,4 % em repouso, +67,8 % sob carga) por causa dos três
+  MongoDB. A CPU sob carga ficou estável (−1,1 %), porque as leituras continuam
+  nos mesmos processos (Catálogo + NGINX).
+- A escrita subiu 12,0 % (p50 −3,3 ms), contra o previsto, apesar das duas
+  validações HTTP. O banco de Vendas dedicado e o processo menor são hipóteses;
+  não há medição isolada, então o número entra como faixa de variação.
+- O cross-domain subiu de 74 para 76: `cart→item` e `order→item` caíram com a
+  remoção dos hooks, mas `order→shared` e `stripe→shared` subiram com o módulo de
+  token local. O total de arestas caiu de 211 para 206 com a saída do monólito.
+- O LOC caiu 2,5 % (5.464 → 5.328), primeiro recuo da trilha. O monólito saiu de
+  2.945 linhas; a soma é Catálogo 792, Clientes 1.767, Vendas 2.451 e Comunicação
+  318.
+- Paridade confirmada: carrinho com subtotal vindo do Catálogo e resposta
+  composta, pedido validando usuário e item por HTTP, webhook baixando estoque e
+  enviando e-mail pela Comunicação, assinatura gravada em Clientes e foto de
+  perfil servida pelo Catálogo.
+
 ## Desvios e dificuldades
 
+- **`populate` impossível com banco isolado.** `populate('items.id')` dependia de
+  o modelo `Product` estar registrado na mesma conexão. A resposta do carrinho e
+  do pedido passou a ser composta com consulta em lote ao Catálogo
+  (`POST /api/internal/products/batch`).
+- **Hooks `pre('save')` não aceitam cliente HTTP.** A validação de comprador e
+  item saiu dos schemas e foi para o serviço (`applyPricing` no carrinho e
+  `createOrder` no pedido).
+- **Cada serviço precisa zerar o próprio banco.** O seed deixou de ser um
+  `dropDatabase` único: Catálogo e Clientes ganharam `scripts/reset-db.js` e o
+  harness roda os três seeds em ordem.
+- **Seed precisa passar pelo gateway.** O seed roda no contêiner de Vendas, que só
+  tem as rotas de venda; registro e produtos dependem de `SEED_BASE_URL=http://nginx`.
+- **`npm run snapshot -- --app ...` no PowerShell engole as flags.** Rodar com
+  `npx tsx coleta/run-snapshot.ts --app ... --config ...`.
+- **Pasta do snapshot precisa começar com `snapshot`.** `final` é ignorado pelo
+  `comparar.ts`; o diretório correto é `snapshot-final`, como no inventário.
 - **Guarda de token sem o `TokenService`.** O `JwtAuthenticationGuard` injetava o
   serviço de tokens, que saiu com a capacidade. Como a verificação é stateless, o
   monólito ganhou um `AccessTokenGuard` com `JwtService` e um `AccessTokenModule`
@@ -201,16 +267,25 @@ escrita, e o comparativo soma as duas listas.
 
 ## Síntese para o capítulo 05
 
-Até o snapshot-2, a decomposição por Capacidade de Negócio no e-commerce separou
-duas das quatro capacidades. O Catálogo (s1) não reduziu o acoplamento estático
-(79 → 80): o serviço recriou as arestas internas e o monólito passou a importar o
-modelo de leitura de produto. O efeito de desempenho também foi pequeno, apesar
-do salto do gateway. Clientes (s2) produziu o primeiro corte real de acoplamento
-(80 → 74), porque as arestas de entrada do grafo — autenticação, token e usuário —
-saíram do monólito, e o custo apareceu em infraestrutura (6 componentes,
-+89,1 MB de imagem, +19,3 % de RAM em repouso). Nenhuma rota medida atravessa o
-novo serviço, então a comparação de desempenho do s2 mede apenas o custo indireto
-da extração.
+A trilha separou as quatro capacidades em quatro snapshots. O Catálogo (s1) não
+reduziu o acoplamento estático (79 → 80): o serviço recriou as arestas internas e
+o monólito passou a importar o modelo de leitura de produto. Clientes (s2) deu o
+primeiro corte real (80 → 74), porque as arestas de entrada — autenticação, token
+e usuário — saíram do monólito. O snapshot final (Vendas + Comunicação, banco
+isolado) fechou a trilha com 76 arestas de 206: a extração reduziu o total de
+importações, mas as arestas de carrinho e pedido continuam dentro do serviço de
+Vendas, e o acoplamento que passou a existir é de rede, invisível ao `madge`.
 
-Falta o snapshot final (Vendas + Comunicação, com banco isolado) para fechar a
-comparação s0 → s1 → s2 → final.
+O custo aparece de forma monotônica em infraestrutura: 3 → 5 → 6 → 9 contêineres,
+RAM de 279 para 771 MB em repouso (+176 %) e imagens de 98,7 para 388,8 MB
+(+294 %). O desempenho não acompanhou esse custo: a vazão média ficou em 2.185
+req/s contra 2.247 do baseline (−3 %) e a latência p50 caiu 12 %. O único ponto
+em que o build caiu (−25 % no acumulado) foi o snapshot final, quando a imagem do
+monólito deixou de ser construída.
+
+O achado central da trilha é que a decomposição por capacidade no e-commerce
+transferiu o acoplamento do compilador para a rede. O carrinho e o pedido, que
+vivem juntos em Vendas, precisam consultar Clientes e Catálogo a cada operação de
+escrita, e a resposta do carrinho passou a ser um `join` distribuído. O código
+ficou menor no total (−2,5 % no final, depois de subir 13 %), mas o sistema ficou
+mais caro de operar e mais dependente de dois serviços para fechar um pedido.

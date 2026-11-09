@@ -1,0 +1,30 @@
+{
+  "ecommerce-final-catalogo": {
+    "bytes": 92736144,
+    "mb": 88.44
+  },
+  "ecommerce-final-clientes": {
+    "bytes": 93373421,
+    "mb": 89.05
+  },
+  "ecommerce-final-vendas": {
+    "bytes": 93223716,
+    "mb": 88.91
+  },
+  "ecommerce-final-comunicacao": {
+    "bytes": 101977957,
+    "mb": 97.25
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

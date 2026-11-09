@@ -1,0 +1,159 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "catalogo/health",
+    "catalogo/product",
+    "catalogo/search",
+    "catalogo/shared",
+    "catalogo/storages",
+    "clientes/address",
+    "clientes/auth",
+    "clientes/health",
+    "clientes/shared",
+    "clientes/storages",
+    "clientes/token",
+    "clientes/user",
+    "comunicacao/email",
+    "comunicacao/health",
+    "vendas/_root",
+    "vendas/cart",
+    "vendas/health",
+    "vendas/inventory",
+    "vendas/item",
+    "vendas/order",
+    "vendas/shared",
+    "vendas/shipping",
+    "vendas/stripe"
+  ],
+  "edges": [
+    {
+      "from": "vendas/cart",
+      "to": "vendas/item",
+      "count": 12
+    },
+    {
+      "from": "vendas/order",
+      "to": "vendas/shared",
+      "count": 9
+    },
+    {
+      "from": "clientes/user",
+      "to": "clientes/address",
+      "count": 6
+    },
+    {
+      "from": "vendas/cart",
+      "to": "vendas/shared",
+      "count": 5
+    },
+    {
+      "from": "vendas/cart",
+      "to": "vendas/shipping",
+      "count": 5
+    },
+    {
+      "from": "vendas/stripe",
+      "to": "vendas/shared",
+      "count": 5
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/shared",
+      "count": 4
+    },
+    {
+      "from": "clientes/auth",
+      "to": "clientes/token",
+      "count": 3
+    },
+    {
+      "from": "vendas/order",
+      "to": "vendas/item",
+      "count": 3
+    },
+    {
+      "from": "vendas/stripe",
+      "to": "vendas/order",
+      "count": 3
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/search",
+      "count": 2
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/storages",
+      "count": 2
+    },
+    {
+      "from": "clientes/auth",
+      "to": "clientes/shared",
+      "count": 2
+    },
+    {
+      "from": "clientes/auth",
+      "to": "clientes/user",
+      "count": 2
+    },
+    {
+      "from": "clientes/user",
+      "to": "clientes/storages",
+      "count": 2
+    },
+    {
+      "from": "vendas/inventory",
+      "to": "vendas/item",
+      "count": 2
+    },
+    {
+      "from": "vendas/order",
+      "to": "vendas/inventory",
+      "count": 2
+    },
+    {
+      "from": "vendas/order",
+      "to": "vendas/stripe",
+      "count": 2
+    },
+    {
+      "from": "catalogo/search",
+      "to": "catalogo/shared",
+      "count": 1
+    },
+    {
+      "from": "clientes/shared",
+      "to": "clientes/auth",
+      "count": 1
+    },
+    {
+      "from": "clientes/token",
+      "to": "clientes/user",
+      "count": 1
+    },
+    {
+      "from": "clientes/token",
+      "to": "clientes/shared",
+      "count": 1
+    },
+    {
+      "from": "clientes/user",
+      "to": "clientes/shared",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 76,
+  "totalEdges": 206,
+  "byModule": {
+    "catalogo/product": 8,
+    "catalogo/search": 1,
+    "clientes/shared": 1,
+    "clientes/auth": 7,
+    "clientes/token": 2,
+    "clientes/user": 9,
+    "vendas/cart": 22,
+    "vendas/inventory": 2,
+    "vendas/order": 16,
+    "vendas/stripe": 8
+  }
+}

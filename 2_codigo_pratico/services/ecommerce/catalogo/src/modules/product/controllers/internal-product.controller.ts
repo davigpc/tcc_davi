@@ -1,17 +1,27 @@
-import { Body, Controller, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { StockAdjustmentDto } from '@product/dto/stock-adjustment.dto';
 import { ProductService } from '@product/services/product.service';
 
 /**
- * Rota interna de baixa de estoque.
+ * Rotas internas do Catálogo.
  *
- * Não passa pelo gateway: é chamada direto pelo monólito, na rede do compose.
- * Existe porque o estoque é um campo do produto e, depois da extração, a escrita
- * deixou de ser local ao pedido.
+ * Não passam pelo gateway: são chamadas direto pelos outros serviços, na rede do
+ * compose. Depois do snapshot final o banco é isolado, então Vendas consulta o
+ * produto (existência) e o preço por aqui, e baixa o estoque por aqui.
  */
 @Controller('internal/products')
 export class InternalProductController {
   public constructor(private readonly productService: ProductService) {}
+
+  @Get(':id')
+  public async getById(@Param('id') id: string) {
+    return this.productService.getProductById(id);
+  }
+
+  @Post('batch')
+  public async getMany(@Body() body: { ids: string[] }) {
+    return this.productService.getProductsByIds(body.ids ?? []);
+  }
 
   @Patch(':id/stock')
   public async decrementStock(

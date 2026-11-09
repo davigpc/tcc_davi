@@ -537,7 +537,7 @@ Subdomínio ou Transações) ou fechar a linha do inventário no capítulo 05.
 
 ---
 
-### Trilha 4/9 — ecommerce × Capacidade de Negócio (em andamento)
+### Trilha 4/9 — ecommerce × Capacidade de Negócio (concluída)
 
 **Branch:** `exp/ecommerce/capacidade-negocio` (repo pai e fork, a partir do
 baseline `6487e40`). S0 canônico de 07/11 (ADR-0003), sem remedição.
@@ -607,8 +607,37 @@ caiu 11 %, porque nenhuma rota medida atravessa o novo serviço. A escrita subiu
 
 **Tags:** `snap/ecommerce/capacidade-negocio/{1,2}`.
 
-**Status:** s2 concluído. Próximo: snapshot final (Vendas + Comunicação, com
-persistência isolada), que fecha a trilha 4/9.
+**snapshot final:** Vendas (`cart`, `shipping`, `order`, `inventory`, `stripe`,
+`item`) e Comunicação (`email`) extraídos para `services/ecommerce/{vendas,
+comunicacao}/`; monólito desativado; **um MongoDB por serviço** (`catalogo_db`,
+`clientes_db`, `vendas_db` com réplica `rs0`); Redis só no Catálogo. Vendas valida
+usuário no Clientes e produto no Catálogo por HTTP, baixa estoque no Catálogo e
+envia e-mail pela Comunicação. Compose
+`infra/compose/ecommerce-capacidade-negocio-final.yml`; gateway
+`nginx-capacidade-ecommerce-final.conf`.
+
+| Métrica | s2 | final |
+|---|---|---|
+| Build (`--no-cache`) | 121.707 ms | 88.234 ms |
+| Inicialização | 8.634 ms | 8.801 ms |
+| LOC | 5.464 | 5.328 |
+| Componentes / contêineres | 6 / 6 | 9 / 9 |
+| Cross-domain | 74/211 | 76/206 |
+| RAM repouso / carga | 407,3 / 541,0 MB | 771,3 / 907,8 MB |
+| `products` | 3.004,2 req/s | 2.917,9 req/s |
+| `product-by-id` | 3.204,3 req/s | 3.080,7 req/s |
+| `orders` | 497,3 req/s | 556,8 req/s |
+
+**Achado do final:** o build caiu 27,5 % porque a imagem do monólito deixou de ser
+construída; a RAM quase dobrou pelos três bancos. A escrita subiu 12 % apesar das
+duas validações HTTP — sem causa isolada, ler como faixa de variação. O
+acoplamento migrou do compilador para a rede: carrinho e pedido passaram a fazer
+`join` distribuído com o Catálogo.
+
+**Tags:** `snap/ecommerce/capacidade-negocio/{1,2,final}`.
+
+**Status:** trilha 4/9 **concluída** (s0 → s1 → s2 → final). Texto do capítulo 05
+atualizado com as quatro fases.
 
 ---
 
@@ -704,4 +733,5 @@ de frete continuam, pois o carrinho os usa). O `ItemTypes` passou a ter apenas
 
 O S0 é re-medido com o app enxuto e a tag `snapshot-0` é movida para o novo
 commit. Detalhes em `docs/decisoes/0005-recorte-ecommerce.md`.
+
 

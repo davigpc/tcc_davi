@@ -1,0 +1,135 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 128,
+  "total": 5328,
+  "source": 4409,
+  "comment": 327,
+  "byModule": {
+    "catalogo/catalogo.module.ts": {
+      "files": 1,
+      "total": 43,
+      "source": 35,
+      "comment": 7
+    },
+    "catalogo/config": {
+      "files": 2,
+      "total": 14,
+      "source": 12,
+      "comment": 0
+    },
+    "catalogo/main.ts": {
+      "files": 1,
+      "total": 32,
+      "source": 26,
+      "comment": 2
+    },
+    "catalogo/modules": {
+      "files": 13,
+      "total": 621,
+      "source": 490,
+      "comment": 59
+    },
+    "catalogo/shared": {
+      "files": 3,
+      "total": 82,
+      "source": 68,
+      "comment": 4
+    },
+    "clientes/clientes.module.ts": {
+      "files": 1,
+      "total": 37,
+      "source": 29,
+      "comment": 7
+    },
+    "clientes/common": {
+      "files": 2,
+      "total": 50,
+      "source": 43,
+      "comment": 1
+    },
+    "clientes/config": {
+      "files": 2,
+      "total": 14,
+      "source": 12,
+      "comment": 0
+    },
+    "clientes/main.ts": {
+      "files": 1,
+      "total": 39,
+      "source": 33,
+      "comment": 2
+    },
+    "clientes/modules": {
+      "files": 32,
+      "total": 1535,
+      "source": 1283,
+      "comment": 77
+    },
+    "clientes/shared": {
+      "files": 5,
+      "total": 92,
+      "source": 82,
+      "comment": 0
+    },
+    "vendas/clients": {
+      "files": 3,
+      "total": 169,
+      "source": 127,
+      "comment": 22
+    },
+    "vendas/config": {
+      "files": 2,
+      "total": 14,
+      "source": 12,
+      "comment": 0
+    },
+    "vendas/main.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 23,
+      "comment": 1
+    },
+    "vendas/modules": {
+      "files": 43,
+      "total": 2096,
+      "source": 1761,
+      "comment": 101
+    },
+    "vendas/shared": {
+      "files": 3,
+      "total": 109,
+      "source": 82,
+      "comment": 13
+    },
+    "vendas/vendas.module.ts": {
+      "files": 1,
+      "total": 36,
+      "source": 29,
+      "comment": 6
+    },
+    "comunicacao/comunicacao.module.ts": {
+      "files": 1,
+      "total": 15,
+      "source": 8,
+      "comment": 6
+    },
+    "comunicacao/config": {
+      "files": 1,
+      "total": 6,
+      "source": 5,
+      "comment": 0
+    },
+    "comunicacao/main.ts": {
+      "files": 1,
+      "total": 26,
+      "source": 22,
+      "comment": 1
+    },
+    "comunicacao/modules": {
+      "files": 9,
+      "total": 271,
+      "source": 227,
+      "comment": 18
+    }
+  }
+}
