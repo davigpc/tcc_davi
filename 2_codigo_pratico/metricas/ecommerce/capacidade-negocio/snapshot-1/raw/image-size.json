@@ -1,0 +1,22 @@
+{
+  "ecommerce-s1-monolith": {
+    "bytes": 103455607,
+    "mb": 98.66
+  },
+  "ecommerce-s1-catalogo": {
+    "bytes": 92733966,
+    "mb": 88.44
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}
