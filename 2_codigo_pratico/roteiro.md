@@ -580,9 +580,35 @@ trilha de Transações vai medir. O banco compartilhado obrigou a manter no mon�
 um modelo de leitura de `products` (carrinho e pedido), um acoplamento de dados
 que o `madge` não mede.
 
-**Tags:** `snap/ecommerce/capacidade-negocio/1`.
+**Serviço do s2:** `services/ecommerce/clientes/` (auth + token + user + address +
+storages), com rota interna `PATCH /api/internal/users/subscription`. O monólito
+ficou com Vendas e Comunicação. A verificação do JWT é local (`AccessTokenGuard`
+com `JwtService`) e carrinho/pedido mantêm um modelo de leitura de `users`.
 
-**Status:** s1 concluído. Próximo: s2 (Clientes), com o MongoDB compartilhado.
+**Resultados do s2 (média de 3 repetições):**
+
+| Métrica | s1 | s2 |
+|---|---|---|
+| Build (`--no-cache`) | 115.512 ms | 121.707 ms |
+| Inicialização | 8.546 ms | 8.634 ms |
+| LOC | 5.169 | 5.464 |
+| Componentes / contêineres | 5 / 5 | 6 / 6 |
+| Cross-domain | 80/210 | 74/211 |
+| `products` | 2.996,6 req/s | 3.004,2 req/s |
+| `product-by-id` | 3.208,4 req/s | 3.204,3 req/s |
+| `orders` | 452,1 req/s | 497,3 req/s |
+
+**Achado central do s2:** primeiro corte real de acoplamento estático da trilha
+(80 → 74), porque as arestas de entrada (auth, token, user) saíram do grafo. O
+monólito caiu de 4.404 para 2.945 linhas. O custo aparece em infraestrutura: mais
+uma imagem (89,1 MB), 6 contêineres e +19,3 % de RAM em repouso; a CPU sob carga
+caiu 11 %, porque nenhuma rota medida atravessa o novo serviço. A escrita subiu
+10 % (p50 −3 ms) sem explicação isolada — ler como faixa de variação.
+
+**Tags:** `snap/ecommerce/capacidade-negocio/{1,2}`.
+
+**Status:** s2 concluído. Próximo: snapshot final (Vendas + Comunicação, com
+persistência isolada), que fecha a trilha 4/9.
 
 ---
 
