@@ -1,0 +1,138 @@
+# Diário de Execução — ecommerce / Capacidade de Negócio
+
+> Um arquivo por trilha. Consolida hipótese, decisões, snapshots e observações.
+> É o rascunho direto da seção correspondente do capítulo 05.
+
+## Identificação
+
+- App: `ecommerce` (papel no TCC: varejo transacional / MongoDB)
+- Metodologia: Capacidade de Negócio
+- Branch: `exp/ecommerce/capacidade-negocio` (repositório pai e fork)
+- Baseline (código): fork `6487e40` (tag `snapshot-0`)
+- Snapshot-0 medido em 07/11/2026, reaproveitado conforme a decisão 0003
+
+## Hipótese de decomposição
+
+A Capacidade de Negócio agrupa os serviços pelos processos que a organização
+executa de ponta a ponta. No e-commerce, o resultado são quatro capacidades:
+
+| Capacidade | Módulos | Justificativa |
+|---|---|---|
+| Catálogo | `product`, `search`, `storages` | publicar, buscar e armazenar imagem de produto |
+| Clientes | `auth`, `token`, `user`, `address` | identidade, sessão e endereço do comprador |
+| Vendas | `cart`, `shipping`, `order`, `inventory`, `stripe` | montar carrinho, fechar pedido e receber |
+| Comunicação | `email` | avisos de pedido |
+
+A evidência do agrupamento está em
+`docs/metodologia/identificacao-dominios-ecommerce.md`. O `roteiro.md` §4.3
+previa cinco capacidades com "Estoque" separado; o estoque não tem rota própria
+(é campo de `Product`, escrito dentro da transação do pedido), então foi
+incorporado a Vendas, e carrinho e checkout ficaram na mesma capacidade.
+
+A primeira extração é o **Catálogo**: é a capacidade com menos dependências de
+entrada (só o pedido a procura, no webhook), concentra os dados mais isolados
+(a coleção `products`, o cache e as imagens) e responde a duas rotas medidas.
+
+## Snapshots
+
+### snapshot-0 (baseline monolítico)
+
+- Pasta: `metricas/ecommerce/capacidade-negocio/snapshot-0/`
+- Tag: `snap/ecommerce/capacidade-negocio/0` (baseline `snapshot-0`)
+- Pilha: `docker-compose.experiment.yml` — `api`, `mongo` (réplica `rs0`) e `redis`, sem gateway.
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | Valor |
+|---|---|---|
+| Agilidade | Build (`--no-cache`) | 117.342 ms |
+| Agilidade | Inicialização | 8.032 ms |
+| Custo | CPU (repouso / carga) | 0,92 % / 119,87 % |
+| Custo | RAM (repouso / carga) | 279,2 / 457,3 MB |
+| Custo | Imagem da aplicação | 98,67 MB |
+| Custo | Componentes / containers | 3 / 3 |
+| Desempenho | `GET /api/products` | 3.071,5 req/s · 6 / 7,3 / 9,7 ms |
+| Desempenho | `GET /api/products/:id` | 3.223,3 req/s · 5 / 7 / 9,7 ms |
+| Desempenho | `POST /api/orders` | 445,3 req/s · 42,7 / 56 / 67,3 ms |
+| Manutenibilidade | LOC (TypeScript) | 4.820 |
+| Manutenibilidade | Chamadas entre fronteiras | 79 de 207 |
+
+**Observação do baseline:** o `snapshot-0` foi medido **sem** NGINX. A partir do
+`snapshot-1` toda requisição passa a ter um salto a mais pelo gateway — a mesma
+ressalva registrada na trilha de Capacidade do inventário. No resumo do S0 a
+rota `orders` ficou gravada na lista de leitura; a partir do S1 ela está em
+escrita, e o comparativo soma as duas listas.
+
+### snapshot-1 (primeira extração — Catálogo)
+
+- Pasta: `metricas/ecommerce/capacidade-negocio/snapshot-1/`
+- Tag: `snap/ecommerce/capacidade-negocio/1`
+- Pré-registro: `docs/extracao/ecommerce__capacidade-negocio__s1.plan.md`
+- Registro: `docs/extracao/ecommerce__capacidade-negocio__s1.md`
+- Serviço extraído: `services/ecommerce/catalogo/`; gateway
+  `infra/gateway/nginx-capacidade-s1.conf`; compose
+  `infra/compose/ecommerce-capacidade-negocio-s1.yml`.
+- Topologia: NGINX na porta pública 3001; monólito em 3002; Catálogo em 3001
+  interno; MongoDB e Redis compartilhados.
+
+**Resultados (média de 3 repetições):**
+
+| Dimensão | Métrica | snapshot-0 | snapshot-1 |
+|---|---|---|---|
+| Agilidade | build (`--no-cache`) | 117.342 ms | 115.512 ms |
+| Agilidade | inicialização | 8.032 ms | 8.546 ms |
+| Custo | CPU total (repouso / carga) | 0,92 % / 119,87 % | 0,62 % / 177,19 % |
+| Custo | RAM total (repouso / carga) | 279,2 / 457,3 MB | 341,4 / 474,1 MB |
+| Custo | imagens da aplicação | 98,67 MB | 212,2 MB |
+| Custo | componentes / containers | 3 / 3 | 5 / 5 |
+| Desempenho | `products` | 3.071,5 req/s · p50 6,0 ms | 2.996,6 req/s · p50 6,7 ms |
+| Desempenho | `product-by-id` | 3.223,3 req/s · p50 5,0 ms | 3.208,4 req/s · p50 6,0 ms |
+| Desempenho | `orders` | 445,3 req/s · p50 42,7 ms | 452,1 req/s · p50 41,3 ms |
+| Manutenibilidade | LOC | 4.820 | 5.169 |
+| Manutenibilidade | cross-domain | 79 / 207 | 80 / 210 |
+
+**Observações:**
+- O build **caiu** 1,6 %, ao contrário da hipótese: duas imagens não custaram
+  mais tempo que uma. O startup subiu 6,4 %.
+- A vazão de leitura caiu menos que o previsto (2,4 % em `products` e 0,5 % em
+  `product-by-id`, com p50 +1 ms e +0,7 ms). O processo dedicado e o cache Redis
+  de produto compensaram a maior parte do salto pelo gateway.
+- A escrita ficou estável (+1,5 %), como previsto: a baixa de estoque só ocorre
+  no webhook, fora da carga.
+- O LOC subiu 7,2 % por duplicação de `shared`, do schema de produto e da casca
+  de processo. O cross-domain **não caiu** (79 → 80): o Catálogo recria 9 arestas
+  internas e o monólito ganhou 3 imports de `@item`, dois deles por causa do
+  modelo de leitura do produto.
+- Paridade funcional confirmada: rotas de produto com as mesmas respostas,
+  imagem criada no seed servida em `/uploads/`, pedido e webhook concluindo com
+  estoque de 50 → 49, e carrinho com subtotal e item populado corretos.
+
+## Desvios e dificuldades
+
+- **Modelo `Product` ausente no monólito.** Depois de remover o `ProductModule`,
+  o seed falhou em `POST /api/orders` com `MissingSchemaError: Schema hasn't been
+  registered for model "Product"`. Não era só o `pre-save` do pedido: o carrinho
+  também valida item e lê o preço, e carrinho e pedido fazem `populate('items.id')`.
+  A saída por HTTP colocaria um salto de rede na rota medida, contra o que o
+  pré-registro previa; adotou-se um modelo de leitura da coleção compartilhada
+  (`src/modules/item/schemas/product-reference.schema.ts`), registrado nos dois
+  módulos. O acoplamento de dados resultante está registrado no `s1.md`.
+- **`mongoose` fixado em `8.4.3`** no serviço: o intervalo `^8.4.3` puxava a
+  versão 8.24 e quebrava a tipagem do `search.service.ts`. A versão foi fixada na
+  mesma do monólito.
+- **Configuração explícita de cross-domain no harness.** A árvore do e-commerce é
+  `src/modules/<domínio>`, e a inferência do rótulo pelo caminho não vale. O
+  `AppConfig` ganhou `crossDomain` (label, diretório e `tsconfig`) e o
+  `collectors.ts` passou a aceitá-lo, sem alterar as trilhas anteriores.
+- **Porta do NGINX não publicada na primeira subida.** O contêiner subiu com
+  `80/tcp` sem binding; a recriação forçada do serviço resolveu. Vale conferir
+  `docker port` antes de cada coleta.
+- **Nomes de campo antigos no `comparar.ts`.** Os resumos do inventário usam
+  `cpuAvgPerc`/`memAvgMB`, renomeados depois para `cpuMedPerc`/`memMedMB`; a
+  leitura passou a aceitar os dois nomes e a imprimir `--` quando o valor não
+  existe, evitando `NaN` nas tabelas.
+
+## Síntese para o capítulo 05
+
+(será escrita depois dos três snapshots desta trilha, com a comparação
+s0 → s1 → s2 → final)

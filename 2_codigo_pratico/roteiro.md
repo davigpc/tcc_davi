@@ -537,6 +537,55 @@ Subdomínio ou Transações) ou fechar a linha do inventário no capítulo 05.
 
 ---
 
+### Trilha 4/9 — ecommerce × Capacidade de Negócio (em andamento)
+
+**Branch:** `exp/ecommerce/capacidade-negocio` (repo pai e fork, a partir do
+baseline `6487e40`). S0 canônico de 07/11 (ADR-0003), sem remedição.
+
+**Agrupamento:** quatro capacidades — Catálogo (`product` + `search` +
+`storages`), Clientes (`auth` + `token` + `user` + `address`), Vendas (`cart` +
+`shipping` + `order` + `inventory` + `stripe`) e Comunicação (`email`). Substitui
+as cinco do §4.3: "Estoque" não tem rota própria (é campo de `Product`, escrito
+na transação do pedido) e carrinho e checkout formam um processo só.
+
+**Ordem:** s1 Catálogo → s2 Clientes → final Vendas + Comunicação. MongoDB
+compartilhado até o s2 e isolado no final; NGINX na porta pública 3001 desde o
+s1, com o monólito em 3002.
+
+**Registros:** `docs/extracao/ecommerce__capacidade-negocio__s1.{plan,}.md`;
+diário `docs/execucao/ecommerce__capacidade-negocio.md`; evidência do
+agrupamento em `docs/metodologia/identificacao-dominios-ecommerce.md`.
+
+**Serviço:** `services/ecommerce/catalogo/` (product + search + storages), com
+rota interna `PATCH /api/internal/products/:id/stock` chamada pelo monólito.
+
+**Resultados do s1 (média de 3 repetições):**
+
+| Métrica | S0 canônico | s1 |
+|---|---|---|
+| Build (`--no-cache`) | 117.342 ms | 115.512 ms |
+| Inicialização | 8.032 ms | 8.546 ms |
+| LOC | 4.820 | 5.169 |
+| Componentes / contêineres | 3 / 3 | 5 / 5 |
+| Cross-domain | 79/207 | 80/210 |
+| `products` | 3.071,5 req/s | 2.996,6 req/s |
+| `product-by-id` | 3.223,3 req/s | 3.208,4 req/s |
+| `orders` | 445,3 req/s | 452,1 req/s |
+
+**Achado central do s1:** a leitura caiu bem menos que na trilha de Capacidade do
+inventário (−2,4 % e −0,5 %), porque o Catálogo tem processo e cache próprios. O
+custo aparece na escrita: a baixa de estoque sai da transação do pedido e passa a
+ser HTTP, o que mantém a paridade funcional e perde a atomicidade — ponto que a
+trilha de Transações vai medir. O banco compartilhado obrigou a manter no monólito
+um modelo de leitura de `products` (carrinho e pedido), um acoplamento de dados
+que o `madge` não mede.
+
+**Tags:** `snap/ecommerce/capacidade-negocio/1`.
+
+**Status:** s1 concluído. Próximo: s2 (Clientes), com o MongoDB compartilhado.
+
+---
+
 ## 13. Consolidação em `main` (estratégia de branches)
 
 A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:
