@@ -1,0 +1,96 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "comunicacao/_root",
+    "comunicacao/config",
+    "comunicacao/modules",
+    "ecommerce/_root",
+    "ecommerce/common",
+    "ecommerce/config",
+    "ecommerce/modules",
+    "ecommerce/shared",
+    "identidade/_root",
+    "identidade/common",
+    "identidade/config",
+    "identidade/modules",
+    "identidade/shared"
+  ],
+  "edges": [
+    {
+      "from": "ecommerce/modules",
+      "to": "ecommerce/shared",
+      "count": 13
+    },
+    {
+      "from": "ecommerce/_root",
+      "to": "ecommerce/modules",
+      "count": 5
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/modules",
+      "count": 5
+    },
+    {
+      "from": "identidade/shared",
+      "to": "identidade/modules",
+      "count": 4
+    },
+    {
+      "from": "ecommerce/_root",
+      "to": "ecommerce/config",
+      "count": 3
+    },
+    {
+      "from": "identidade/modules",
+      "to": "identidade/shared",
+      "count": 3
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/config",
+      "count": 2
+    },
+    {
+      "from": "comunicacao/_root",
+      "to": "comunicacao/modules",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/config",
+      "to": "ecommerce/shared",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/shared",
+      "count": 1
+    },
+    {
+      "from": "identidade/modules",
+      "to": "identidade/common",
+      "count": 1
+    },
+    {
+      "from": "identidade/shared",
+      "to": "identidade/common",
+      "count": 1
+    },
+    {
+      "from": "comunicacao/_root",
+      "to": "comunicacao/config",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 42,
+  "totalEdges": 239,
+  "byModule": {
+    "ecommerce/config": 1,
+    "ecommerce/_root": 8,
+    "ecommerce/modules": 13,
+    "identidade/_root": 8,
+    "identidade/modules": 4,
+    "identidade/shared": 5,
+    "comunicacao/_root": 3
+  }
+}

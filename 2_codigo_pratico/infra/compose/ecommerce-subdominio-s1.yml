@@ -1,0 +1,134 @@
+# Compose do experimento: ecommerce / Subdomínio (DDD) / snapshot-1
+# Topologia: monólito (sem Identidade e sem Comunicação) + serviço de Identidade
+# + serviço de Comunicação + MongoDB (réplica rs0) e Redis compartilhados +
+# gateway NGINX (Strangler Fig) na borda.
+#
+# A porta pública continua sendo a 3001. O monólito fica na 3002 e os serviços
+# em 3001 pela rede do compose. O volume `uploads` é compartilhado: a foto de
+# perfil é gravada pela Identidade e servida pelo monólito (dono de /uploads).
+name: ecommerce-subdominio-s1
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: ecommerce_sub_s1_mongo
+    restart: unless-stopped
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--quiet"]
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"try { rs.status().ok } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}).ok }\" | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - ecommerce
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_sub_s1_redis
+    restart: unless-stopped
+    networks:
+      - ecommerce
+
+  monolith:
+    image: ecommerce-subdominio-s1-monolith
+    build:
+      context: ../../apps/ecommerce
+      target: production
+    container_name: ecommerce_sub_s1_monolith
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      CLIENT_URL: http://localhost:5173
+      MONGO_URI: mongodb://mongo:27017/gldcart?replicaSet=rs0
+      MONGO_DATABASE: gldcart
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      ACCESS_EXPIRATION_TIME: 1d
+      REFRESH_SECRET: ${REFRESH_SECRET}
+      REFRESH_EXPIRATION_TIME: 7d
+      REFRESH_TOKEN_NAME: refreshToken
+      REFRESH_TOKEN_PATH: api/auth/refresh
+      UPLOAD_DIR: uploads
+      PUBLIC_BASE_URL: http://localhost:3001
+      FEEDBACK_EMAIL: no-reply@localhost
+      MONTHLY_SUBSCRIPTION_priceId: price_local_monthly
+      SEED_BASE_URL: http://nginx
+      CLIENTES_URL: http://identidade:3001
+      COMUNICACAO_URL: http://comunicacao:3001
+    volumes:
+      - uploads:/usr/src/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ecommerce
+
+  identidade:
+    image: ecommerce-subdominio-s1-identidade
+    build:
+      context: ../../services/ecommerce/identidade
+    container_name: ecommerce_sub_s1_identidade
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGO_URI: mongodb://mongo:27017/gldcart?replicaSet=rs0
+      MONGO_DATABASE: gldcart
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      ACCESS_EXPIRATION_TIME: 1d
+      REFRESH_SECRET: ${REFRESH_SECRET}
+      REFRESH_EXPIRATION_TIME: 7d
+      REFRESH_TOKEN_NAME: refreshToken
+      REFRESH_TOKEN_PATH: api/auth/refresh
+      UPLOAD_DIR: uploads
+      PUBLIC_BASE_URL: http://localhost:3001
+    volumes:
+      - uploads:/usr/src/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - ecommerce
+
+  comunicacao:
+    image: ecommerce-subdominio-s1-comunicacao
+    build:
+      context: ../../services/ecommerce/comunicacao
+    container_name: ecommerce_sub_s1_comunicacao
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      FEEDBACK_EMAIL: no-reply@localhost
+    networks:
+      - ecommerce
+
+  nginx:
+    image: nginx:alpine
+    container_name: ecommerce_sub_s1_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-subdominio-ecommerce-s1.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3001:80"
+    depends_on:
+      - monolith
+      - identidade
+      - comunicacao
+    networks:
+      - ecommerce
+
+volumes:
+  mongo_data:
+  uploads:
+
+networks:
+  ecommerce:
+    driver: bridge

@@ -1,0 +1,312 @@
+{
+  "app": "ecommerce",
+  "metodologia": "subdominio",
+  "snapshot": "snapshot-1",
+  "tag": null,
+  "timestampUtc": "2026-11-10T21:06:38.156Z",
+  "buildTime": {
+    "meanMs": 125166,
+    "runsMs": [
+      125868,
+      130100,
+      119531
+    ]
+  },
+  "startupTime": {
+    "meanMs": 8593,
+    "runsMs": [
+      8630,
+      8645,
+      8504
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "ecommerce_sub_s1_nginx",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memAvgMB": 12.93,
+        "memMinMB": 12.93,
+        "memMaxMB": 12.93
+      },
+      {
+        "container": "ecommerce_sub_s1_monolith",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memAvgMB": 54.66,
+        "memMinMB": 54.62,
+        "memMaxMB": 54.7
+      },
+      {
+        "container": "ecommerce_sub_s1_identidade",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memAvgMB": 55.77,
+        "memMinMB": 55.71,
+        "memMaxMB": 55.84
+      },
+      {
+        "container": "ecommerce_sub_s1_redis",
+        "samples": 4,
+        "cpuAvgPerc": 0.27,
+        "cpuMinPerc": 0.25,
+        "cpuMaxPerc": 0.28,
+        "memAvgMB": 8.38,
+        "memMinMB": 8.35,
+        "memMaxMB": 8.48
+      },
+      {
+        "container": "ecommerce_sub_s1_mongo",
+        "samples": 4,
+        "cpuAvgPerc": 13.33,
+        "cpuMinPerc": 0.29,
+        "cpuMaxPerc": 52.39,
+        "memAvgMB": 187.55,
+        "memMinMB": 187.2,
+        "memMaxMB": 187.8
+      },
+      {
+        "container": "ecommerce_sub_s1_comunicacao",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memAvgMB": 54.41,
+        "memMinMB": 54.41,
+        "memMaxMB": 54.41
+      }
+    ],
+    "load": [
+      {
+        "container": "ecommerce_sub_s1_nginx",
+        "samples": 4,
+        "cpuAvgPerc": 39.08,
+        "cpuMinPerc": 37.65,
+        "cpuMaxPerc": 41,
+        "memAvgMB": 14.87,
+        "memMinMB": 14.59,
+        "memMaxMB": 15.23
+      },
+      {
+        "container": "ecommerce_sub_s1_monolith",
+        "samples": 4,
+        "cpuAvgPerc": 106.75,
+        "cpuMinPerc": 103.09,
+        "cpuMaxPerc": 110.15,
+        "memAvgMB": 196.25,
+        "memMinMB": 196.2,
+        "memMaxMB": 196.3
+      },
+      {
+        "container": "ecommerce_sub_s1_identidade",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memAvgMB": 56.47,
+        "memMinMB": 56.42,
+        "memMaxMB": 56.6
+      },
+      {
+        "container": "ecommerce_sub_s1_redis",
+        "samples": 4,
+        "cpuAvgPerc": 10.89,
+        "cpuMinPerc": 10.61,
+        "cpuMaxPerc": 11.14,
+        "memAvgMB": 8.46,
+        "memMinMB": 8.24,
+        "memMaxMB": 8.75
+      },
+      {
+        "container": "ecommerce_sub_s1_mongo",
+        "samples": 4,
+        "cpuAvgPerc": 6.26,
+        "cpuMinPerc": 0.33,
+        "cpuMaxPerc": 23.84,
+        "memAvgMB": 228.5,
+        "memMinMB": 190.8,
+        "memMaxMB": 341.3
+      },
+      {
+        "container": "ecommerce_sub_s1_comunicacao",
+        "samples": 4,
+        "cpuAvgPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memAvgMB": 54.41,
+        "memMinMB": 54.41,
+        "memMaxMB": 54.41
+      }
+    ],
+    "imagensMB": {
+      "ecommerce-subdominio-s1-monolith": 98.64,
+      "ecommerce-subdominio-s1-identidade": 89.05,
+      "ecommerce-subdominio-s1-comunicacao": 97.25,
+      "mongo:7": 283.38,
+      "redis:7-alpine": 15.52,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "product-by-id",
+        "rpsMean": 2952.33,
+        "rpsMin": 2876.8,
+        "rpsMax": 3017.8,
+        "p50Mean": 6.67,
+        "p50Min": 6,
+        "p50Max": 7,
+        "p90Mean": 13,
+        "p90Min": 13,
+        "p90Max": 13,
+        "p99Mean": 15.33,
+        "p99Min": 15,
+        "p99Max": 16,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "products",
+        "rpsMean": 2818.37,
+        "rpsMin": 2671.9,
+        "rpsMax": 2904.4,
+        "p50Mean": 6.33,
+        "p50Min": 6,
+        "p50Max": 7,
+        "p90Mean": 13.33,
+        "p90Min": 13,
+        "p90Max": 14,
+        "p99Mean": 16,
+        "p99Min": 16,
+        "p99Max": 16,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "orders",
+        "rpsMean": 509.37,
+        "rpsMin": 465.7,
+        "rpsMax": 539.9,
+        "p50Mean": 37.67,
+        "p50Min": 35,
+        "p50Max": 41,
+        "p90Mean": 49,
+        "p90Min": 46,
+        "p90Max": 54,
+        "p99Mean": 59,
+        "p99Min": 53,
+        "p99Max": 70,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 5346,
+    "locPorModulo": {
+      "ecommerce/common": 14,
+      "ecommerce/config": 84,
+      "ecommerce/main.module.ts": 56,
+      "ecommerce/main.ts": 27,
+      "ecommerce/modules": 2765,
+      "ecommerce/shared": 315,
+      "identidade/common": 50,
+      "identidade/config": 14,
+      "identidade/identidade.module.ts": 37,
+      "identidade/main.ts": 39,
+      "identidade/modules": 1535,
+      "identidade/shared": 92,
+      "comunicacao/comunicacao.module.ts": 15,
+      "comunicacao/config": 6,
+      "comunicacao/main.ts": 26,
+      "comunicacao/modules": 271
+    },
+    "servicos": 6,
+    "containers": 6,
+    "crossDomainEdges": 42,
+    "totalEdges": 239,
+    "crossDomainPorModulo": {
+      "ecommerce/config": 1,
+      "ecommerce/_root": 8,
+      "ecommerce/modules": 13,
+      "identidade/_root": 8,
+      "identidade/modules": 4,
+      "identidade/shared": 5,
+      "comunicacao/_root": 3
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "ecommerce/modules",
+        "to": "ecommerce/shared",
+        "count": 13
+      },
+      {
+        "from": "ecommerce/_root",
+        "to": "ecommerce/modules",
+        "count": 5
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/modules",
+        "count": 5
+      },
+      {
+        "from": "identidade/shared",
+        "to": "identidade/modules",
+        "count": 4
+      },
+      {
+        "from": "ecommerce/_root",
+        "to": "ecommerce/config",
+        "count": 3
+      },
+      {
+        "from": "identidade/modules",
+        "to": "identidade/shared",
+        "count": 3
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/config",
+        "count": 2
+      },
+      {
+        "from": "comunicacao/_root",
+        "to": "comunicacao/modules",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/config",
+        "to": "ecommerce/shared",
+        "count": 1
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/shared",
+        "count": 1
+      },
+      {
+        "from": "identidade/modules",
+        "to": "identidade/common",
+        "count": 1
+      },
+      {
+        "from": "identidade/shared",
+        "to": "identidade/common",
+        "count": 1
+      },
+      {
+        "from": "comunicacao/_root",
+        "to": "comunicacao/config",
+        "count": 1
+      }
+    ]
+  }
+}

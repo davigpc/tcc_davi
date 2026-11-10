@@ -1,0 +1,21 @@
+{
+  "services": [
+    "mongo",
+    "redis",
+    "monolith",
+    "comunicacao",
+    "identidade",
+    "nginx"
+  ],
+  "serviceCount": 6,
+  "runningContainers": [
+    "ecommerce_sub_s1_nginx",
+    "ecommerce_sub_s1_monolith",
+    "ecommerce_sub_s1_identidade",
+    "ecommerce_sub_s1_redis",
+    "ecommerce_sub_s1_mongo",
+    "ecommerce_sub_s1_comunicacao"
+  ],
+  "containerCount": 6,
+  "imageCount": 6
+}

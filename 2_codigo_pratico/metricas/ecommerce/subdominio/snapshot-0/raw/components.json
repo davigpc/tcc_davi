@@ -1,0 +1,15 @@
+{
+  "services": [
+    "redis",
+    "mongo",
+    "api"
+  ],
+  "serviceCount": 3,
+  "runningContainers": [
+    "ecommerce_api",
+    "ecommerce_redis",
+    "ecommerce_mongo"
+  ],
+  "containerCount": 3,
+  "imageCount": 3
+}
