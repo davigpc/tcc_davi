@@ -39,9 +39,11 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY --chown=node:node --from=build /usr/src/app/scripts ./scripts
 
 ENV NODE_ENV production
 
 EXPOSE 3001
 
 CMD [ "node", "dist/main.js" ]
+

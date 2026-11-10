@@ -1,0 +1,116 @@
+{
+  "app": "ecommerce",
+  "metodologias": ["subdominio"],
+  "composeDir": "2_codigo_pratico/infra/compose",
+  "composeFile": "ecommerce-subdominio-final.yml",
+  "codeDir": "2_codigo_pratico/services/ecommerce",
+  "composeProject": "ecommerce-subdominio-final",
+  "baseUrl": "http://localhost:3001",
+  "readinessPath": "/api/health/db",
+  "credentials": { "email": "buyer@example.com", "password": "password123" },
+  "seed": [
+    { "service": "catalogo", "command": ["node", "scripts/reset-db.js"] },
+    { "service": "identidade", "command": ["node", "scripts/reset-db.js"] },
+    { "service": "vendas", "command": ["node", "scripts/seed-local.js"] }
+  ],
+  "containers": [
+    "ecommerce_sub_final_catalogo_db",
+    "ecommerce_sub_final_identidade_db",
+    "ecommerce_sub_final_vendas_db",
+    "ecommerce_sub_final_redis",
+    "ecommerce_sub_final_catalogo",
+    "ecommerce_sub_final_identidade",
+    "ecommerce_sub_final_vendas",
+    "ecommerce_sub_final_comunicacao",
+    "ecommerce_sub_final_nginx"
+  ],
+  "images": [
+    "ecommerce-subdominio-final-catalogo",
+    "ecommerce-subdominio-final-identidade",
+    "ecommerce-subdominio-final-vendas",
+    "ecommerce-subdominio-final-comunicacao",
+    "mongo:7",
+    "redis:7-alpine",
+    "nginx:alpine"
+  ],
+  "sourceDirs": [
+    "2_codigo_pratico/services/ecommerce/catalogo/src",
+    "2_codigo_pratico/services/ecommerce/identidade/src",
+    "2_codigo_pratico/services/ecommerce/vendas/src",
+    "2_codigo_pratico/services/ecommerce/comunicacao/src"
+  ],
+  "crossDomain": [
+    {
+      "label": "catalogo",
+      "dir": "2_codigo_pratico/services/ecommerce/catalogo/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/catalogo/tsconfig.json"
+    },
+    {
+      "label": "identidade",
+      "dir": "2_codigo_pratico/services/ecommerce/identidade/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/identidade/tsconfig.json"
+    },
+    {
+      "label": "vendas",
+      "dir": "2_codigo_pratico/services/ecommerce/vendas/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/vendas/tsconfig.json"
+    },
+    {
+      "label": "comunicacao",
+      "dir": "2_codigo_pratico/services/ecommerce/comunicacao/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/comunicacao/tsconfig.json"
+    }
+  ],
+  "sharedModuleAlias": "shared",
+  "ids": {
+    "userId": { "from": "login", "path": "user._id" },
+    "productId": { "url": "/api/products?page=1&size=10", "path": "[0]._id" }
+  },
+  "routes": {
+    "read": [
+      {
+        "name": "products",
+        "method": "GET",
+        "path": "/api/products?page=1&size=10"
+      },
+      {
+        "name": "product-by-id",
+        "method": "GET",
+        "path": "/api/products/{{productId}}"
+      }
+    ],
+    "write": [
+      {
+        "name": "orders",
+        "method": "POST",
+        "path": "/api/orders",
+        "auth": true,
+        "body": {
+          "customer": "{{userId}}",
+          "items": [
+            {
+              "id": "{{productId}}",
+              "type": "Product",
+              "quantity": 1
+            }
+          ],
+          "amount": 101,
+          "billing_details": {
+            "name": "Seed Buyer",
+            "email": "buyer@example.com",
+            "address": "Rua 1",
+            "city": "São João del-Rei",
+            "postcode": "36300-000",
+            "phone": "+550000000000"
+          },
+          "order_notes": "load-test"
+        }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}
