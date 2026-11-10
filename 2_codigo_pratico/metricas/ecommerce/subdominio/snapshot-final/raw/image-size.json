@@ -1,0 +1,30 @@
+{
+  "ecommerce-subdominio-final-catalogo": {
+    "bytes": 92736392,
+    "mb": 88.44
+  },
+  "ecommerce-subdominio-final-identidade": {
+    "bytes": 93373248,
+    "mb": 89.05
+  },
+  "ecommerce-subdominio-final-vendas": {
+    "bytes": 93223655,
+    "mb": 88.91
+  },
+  "ecommerce-subdominio-final-comunicacao": {
+    "bytes": 101978113,
+    "mb": 97.25
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

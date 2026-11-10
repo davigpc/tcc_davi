@@ -1,0 +1,158 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "catalogo/health",
+    "catalogo/product",
+    "catalogo/search",
+    "catalogo/shared",
+    "catalogo/storages",
+    "comunicacao/email",
+    "comunicacao/health",
+    "ecommerce/cart",
+    "ecommerce/health",
+    "ecommerce/inventory",
+    "ecommerce/item",
+    "ecommerce/order",
+    "ecommerce/shared",
+    "ecommerce/shipping",
+    "ecommerce/stripe",
+    "identidade/address",
+    "identidade/auth",
+    "identidade/health",
+    "identidade/shared",
+    "identidade/storages",
+    "identidade/token",
+    "identidade/user"
+  ],
+  "edges": [
+    {
+      "from": "ecommerce/cart",
+      "to": "ecommerce/item",
+      "count": 14
+    },
+    {
+      "from": "identidade/user",
+      "to": "identidade/address",
+      "count": 6
+    },
+    {
+      "from": "ecommerce/cart",
+      "to": "ecommerce/shipping",
+      "count": 5
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/item",
+      "count": 5
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/shared",
+      "count": 4
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/shared",
+      "count": 3
+    },
+    {
+      "from": "ecommerce/stripe",
+      "to": "ecommerce/shared",
+      "count": 3
+    },
+    {
+      "from": "ecommerce/stripe",
+      "to": "ecommerce/order",
+      "count": 3
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/token",
+      "count": 3
+    },
+    {
+      "from": "ecommerce/cart",
+      "to": "ecommerce/shared",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/inventory",
+      "to": "ecommerce/item",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/inventory",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/stripe",
+      "count": 2
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/search",
+      "count": 2
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/storages",
+      "count": 2
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/shared",
+      "count": 2
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/user",
+      "count": 2
+    },
+    {
+      "from": "identidade/user",
+      "to": "identidade/storages",
+      "count": 2
+    },
+    {
+      "from": "catalogo/search",
+      "to": "catalogo/shared",
+      "count": 1
+    },
+    {
+      "from": "identidade/shared",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/token",
+      "to": "identidade/user",
+      "count": 1
+    },
+    {
+      "from": "identidade/token",
+      "to": "identidade/shared",
+      "count": 1
+    },
+    {
+      "from": "identidade/user",
+      "to": "identidade/shared",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 69,
+  "totalEdges": 210,
+  "byModule": {
+    "ecommerce/cart": 21,
+    "ecommerce/inventory": 2,
+    "ecommerce/order": 12,
+    "ecommerce/stripe": 6,
+    "catalogo/product": 8,
+    "catalogo/search": 1,
+    "identidade/shared": 1,
+    "identidade/auth": 7,
+    "identidade/token": 2,
+    "identidade/user": 9
+  }
+}

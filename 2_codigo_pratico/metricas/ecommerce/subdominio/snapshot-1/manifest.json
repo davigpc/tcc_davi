@@ -3,10 +3,10 @@
   "metodologia": "subdominio",
   "snapshot": "snapshot-1",
   "tag": null,
-  "timestampUtc": "2026-11-10T21:06:38.156Z",
+  "timestampUtc": "2026-11-10T23:04:32.113Z",
   "scriptVersion": "0.1.0",
-  "parentCommit": "9cdb8b69dc25073b8fa24688e1194affbd918f3c",
-  "submoduleSha": "6487e40a629183285604f2ff458bc30395eb09c9",
+  "parentCommit": "6ee3690c0ca53b69e1beab01564abeaf2b6a186e",
+  "submoduleSha": "8b99fad6028ab48509fe7f9b9c922bda600bc461",
   "host": {
     "os": "Windows_NT 10.0.26200",
     "release": "10.0.26200",

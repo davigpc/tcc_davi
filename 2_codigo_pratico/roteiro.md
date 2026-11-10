@@ -537,6 +537,47 @@ Subdomínio ou Transações) ou fechar a linha do inventário no capítulo 05.
 
 ---
 
+### Trilha 5/9 — ecommerce × Subdomínio (DDD) (concluída)
+
+**Branch:** `exp/ecommerce/subdominio` (pai e fork), a partir do baseline
+`6487e40`. S0 canônico reaproveitado (ADR-0003).
+
+**Classificação:** Identidade (`auth`, `token`, `user`, `address`), Comunicação
+(`email`) e Armazenamento (`storages`, como biblioteca) são **genéricos**;
+Catálogo (`product`, `search`) é **suporte**; Vendas (`cart`, `shipping`, `order`,
+`inventory`, `stripe`) é o **núcleo**. Registro:
+`docs/metodologia/subdominio-ecommerce.md`.
+
+**Ordem:** s1 genéricos (Identidade + Comunicação) → s2 suporte (Catálogo) →
+final núcleo (Vendas), com um MongoDB por serviço e o monólito desativado.
+
+| Métrica | S0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build (`--no-cache`) | 117.342 ms | 123.877 ms | 126.788 ms | 73.856 ms |
+| Inicialização | 8.032 ms | 8.976 ms | 9.292 ms | 9.420 ms |
+| LOC | 4.820 | 5.346 | 5.614 | 5.328 |
+| Componentes / contêineres | 3 / 3 | 6 / 6 | 7 / 7 | 9 / 9 |
+| Cross-domain | 79/207 | 69/209 | 69/210 | 76/206 |
+| RAM repouso / carga | 279,2 / 457,3 MB | 376,4 / 517,4 MB | 436,9 / 573,2 MB | 773,8 / 904,8 MB |
+| `products` | 3.071,5 req/s | 2.694,1 | 2.857,5 | 2.857,7 |
+| `product-by-id` | 3.223,3 | 2.895,1 | 3.013,5 | 3.061,3 |
+| `orders` | 445,3 | 487,0 | 485,7 | 499,5 |
+
+**Achado central:** o estado final **converge** para a mesma topologia e o mesmo
+código da trilha de Capacidade de Negócio (cross-domain 76 de 206, LOC 5.328). Em
+domínio com um fluxo único de negócio, a classificação por valor e a por processo
+chegam ao mesmo destino; o que muda é o caminho — extrair os genéricos primeiro
+derruba o acoplamento e antecipa o custo de infraestrutura. O build caiu 41,7 % no
+final porque a imagem do monólito deixou de ser construída.
+
+**Tags:** `snap/ecommerce/subdominio/{1,2,final}`.
+
+**Status:** trilha 5/9 **concluída** (s0 → s1 → s2 → final). Registros em
+`docs/extracao/ecommerce__subdominio__*.md` e diário
+`docs/execucao/ecommerce__subdominio.md`.
+
+---
+
 ## 13. Consolidação em `main` (estratégia de branches)
 
 A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:

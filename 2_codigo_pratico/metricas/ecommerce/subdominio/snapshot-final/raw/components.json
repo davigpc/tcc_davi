@@ -1,0 +1,27 @@
+{
+  "services": [
+    "catalogo_db",
+    "comunicacao",
+    "identidade_db",
+    "identidade",
+    "vendas_db",
+    "vendas",
+    "redis",
+    "catalogo",
+    "nginx"
+  ],
+  "serviceCount": 9,
+  "runningContainers": [
+    "ecommerce_sub_final_nginx",
+    "ecommerce_sub_final_catalogo",
+    "ecommerce_sub_final_identidade",
+    "ecommerce_sub_final_vendas",
+    "ecommerce_sub_final_redis",
+    "ecommerce_sub_final_catalogo_db",
+    "ecommerce_sub_final_identidade_db",
+    "ecommerce_sub_final_vendas_db",
+    "ecommerce_sub_final_comunicacao"
+  ],
+  "containerCount": 9,
+  "imageCount": 7
+}

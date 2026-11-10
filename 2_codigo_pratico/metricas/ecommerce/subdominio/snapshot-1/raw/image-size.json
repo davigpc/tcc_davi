@@ -1,14 +1,14 @@
 {
   "ecommerce-subdominio-s1-monolith": {
-    "bytes": 103433138,
+    "bytes": 103432920,
     "mb": 98.64
   },
   "ecommerce-subdominio-s1-identidade": {
-    "bytes": 93372812,
+    "bytes": 93373008,
     "mb": 89.05
   },
   "ecommerce-subdominio-s1-comunicacao": {
-    "bytes": 101977163,
+    "bytes": 101977138,
     "mb": 97.25
   },
   "mongo:7": {

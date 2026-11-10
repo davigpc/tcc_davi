@@ -1,0 +1,30 @@
+{
+  "ecommerce-subdominio-s2-monolith": {
+    "bytes": 103422430,
+    "mb": 98.63
+  },
+  "ecommerce-subdominio-s2-catalogo": {
+    "bytes": 92736110,
+    "mb": 88.44
+  },
+  "ecommerce-subdominio-s2-identidade": {
+    "bytes": 93373695,
+    "mb": 89.05
+  },
+  "ecommerce-subdominio-s2-comunicacao": {
+    "bytes": 101977892,
+    "mb": 97.25
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

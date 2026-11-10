@@ -1,96 +1,166 @@
 {
   "tool": "madge@8",
   "modules": [
-    "comunicacao/_root",
-    "comunicacao/config",
-    "comunicacao/modules",
-    "ecommerce/_root",
-    "ecommerce/common",
-    "ecommerce/config",
-    "ecommerce/modules",
+    "comunicacao/email",
+    "comunicacao/health",
+    "ecommerce/cart",
+    "ecommerce/health",
+    "ecommerce/inventory",
+    "ecommerce/item",
+    "ecommerce/order",
+    "ecommerce/product",
+    "ecommerce/search",
     "ecommerce/shared",
-    "identidade/_root",
-    "identidade/common",
-    "identidade/config",
-    "identidade/modules",
-    "identidade/shared"
+    "ecommerce/shipping",
+    "ecommerce/storages",
+    "ecommerce/stripe",
+    "identidade/address",
+    "identidade/auth",
+    "identidade/health",
+    "identidade/shared",
+    "identidade/storages",
+    "identidade/token",
+    "identidade/user"
   ],
   "edges": [
     {
-      "from": "ecommerce/modules",
-      "to": "ecommerce/shared",
+      "from": "ecommerce/cart",
+      "to": "ecommerce/item",
       "count": 13
     },
     {
-      "from": "ecommerce/_root",
-      "to": "ecommerce/modules",
+      "from": "identidade/user",
+      "to": "identidade/address",
+      "count": 6
+    },
+    {
+      "from": "ecommerce/cart",
+      "to": "ecommerce/shipping",
       "count": 5
     },
     {
-      "from": "identidade/_root",
-      "to": "identidade/modules",
-      "count": 5
-    },
-    {
-      "from": "identidade/shared",
-      "to": "identidade/modules",
+      "from": "ecommerce/order",
+      "to": "ecommerce/item",
       "count": 4
     },
     {
-      "from": "ecommerce/_root",
-      "to": "ecommerce/config",
+      "from": "ecommerce/product",
+      "to": "ecommerce/shared",
+      "count": 4
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/shared",
       "count": 3
     },
     {
-      "from": "identidade/modules",
+      "from": "ecommerce/stripe",
+      "to": "ecommerce/shared",
+      "count": 3
+    },
+    {
+      "from": "ecommerce/stripe",
+      "to": "ecommerce/order",
+      "count": 3
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/token",
+      "count": 3
+    },
+    {
+      "from": "ecommerce/cart",
+      "to": "ecommerce/shared",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/inventory",
+      "to": "ecommerce/item",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/inventory",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/stripe",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/product",
+      "to": "ecommerce/search",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/product",
+      "to": "ecommerce/storages",
+      "count": 2
+    },
+    {
+      "from": "identidade/auth",
       "to": "identidade/shared",
-      "count": 3
-    },
-    {
-      "from": "identidade/_root",
-      "to": "identidade/config",
       "count": 2
     },
     {
-      "from": "comunicacao/_root",
-      "to": "comunicacao/modules",
+      "from": "identidade/auth",
+      "to": "identidade/user",
       "count": 2
     },
     {
-      "from": "ecommerce/config",
+      "from": "identidade/user",
+      "to": "identidade/storages",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/inventory",
+      "to": "ecommerce/product",
+      "count": 1
+    },
+    {
+      "from": "ecommerce/order",
+      "to": "ecommerce/product",
+      "count": 1
+    },
+    {
+      "from": "ecommerce/search",
       "to": "ecommerce/shared",
       "count": 1
     },
     {
-      "from": "identidade/_root",
+      "from": "identidade/shared",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/token",
+      "to": "identidade/user",
+      "count": 1
+    },
+    {
+      "from": "identidade/token",
       "to": "identidade/shared",
       "count": 1
     },
     {
-      "from": "identidade/modules",
-      "to": "identidade/common",
-      "count": 1
-    },
-    {
-      "from": "identidade/shared",
-      "to": "identidade/common",
-      "count": 1
-    },
-    {
-      "from": "comunicacao/_root",
-      "to": "comunicacao/config",
+      "from": "identidade/user",
+      "to": "identidade/shared",
       "count": 1
     }
   ],
-  "crossDomainEdges": 42,
-  "totalEdges": 239,
+  "crossDomainEdges": 69,
+  "totalEdges": 209,
   "byModule": {
-    "ecommerce/config": 1,
-    "ecommerce/_root": 8,
-    "ecommerce/modules": 13,
-    "identidade/_root": 8,
-    "identidade/modules": 4,
-    "identidade/shared": 5,
-    "comunicacao/_root": 3
+    "ecommerce/cart": 20,
+    "ecommerce/inventory": 3,
+    "ecommerce/order": 12,
+    "ecommerce/product": 8,
+    "ecommerce/search": 1,
+    "ecommerce/stripe": 6,
+    "identidade/shared": 1,
+    "identidade/auth": 7,
+    "identidade/token": 2,
+    "identidade/user": 9
   }
 }

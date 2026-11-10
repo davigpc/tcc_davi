@@ -1,0 +1,23 @@
+{
+  "services": [
+    "mongo",
+    "redis",
+    "monolith",
+    "catalogo",
+    "comunicacao",
+    "identidade",
+    "nginx"
+  ],
+  "serviceCount": 7,
+  "runningContainers": [
+    "ecommerce_sub_s2_nginx",
+    "ecommerce_sub_s2_monolith",
+    "ecommerce_sub_s2_catalogo",
+    "ecommerce_sub_s2_identidade",
+    "ecommerce_sub_s2_redis",
+    "ecommerce_sub_s2_mongo",
+    "ecommerce_sub_s2_comunicacao"
+  ],
+  "containerCount": 7,
+  "imageCount": 7
+}

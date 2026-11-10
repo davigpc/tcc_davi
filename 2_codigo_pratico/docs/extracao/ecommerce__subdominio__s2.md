@@ -33,40 +33,41 @@ Média de três execuções.
 
 | Dimensão | Métrica | snapshot-1 | snapshot-2 | Variação |
 |---|---|---|---|---|
-| Agilidade | Build (`--no-cache`) | 120.433 ms | 129.123 ms | +7,2 % |
-| Agilidade | Inicialização | 8.673 ms | 9.058 ms | +4,4 % |
+| Agilidade | Build (`--no-cache`) | 123.877 ms | 126.788 ms | +2,3 % |
+| Agilidade | Inicialização | 8.976 ms | 9.292 ms | +3,5 % |
 | Custo | Componentes / contêineres | 6 / 6 | 7 / 7 | +1 |
 | Custo | Imagens da aplicação | 310,1 MB | 398,5 MB | +28,5 % |
-| Custo | RAM (repouso / carga) | 397,8 / 541,1 MB | 440,9 / 577,0 MB | +10,8 % / +6,6 % |
-| Custo | CPU (repouso / carga) | 0,86 / 157,05 % | 1,01 / 155,50 % | +0,15 p.p. / −1,0 % |
-| Desempenho | `GET /api/products` | 2.777,8 req/s · p50 7,0 ms | 2.849,7 req/s · p50 6,7 ms | +2,6 % |
-| Desempenho | `GET /api/products/:id` | 2.909,1 req/s · p50 6,7 ms | 3.027,8 req/s · p50 6,0 ms | +4,1 % |
-| Desempenho | `POST /api/orders` | 493,6 req/s · p50 38,3 ms | 489,8 req/s · p50 39,0 ms | −0,8 % |
+| Custo | RAM (repouso / carga) | 376,4 / 517,4 MB | 436,9 / 573,2 MB | +16,1 % / +10,8 % |
+| Custo | CPU (repouso / carga) | 1,05 / 153,10 % | 1,15 / 155,91 % | +0,10 p.p. / +1,8 % |
+| Desempenho | `GET /api/products` | 2.694,1 req/s · p50 7,3 ms | 2.857,5 req/s · p50 6,7 ms | +6,1 % |
+| Desempenho | `GET /api/products/:id` | 2.895,1 req/s · p50 6,7 ms | 3.013,5 req/s · p50 6,3 ms | +4,1 % |
+| Desempenho | `POST /api/orders` | 487,0 req/s · p50 37,7 ms | 485,7 req/s · p50 39,0 ms | −0,2 % |
 | Manutenibilidade | Linhas de código | 5.346 | 5.614 | +268 (+5,0 %) |
-| Manutenibilidade | Chamadas entre fronteiras | 42 de 239 | 45 de 244 | +3 |
+| Manutenibilidade | Chamadas entre fronteiras | 69 de 209 | 69 de 210 | 0 |
 
 O monólito caiu de 2.765 para 2.278 linhas em `modules` (de 3.261 para 2.764 no
 total); o Catálogo soma 765 linhas (594 em `modules`, 82 em `shared`).
 
-O cross-domain subiu 3 arestas: o Catálogo recria internamente as arestas de
-`product` (9) e o monólito ganha as importações de `@item` para o modelo de
-leitura. É o mesmo padrão observado no s1 da trilha de Capacidade.
+O cross-domain ficou empatado em 69. O Catálogo recria internamente as 9 arestas
+que o monólito perde com a saída de `product` e `search`, e o monólito ganha as
+importações de `@item` para o modelo de leitura. O total de arestas ficou em 210.
+É o mesmo padrão do s1 da trilha de Capacidade: extrair não reduz a contagem
+estática se o serviço recria a mesma estrutura.
 
-A leitura melhorou 2,6 % e 4,1 % — ao contrário do que aconteceu no s1 —, com
-p50 1 ms menor. Não há causa isolada; a leitura passou a ser atendida por um
-processo dedicado, com cache Redis próprio, mas o ganho está dentro da faixa de
-variação observada entre execuções. A escrita ficou estável.
+A leitura melhorou 6,1 % e 4,1 %, com p50 0,7 ms e 0,4 ms menor — o processo
+dedicado e o cache Redis compensaram o salto pelo gateway. A escrita ficou
+estável (−0,2 %).
 
 ## Previsto x realizado
 
-- **Agilidade (previsto: build sobe):** confirmado, +7,2 % com a terceira imagem
+- **Agilidade (previsto: build sobe):** confirmado, +2,3 % com a terceira imagem
   de aplicação.
 - **Custo (previsto: +1 serviço):** confirmado, 6 → 7 componentes; RAM em repouso
-  +10,8 %.
+  +16,1 %.
 - **Desempenho (previsto: leitura cai pouco, escrita estável):** a leitura não
-  caiu; subiu 2,6 % e 4,1 %. A escrita ficou estável (−0,8 %), como previsto.
-- **Manutenibilidade (previsto: LOC sobe, cross-domain sobe):** confirmado nos
-  dois (+5,0 % e +3 arestas).
+  caiu; subiu 6,1 % e 4,1 %. A escrita ficou estável (−0,2 %), como previsto.
+- **Manutenibilidade (previsto: LOC sobe, cross-domain sobe):** o LOC subiu 5,0 %
+  (confirmado); o cross-domain ficou empatado (previsto alta, realizado 0).
 
 ## ✍️ Aprendizado sobre decomposição
 

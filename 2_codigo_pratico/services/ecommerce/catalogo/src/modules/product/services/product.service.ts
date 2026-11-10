@@ -41,6 +41,23 @@ export class ProductService {
     return product;
   }
 
+  /**
+   * Consulta em lote usada pelo serviço de Vendas.
+   *
+   * Com o banco isolado, o carrinho não consegue popular o item nem ler o preço
+   * na própria coleção. A composição da resposta passa a ser feita com esta
+   * consulta HTTP.
+   */
+  public async getProductsByIds(ids: string[]): Promise<Product[]> {
+    if (!ids.length) {
+      return [];
+    }
+    return this.productModel
+      .find({ _id: { $in: ids } })
+      .select('name price images stock seller')
+      .lean();
+  }
+
   public async getProductByFilters(
     pagination: Pagination,
     filters: {

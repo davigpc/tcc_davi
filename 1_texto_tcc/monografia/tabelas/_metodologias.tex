@@ -1,28 +1,36 @@
 % Gerado automaticamente por harness/analise/comparar.ts
-\begin{table}[htb]
+\begin{quadro}[htb]
   \centering
-  \caption{Variação acumulada por metodologia (S0 canônico $\rightarrow$ último snapshot).}
-  \label{tab:comp_metodologias}
-  \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lrrr}
+  \caption{Variação acumulada por metodologia (S0 $\rightarrow$ último snapshot).}
+  \label{qua:comp_metodologias}
+  \renewcommand{\arraystretch}{1.15}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|r|r|r|}
     \hline
-    \textbf{Métrica} & \textbf{Capacidade de Negócio} & \textbf{Subdomínio} & \textbf{Transações} \\
+    \textbf{Métrica} & \textbf{Capacidade de Negócio} & \textbf{Subdomínio (DDD)} & \textbf{Transações} \\
     \hline
-    \multicolumn{4}{l}{\textit{Agilidade}} \\
-    Tempo de construção (ms) & +196 \% & +163 \% & +139 \% \\
-    Tempo de inicialização (ms) & +32 \% & +37 \% & +53 \% \\
-    \multicolumn{4}{l}{\textit{Custo}} \\
-    CPU total (repouso / carga, \%) & +4,38 p.p. / +68 \% & +0,3 p.p. / +54 \% & $-$ 0,47 p.p. / +80 \% \\
-    RAM total (repouso / carga, MB) & +136 \% / +136 \% & +211 \% / +186 \% & +135 \% / +124 \% \\
-    Imagens da aplicação (MB) & +287 \% & +410 \% & +287 \% \\
+    \multicolumn{4}{|l|}{\textbf{Agilidade}} \\
+    \hline
+    Tempo de construção (ms) & +196 \% & +63 \% & +139 \% \\
+    Tempo de inicialização (ms) & +32 \% & +27 \% & +53 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Custo}} \\
+    \hline
+    CPU total (repouso / carga, \%) & +4,38 p.p. / +68 \% & +0,28 p.p. / +42 \% & $-$ 0,47 p.p. / +80 \% \\
+    RAM total (repouso / carga, MB) & +136 \% / +136 \% & +194 \% / +142 \% & +135 \% / +124 \% \\
+    Imagens da aplicação (MB) & +287 \% & +352 \% & +287 \% \\
     Componentes / contêineres & +4 & +6 & +4 \\
-    \multicolumn{4}{l}{\textit{Desempenho}} \\
-    Vazão (média das rotas, req/s) & +1 \% & +17 \% & +8 \% \\
-    Latência p50 (média das rotas, ms) & $-$ 12 \% & $-$ 24 \% & $-$ 18 \% \\
-    \multicolumn{4}{l}{\textit{Manutenibilidade}} \\
-    Linhas de Código & +9 \% & +15 \% & +9 \% \\
-    Chamadas entre fronteiras & +13 \% & +23 \% & +13 \% \\
     \hline
-  \end{tabular}}
-  \legend{Fonte: elaborado pelo autor (2026) a partir da medição automatizada.}
-\end{table}
+    \multicolumn{4}{|l|}{\textbf{Desempenho}} \\
+    \hline
+    Vazão (média das rotas, req/s) & +1 \% & +6 \% & +8 \% \\
+    Latência p50 (média das rotas, ms) & $-$ 12 \% & $-$ 16 \% & $-$ 18 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Manutenibilidade}} \\
+    \hline
+    Linhas de Código & +9 \% & +13 \% & +9 \% \\
+    Chamadas entre fronteiras & +13 \% & +10 \% & +13 \% \\
+    \hline
+  \end{tabularx}
+  \fonte{elaborado pelo autor (2026) a partir da medição automatizada.}
+\end{quadro}

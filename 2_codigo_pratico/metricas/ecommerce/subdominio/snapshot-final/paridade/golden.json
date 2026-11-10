@@ -1,0 +1,63 @@
+{
+  "products": {
+    "route": "/api/products?page=1&size=10",
+    "status": 200,
+    "body": [
+      {
+        "_id": "6af3a58cf2a187c511b5fa8e",
+        "seller": "6af3a58c714654013f831747",
+        "stock": 50,
+        "price": 101,
+        "name": "Seed Product 1",
+        "description": "Produto de seed 1",
+        "images": [
+          "http://localhost:3001/uploads/1794352524734-71f989b7-e451-4566-bdd5-fee31c934d82.png"
+        ],
+        "category": "seed",
+        "subcategory": "seed",
+        "attributes": "[{\"key\":\"color\",\"value\":\"red\"}]",
+        "createdAt": "2026-11-10T23:15:24.744Z",
+        "updatedAt": "2026-11-10T23:15:24.744Z",
+        "__v": 0
+      },
+      {
+        "_id": "6af3a58cf2a187c511b5fa90",
+        "seller": "6af3a58c714654013f831747",
+        "stock": 50,
+        "price": 102,
+        "name": "Seed Product 2",
+        "description": "Produto de seed 2",
+        "images": [
+          "http://localhost:3001/uploads/1794352524782-66c87fc4-1bbe-4dc2-bfe0-863a05b92297.png"
+        ],
+        "category": "seed",
+        "subcategory": "seed",
+        "attributes": "[{\"key\":\"color\",\"value\":\"red\"}]",
+        "createdAt": "2026-11-10T23:15:24.783Z",
+        "updatedAt": "2026-11-10T23:15:24.783Z",
+        "__v": 0
+      }
+    ]
+  },
+  "product-by-id": {
+    "route": "/api/products/{{productId}}",
+    "status": 200,
+    "body": {
+      "_id": "6af3a58cf2a187c511b5fa8e",
+      "seller": "6af3a58c714654013f831747",
+      "stock": 50,
+      "price": 101,
+      "name": "Seed Product 1",
+      "description": "Produto de seed 1",
+      "images": [
+        "http://localhost:3001/uploads/1794352524734-71f989b7-e451-4566-bdd5-fee31c934d82.png"
+      ],
+      "category": "seed",
+      "subcategory": "seed",
+      "attributes": "[{\"key\":\"color\",\"value\":\"red\"}]",
+      "createdAt": "2026-11-10T23:15:24.744Z",
+      "updatedAt": "2026-11-10T23:15:24.744Z",
+      "__v": 0
+    }
+  }
+}
