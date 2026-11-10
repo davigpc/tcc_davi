@@ -116,3 +116,6 @@ comparável, porque as fases agrupam serviços diferentes.
 Em domínio com um único fluxo de negócio, a classificação por valor e a
 classificação por processo convergem. A diferença aparece no custo de cada fase,
 não na arquitetura final.
+- **Ponteiro do submódulo no commit do s1.** O commit 6ee3690 registrou o
+  submódulo no baseline (6487e40). O código do s1 está no fork em 8b99fad
+  (branch sdd-s1), que é o estado realmente medido.
