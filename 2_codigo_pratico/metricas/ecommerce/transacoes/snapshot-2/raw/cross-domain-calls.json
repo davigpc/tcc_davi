@@ -1,0 +1,181 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "catalogo/health",
+    "catalogo/product",
+    "catalogo/search",
+    "catalogo/shared",
+    "catalogo/storages",
+    "checkout/_root",
+    "checkout/cart",
+    "checkout/health",
+    "checkout/inventory",
+    "checkout/item",
+    "checkout/order",
+    "checkout/shared",
+    "checkout/shipping",
+    "checkout/stripe",
+    "ecommerce/address",
+    "ecommerce/auth",
+    "ecommerce/email",
+    "ecommerce/health",
+    "ecommerce/internal",
+    "ecommerce/shared",
+    "ecommerce/storages",
+    "ecommerce/stripe",
+    "ecommerce/token",
+    "ecommerce/user"
+  ],
+  "edges": [
+    {
+      "from": "checkout/cart",
+      "to": "checkout/item",
+      "count": 8
+    },
+    {
+      "from": "ecommerce/user",
+      "to": "ecommerce/address",
+      "count": 6
+    },
+    {
+      "from": "checkout/cart",
+      "to": "checkout/shipping",
+      "count": 5
+    },
+    {
+      "from": "checkout/stripe",
+      "to": "checkout/shared",
+      "count": 5
+    },
+    {
+      "from": "checkout/order",
+      "to": "checkout/shared",
+      "count": 4
+    },
+    {
+      "from": "checkout/order",
+      "to": "checkout/item",
+      "count": 4
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/shared",
+      "count": 4
+    },
+    {
+      "from": "ecommerce/auth",
+      "to": "ecommerce/token",
+      "count": 3
+    },
+    {
+      "from": "checkout/stripe",
+      "to": "checkout/order",
+      "count": 3
+    },
+    {
+      "from": "ecommerce/auth",
+      "to": "ecommerce/shared",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/auth",
+      "to": "ecommerce/user",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/internal",
+      "to": "ecommerce/email",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/internal",
+      "to": "ecommerce/user",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/user",
+      "to": "ecommerce/storages",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/user",
+      "to": "ecommerce/stripe",
+      "count": 2
+    },
+    {
+      "from": "checkout/inventory",
+      "to": "checkout/item",
+      "count": 2
+    },
+    {
+      "from": "checkout/order",
+      "to": "checkout/inventory",
+      "count": 2
+    },
+    {
+      "from": "checkout/order",
+      "to": "checkout/stripe",
+      "count": 2
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/search",
+      "count": 2
+    },
+    {
+      "from": "catalogo/product",
+      "to": "catalogo/storages",
+      "count": 2
+    },
+    {
+      "from": "ecommerce/shared",
+      "to": "ecommerce/auth",
+      "count": 1
+    },
+    {
+      "from": "ecommerce/token",
+      "to": "ecommerce/user",
+      "count": 1
+    },
+    {
+      "from": "ecommerce/token",
+      "to": "ecommerce/shared",
+      "count": 1
+    },
+    {
+      "from": "ecommerce/user",
+      "to": "ecommerce/shared",
+      "count": 1
+    },
+    {
+      "from": "ecommerce/user",
+      "to": "ecommerce/auth",
+      "count": 1
+    },
+    {
+      "from": "checkout/cart",
+      "to": "checkout/shared",
+      "count": 1
+    },
+    {
+      "from": "catalogo/search",
+      "to": "catalogo/shared",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 71,
+  "totalEdges": 197,
+  "byModule": {
+    "ecommerce/shared": 1,
+    "ecommerce/auth": 7,
+    "ecommerce/internal": 4,
+    "ecommerce/token": 2,
+    "ecommerce/user": 12,
+    "checkout/cart": 14,
+    "checkout/inventory": 2,
+    "checkout/order": 12,
+    "checkout/stripe": 8,
+    "catalogo/product": 8,
+    "catalogo/search": 1
+  }
+}

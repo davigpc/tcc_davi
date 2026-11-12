@@ -1,0 +1,14 @@
+{
+  "ecommerce-api:latest": {
+    "bytes": 103465130,
+    "mb": 98.67
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  }
+}

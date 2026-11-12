@@ -1,0 +1,143 @@
+# Compose do experimento: ecommerce / Capacidade de Negócio / snapshot-2
+# Topologia: monólito (sem catálogo e sem clientes) + serviço de Catálogo +
+# serviço de Clientes + MongoDB (réplica rs0) e Redis compartilhados + gateway
+# NGINX (Strangler Fig) na borda.
+#
+# A porta pública continua sendo a 3001. O monólito fica na 3002 e os serviços
+# em 3001 pela rede do compose. O volume `uploads` é compartilhado entre
+# Catálogo (imagens de produto) e Clientes (foto de perfil); quem serve é o
+# Catálogo, dono da rota /uploads.
+name: ecommerce-s2
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: ecommerce_s2_mongo
+    restart: unless-stopped
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--quiet"]
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"try { rs.status().ok } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}).ok }\" | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - ecommerce
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_s2_redis
+    restart: unless-stopped
+    networks:
+      - ecommerce
+
+  monolith:
+    image: ecommerce-s2-monolith
+    build:
+      context: ../../apps/ecommerce
+      target: production
+    container_name: ecommerce_s2_monolith
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+      CLIENT_URL: http://localhost:5173
+      MONGO_URI: mongodb://mongo:27017/gldcart?replicaSet=rs0
+      MONGO_DATABASE: gldcart
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      ACCESS_EXPIRATION_TIME: 1d
+      REFRESH_SECRET: ${REFRESH_SECRET}
+      REFRESH_EXPIRATION_TIME: 7d
+      REFRESH_TOKEN_NAME: refreshToken
+      REFRESH_TOKEN_PATH: api/auth/refresh
+      FEEDBACK_EMAIL: no-reply@localhost
+      MONTHLY_SUBSCRIPTION_priceId: price_local_monthly
+      SEED_BASE_URL: http://nginx
+      CATALOG_URL: http://catalogo:3001
+      CLIENTES_URL: http://clientes:3001
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ecommerce
+
+  catalogo:
+    image: ecommerce-s2-catalogo
+    build:
+      context: ../../services/ecommerce/catalogo
+    container_name: ecommerce_s2_catalogo
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGO_URI: mongodb://mongo:27017/gldcart?replicaSet=rs0
+      MONGO_DATABASE: gldcart
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      UPLOAD_DIR: uploads
+      PUBLIC_BASE_URL: http://localhost:3001
+    volumes:
+      - uploads:/usr/src/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - ecommerce
+
+  clientes:
+    image: ecommerce-s2-clientes
+    build:
+      context: ../../services/ecommerce/clientes
+    container_name: ecommerce_s2_clientes
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGO_URI: mongodb://mongo:27017/gldcart?replicaSet=rs0
+      MONGO_DATABASE: gldcart
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      ACCESS_EXPIRATION_TIME: 1d
+      REFRESH_SECRET: ${REFRESH_SECRET}
+      REFRESH_EXPIRATION_TIME: 7d
+      REFRESH_TOKEN_NAME: refreshToken
+      REFRESH_TOKEN_PATH: api/auth/refresh
+      UPLOAD_DIR: uploads
+      PUBLIC_BASE_URL: http://localhost:3001
+    volumes:
+      - uploads:/usr/src/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - ecommerce
+
+  nginx:
+    image: nginx:alpine
+    container_name: ecommerce_s2_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-capacidade-s2.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3001:80"
+    depends_on:
+      - monolith
+      - catalogo
+      - clientes
+    networks:
+      - ecommerce
+
+volumes:
+  mongo_data:
+  uploads:
+
+networks:
+  ecommerce:
+    driver: bridge

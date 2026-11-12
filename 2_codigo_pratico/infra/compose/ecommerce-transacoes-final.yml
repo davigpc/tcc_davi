@@ -1,0 +1,168 @@
+# Compose do experimento: ecommerce / Transações / snapshot final
+# Topologia: Checkout, Catálogo, Identidade e Comunicação, cada um com o próprio
+# MongoDB (o do Checkout com réplica rs0, para a transação do pedido), Redis no
+# Catálogo e gateway NGINX na borda. O monólito foi desativado.
+#
+# O estoque passou a ser um contador do Checkout: a baixa roda na mesma sessão
+# do status do pedido. O Catálogo mantém a cópia de leitura exibida na listagem.
+name: ecommerce-tx-final
+
+services:
+  catalogo_db:
+    image: mongo:7
+    container_name: ecommerce_tx_final_catalogo_db
+    restart: unless-stopped
+    command: ["mongod", "--bind_ip_all", "--quiet"]
+    volumes:
+      - catalogo_data:/data/db
+    networks:
+      - ecommerce
+
+  clientes_db:
+    image: mongo:7
+    container_name: ecommerce_tx_final_clientes_db
+    restart: unless-stopped
+    command: ["mongod", "--bind_ip_all", "--quiet"]
+    volumes:
+      - clientes_data:/data/db
+    networks:
+      - ecommerce
+
+  checkout_db:
+    image: mongo:7
+    container_name: ecommerce_tx_final_checkout_db
+    restart: unless-stopped
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--quiet"]
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval \"try { rs.status().ok } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'checkout_db:27017'}]}).ok }\" | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    volumes:
+      - checkout_data:/data/db
+    networks:
+      - ecommerce
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_tx_final_redis
+    restart: unless-stopped
+    networks:
+      - ecommerce
+
+  catalogo:
+    image: ecommerce-tx-final-catalogo
+    build:
+      context: ../../services/ecommerce/catalogo
+    container_name: ecommerce_tx_final_catalogo
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGO_URI: mongodb://catalogo_db:27017/catalogo
+      MONGO_DATABASE: catalogo
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      UPLOAD_DIR: uploads
+      PUBLIC_BASE_URL: http://localhost:3001
+      CHECKOUT_URL: http://checkout:3001
+    volumes:
+      - uploads:/usr/src/app/uploads
+    depends_on:
+      - catalogo_db
+      - redis
+    networks:
+      - ecommerce
+
+  clientes:
+    image: ecommerce-tx-final-clientes
+    build:
+      context: ../../services/ecommerce/clientes
+    container_name: ecommerce_tx_final_clientes
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGO_URI: mongodb://clientes_db:27017/clientes
+      MONGO_DATABASE: clientes
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      ACCESS_EXPIRATION_TIME: 1d
+      REFRESH_SECRET: ${REFRESH_SECRET}
+      REFRESH_EXPIRATION_TIME: 7d
+      REFRESH_TOKEN_NAME: refreshToken
+      REFRESH_TOKEN_PATH: api/auth/refresh
+      UPLOAD_DIR: uploads
+      PUBLIC_BASE_URL: http://localhost:3001
+    volumes:
+      - uploads:/usr/src/app/uploads
+    depends_on:
+      - clientes_db
+    networks:
+      - ecommerce
+
+  checkout:
+    image: ecommerce-tx-final-checkout
+    build:
+      context: ../../services/ecommerce/checkout
+    container_name: ecommerce_tx_final_checkout
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGO_URI: mongodb://checkout_db:27017/checkout?replicaSet=rs0
+      MONGO_DATABASE: checkout
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      ACCESS_EXPIRATION_TIME: 1d
+      REFRESH_SECRET: ${REFRESH_SECRET}
+      REFRESH_EXPIRATION_TIME: 7d
+      FEEDBACK_EMAIL: no-reply@localhost
+      MONTHLY_SUBSCRIPTION_priceId: price_local_monthly
+      SEED_BASE_URL: http://nginx
+      CATALOG_URL: http://catalogo:3001
+      CLIENTES_URL: http://clientes:3001
+      COMUNICACAO_URL: http://comunicacao:3001
+    depends_on:
+      checkout_db:
+        condition: service_healthy
+    networks:
+      - ecommerce
+
+  comunicacao:
+    image: ecommerce-tx-final-comunicacao
+    build:
+      context: ../../services/ecommerce/comunicacao
+    container_name: ecommerce_tx_final_comunicacao
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      FEEDBACK_EMAIL: no-reply@localhost
+    networks:
+      - ecommerce
+
+  nginx:
+    image: nginx:alpine
+    container_name: ecommerce_tx_final_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-transacoes-final.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3001:80"
+    depends_on:
+      - catalogo
+      - clientes
+      - checkout
+      - comunicacao
+    networks:
+      - ecommerce
+
+volumes:
+  catalogo_data:
+  clientes_data:
+  checkout_data:
+  uploads:
+
+networks:
+  ecommerce:
+    driver: bridge

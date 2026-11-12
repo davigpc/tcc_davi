@@ -1,0 +1,452 @@
+{
+  "app": "ecommerce",
+  "metodologia": "transacoes",
+  "snapshot": "snapshot-final",
+  "tag": null,
+  "timestampUtc": "2026-11-12T18:09:13.395Z",
+  "buildTime": {
+    "meanMs": 84658,
+    "runsMs": [
+      84323,
+      85112,
+      84538
+    ]
+  },
+  "startupTime": {
+    "meanMs": 8366,
+    "runsMs": [
+      8254,
+      8452,
+      8393
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "ecommerce_tx_final_nginx",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 13,
+        "memMinMB": 13,
+        "memMaxMB": 13
+      },
+      {
+        "container": "ecommerce_tx_final_catalogo",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 56.56,
+        "memMinMB": 56.54,
+        "memMaxMB": 56.66
+      },
+      {
+        "container": "ecommerce_tx_final_checkout",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 55.12,
+        "memMinMB": 55.05,
+        "memMaxMB": 55.25
+      },
+      {
+        "container": "ecommerce_tx_final_clientes",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 54.34,
+        "memMinMB": 54.32,
+        "memMaxMB": 54.44
+      },
+      {
+        "container": "ecommerce_tx_final_checkout_db",
+        "samples": 4,
+        "cpuMedPerc": 0.36,
+        "cpuMinPerc": 0.32,
+        "cpuMaxPerc": 55.08,
+        "memMedMB": 183.2,
+        "memMinMB": 183.1,
+        "memMaxMB": 183.2
+      },
+      {
+        "container": "ecommerce_tx_final_redis",
+        "samples": 4,
+        "cpuMedPerc": 0.3,
+        "cpuMinPerc": 0.24,
+        "cpuMaxPerc": 0.32,
+        "memMedMB": 3.52,
+        "memMinMB": 3.52,
+        "memMaxMB": 3.52
+      },
+      {
+        "container": "ecommerce_tx_final_catalogo_db",
+        "samples": 4,
+        "cpuMedPerc": 0.29,
+        "cpuMinPerc": 0.25,
+        "cpuMaxPerc": 0.45,
+        "memMedMB": 170.95,
+        "memMinMB": 170.9,
+        "memMaxMB": 171
+      },
+      {
+        "container": "ecommerce_tx_final_clientes_db",
+        "samples": 4,
+        "cpuMedPerc": 0.28,
+        "cpuMinPerc": 0.26,
+        "cpuMaxPerc": 0.45,
+        "memMedMB": 174.7,
+        "memMinMB": 174.5,
+        "memMaxMB": 174.7
+      },
+      {
+        "container": "ecommerce_tx_final_comunicacao",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 53.13,
+        "memMinMB": 53.13,
+        "memMaxMB": 53.13
+      }
+    ],
+    "load": [
+      {
+        "container": "ecommerce_tx_final_nginx",
+        "samples": 4,
+        "cpuMedPerc": 39.49,
+        "cpuMinPerc": 38.92,
+        "cpuMaxPerc": 40.34,
+        "memMedMB": 14.78,
+        "memMinMB": 14.66,
+        "memMaxMB": 15.02
+      },
+      {
+        "container": "ecommerce_tx_final_catalogo",
+        "samples": 4,
+        "cpuMedPerc": 105.93,
+        "cpuMinPerc": 105.27,
+        "cpuMaxPerc": 107.06,
+        "memMedMB": 186.9,
+        "memMinMB": 186.8,
+        "memMaxMB": 187.4
+      },
+      {
+        "container": "ecommerce_tx_final_checkout",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.02,
+        "memMedMB": 55.86,
+        "memMinMB": 55.81,
+        "memMaxMB": 55.89
+      },
+      {
+        "container": "ecommerce_tx_final_clientes",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.19,
+        "memMedMB": 54.4,
+        "memMinMB": 54.4,
+        "memMaxMB": 54.4
+      },
+      {
+        "container": "ecommerce_tx_final_checkout_db",
+        "samples": 4,
+        "cpuMedPerc": 0.42,
+        "cpuMinPerc": 0.37,
+        "cpuMaxPerc": 64.38,
+        "memMedMB": 183.35,
+        "memMinMB": 183.2,
+        "memMaxMB": 183.6
+      },
+      {
+        "container": "ecommerce_tx_final_redis",
+        "samples": 4,
+        "cpuMedPerc": 11.49,
+        "cpuMinPerc": 11.21,
+        "cpuMaxPerc": 11.65,
+        "memMedMB": 3.58,
+        "memMinMB": 3.52,
+        "memMaxMB": 3.65
+      },
+      {
+        "container": "ecommerce_tx_final_catalogo_db",
+        "samples": 4,
+        "cpuMedPerc": 0.31,
+        "cpuMinPerc": 0.27,
+        "cpuMaxPerc": 0.84,
+        "memMedMB": 172.7,
+        "memMinMB": 172.6,
+        "memMaxMB": 172.8
+      },
+      {
+        "container": "ecommerce_tx_final_clientes_db",
+        "samples": 4,
+        "cpuMedPerc": 0.32,
+        "cpuMinPerc": 0.3,
+        "cpuMaxPerc": 0.88,
+        "memMedMB": 176.4,
+        "memMinMB": 176.4,
+        "memMaxMB": 176.5
+      },
+      {
+        "container": "ecommerce_tx_final_comunicacao",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 53.13,
+        "memMinMB": 53.13,
+        "memMaxMB": 53.13
+      }
+    ],
+    "imagensMB": {
+      "ecommerce-tx-final-catalogo": 88.46,
+      "ecommerce-tx-final-clientes": 89.07,
+      "ecommerce-tx-final-checkout": 88.92,
+      "ecommerce-tx-final-comunicacao": 97.27,
+      "mongo:7": 283.38,
+      "redis:7-alpine": 15.52,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "product-by-id",
+        "rpsMean": 3104.47,
+        "rpsMin": 3082,
+        "rpsMax": 3119,
+        "p50Mean": 6,
+        "p50Min": 6,
+        "p50Max": 6,
+        "p90Mean": 13,
+        "p90Min": 13,
+        "p90Max": 13,
+        "p99Mean": 15.33,
+        "p99Min": 15,
+        "p99Max": 16,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "products",
+        "rpsMean": 2927.47,
+        "rpsMin": 2788.8,
+        "rpsMax": 3021.4,
+        "p50Mean": 6.33,
+        "p50Min": 6,
+        "p50Max": 7,
+        "p90Mean": 13,
+        "p90Min": 13,
+        "p90Max": 13,
+        "p99Mean": 15.67,
+        "p99Min": 15,
+        "p99Max": 16,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "orders",
+        "rpsMean": 507.37,
+        "rpsMin": 426,
+        "rpsMax": 563.6,
+        "p50Mean": 38.33,
+        "p50Min": 35,
+        "p50Max": 44,
+        "p90Mean": 47.33,
+        "p90Min": 39,
+        "p90Max": 59,
+        "p99Mean": 61.33,
+        "p99Min": 49,
+        "p99Max": 80,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "webhook",
+        "rpsMean": 77.13,
+        "rpsMin": 72.3,
+        "rpsMax": 80.3,
+        "p50Mean": 12,
+        "p50Min": 11,
+        "p50Max": 13,
+        "p90Mean": 14.33,
+        "p90Min": 14,
+        "p90Max": 15,
+        "p99Mean": 18,
+        "p99Min": 17,
+        "p99Max": 19,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 5004,
+    "locPorModulo": {
+      "catalogo/catalogo.module.ts": 43,
+      "catalogo/config": 14,
+      "catalogo/main.ts": 32,
+      "catalogo/modules": 654,
+      "catalogo/shared": 82,
+      "clientes/clientes.module.ts": 37,
+      "clientes/common": 50,
+      "clientes/config": 14,
+      "clientes/main.ts": 39,
+      "clientes/modules": 1535,
+      "clientes/shared": 92,
+      "checkout/checkout.module.ts": 37,
+      "checkout/clients": 192,
+      "checkout/config": 14,
+      "checkout/main.ts": 27,
+      "checkout/modules": 1715,
+      "checkout/shared": 109,
+      "comunicacao/comunicacao.module.ts": 15,
+      "comunicacao/config": 6,
+      "comunicacao/main.ts": 26,
+      "comunicacao/modules": 271
+    },
+    "servicos": 9,
+    "containers": 9,
+    "crossDomainEdges": 71,
+    "totalEdges": 193,
+    "crossDomainPorModulo": {
+      "catalogo/product": 8,
+      "catalogo/search": 1,
+      "clientes/shared": 1,
+      "clientes/auth": 7,
+      "clientes/token": 2,
+      "clientes/user": 9,
+      "checkout/cart": 16,
+      "checkout/inventory": 3,
+      "checkout/order": 16,
+      "checkout/stripe": 8
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "checkout/order",
+        "to": "checkout/shared",
+        "count": 8
+      },
+      {
+        "from": "clientes/user",
+        "to": "clientes/address",
+        "count": 6
+      },
+      {
+        "from": "checkout/cart",
+        "to": "checkout/item",
+        "count": 6
+      },
+      {
+        "from": "checkout/cart",
+        "to": "checkout/shared",
+        "count": 5
+      },
+      {
+        "from": "checkout/cart",
+        "to": "checkout/shipping",
+        "count": 5
+      },
+      {
+        "from": "checkout/stripe",
+        "to": "checkout/shared",
+        "count": 5
+      },
+      {
+        "from": "catalogo/product",
+        "to": "catalogo/shared",
+        "count": 4
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/inventory",
+        "count": 4
+      },
+      {
+        "from": "clientes/auth",
+        "to": "clientes/token",
+        "count": 3
+      },
+      {
+        "from": "checkout/stripe",
+        "to": "checkout/order",
+        "count": 3
+      },
+      {
+        "from": "catalogo/product",
+        "to": "catalogo/search",
+        "count": 2
+      },
+      {
+        "from": "catalogo/product",
+        "to": "catalogo/storages",
+        "count": 2
+      },
+      {
+        "from": "clientes/auth",
+        "to": "clientes/shared",
+        "count": 2
+      },
+      {
+        "from": "clientes/auth",
+        "to": "clientes/user",
+        "count": 2
+      },
+      {
+        "from": "clientes/user",
+        "to": "clientes/storages",
+        "count": 2
+      },
+      {
+        "from": "checkout/inventory",
+        "to": "checkout/item",
+        "count": 2
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/item",
+        "count": 2
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/stripe",
+        "count": 2
+      },
+      {
+        "from": "catalogo/search",
+        "to": "catalogo/shared",
+        "count": 1
+      },
+      {
+        "from": "clientes/shared",
+        "to": "clientes/auth",
+        "count": 1
+      },
+      {
+        "from": "clientes/token",
+        "to": "clientes/user",
+        "count": 1
+      },
+      {
+        "from": "clientes/token",
+        "to": "clientes/shared",
+        "count": 1
+      },
+      {
+        "from": "clientes/user",
+        "to": "clientes/shared",
+        "count": 1
+      },
+      {
+        "from": "checkout/inventory",
+        "to": "checkout/shared",
+        "count": 1
+      }
+    ]
+  }
+}

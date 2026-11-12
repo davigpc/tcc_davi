@@ -60,6 +60,7 @@ async function main(): Promise<void> {
   let token = '';
   let ids: Record<string, string> = {};
   let lastLoginBody: unknown = null;
+  let lastSeedOutput = '';
 
   const doLogin = async (): Promise<string> => {
     const result = await loginResponse(
@@ -82,6 +83,12 @@ async function main(): Promise<void> {
       let value: unknown;
       if (spec.from === 'login') {
         value = C.pickPath(lastLoginBody, spec.path);
+      } else if (spec.from === 'seed') {
+        const line = lastSeedOutput
+          .split(/\r?\n/)
+          .reverse()
+          .find((entry) => entry.trim().startsWith('{'));
+        value = C.pickPath(line ? JSON.parse(line) : {}, spec.path);
       } else if (spec.url) {
         const res = await httpRequest(`${cfg.baseUrl}${spec.url}`, { token: t });
         value = C.pickPath(res.body, spec.path);
@@ -93,7 +100,7 @@ async function main(): Promise<void> {
 
   const readCtx = async (): Promise<C.LoadContext> => ({ token, ids });
   const writeCtx = async (): Promise<C.LoadContext> => {
-    await C.seedDatabase(cfg);
+    lastSeedOutput = await C.seedDatabase(cfg);
     const t = await doLogin();
     return { token: t, ids: await discoverIds(t) };
   };
@@ -109,7 +116,7 @@ async function main(): Promise<void> {
   writeJson(path.join(rawDir, 'startup-time.json'), await C.collectStartupTime(cfg));
 
   console.log('[3/11] seed deterministico');
-  await C.seedDatabase(cfg);
+  lastSeedOutput = await C.seedDatabase(cfg);
 
   console.log('[4/11] login + descoberta de ids + paridade');
   token = await doLogin();

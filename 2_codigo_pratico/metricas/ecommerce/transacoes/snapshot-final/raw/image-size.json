@@ -1,0 +1,30 @@
+{
+  "ecommerce-tx-final-catalogo": {
+    "bytes": 92755547,
+    "mb": 88.46
+  },
+  "ecommerce-tx-final-clientes": {
+    "bytes": 93392487,
+    "mb": 89.07
+  },
+  "ecommerce-tx-final-checkout": {
+    "bytes": 93242805,
+    "mb": 88.92
+  },
+  "ecommerce-tx-final-comunicacao": {
+    "bytes": 101995919,
+    "mb": 97.27
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

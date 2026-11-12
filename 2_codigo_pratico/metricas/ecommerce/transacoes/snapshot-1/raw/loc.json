@@ -1,0 +1,81 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 129,
+  "total": 4938,
+  "source": 4148,
+  "comment": 247,
+  "byModule": {
+    "ecommerce/common": {
+      "files": 3,
+      "total": 64,
+      "source": 56,
+      "comment": 1
+    },
+    "ecommerce/config": {
+      "files": 4,
+      "total": 84,
+      "source": 71,
+      "comment": 5
+    },
+    "ecommerce/main.module.ts": {
+      "files": 1,
+      "total": 55,
+      "source": 54,
+      "comment": 0
+    },
+    "ecommerce/main.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 20,
+      "comment": 1
+    },
+    "ecommerce/modules": {
+      "files": 59,
+      "total": 2462,
+      "source": 2077,
+      "comment": 103
+    },
+    "ecommerce/shared": {
+      "files": 11,
+      "total": 298,
+      "source": 260,
+      "comment": 4
+    },
+    "checkout/checkout.module.ts": {
+      "files": 1,
+      "total": 37,
+      "source": 29,
+      "comment": 7
+    },
+    "checkout/clients": {
+      "files": 2,
+      "total": 87,
+      "source": 63,
+      "comment": 15
+    },
+    "checkout/config": {
+      "files": 2,
+      "total": 14,
+      "source": 12,
+      "comment": 0
+    },
+    "checkout/main.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 23,
+      "comment": 1
+    },
+    "checkout/modules": {
+      "files": 41,
+      "total": 1674,
+      "source": 1401,
+      "comment": 97
+    },
+    "checkout/shared": {
+      "files": 3,
+      "total": 109,
+      "source": 82,
+      "comment": 13
+    }
+  }
+}

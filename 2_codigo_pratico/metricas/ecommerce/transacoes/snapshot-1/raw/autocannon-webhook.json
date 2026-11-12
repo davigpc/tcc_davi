@@ -1,0 +1,45 @@
+{
+  "route": "webhook",
+  "method": "POST",
+  "runs": 3,
+  "requestsPerSec": [
+    88,
+    92,
+    46.7
+  ],
+  "throughputBytesPerSec": [
+    17866,
+    18673.6,
+    9480
+  ],
+  "latencyP50": [
+    10,
+    10,
+    20
+  ],
+  "latencyP90": [
+    13,
+    12,
+    28
+  ],
+  "latencyP99": [
+    15,
+    14,
+    35
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    0,
+    0,
+    0
+  ],
+  "totalRequests": [
+    880,
+    920,
+    467
+  ]
+}

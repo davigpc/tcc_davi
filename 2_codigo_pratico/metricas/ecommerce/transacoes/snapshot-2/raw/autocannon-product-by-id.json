@@ -1,0 +1,45 @@
+{
+  "route": "product-by-id",
+  "method": "GET",
+  "runs": 3,
+  "requestsPerSec": [
+    2888.8,
+    2905.2,
+    2904.2
+  ],
+  "throughputBytesPerSec": [
+    2117017.6,
+    2129100.8,
+    2128179.21
+  ],
+  "latencyP50": [
+    7,
+    7,
+    7
+  ],
+  "latencyP90": [
+    14,
+    13,
+    13
+  ],
+  "latencyP99": [
+    21,
+    16,
+    17
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    11,
+    14,
+    9
+  ],
+  "totalRequests": [
+    28885,
+    29048,
+    29034
+  ]
+}

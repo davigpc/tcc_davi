@@ -1,0 +1,134 @@
+{
+  "app": "ecommerce",
+  "metodologias": ["transacoes"],
+  "composeDir": "2_codigo_pratico/infra/compose",
+  "composeFile": "ecommerce-transacoes-final.yml",
+  "codeDir": "2_codigo_pratico/services/ecommerce",
+  "composeProject": "ecommerce-tx-final",
+  "baseUrl": "http://localhost:3001",
+  "readinessPath": "/api/health/db",
+  "credentials": { "email": "buyer@example.com", "password": "password123" },
+  "seed": [
+    { "service": "catalogo", "command": ["node", "scripts/reset-db.js"] },
+    { "service": "clientes", "command": ["node", "scripts/reset-db.js"] },
+    { "service": "checkout", "command": ["node", "scripts/seed-local.js"] }
+  ],
+  "containers": [
+    "ecommerce_tx_final_catalogo_db",
+    "ecommerce_tx_final_clientes_db",
+    "ecommerce_tx_final_checkout_db",
+    "ecommerce_tx_final_redis",
+    "ecommerce_tx_final_catalogo",
+    "ecommerce_tx_final_clientes",
+    "ecommerce_tx_final_checkout",
+    "ecommerce_tx_final_comunicacao",
+    "ecommerce_tx_final_nginx"
+  ],
+  "images": [
+    "ecommerce-tx-final-catalogo",
+    "ecommerce-tx-final-clientes",
+    "ecommerce-tx-final-checkout",
+    "ecommerce-tx-final-comunicacao",
+    "mongo:7",
+    "redis:7-alpine",
+    "nginx:alpine"
+  ],
+  "sourceDirs": [
+    "2_codigo_pratico/services/ecommerce/catalogo/src",
+    "2_codigo_pratico/services/ecommerce/clientes/src",
+    "2_codigo_pratico/services/ecommerce/checkout/src",
+    "2_codigo_pratico/services/ecommerce/comunicacao/src"
+  ],
+  "crossDomain": [
+    {
+      "label": "catalogo",
+      "dir": "2_codigo_pratico/services/ecommerce/catalogo/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/catalogo/tsconfig.json"
+    },
+    {
+      "label": "clientes",
+      "dir": "2_codigo_pratico/services/ecommerce/clientes/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/clientes/tsconfig.json"
+    },
+    {
+      "label": "checkout",
+      "dir": "2_codigo_pratico/services/ecommerce/checkout/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/checkout/tsconfig.json"
+    },
+    {
+      "label": "comunicacao",
+      "dir": "2_codigo_pratico/services/ecommerce/comunicacao/src/modules",
+      "tsConfig": "2_codigo_pratico/services/ecommerce/comunicacao/tsconfig.json"
+    }
+  ],
+  "sharedModuleAlias": "shared",
+  "ids": {
+    "userId": { "from": "login", "path": "user._id" },
+    "productId": { "url": "/api/products?page=1&size=10", "path": "[0]._id" },
+    "orderId": { "from": "seed", "path": "orderId" }
+  },
+  "routes": {
+    "read": [
+      {
+        "name": "products",
+        "method": "GET",
+        "path": "/api/products?page=1&size=10"
+      },
+      {
+        "name": "product-by-id",
+        "method": "GET",
+        "path": "/api/products/{{productId}}"
+      }
+    ],
+    "write": [
+      {
+        "name": "orders",
+        "method": "POST",
+        "path": "/api/orders",
+        "auth": true,
+        "body": {
+          "customer": "{{userId}}",
+          "items": [
+            {
+              "id": "{{productId}}",
+              "type": "Product",
+              "quantity": 1
+            }
+          ],
+          "amount": 101,
+          "billing_details": {
+            "name": "Seed Buyer",
+            "email": "buyer@example.com",
+            "address": "Rua 1",
+            "city": "São João del-Rei",
+            "postcode": "36300-000",
+            "phone": "+550000000000"
+          },
+          "order_notes": "load-test"
+        }
+      },
+      {
+        "name": "webhook",
+        "method": "POST",
+        "path": "/api/webhook",
+        "headers": { "stripe-signature": "local-load-test" },
+        "uniqueBody": true,
+        "connections": 1,
+        "body": {
+          "id": "evt_@@SEQ@@",
+          "type": "payment_intent.succeeded",
+          "data": {
+            "object": {
+              "metadata": { "order_id": "{{orderId}}" }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}

@@ -1,0 +1,27 @@
+{
+  "services": [
+    "catalogo_db",
+    "redis",
+    "catalogo",
+    "checkout_db",
+    "checkout",
+    "clientes_db",
+    "clientes",
+    "comunicacao",
+    "nginx"
+  ],
+  "serviceCount": 9,
+  "runningContainers": [
+    "ecommerce_tx_final_nginx",
+    "ecommerce_tx_final_catalogo",
+    "ecommerce_tx_final_checkout",
+    "ecommerce_tx_final_clientes",
+    "ecommerce_tx_final_checkout_db",
+    "ecommerce_tx_final_redis",
+    "ecommerce_tx_final_catalogo_db",
+    "ecommerce_tx_final_clientes_db",
+    "ecommerce_tx_final_comunicacao"
+  ],
+  "containerCount": 9,
+  "imageCount": 7
+}

@@ -13,6 +13,9 @@ export interface RouteDef {
   path: string;
   auth?: boolean;
   body?: Record<string, unknown>;
+  headers?: Record<string, string>;
+  uniqueBody?: boolean;
+  connections?: number;
 }
 
 export interface AppConfig {
@@ -38,8 +41,9 @@ export interface AppConfig {
   startupReps: number;
   statsIdleSec: number;
   statsLoadSec: number;
-  ids?: Record<string, { from?: 'login'; url?: string; path: string }>;
+  ids?: Record<string, { from?: 'login' | 'seed'; url?: string; path: string }>;
   crossDomainDirs?: string[];
+  crossDomain?: Array<{ label: string; dir: string; tsConfig?: string }>;
   tsConfig?: string;
   sharedModuleAlias?: string;
 }
@@ -88,14 +92,17 @@ export async function collectStartupTime(cfg: AppConfig): Promise<{ reps: number
 }
 
 // ---------- 3. Seed ----------
-export async function seedDatabase(cfg: AppConfig): Promise<void> {
+export async function seedDatabase(cfg: AppConfig): Promise<string> {
   const seeds = Array.isArray(cfg.seed) ? cfg.seed : [cfg.seed];
+  const outputs: string[] = [];
   for (const s of seeds) {
     const r = await compose(cfg, ['run', '--rm', s.service, ...s.command], {
       timeoutMs: 180000,
     });
     if (r.code !== 0) throw new Error(`seed failed (${s.service}):\n${r.stderr || r.stdout}`);
+    outputs.push(r.stdout);
   }
+  return outputs.join('\n');
 }
 
 // ---------- 4. Docker stats ----------
@@ -212,21 +219,57 @@ export async function runLoad(
     const ctx = await getContext();
     const url = `${cfg.baseUrl}${resolveTemplate(route.path, ctx.ids)}`;
     const headers: Record<string, string> = {};
+    for (const [k, v] of Object.entries(route.headers ?? {})) {
+      headers[k] = resolveTemplate(v, ctx.ids);
+    }
     if (route.auth) headers['Authorization'] = `Bearer ${ctx.token}`;
+    const idsForBody = route.uniqueBody
+      ? { ...ctx.ids, _seq: '@@SEQ@@' }
+      : ctx.ids;
     const body = route.body
-      ? JSON.stringify(resolveBody(route.body, ctx.ids))
+      ? JSON.stringify(resolveBody(route.body, idsForBody))
       : undefined;
     if (body) headers['Content-Type'] = 'application/json';
 
-    const result = await autocannon({
-      url,
-      method: route.method,
-      headers,
-      body,
-      connections: cfg.load.connections,
-      duration: cfg.load.durationSec,
-      pipelining: cfg.load.pipelining,
-    });
+    const connections = route.connections ?? cfg.load.connections;
+    let result;
+
+    if (route.uniqueBody && body) {
+      let seq = 0;
+      const template = body;
+      result = await autocannon({
+        url: cfg.baseUrl,
+        method: route.method,
+        connections,
+        duration: cfg.load.durationSec,
+        pipelining: cfg.load.pipelining,
+        requests: [
+          {
+            path: resolveTemplate(route.path, ctx.ids),
+            method: route.method,
+            headers,
+            body: template,
+            setupRequest: (req: any) => {
+              req.body = template.replace(
+                '@@SEQ@@',
+                String((seq += 1)).padStart(12, '0'),
+              );
+              return req;
+            },
+          },
+        ],
+      });
+    } else {
+      result = await autocannon({
+        url,
+        method: route.method,
+        headers,
+        body,
+        connections,
+        duration: cfg.load.durationSec,
+        pipelining: cfg.load.pipelining,
+      });
+    }
     summary.requestsPerSec.push(result.requests.average);
     summary.throughputBytesPerSec.push(result.throughput.average);
     summary.latencyP50.push(result.latency.p50);
@@ -281,6 +324,7 @@ function walk(dir: string, acc: string[] = []): string[] {
 interface SourceRoot {
   label: string;
   root: string;
+  tsConfig?: string;
 }
 
 function sourceRoots(cfg: AppConfig): SourceRoot[] {
@@ -292,6 +336,16 @@ function sourceRoots(cfg: AppConfig): SourceRoot[] {
 }
 
 function crossDomainRoots(cfg: AppConfig): SourceRoot[] {
+  // Configuração explícita por serviço: necessária quando a árvore tem
+  // subpastas (src/modules) e o rótulo do serviço não pode ser inferido do
+  // caminho. Cada raiz usa o próprio tsconfig para resolver os aliases.
+  if (cfg.crossDomain?.length) {
+    return cfg.crossDomain.map((entry) => ({
+      label: entry.label,
+      root: fromRepo(entry.dir),
+      tsConfig: entry.tsConfig,
+    }));
+  }
   const dirs =
     cfg.crossDomainDirs ?? cfg.sourceDirs ?? (cfg.sourceDir ? [cfg.sourceDir] : []);
   return dirs.map((d) => {
@@ -381,12 +435,14 @@ export async function collectCrossDomain(cfg: AppConfig): Promise<CrossDomainRes
   const byModule: Record<string, number> = {};
   let totalEdges = 0;
 
-  for (const { label, root } of roots) {
+  for (const { label, root, tsConfig } of roots) {
     const res = await madge(root, {
       fileExtensions: ['ts'],
-      tsConfig: cfg.tsConfig
-        ? fromRepo(cfg.tsConfig)
-        : path.resolve(root, '..', 'tsconfig.json'),
+      tsConfig: tsConfig
+        ? fromRepo(tsConfig)
+        : cfg.tsConfig
+          ? fromRepo(cfg.tsConfig)
+          : path.resolve(root, '..', 'tsconfig.json'),
     });
     const obj = res.obj() as Record<string, string[]>;
 

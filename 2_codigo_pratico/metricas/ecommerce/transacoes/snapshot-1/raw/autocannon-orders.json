@@ -1,0 +1,45 @@
+{
+  "route": "orders",
+  "method": "POST",
+  "runs": 3,
+  "requestsPerSec": [
+    462.2,
+    537.6,
+    553.21
+  ],
+  "throughputBytesPerSec": [
+    165910.4,
+    192998.4,
+    198604.8
+  ],
+  "latencyP50": [
+    41,
+    37,
+    36
+  ],
+  "latencyP90": [
+    56,
+    46,
+    44
+  ],
+  "latencyP99": [
+    78,
+    56,
+    52
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    0,
+    0,
+    0
+  ],
+  "totalRequests": [
+    4622,
+    5376,
+    5532
+  ]
+}

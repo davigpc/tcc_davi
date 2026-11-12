@@ -1,0 +1,403 @@
+{
+  "app": "ecommerce",
+  "metodologia": "transacoes",
+  "snapshot": "snapshot-2",
+  "tag": null,
+  "timestampUtc": "2026-11-12T17:54:58.360Z",
+  "buildTime": {
+    "meanMs": 129214,
+    "runsMs": [
+      130043,
+      132764,
+      124835
+    ]
+  },
+  "startupTime": {
+    "meanMs": 8659,
+    "runsMs": [
+      8739,
+      8679,
+      8559
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "ecommerce_tx_s2_nginx",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 13,
+        "memMinMB": 13,
+        "memMaxMB": 13
+      },
+      {
+        "container": "ecommerce_tx_s2_catalogo",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 57.46,
+        "memMinMB": 57.38,
+        "memMaxMB": 57.49
+      },
+      {
+        "container": "ecommerce_tx_s2_monolith",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 79.47,
+        "memMinMB": 79.43,
+        "memMaxMB": 79.5
+      },
+      {
+        "container": "ecommerce_tx_s2_checkout",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 55.88,
+        "memMinMB": 55.77,
+        "memMaxMB": 55.96
+      },
+      {
+        "container": "ecommerce_tx_s2_redis",
+        "samples": 4,
+        "cpuMedPerc": 0.29,
+        "cpuMinPerc": 0.27,
+        "cpuMaxPerc": 0.31,
+        "memMedMB": 8.5,
+        "memMinMB": 8.49,
+        "memMaxMB": 8.63
+      },
+      {
+        "container": "ecommerce_tx_s2_mongo",
+        "samples": 4,
+        "cpuMedPerc": 0.64,
+        "cpuMinPerc": 0.34,
+        "cpuMaxPerc": 28,
+        "memMedMB": 192,
+        "memMinMB": 191.8,
+        "memMaxMB": 344
+      }
+    ],
+    "load": [
+      {
+        "container": "ecommerce_tx_s2_nginx",
+        "samples": 4,
+        "cpuMedPerc": 39.8,
+        "cpuMinPerc": 38.82,
+        "cpuMaxPerc": 40.86,
+        "memMedMB": 14.9,
+        "memMinMB": 14.34,
+        "memMaxMB": 15.11
+      },
+      {
+        "container": "ecommerce_tx_s2_catalogo",
+        "samples": 4,
+        "cpuMedPerc": 103.64,
+        "cpuMinPerc": 102.24,
+        "cpuMaxPerc": 104.46,
+        "memMedMB": 182.2,
+        "memMinMB": 182.2,
+        "memMaxMB": 182.4
+      },
+      {
+        "container": "ecommerce_tx_s2_monolith",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 80.04,
+        "memMinMB": 80.04,
+        "memMaxMB": 80.15
+      },
+      {
+        "container": "ecommerce_tx_s2_checkout",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.31,
+        "memMedMB": 56.65,
+        "memMinMB": 56.61,
+        "memMaxMB": 56.69
+      },
+      {
+        "container": "ecommerce_tx_s2_redis",
+        "samples": 4,
+        "cpuMedPerc": 11.8,
+        "cpuMinPerc": 11.26,
+        "cpuMaxPerc": 12.13,
+        "memMedMB": 8.39,
+        "memMinMB": 8.39,
+        "memMaxMB": 8.52
+      },
+      {
+        "container": "ecommerce_tx_s2_mongo",
+        "samples": 4,
+        "cpuMedPerc": 1.22,
+        "cpuMinPerc": 0.47,
+        "cpuMaxPerc": 65.33,
+        "memMedMB": 195.5,
+        "memMinMB": 195.2,
+        "memMaxMB": 196.1
+      }
+    ],
+    "imagensMB": {
+      "ecommerce-tx-s2-monolith": 98.65,
+      "ecommerce-tx-s2-checkout": 88.92,
+      "ecommerce-tx-s2-catalogo": 88.46,
+      "mongo:7": 283.38,
+      "redis:7-alpine": 15.52,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "product-by-id",
+        "rpsMean": 2899.4,
+        "rpsMin": 2888.8,
+        "rpsMax": 2905.2,
+        "p50Mean": 7,
+        "p50Min": 7,
+        "p50Max": 7,
+        "p90Mean": 13.33,
+        "p90Min": 13,
+        "p90Max": 14,
+        "p99Mean": 18,
+        "p99Min": 16,
+        "p99Max": 21,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "products",
+        "rpsMean": 2854.97,
+        "rpsMin": 2693.9,
+        "rpsMax": 2987.2,
+        "p50Mean": 6.67,
+        "p50Min": 6,
+        "p50Max": 7,
+        "p90Mean": 13.67,
+        "p90Min": 13,
+        "p90Max": 14,
+        "p99Mean": 17,
+        "p99Min": 16,
+        "p99Max": 18,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "orders",
+        "rpsMean": 520.07,
+        "rpsMin": 477.7,
+        "rpsMax": 558.1,
+        "p50Mean": 37.67,
+        "p50Min": 36,
+        "p50Max": 40,
+        "p90Mean": 48.33,
+        "p90Min": 43,
+        "p90Max": 54,
+        "p99Mean": 64,
+        "p99Min": 51,
+        "p99Max": 75,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "webhook",
+        "rpsMean": 91.2,
+        "rpsMin": 85.6,
+        "rpsMax": 94.8,
+        "p50Mean": 10,
+        "p50Min": 9,
+        "p50Max": 11,
+        "p90Mean": 12.33,
+        "p90Min": 12,
+        "p90Max": 13,
+        "p99Mean": 15.67,
+        "p99Min": 15,
+        "p99Max": 17,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 5263,
+    "locPorModulo": {
+      "ecommerce/common": 64,
+      "ecommerce/config": 84,
+      "ecommerce/main.module.ts": 54,
+      "ecommerce/main.ts": 27,
+      "ecommerce/modules": 1996,
+      "ecommerce/shared": 298,
+      "checkout/checkout.module.ts": 37,
+      "checkout/clients": 87,
+      "checkout/config": 14,
+      "checkout/main.ts": 27,
+      "checkout/modules": 1674,
+      "checkout/shared": 109,
+      "catalogo/catalogo.module.ts": 43,
+      "catalogo/config": 14,
+      "catalogo/main.ts": 32,
+      "catalogo/modules": 621,
+      "catalogo/shared": 82
+    },
+    "servicos": 6,
+    "containers": 6,
+    "crossDomainEdges": 71,
+    "totalEdges": 197,
+    "crossDomainPorModulo": {
+      "ecommerce/shared": 1,
+      "ecommerce/auth": 7,
+      "ecommerce/internal": 4,
+      "ecommerce/token": 2,
+      "ecommerce/user": 12,
+      "checkout/cart": 14,
+      "checkout/inventory": 2,
+      "checkout/order": 12,
+      "checkout/stripe": 8,
+      "catalogo/product": 8,
+      "catalogo/search": 1
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "checkout/cart",
+        "to": "checkout/item",
+        "count": 8
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/address",
+        "count": 6
+      },
+      {
+        "from": "checkout/cart",
+        "to": "checkout/shipping",
+        "count": 5
+      },
+      {
+        "from": "checkout/stripe",
+        "to": "checkout/shared",
+        "count": 5
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/shared",
+        "count": 4
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/item",
+        "count": 4
+      },
+      {
+        "from": "catalogo/product",
+        "to": "catalogo/shared",
+        "count": 4
+      },
+      {
+        "from": "ecommerce/auth",
+        "to": "ecommerce/token",
+        "count": 3
+      },
+      {
+        "from": "checkout/stripe",
+        "to": "checkout/order",
+        "count": 3
+      },
+      {
+        "from": "ecommerce/auth",
+        "to": "ecommerce/shared",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/auth",
+        "to": "ecommerce/user",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/internal",
+        "to": "ecommerce/email",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/internal",
+        "to": "ecommerce/user",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/storages",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/stripe",
+        "count": 2
+      },
+      {
+        "from": "checkout/inventory",
+        "to": "checkout/item",
+        "count": 2
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/inventory",
+        "count": 2
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/stripe",
+        "count": 2
+      },
+      {
+        "from": "catalogo/product",
+        "to": "catalogo/search",
+        "count": 2
+      },
+      {
+        "from": "catalogo/product",
+        "to": "catalogo/storages",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/shared",
+        "to": "ecommerce/auth",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/token",
+        "to": "ecommerce/user",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/token",
+        "to": "ecommerce/shared",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/shared",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/auth",
+        "count": 1
+      },
+      {
+        "from": "checkout/cart",
+        "to": "checkout/shared",
+        "count": 1
+      },
+      {
+        "from": "catalogo/search",
+        "to": "catalogo/shared",
+        "count": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "services": [
+    "redis",
+    "mongo",
+    "catalogo",
+    "checkout",
+    "monolith",
+    "nginx"
+  ],
+  "serviceCount": 6,
+  "runningContainers": [
+    "ecommerce_tx_s2_nginx",
+    "ecommerce_tx_s2_catalogo",
+    "ecommerce_tx_s2_monolith",
+    "ecommerce_tx_s2_checkout",
+    "ecommerce_tx_s2_redis",
+    "ecommerce_tx_s2_mongo"
+  ],
+  "containerCount": 6,
+  "imageCount": 6
+}

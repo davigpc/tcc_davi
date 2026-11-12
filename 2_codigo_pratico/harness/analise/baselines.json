@@ -2,5 +2,9 @@
   "inventory-api": {
     "metodologia": "capacidade-negocio",
     "snapshot": "snapshot-0"
+  },
+  "ecommerce": {
+    "metodologia": "transacoes",
+    "snapshot": "snapshot-0"
   }
 }

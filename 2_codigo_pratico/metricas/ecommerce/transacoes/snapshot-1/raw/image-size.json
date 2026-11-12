@@ -1,0 +1,22 @@
+{
+  "ecommerce-tx-s1-monolith": {
+    "bytes": 103456078,
+    "mb": 98.66
+  },
+  "ecommerce-tx-s1-checkout": {
+    "bytes": 93240039,
+    "mb": 88.92
+  },
+  "mongo:7": {
+    "bytes": 297150423,
+    "mb": 283.38
+  },
+  "redis:7-alpine": {
+    "bytes": 16274952,
+    "mb": 15.52
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}
