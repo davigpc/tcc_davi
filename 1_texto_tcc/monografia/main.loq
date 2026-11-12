@@ -1,11 +1,2 @@
-\contentsline {quadro}{\numberline {1}{\ignorespaces Exemplo de quadro}}{16}{quadro.caption.22}%
-\contentsline {quadro}{\numberline {2}{\ignorespaces Comparação dos trabalhos relacionados}}{30}{quadro.caption.32}%
-\contentsline {quadro}{\numberline {3}{\ignorespaces Métricas do sistema de inventário no baseline (Snapshot 0).}}{38}{quadro.caption.35}%
-\contentsline {quadro}{\numberline {4}{\ignorespaces Métricas do sistema de e-commerce no baseline (Snapshot 0).}}{40}{quadro.caption.39}%
-\contentsline {quadro}{\numberline {5}{\ignorespaces Inventário --- métricas por snapshot --- Capacidade de Negócio.}}{42}{quadro.caption.41}%
-\contentsline {quadro}{\numberline {6}{\ignorespaces Variação acumulada por aplicação --- Capacidade de Negócio.}}{43}{quadro.caption.42}%
-\contentsline {quadro}{\numberline {7}{\ignorespaces Inventário --- métricas por snapshot --- Subdomínio.}}{45}{quadro.caption.46}%
-\contentsline {quadro}{\numberline {8}{\ignorespaces Variação acumulada por aplicação --- Subdomínio.}}{46}{quadro.caption.47}%
-\contentsline {quadro}{\numberline {9}{\ignorespaces Inventário --- métricas por snapshot --- Transações.}}{47}{quadro.caption.51}%
-\contentsline {quadro}{\numberline {10}{\ignorespaces Variação acumulada por aplicação --- Transações.}}{48}{quadro.caption.52}%
-\contentsline {quadro}{\numberline {11}{\ignorespaces Variação acumulada por metodologia (S0 $\rightarrow $ último snapshot).}}{49}{quadro.caption.55}%
+\contentsline {quadro}{\numberline {1}{\ignorespaces E-commerce --- métricas por snapshot --- Subdomínio (DDD).}}{39}{quadro.caption.37}%
+\contentsline {quadro}{\numberline {2}{\ignorespaces E-commerce --- métricas por snapshot --- Transações.}}{43}{quadro.caption.41}%

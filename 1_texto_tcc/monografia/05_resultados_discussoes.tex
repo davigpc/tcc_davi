@@ -168,6 +168,22 @@ O estado final coincide com o da Capacidade de Negócio: mesma topologia, mesmas
 
 \subsection*{E-commerce}
 
+Na decomposição por transações, o agrupamento parte do que precisa ser gravado junto. No e-commerce, a operação crítica é a confirmação do pedido: o webhook de pagamento muda o status do pedido e baixa o estoque dos itens na mesma sessão Mongo. Se as duas escritas não acontecem juntas, um pedido pode ficar pago sem baixa ou com baixa parcial. Por isso, carrinho, frete, pedido, estoque e pagamento formaram um único serviço, o Checkout. Catálogo, Identidade e Comunicação ficaram fora da transação. O código de origem tinha 79 de 207 dependências cruzando fronteiras de módulo, concentradas no carrinho e no pedido.
+
+A extração começou pelo Checkout, ao contrário das outras duas trilhas, para que a transação ficasse em um único processo desde o início. O banco continuou sendo o do monólito: carrinho e pedido liam produtos e usuários na mesma base, e a baixa do estoque seguia dentro da sessão do pedido. O monólito perdeu cinco módulos e manteve catálogo, identidade e comunicação, além de duas rotas internas: uma para o e-mail de confirmação, chamado depois do commit, e outra para o status de assinatura.
+
+Na segunda fase, o Catálogo foi extraído. A leitura de produto continuou local, porque a coleção era a mesma, e a baixa de estoque passou a escrever uma coleção que outro serviço serve. A atomicidade sobreviveu apenas porque o banco continuava compartilhado: a escrita cruzava a fronteira do serviço, mas não a do banco. É uma situação que só existe durante a migração e que a etapa final remove.
+
+Na etapa final, Identidade e Comunicação saíram, o monólito foi desativado e cada serviço passou a ter seu banco. O estoque deixou de ser um campo do produto e virou um contador próprio do Checkout, baixado na mesma sessão do status do pedido. O Catálogo mantém uma cópia de leitura, atualizada por uma chamada depois do commit, e a criação de um produto inicializa o contador no Checkout. Se a sincronização falhar, a listagem mostra saldo antigo, mas o saldo que decide a venda continua consistente. A validação do comprador e do item virou chamada HTTP dentro do caminho de escrita.
+
+O Quadro \ref{qua:comp_ecommerce_transacoes_snapshots} apresenta as métricas das quatro fases. O tempo de construção subiu de 117,3 para 129,2 segundos nas duas primeiras extrações e caiu para 84,7 segundos no estado final, 27,8 \% abaixo do baseline, porque a imagem do monólito deixou de ser construída. As Linhas de Código foram de 4.820 para 5.263 e terminaram em 5.004, com a saída do monólito. As chamadas entre fronteiras caíram de 79 para 72 e terminaram em 71 de 193. Os componentes passaram de três para nove e a memória em repouso, de 279,2 para 764,5 MB, com os três bancos. A vazão média terminou 3 \% abaixo do baseline e a latência mediana, 5,6 \% menor.
+
+A rota de escrita medida nas outras trilhas não executa essa transação: \texttt{POST /api/orders} apenas grava o pedido. Por isso, esta trilha mediu também o webhook, com uma conexão, porque requisições concorrentes sobre o mesmo pedido disputam a mesma transação e falham com conflito de escrita. O webhook fez 75,6 req/s no s1, 91,2 no s2 e 77,1 no final; a queda de 15,5 \% no último passo corresponde às duas validações em rede e à sincronização da cópia de leitura.
+
+\input{tabelas/ecommerce__transacoes__snapshots.tex}
+
+O estado final tem as mesmas quatro fronteiras das outras duas trilhas, mas não o mesmo artefato: 5.004 Linhas de Código e 71 de 193 chamadas, contra 5.328 e 76 de 206. A diferença não é de forma: o estoque está dentro do Checkout. Na Capacidade e no Subdomínio, a baixa saía por chamada HTTP e o pedido deixava de ser atômico desde a primeira extração; aqui, a consistência foi preservada em todas as fases, ao preço de extrair cinco módulos de uma vez, de quase dobrar a memória e de reduzir a vazão do caminho de confirmação. Em um domínio com um único fluxo de negócio, o critério de transações chega à mesma topologia dos outros dois, mas o custo é pago no começo, e não no fim.
+
 \section{Comparação entre as Metodologias}
 \label{sec:comparacao_metodologias}
 
