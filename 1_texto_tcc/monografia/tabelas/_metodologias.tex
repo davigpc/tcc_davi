@@ -7,21 +7,30 @@
   \setlength{\tabcolsep}{4pt}
   \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|r|r|r|}
     \hline
-    \textbf{Métrica} & \textbf{Capacidade de Negócio} & \textbf{Subdomínio} & \textbf{Transações} \\ \hline
-    \multicolumn{4}{|l|}{\textbf{Agilidade}} \\ \hline
-    Tempo de construção (ms) & +196 \% & +163 \% & +139 \% \\
-    Tempo de inicialização (ms) & +32 \% & +37 \% & +53 \% \\ \hline
-    \multicolumn{4}{|l|}{\textbf{Custo}} \\ \hline
-    CPU total (repouso / carga, \%) & +4,38 p.p. / +68 \% & +0,3 p.p. / +54 \% & $-$ 0,47 p.p. / +80 \% \\
-    RAM total (repouso / carga, MB) & +136 \% / +136 \% & +211 \% / +186 \% & +135 \% / +124 \% \\
-    Imagens da aplicação (MB) & +287 \% & +410 \% & +287 \% \\
-    Componentes / contêineres & +4 & +6 & +4 \\ \hline
-    \multicolumn{4}{|l|}{\textbf{Desempenho}} \\ \hline
-    Vazão (média das rotas, req/s) & +1 \% & +17 \% & +8 \% \\
-    Latência p50 (média das rotas, ms) & $-$ 12 \% & $-$ 24 \% & $-$ 18 \% \\ \hline
-    \multicolumn{4}{|l|}{\textbf{Manutenibilidade}} \\ \hline
-    Linhas de Código & +9 \% & +15 \% & +9 \% \\
-    Chamadas entre fronteiras & +13 \% & +23 \% & +13 \% \\ \hline
+    \textbf{Métrica} & \textbf{Capacidade de Negócio} & \textbf{Subdomínio (DDD)} & \textbf{Transações} \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Agilidade}} \\
+    \hline
+    Tempo de construção (ms) & +196 \% & +163 \% & +56 \% \\
+    Tempo de inicialização (ms) & +32 \% & +37 \% & +29 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Custo}} \\
+    \hline
+    CPU total (repouso / carga, \%) & +4,38 p.p. / +68 \% & +0,3 p.p. / +54 \% & $-$ 0,08 p.p. / +56 \% \\
+    RAM total (repouso / carga, MB) & +136 \% / +136 \% & +211 \% / +186 \% & +155 \% / +110 \% \\
+    Imagens da aplicação (MB) & +287 \% & +410 \% & +291 \% \\
+    Componentes / contêineres & +4 & +6 & +5 \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Desempenho}} \\
+    \hline
+    Vazão (média das rotas, req/s) & +1 \% & +17 \% & +3 \% \\
+    Latência p50 (média das rotas, ms) & $-$ 12 \% & $-$ 24 \% & $-$ 12 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Manutenibilidade}} \\
+    \hline
+    Linhas de Código & +9 \% & +15 \% & +7 \% \\
+    Chamadas entre fronteiras & +13 \% & +23 \% & +1 \% \\
+    \hline
   \end{tabularx}
   \fonte{elaborado pelo autor (2026) a partir da medição automatizada.}
 \end{quadro}
