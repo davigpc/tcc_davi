@@ -1,0 +1,17 @@
+{
+  "services": [
+    "redis",
+    "api",
+    "postgres",
+    "worker"
+  ],
+  "serviceCount": 4,
+  "runningContainers": [
+    "auction_baseline_worker",
+    "auction_baseline_api",
+    "auction_baseline_postgres",
+    "auction_baseline_redis"
+  ],
+  "containerCount": 4,
+  "imageCount": 3
+}

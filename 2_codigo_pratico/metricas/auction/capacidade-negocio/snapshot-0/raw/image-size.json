@@ -1,0 +1,14 @@
+{
+  "auction-baseline-app": {
+    "bytes": 109978029,
+    "mb": 104.88
+  },
+  "postgres:16": {
+    "bytes": 166201939,
+    "mb": 158.5
+  },
+  "redis:7": {
+    "bytes": 43621893,
+    "mb": 41.6
+  }
+}

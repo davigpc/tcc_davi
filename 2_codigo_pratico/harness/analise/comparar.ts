@@ -32,6 +32,9 @@ interface Row {
 }
 
 const fmtNum = (n: number, maxDigits = 2): string => {
+  // Resumos anteriores à renomeação dos campos de docker stats não têm o valor
+  // disponível; imprimir '--' evita 'NaN' na tabela.
+  if (!Number.isFinite(n)) return '--';
   const rounded = Math.round(n * 10 ** maxDigits) / 10 ** maxDigits;
   const [int, dec] = rounded.toString().split('.');
   const intSep = int.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -52,18 +55,29 @@ const fmtDeltaPp = (d: number): string => fmtSigned(d, 2, 'p.p.');
 
 const fmtDeltaPair = (d: number[]): string => d.map(fmtDelta).join(' / ');
 
-const cpuIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + c.cpuMedPerc, 0);
-const cpuLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + c.cpuMedPerc, 0);
-const ramIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + c.memMedMB, 0);
-const ramLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + c.memMedMB, 0);
+// Alguns resumos guardados usam os nomes antigos dos campos de docker stats
+// (cpuAvgPerc / memAvgMB); aceitar os dois evita perder a série histórica.
+const cpuOf = (c: { cpuMedPerc?: number; cpuAvgPerc?: number }): number =>
+  c.cpuMedPerc ?? c.cpuAvgPerc ?? NaN;
+const memOf = (c: { memMedMB?: number; memAvgMB?: number }): number =>
+  c.memMedMB ?? c.memAvgMB ?? NaN;
+
+const cpuIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + cpuOf(c as never), 0);
+const cpuLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + cpuOf(c as never), 0);
+const ramIdle = (s: Summary): number => s.custo.idle.reduce((a, c) => a + memOf(c as never), 0);
+const ramLoad = (s: Summary): number => s.custo.load.reduce((a, c) => a + memOf(c as never), 0);
 const imgTotal = (s: Summary): number =>
   Object.entries(s.custo.imagensMB)
     .filter(([nome]) => !/postgres|mongo|redis/i.test(nome))
     .reduce((a, [, mb]) => a + mb, 0);
+// A rota de webhook é medida com uma conexão (a transação serializa no
+// agregado); misturá-la com as rotas de 20 conexões distorceria a média.
+const ROTAS_FORA_DA_MEDIA = ['webhook'];
+
 const rotas = (s: Summary): Summary['desempenho']['leitura'] => [
   ...s.desempenho.leitura,
   ...s.desempenho.escrita,
-];
+].filter((r) => !ROTAS_FORA_DA_MEDIA.includes(r.route));
 const vazaoMedia = (s: Summary): number => mean(rotas(s).map((r) => r.rpsMean));
 const latMedia = (s: Summary): number => mean(rotas(s).map((r) => r.p50Mean));
 

@@ -1,0 +1,239 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "_root",
+    "auction-jobs",
+    "auctions",
+    "auth",
+    "bids",
+    "card-types",
+    "cards",
+    "common",
+    "config",
+    "database",
+    "health",
+    "realtime",
+    "users"
+  ],
+  "edges": [
+    {
+      "from": "auctions",
+      "to": "cards",
+      "count": 8
+    },
+    {
+      "from": "auctions",
+      "to": "bids",
+      "count": 6
+    },
+    {
+      "from": "cards",
+      "to": "users",
+      "count": 5
+    },
+    {
+      "from": "_root",
+      "to": "auction-jobs",
+      "count": 4
+    },
+    {
+      "from": "auctions",
+      "to": "users",
+      "count": 4
+    },
+    {
+      "from": "auth",
+      "to": "users",
+      "count": 4
+    },
+    {
+      "from": "bids",
+      "to": "auctions",
+      "count": 4
+    },
+    {
+      "from": "cards",
+      "to": "card-types",
+      "count": 4
+    },
+    {
+      "from": "auctions",
+      "to": "realtime",
+      "count": 3
+    },
+    {
+      "from": "_root",
+      "to": "auctions",
+      "count": 2
+    },
+    {
+      "from": "_root",
+      "to": "config",
+      "count": 2
+    },
+    {
+      "from": "_root",
+      "to": "database",
+      "count": 2
+    },
+    {
+      "from": "auction-jobs",
+      "to": "auctions",
+      "count": 2
+    },
+    {
+      "from": "auctions",
+      "to": "common",
+      "count": 2
+    },
+    {
+      "from": "auctions",
+      "to": "auction-jobs",
+      "count": 2
+    },
+    {
+      "from": "auctions",
+      "to": "card-types",
+      "count": 2
+    },
+    {
+      "from": "auth",
+      "to": "common",
+      "count": 2
+    },
+    {
+      "from": "bids",
+      "to": "common",
+      "count": 2
+    },
+    {
+      "from": "bids",
+      "to": "realtime",
+      "count": 2
+    },
+    {
+      "from": "cards",
+      "to": "common",
+      "count": 2
+    },
+    {
+      "from": "database",
+      "to": "cards",
+      "count": 2
+    },
+    {
+      "from": "realtime",
+      "to": "auth",
+      "count": 2
+    },
+    {
+      "from": "realtime",
+      "to": "users",
+      "count": 2
+    },
+    {
+      "from": "_root",
+      "to": "auth",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "bids",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "card-types",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "cards",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "health",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "realtime",
+      "count": 1
+    },
+    {
+      "from": "_root",
+      "to": "users",
+      "count": 1
+    },
+    {
+      "from": "auctions",
+      "to": "auth",
+      "count": 1
+    },
+    {
+      "from": "bids",
+      "to": "users",
+      "count": 1
+    },
+    {
+      "from": "bids",
+      "to": "auth",
+      "count": 1
+    },
+    {
+      "from": "card-types",
+      "to": "common",
+      "count": 1
+    },
+    {
+      "from": "cards",
+      "to": "auctions",
+      "count": 1
+    },
+    {
+      "from": "cards",
+      "to": "auth",
+      "count": 1
+    },
+    {
+      "from": "common",
+      "to": "auth",
+      "count": 1
+    },
+    {
+      "from": "database",
+      "to": "auctions",
+      "count": 1
+    },
+    {
+      "from": "database",
+      "to": "bids",
+      "count": 1
+    },
+    {
+      "from": "database",
+      "to": "card-types",
+      "count": 1
+    },
+    {
+      "from": "database",
+      "to": "users",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 88,
+  "totalEdges": 174,
+  "byModule": {
+    "_root": 17,
+    "auction-jobs": 2,
+    "auctions": 28,
+    "auth": 6,
+    "bids": 10,
+    "card-types": 1,
+    "cards": 13,
+    "common": 1,
+    "database": 6,
+    "realtime": 4
+  }
+}

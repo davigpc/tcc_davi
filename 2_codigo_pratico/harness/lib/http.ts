@@ -55,8 +55,9 @@ export async function loginResponse(
   baseUrl: string,
   email: string,
   password: string,
+  path = '/api/auth/login',
 ): Promise<{ token: string; body: unknown }> {
-  const res = await httpRequest(`${baseUrl}/api/auth/login`, {
+  const res = await httpRequest(`${baseUrl}${path}`, {
     method: 'POST',
     body: { email, password },
   });

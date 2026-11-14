@@ -1,0 +1,90 @@
+@startuml auction__arquitetura-baseline
+' Diagrama de componentes (UML) do sistema de leiloes no baseline.
+' Dois processos NestJS (API e worker), PostgreSQL como fonte de verdade e
+' Redis com dois papeis: fila BullMQ e canal de pub/sub do tempo real.
+
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam ArrowFontSize 13
+skinparam linetype ortho
+skinparam nodesep 35
+skinparam ranksep 45
+
+skinparam component {
+  BackgroundColor #1F2D3D
+  BorderColor #1F2D3D
+  FontColor #FFFFFF
+}
+skinparam database {
+  BackgroundColor #1F2D3D
+  BorderColor #1F2D3D
+  FontColor #FFFFFF
+}
+skinparam package {
+  BackgroundColor #F4F6F8
+  BorderColor #B8C2CC
+  FontColor #1F2D3D
+}
+skinparam ArrowColor #6B7A90
+skinparam ArrowFontColor #1F2D3D
+
+component "Cliente\n(navegador)" as Client
+
+package "API - processo NestJS" as Api {
+
+  component "Borda REST\n(REST + JWT)" as Rest
+  component "Identidade e acesso\nauth + users" as Identity
+  component "Cartas\ncards + card-types" as Cards
+  component "Leiloes e lances\nauctions + bids" as Auctions
+  component "Tempo real\nSocket.IO + assinante Redis" as Realtime
+  component "Enfileiramento\nagenda o fechamento" as Enqueue
+  component "Acesso a dados\n(TypeORM)" as ApiDb
+}
+
+package "Worker - processo NestJS" as Worker {
+
+  component "Fechamento transacional\nauction + card + transfer" as Closing
+  component "Varredor de expirados" as Scanner
+  component "Acesso a dados\n(TypeORM)" as WorkerDb
+}
+
+database "Redis 7\nfila BullMQ + pub/sub" as Redis
+database "PostgreSQL 15" as Postgres
+
+' ----- Canais do cliente -----
+Client --> Rest : HTTP/JSON + JWT
+Client <--> Realtime : WebSocket (Socket.IO)
+
+' ----- Despacho da borda -----
+Rest --> Identity
+Rest --> Cards
+Rest --> Auctions
+
+' ----- Jobs e tempo real -----
+Auctions --> Enqueue
+Enqueue --> Redis : agenda job
+Redis --> Closing
+Closing ..> Redis
+Redis --> Realtime : assina canal
+
+' ----- Persistencia -----
+Identity --> ApiDb
+Cards --> ApiDb
+Auctions --> ApiDb
+ApiDb --> Postgres
+Closing --> WorkerDb
+Scanner --> WorkerDb
+WorkerDb --> Postgres
+
+' ----- Posicionamento -----
+Rest -[hidden]down- Identity
+Identity -[hidden]right- Cards
+Cards -[hidden]right- Auctions
+Auctions -[hidden]right- Realtime
+Auctions -[hidden]down- Enqueue
+Redis -[hidden]down- Worker
+Enqueue -[hidden]left- ApiDb
+
+@enduml

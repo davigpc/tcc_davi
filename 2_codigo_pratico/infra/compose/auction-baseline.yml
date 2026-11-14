@@ -1,0 +1,112 @@
+# Compose do experimento: leilao / baseline (Snapshot 0)
+# Topologia original: API NestJS, worker NestJS, PostgreSQL 16 e Redis 7.
+#
+# A API atende REST e Socket.IO na 3000. O worker consome a fila de fechamento
+# (BullMQ) e varre leiloes expirados. Redis tambem serve o pub/sub do tempo real.
+# As migracoes rodam em um servico de uso unico antes da API e do worker.
+name: auction-baseline
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: auction_baseline_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: auction
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d auction"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - auction
+
+  redis:
+    image: redis:7
+    container_name: auction_baseline_redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - auction
+
+  api:
+    image: auction-baseline-app
+    build:
+      context: ../../apps/auction
+      target: prod
+    container_name: auction_baseline_api
+    restart: unless-stopped
+    command: ["sh", "-c", "node scripts/migrate.js && node dist/src/main.js"]
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: auction-experiment-secret
+      JWT_EXPIRES_IN: 1d
+      CORS_ORIGIN: http://localhost:3001
+      AUCTION_MIN_DURATION_SECONDS: 30
+      AUCTION_MAX_DURATION_SECONDS: 604800
+      AUCTION_SCANNER_INTERVAL_SECONDS: 30
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - auction
+
+  worker:
+    image: auction-baseline-app
+    container_name: auction_baseline_worker
+    restart: unless-stopped
+    command: ["node", "dist/src/worker.js"]
+    environment:
+      NODE_ENV: production
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: auction-experiment-secret
+      JWT_EXPIRES_IN: 1d
+      CORS_ORIGIN: http://localhost:3001
+      AUCTION_MIN_DURATION_SECONDS: 30
+      AUCTION_MAX_DURATION_SECONDS: 604800
+      AUCTION_SCANNER_INTERVAL_SECONDS: 30
+    depends_on:
+      api:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - auction
+
+volumes:
+  postgres_data:
+
+networks:
+  auction:
+    driver: bridge
