@@ -1,0 +1,353 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "auction/_root",
+    "auction/auction-jobs",
+    "auction/auctions",
+    "auction/auth",
+    "auction/bids",
+    "auction/card-types",
+    "auction/cards",
+    "auction/common",
+    "auction/config",
+    "auction/database",
+    "auction/health",
+    "auction/realtime",
+    "auction/users",
+    "lances/_root",
+    "lances/auctions",
+    "lances/auth",
+    "lances/bids",
+    "lances/card-types",
+    "lances/cards",
+    "lances/common",
+    "lances/config",
+    "lances/database",
+    "lances/health",
+    "lances/realtime",
+    "lances/users"
+  ],
+  "edges": [
+    {
+      "from": "auction/auctions",
+      "to": "auction/cards",
+      "count": 8
+    },
+    {
+      "from": "auction/auctions",
+      "to": "auction/bids",
+      "count": 6
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/users",
+      "count": 5
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/auction-jobs",
+      "count": 4
+    },
+    {
+      "from": "auction/auctions",
+      "to": "auction/users",
+      "count": 4
+    },
+    {
+      "from": "auction/auth",
+      "to": "auction/users",
+      "count": 4
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/card-types",
+      "count": 4
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/auctions",
+      "count": 4
+    },
+    {
+      "from": "auction/auctions",
+      "to": "auction/realtime",
+      "count": 3
+    },
+    {
+      "from": "lances/auth",
+      "to": "lances/users",
+      "count": 3
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/auctions",
+      "count": 2
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/config",
+      "count": 2
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/database",
+      "count": 2
+    },
+    {
+      "from": "auction/auction-jobs",
+      "to": "auction/auctions",
+      "count": 2
+    },
+    {
+      "from": "auction/auctions",
+      "to": "auction/common",
+      "count": 2
+    },
+    {
+      "from": "auction/auctions",
+      "to": "auction/auction-jobs",
+      "count": 2
+    },
+    {
+      "from": "auction/auctions",
+      "to": "auction/card-types",
+      "count": 2
+    },
+    {
+      "from": "auction/auth",
+      "to": "auction/common",
+      "count": 2
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/common",
+      "count": 2
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/cards",
+      "count": 2
+    },
+    {
+      "from": "auction/realtime",
+      "to": "auction/auth",
+      "count": 2
+    },
+    {
+      "from": "auction/realtime",
+      "to": "auction/users",
+      "count": 2
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/common",
+      "count": 2
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/realtime",
+      "count": 2
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/auth",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/card-types",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/cards",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/health",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/realtime",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/users",
+      "count": 1
+    },
+    {
+      "from": "auction/auctions",
+      "to": "auction/auth",
+      "count": 1
+    },
+    {
+      "from": "auction/bids",
+      "to": "auction/auctions",
+      "count": 1
+    },
+    {
+      "from": "auction/bids",
+      "to": "auction/users",
+      "count": 1
+    },
+    {
+      "from": "auction/card-types",
+      "to": "auction/common",
+      "count": 1
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/auctions",
+      "count": 1
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/auth",
+      "count": 1
+    },
+    {
+      "from": "auction/common",
+      "to": "auction/auth",
+      "count": 1
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/auctions",
+      "count": 1
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/bids",
+      "count": 1
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/card-types",
+      "count": 1
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/users",
+      "count": 1
+    },
+    {
+      "from": "lances/auctions",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/auctions",
+      "to": "lances/cards",
+      "count": 1
+    },
+    {
+      "from": "lances/auctions",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/cards",
+      "to": "lances/card-types",
+      "count": 1
+    },
+    {
+      "from": "lances/cards",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/common",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/auctions",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/card-types",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/cards",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/config",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/database",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/health",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/users",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 109,
+  "totalEdges": 206,
+  "byModule": {
+    "auction/_root": 16,
+    "auction/auction-jobs": 2,
+    "auction/auctions": 28,
+    "auction/auth": 6,
+    "auction/bids": 2,
+    "auction/card-types": 1,
+    "auction/cards": 13,
+    "auction/common": 1,
+    "auction/database": 6,
+    "auction/realtime": 4,
+    "lances/auctions": 3,
+    "lances/auth": 3,
+    "lances/bids": 10,
+    "lances/cards": 2,
+    "lances/common": 1,
+    "lances/database": 5,
+    "lances/_root": 6
+  }
+}

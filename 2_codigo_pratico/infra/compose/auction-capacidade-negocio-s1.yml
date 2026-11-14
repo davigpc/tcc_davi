@@ -1,0 +1,156 @@
+# Compose do experimento: leilao / Capacidade de Negocio / snapshot-1
+# Topologia: monólito (api + worker) sem o modulo de Lances, servico de Lances,
+# PostgreSQL e Redis compartilhados e gateway NGINX na borda (porta 3000).
+#
+# O servico de Lances responde por /auctions/:id/bids. O banco continua sendo o
+# do monólito: a transacao do lance trava o leilao na mesma base.
+name: auction-capacidade-s1
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: auction_cap_s1_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: auction
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d auction"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  redis:
+    image: redis:7
+    container_name: auction_cap_s1_redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - auction
+
+  api:
+    image: auction-cap-s1-api
+    build:
+      context: ../../apps/auction
+      target: prod
+    container_name: auction_cap_s1_api
+    restart: unless-stopped
+    command: ["sh", "-c", "node scripts/migrate.js && node dist/src/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3100/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      NODE_ENV: production
+      PORT: 3100
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: auction-experiment-secret
+      JWT_EXPIRES_IN: 1d
+      CORS_ORIGIN: http://localhost:3001
+      AUCTION_MIN_DURATION_SECONDS: 30
+      AUCTION_MAX_DURATION_SECONDS: 604800
+      AUCTION_SCANNER_INTERVAL_SECONDS: 30
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - auction
+
+  worker:
+    image: auction-cap-s1-api
+    container_name: auction_cap_s1_worker
+    restart: unless-stopped
+    command: ["node", "dist/src/worker.js"]
+    environment:
+      NODE_ENV: production
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: auction-experiment-secret
+      JWT_EXPIRES_IN: 1d
+      CORS_ORIGIN: http://localhost:3001
+      AUCTION_MIN_DURATION_SECONDS: 30
+      AUCTION_MAX_DURATION_SECONDS: 604800
+      AUCTION_SCANNER_INTERVAL_SECONDS: 30
+    depends_on:
+      api:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - auction
+
+  lances:
+    image: auction-cap-s1-lances
+    build:
+      context: ../../services/auction/lances
+    container_name: auction_cap_s1_lances
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: auction-experiment-secret
+      JWT_EXPIRES_IN: 1d
+      CORS_ORIGIN: http://localhost:3001
+      AUCTION_MIN_DURATION_SECONDS: 30
+      AUCTION_MAX_DURATION_SECONDS: 604800
+      AUCTION_SCANNER_INTERVAL_SECONDS: 30
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - auction
+
+  nginx:
+    image: nginx:alpine
+    container_name: auction_cap_s1_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-auction-capacidade-s1.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      api:
+        condition: service_healthy
+      lances:
+        condition: service_started
+    networks:
+      - auction
+
+volumes:
+  postgres_data:
+
+networks:
+  auction:
+    driver: bridge

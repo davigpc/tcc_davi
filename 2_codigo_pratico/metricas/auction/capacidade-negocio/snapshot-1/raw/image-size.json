@@ -1,0 +1,22 @@
+{
+  "auction-cap-s1-api": {
+    "bytes": 109974937,
+    "mb": 104.88
+  },
+  "auction-cap-s1-lances": {
+    "bytes": 109930322,
+    "mb": 104.84
+  },
+  "postgres:16": {
+    "bytes": 166201939,
+    "mb": 158.5
+  },
+  "redis:7": {
+    "bytes": 43621893,
+    "mb": 41.6
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

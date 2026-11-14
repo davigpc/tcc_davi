@@ -1,0 +1,21 @@
+{
+  "services": [
+    "redis",
+    "postgres",
+    "api",
+    "worker",
+    "lances",
+    "nginx"
+  ],
+  "serviceCount": 6,
+  "runningContainers": [
+    "auction_cap_s1_nginx",
+    "auction_cap_s1_worker",
+    "auction_cap_s1_api",
+    "auction_cap_s1_lances",
+    "auction_cap_s1_postgres",
+    "auction_cap_s1_redis"
+  ],
+  "containerCount": 6,
+  "imageCount": 5
+}

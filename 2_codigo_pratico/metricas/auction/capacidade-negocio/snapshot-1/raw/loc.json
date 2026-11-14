@@ -1,0 +1,183 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 97,
+  "total": 3593,
+  "source": 3076,
+  "comment": 34,
+  "byModule": {
+    "auction/app.module.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 26,
+      "comment": 0
+    },
+    "auction/auction-jobs": {
+      "files": 5,
+      "total": 217,
+      "source": 183,
+      "comment": 5
+    },
+    "auction/auctions": {
+      "files": 9,
+      "total": 657,
+      "source": 563,
+      "comment": 2
+    },
+    "auction/auth": {
+      "files": 7,
+      "total": 219,
+      "source": 190,
+      "comment": 0
+    },
+    "auction/bids": {
+      "files": 2,
+      "total": 53,
+      "source": 45,
+      "comment": 0
+    },
+    "auction/card-types": {
+      "files": 6,
+      "total": 170,
+      "source": 146,
+      "comment": 0
+    },
+    "auction/cards": {
+      "files": 8,
+      "total": 306,
+      "source": 262,
+      "comment": 0
+    },
+    "auction/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "auction/config": {
+      "files": 2,
+      "total": 35,
+      "source": 33,
+      "comment": 0
+    },
+    "auction/database": {
+      "files": 7,
+      "total": 229,
+      "source": 211,
+      "comment": 0
+    },
+    "auction/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "auction/main.ts": {
+      "files": 1,
+      "total": 39,
+      "source": 30,
+      "comment": 2
+    },
+    "auction/realtime": {
+      "files": 7,
+      "total": 452,
+      "source": 386,
+      "comment": 4
+    },
+    "auction/users": {
+      "files": 4,
+      "total": 111,
+      "source": 91,
+      "comment": 1
+    },
+    "auction/worker.module.ts": {
+      "files": 1,
+      "total": 13,
+      "source": 12,
+      "comment": 0
+    },
+    "auction/worker.ts": {
+      "files": 1,
+      "total": 9,
+      "source": 7,
+      "comment": 1
+    },
+    "lances/auctions": {
+      "files": 2,
+      "total": 86,
+      "source": 69,
+      "comment": 0
+    },
+    "lances/auth": {
+      "files": 3,
+      "total": 81,
+      "source": 66,
+      "comment": 7
+    },
+    "lances/bids": {
+      "files": 7,
+      "total": 343,
+      "source": 296,
+      "comment": 1
+    },
+    "lances/card-types": {
+      "files": 1,
+      "total": 35,
+      "source": 28,
+      "comment": 0
+    },
+    "lances/cards": {
+      "files": 1,
+      "total": 50,
+      "source": 41,
+      "comment": 0
+    },
+    "lances/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "lances/config": {
+      "files": 2,
+      "total": 35,
+      "source": 33,
+      "comment": 0
+    },
+    "lances/database": {
+      "files": 1,
+      "total": 29,
+      "source": 28,
+      "comment": 0
+    },
+    "lances/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "lances/lances.module.ts": {
+      "files": 1,
+      "total": 26,
+      "source": 18,
+      "comment": 7
+    },
+    "lances/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "lances/realtime": {
+      "files": 3,
+      "total": 175,
+      "source": 152,
+      "comment": 2
+    },
+    "lances/users": {
+      "files": 4,
+      "total": 111,
+      "source": 91,
+      "comment": 1
+    }
+  }
+}

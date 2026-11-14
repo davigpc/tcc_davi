@@ -1,0 +1,569 @@
+{
+  "app": "auction",
+  "metodologia": "capacidade-negocio",
+  "snapshot": "snapshot-1",
+  "tag": null,
+  "timestampUtc": "2026-11-14T19:44:33.972Z",
+  "buildTime": {
+    "meanMs": 82340,
+    "runsMs": [
+      79513,
+      83107,
+      84400
+    ]
+  },
+  "startupTime": {
+    "meanMs": 12843,
+    "runsMs": [
+      12812,
+      13005,
+      12712
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "auction_cap_s1_nginx",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 12.8,
+        "memMinMB": 12.8,
+        "memMaxMB": 12.8
+      },
+      {
+        "container": "auction_cap_s1_worker",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memMedMB": 49.13,
+        "memMinMB": 49.11,
+        "memMaxMB": 49.21
+      },
+      {
+        "container": "auction_cap_s1_api",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 2.68,
+        "memMedMB": 58.01,
+        "memMinMB": 57.8,
+        "memMaxMB": 58.38
+      },
+      {
+        "container": "auction_cap_s1_lances",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 47.09,
+        "memMinMB": 47.09,
+        "memMaxMB": 47.09
+      },
+      {
+        "container": "auction_cap_s1_postgres",
+        "samples": 4,
+        "cpuMedPerc": 0.02,
+        "cpuMinPerc": 0.01,
+        "cpuMaxPerc": 5.24,
+        "memMedMB": 22.16,
+        "memMinMB": 21.13,
+        "memMaxMB": 22.91
+      },
+      {
+        "container": "auction_cap_s1_redis",
+        "samples": 4,
+        "cpuMedPerc": 0.19,
+        "cpuMinPerc": 0.17,
+        "cpuMaxPerc": 2.97,
+        "memMedMB": 8.61,
+        "memMinMB": 8.54,
+        "memMaxMB": 9.13
+      }
+    ],
+    "load": [
+      {
+        "container": "auction_cap_s1_nginx",
+        "samples": 4,
+        "cpuMedPerc": 13.43,
+        "cpuMinPerc": 13.26,
+        "cpuMaxPerc": 13.92,
+        "memMedMB": 14.46,
+        "memMinMB": 14.27,
+        "memMaxMB": 14.72
+      },
+      {
+        "container": "auction_cap_s1_worker",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.08,
+        "memMedMB": 49.7,
+        "memMinMB": 49.69,
+        "memMaxMB": 49.89
+      },
+      {
+        "container": "auction_cap_s1_api",
+        "samples": 4,
+        "cpuMedPerc": 103.73,
+        "cpuMinPerc": 102.06,
+        "cpuMaxPerc": 104.36,
+        "memMedMB": 212.8,
+        "memMinMB": 212.7,
+        "memMaxMB": 212.9
+      },
+      {
+        "container": "auction_cap_s1_lances",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.03,
+        "memMedMB": 47.11,
+        "memMinMB": 47.09,
+        "memMaxMB": 47.11
+      },
+      {
+        "container": "auction_cap_s1_postgres",
+        "samples": 4,
+        "cpuMedPerc": 86.98,
+        "cpuMinPerc": 85.58,
+        "cpuMaxPerc": 90.57,
+        "memMedMB": 46.42,
+        "memMinMB": 46.15,
+        "memMaxMB": 47.85
+      },
+      {
+        "container": "auction_cap_s1_redis",
+        "samples": 4,
+        "cpuMedPerc": 0.2,
+        "cpuMinPerc": 0.19,
+        "cpuMaxPerc": 0.24,
+        "memMedMB": 8.59,
+        "memMinMB": 8.57,
+        "memMaxMB": 8.7
+      }
+    ],
+    "imagensMB": {
+      "auction-cap-s1-api": 104.88,
+      "auction-cap-s1-lances": 104.84,
+      "postgres:16": 158.5,
+      "redis:7": 41.6,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "auction-by-id",
+        "rpsMean": 713.6,
+        "rpsMin": 699.6,
+        "rpsMax": 722.5,
+        "p50Mean": 27,
+        "p50Min": 27,
+        "p50Max": 27,
+        "p90Mean": 29,
+        "p90Min": 28,
+        "p90Max": 31,
+        "p99Mean": 34.67,
+        "p99Min": 34,
+        "p99Max": 35,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "auctions",
+        "rpsMean": 858.97,
+        "rpsMin": 778.1,
+        "rpsMax": 901.8,
+        "p50Mean": 21.67,
+        "p50Min": 21,
+        "p50Max": 23,
+        "p90Mean": 26,
+        "p90Min": 23,
+        "p90Max": 32,
+        "p99Mean": 34.67,
+        "p99Min": 28,
+        "p99Max": 48,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "bids",
+        "rpsMean": 152.2,
+        "rpsMin": 142.4,
+        "rpsMax": 161.7,
+        "p50Mean": 6.33,
+        "p50Min": 6,
+        "p50Max": 7,
+        "p90Mean": 12.67,
+        "p90Min": 12,
+        "p90Max": 13,
+        "p99Mean": 14,
+        "p99Min": 13,
+        "p99Max": 15,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 3593,
+    "locPorModulo": {
+      "auction/app.module.ts": 27,
+      "auction/auction-jobs": 217,
+      "auction/auctions": 657,
+      "auction/auth": 219,
+      "auction/bids": 53,
+      "auction/card-types": 170,
+      "auction/cards": 306,
+      "auction/common": 17,
+      "auction/config": 35,
+      "auction/database": 229,
+      "auction/health": 17,
+      "auction/main.ts": 39,
+      "auction/realtime": 452,
+      "auction/users": 111,
+      "auction/worker.module.ts": 13,
+      "auction/worker.ts": 9,
+      "lances/auctions": 86,
+      "lances/auth": 81,
+      "lances/bids": 343,
+      "lances/card-types": 35,
+      "lances/cards": 50,
+      "lances/common": 17,
+      "lances/config": 35,
+      "lances/database": 29,
+      "lances/health": 17,
+      "lances/lances.module.ts": 26,
+      "lances/main.ts": 17,
+      "lances/realtime": 175,
+      "lances/users": 111
+    },
+    "servicos": 6,
+    "containers": 6,
+    "crossDomainEdges": 109,
+    "totalEdges": 206,
+    "crossDomainPorModulo": {
+      "auction/_root": 16,
+      "auction/auction-jobs": 2,
+      "auction/auctions": 28,
+      "auction/auth": 6,
+      "auction/bids": 2,
+      "auction/card-types": 1,
+      "auction/cards": 13,
+      "auction/common": 1,
+      "auction/database": 6,
+      "auction/realtime": 4,
+      "lances/auctions": 3,
+      "lances/auth": 3,
+      "lances/bids": 10,
+      "lances/cards": 2,
+      "lances/common": 1,
+      "lances/database": 5,
+      "lances/_root": 6
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "auction/auctions",
+        "to": "auction/cards",
+        "count": 8
+      },
+      {
+        "from": "auction/auctions",
+        "to": "auction/bids",
+        "count": 6
+      },
+      {
+        "from": "auction/cards",
+        "to": "auction/users",
+        "count": 5
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/auction-jobs",
+        "count": 4
+      },
+      {
+        "from": "auction/auctions",
+        "to": "auction/users",
+        "count": 4
+      },
+      {
+        "from": "auction/auth",
+        "to": "auction/users",
+        "count": 4
+      },
+      {
+        "from": "auction/cards",
+        "to": "auction/card-types",
+        "count": 4
+      },
+      {
+        "from": "lances/bids",
+        "to": "lances/auctions",
+        "count": 4
+      },
+      {
+        "from": "auction/auctions",
+        "to": "auction/realtime",
+        "count": 3
+      },
+      {
+        "from": "lances/auth",
+        "to": "lances/users",
+        "count": 3
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/auctions",
+        "count": 2
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/config",
+        "count": 2
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/database",
+        "count": 2
+      },
+      {
+        "from": "auction/auction-jobs",
+        "to": "auction/auctions",
+        "count": 2
+      },
+      {
+        "from": "auction/auctions",
+        "to": "auction/common",
+        "count": 2
+      },
+      {
+        "from": "auction/auctions",
+        "to": "auction/auction-jobs",
+        "count": 2
+      },
+      {
+        "from": "auction/auctions",
+        "to": "auction/card-types",
+        "count": 2
+      },
+      {
+        "from": "auction/auth",
+        "to": "auction/common",
+        "count": 2
+      },
+      {
+        "from": "auction/cards",
+        "to": "auction/common",
+        "count": 2
+      },
+      {
+        "from": "auction/database",
+        "to": "auction/cards",
+        "count": 2
+      },
+      {
+        "from": "auction/realtime",
+        "to": "auction/auth",
+        "count": 2
+      },
+      {
+        "from": "auction/realtime",
+        "to": "auction/users",
+        "count": 2
+      },
+      {
+        "from": "lances/bids",
+        "to": "lances/common",
+        "count": 2
+      },
+      {
+        "from": "lances/bids",
+        "to": "lances/realtime",
+        "count": 2
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/auth",
+        "count": 1
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/card-types",
+        "count": 1
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/cards",
+        "count": 1
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/health",
+        "count": 1
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/realtime",
+        "count": 1
+      },
+      {
+        "from": "auction/_root",
+        "to": "auction/users",
+        "count": 1
+      },
+      {
+        "from": "auction/auctions",
+        "to": "auction/auth",
+        "count": 1
+      },
+      {
+        "from": "auction/bids",
+        "to": "auction/auctions",
+        "count": 1
+      },
+      {
+        "from": "auction/bids",
+        "to": "auction/users",
+        "count": 1
+      },
+      {
+        "from": "auction/card-types",
+        "to": "auction/common",
+        "count": 1
+      },
+      {
+        "from": "auction/cards",
+        "to": "auction/auctions",
+        "count": 1
+      },
+      {
+        "from": "auction/cards",
+        "to": "auction/auth",
+        "count": 1
+      },
+      {
+        "from": "auction/common",
+        "to": "auction/auth",
+        "count": 1
+      },
+      {
+        "from": "auction/database",
+        "to": "auction/auctions",
+        "count": 1
+      },
+      {
+        "from": "auction/database",
+        "to": "auction/bids",
+        "count": 1
+      },
+      {
+        "from": "auction/database",
+        "to": "auction/card-types",
+        "count": 1
+      },
+      {
+        "from": "auction/database",
+        "to": "auction/users",
+        "count": 1
+      },
+      {
+        "from": "lances/auctions",
+        "to": "lances/bids",
+        "count": 1
+      },
+      {
+        "from": "lances/auctions",
+        "to": "lances/cards",
+        "count": 1
+      },
+      {
+        "from": "lances/auctions",
+        "to": "lances/users",
+        "count": 1
+      },
+      {
+        "from": "lances/bids",
+        "to": "lances/users",
+        "count": 1
+      },
+      {
+        "from": "lances/bids",
+        "to": "lances/auth",
+        "count": 1
+      },
+      {
+        "from": "lances/cards",
+        "to": "lances/card-types",
+        "count": 1
+      },
+      {
+        "from": "lances/cards",
+        "to": "lances/users",
+        "count": 1
+      },
+      {
+        "from": "lances/common",
+        "to": "lances/auth",
+        "count": 1
+      },
+      {
+        "from": "lances/database",
+        "to": "lances/auctions",
+        "count": 1
+      },
+      {
+        "from": "lances/database",
+        "to": "lances/bids",
+        "count": 1
+      },
+      {
+        "from": "lances/database",
+        "to": "lances/card-types",
+        "count": 1
+      },
+      {
+        "from": "lances/database",
+        "to": "lances/cards",
+        "count": 1
+      },
+      {
+        "from": "lances/database",
+        "to": "lances/users",
+        "count": 1
+      },
+      {
+        "from": "lances/_root",
+        "to": "lances/auth",
+        "count": 1
+      },
+      {
+        "from": "lances/_root",
+        "to": "lances/bids",
+        "count": 1
+      },
+      {
+        "from": "lances/_root",
+        "to": "lances/config",
+        "count": 1
+      },
+      {
+        "from": "lances/_root",
+        "to": "lances/database",
+        "count": 1
+      },
+      {
+        "from": "lances/_root",
+        "to": "lances/health",
+        "count": 1
+      },
+      {
+        "from": "lances/_root",
+        "to": "lances/users",
+        "count": 1
+      }
+    ]
+  }
+}
