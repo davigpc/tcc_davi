@@ -1,0 +1,45 @@
+{
+  "route": "bids",
+  "method": "POST",
+  "runs": 3,
+  "requestsPerSec": [
+    147.2,
+    152.9,
+    157.9
+  ],
+  "throughputBytesPerSec": [
+    80723.2,
+    83859.2,
+    86592
+  ],
+  "latencyP50": [
+    7,
+    6,
+    6
+  ],
+  "latencyP90": [
+    12,
+    13,
+    12
+  ],
+  "latencyP99": [
+    14,
+    15,
+    14
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    0,
+    0,
+    0
+  ],
+  "totalRequests": [
+    1472,
+    1529,
+    1579
+  ]
+}

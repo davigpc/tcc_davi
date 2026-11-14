@@ -40,6 +40,20 @@ Tempo Real.
   publicador de eventos. O cross-domain sobe porque o serviço recria as arestas
   internas do módulo. As leituras caem com o salto pelo gateway.
 
+### snapshot-2 (Leilão + worker)
+
+- Serviço `services/auction/leilao/` com `auctions`, `auction-jobs` e o worker;
+  NGINX desvia `/auctions` para ele. O serviço de Lances continua na base
+  compartilhada.
+- Resultados: build 90.035 ms (+9,3 %); inicialização 18.675 (+45,4 %); LOC 4.310
+  (+20,0 %); cross-domain 125/239 (+16); componentes 7; imagens 314,6 MB
+  (+50,0 %); RAM 245,6 / 425,3 MB; CPU 0,46 / 206,99 %; `auctions` 874,1
+  (+1,8 %); `auction-by-id` 721,6 (+1,1 %); `bids` 152,7 (+0,3 %).
+- Observações: a inicialização sobe porque a topologia ganhou dois contêineres
+  com healthcheck. A leitura de leilões fica levemente acima do s1 — o serviço é
+  menor que o monólito. O fechamento rodou no worker do novo serviço e
+  transferiu a carta corretamente.
+
 ## Desvios e dificuldades
 
 - **Build em `dist/src`.** O `nest build` compila também `scripts/`, então o
@@ -59,3 +73,9 @@ entidades e o código transversal são duplicados, e o acoplamento estático sob
 em vez de cair. Em troca, a rota de escrita passa a ter processo próprio, com
 apenas 4 % de perda de vazão. O custo maior está em infraestrutura: mais um
 processo, mais uma imagem e 44 % de memória em repouso.
+
+Com o Leilão e o worker fora, o código chega a 4.310 linhas, 50,6 % acima do
+baseline. A transação de fechamento continua atômica porque o banco ainda é
+compartilhado, e é isso que o estado final vai testar: quando os bancos forem
+separados, fechar um leilão passará a atravessar serviços.
+

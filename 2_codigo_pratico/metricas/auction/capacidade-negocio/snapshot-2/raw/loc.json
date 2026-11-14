@@ -1,0 +1,249 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 124,
+  "total": 4310,
+  "source": 3678,
+  "comment": 56,
+  "byModule": {
+    "auction/app.module.ts": {
+      "files": 1,
+      "total": 23,
+      "source": 22,
+      "comment": 0
+    },
+    "auction/auth": {
+      "files": 7,
+      "total": 219,
+      "source": 190,
+      "comment": 0
+    },
+    "auction/card-types": {
+      "files": 6,
+      "total": 170,
+      "source": 146,
+      "comment": 0
+    },
+    "auction/cards": {
+      "files": 7,
+      "total": 253,
+      "source": 219,
+      "comment": 0
+    },
+    "auction/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "auction/config": {
+      "files": 2,
+      "total": 35,
+      "source": 33,
+      "comment": 0
+    },
+    "auction/database": {
+      "files": 7,
+      "total": 226,
+      "source": 208,
+      "comment": 0
+    },
+    "auction/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "auction/main.ts": {
+      "files": 1,
+      "total": 39,
+      "source": 30,
+      "comment": 2
+    },
+    "auction/realtime": {
+      "files": 7,
+      "total": 452,
+      "source": 386,
+      "comment": 4
+    },
+    "auction/users": {
+      "files": 4,
+      "total": 111,
+      "source": 91,
+      "comment": 1
+    },
+    "lances/auctions": {
+      "files": 2,
+      "total": 86,
+      "source": 69,
+      "comment": 0
+    },
+    "lances/auth": {
+      "files": 3,
+      "total": 81,
+      "source": 66,
+      "comment": 7
+    },
+    "lances/bids": {
+      "files": 7,
+      "total": 343,
+      "source": 296,
+      "comment": 1
+    },
+    "lances/card-types": {
+      "files": 1,
+      "total": 35,
+      "source": 28,
+      "comment": 0
+    },
+    "lances/cards": {
+      "files": 1,
+      "total": 50,
+      "source": 41,
+      "comment": 0
+    },
+    "lances/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "lances/config": {
+      "files": 2,
+      "total": 35,
+      "source": 33,
+      "comment": 0
+    },
+    "lances/database": {
+      "files": 1,
+      "total": 29,
+      "source": 28,
+      "comment": 0
+    },
+    "lances/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "lances/lances.module.ts": {
+      "files": 1,
+      "total": 26,
+      "source": 18,
+      "comment": 7
+    },
+    "lances/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "lances/realtime": {
+      "files": 3,
+      "total": 175,
+      "source": 152,
+      "comment": 2
+    },
+    "lances/users": {
+      "files": 4,
+      "total": 111,
+      "source": 91,
+      "comment": 1
+    },
+    "leilao/auction-jobs": {
+      "files": 5,
+      "total": 217,
+      "source": 183,
+      "comment": 5
+    },
+    "leilao/auctions": {
+      "files": 9,
+      "total": 657,
+      "source": 563,
+      "comment": 2
+    },
+    "leilao/auth": {
+      "files": 3,
+      "total": 80,
+      "source": 66,
+      "comment": 6
+    },
+    "leilao/bids": {
+      "files": 2,
+      "total": 53,
+      "source": 45,
+      "comment": 0
+    },
+    "leilao/card-types": {
+      "files": 5,
+      "total": 148,
+      "source": 121,
+      "comment": 6
+    },
+    "leilao/cards": {
+      "files": 3,
+      "total": 120,
+      "source": 99,
+      "comment": 0
+    },
+    "leilao/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "leilao/config": {
+      "files": 2,
+      "total": 35,
+      "source": 33,
+      "comment": 0
+    },
+    "leilao/database": {
+      "files": 1,
+      "total": 30,
+      "source": 29,
+      "comment": 0
+    },
+    "leilao/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "leilao/leilao.module.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 20,
+      "comment": 6
+    },
+    "leilao/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "leilao/realtime": {
+      "files": 3,
+      "total": 175,
+      "source": 152,
+      "comment": 2
+    },
+    "leilao/users": {
+      "files": 4,
+      "total": 111,
+      "source": 91,
+      "comment": 1
+    },
+    "leilao/worker.module.ts": {
+      "files": 1,
+      "total": 13,
+      "source": 12,
+      "comment": 0
+    },
+    "leilao/worker.ts": {
+      "files": 1,
+      "total": 9,
+      "source": 7,
+      "comment": 1
+    }
+  }
+}

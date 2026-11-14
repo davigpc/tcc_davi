@@ -1,0 +1,433 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "auction/_root",
+    "auction/auth",
+    "auction/card-types",
+    "auction/cards",
+    "auction/common",
+    "auction/config",
+    "auction/database",
+    "auction/health",
+    "auction/realtime",
+    "auction/users",
+    "lances/_root",
+    "lances/auctions",
+    "lances/auth",
+    "lances/bids",
+    "lances/card-types",
+    "lances/cards",
+    "lances/common",
+    "lances/config",
+    "lances/database",
+    "lances/health",
+    "lances/realtime",
+    "lances/users",
+    "leilao/_root",
+    "leilao/auction-jobs",
+    "leilao/auctions",
+    "leilao/auth",
+    "leilao/bids",
+    "leilao/card-types",
+    "leilao/cards",
+    "leilao/common",
+    "leilao/config",
+    "leilao/database",
+    "leilao/health",
+    "leilao/realtime",
+    "leilao/users"
+  ],
+  "edges": [
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/cards",
+      "count": 8
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/bids",
+      "count": 6
+    },
+    {
+      "from": "auction/auth",
+      "to": "auction/users",
+      "count": 4
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/card-types",
+      "count": 4
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/users",
+      "count": 4
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/auctions",
+      "count": 4
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/users",
+      "count": 4
+    },
+    {
+      "from": "lances/auth",
+      "to": "lances/users",
+      "count": 3
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/realtime",
+      "count": 3
+    },
+    {
+      "from": "leilao/auth",
+      "to": "leilao/users",
+      "count": 3
+    },
+    {
+      "from": "leilao/cards",
+      "to": "leilao/users",
+      "count": 3
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/auction-jobs",
+      "count": 3
+    },
+    {
+      "from": "auction/auth",
+      "to": "auction/common",
+      "count": 2
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/common",
+      "count": 2
+    },
+    {
+      "from": "auction/realtime",
+      "to": "auction/auth",
+      "count": 2
+    },
+    {
+      "from": "auction/realtime",
+      "to": "auction/users",
+      "count": 2
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/common",
+      "count": 2
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/realtime",
+      "count": 2
+    },
+    {
+      "from": "leilao/auction-jobs",
+      "to": "leilao/auctions",
+      "count": 2
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/common",
+      "count": 2
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/auction-jobs",
+      "count": 2
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/card-types",
+      "count": 2
+    },
+    {
+      "from": "leilao/cards",
+      "to": "leilao/card-types",
+      "count": 2
+    },
+    {
+      "from": "leilao/database",
+      "to": "leilao/cards",
+      "count": 2
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/auctions",
+      "count": 2
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/config",
+      "count": 2
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/database",
+      "count": 2
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/auth",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/card-types",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/cards",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/config",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/database",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/health",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/realtime",
+      "count": 1
+    },
+    {
+      "from": "auction/_root",
+      "to": "auction/users",
+      "count": 1
+    },
+    {
+      "from": "auction/card-types",
+      "to": "auction/common",
+      "count": 1
+    },
+    {
+      "from": "auction/cards",
+      "to": "auction/auth",
+      "count": 1
+    },
+    {
+      "from": "auction/common",
+      "to": "auction/auth",
+      "count": 1
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/card-types",
+      "count": 1
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/cards",
+      "count": 1
+    },
+    {
+      "from": "auction/database",
+      "to": "auction/users",
+      "count": 1
+    },
+    {
+      "from": "lances/auctions",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/auctions",
+      "to": "lances/cards",
+      "count": 1
+    },
+    {
+      "from": "lances/auctions",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/cards",
+      "to": "lances/card-types",
+      "count": 1
+    },
+    {
+      "from": "lances/cards",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/common",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/auctions",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/card-types",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/cards",
+      "count": 1
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/config",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/database",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/health",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/users",
+      "count": 1
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/auth",
+      "count": 1
+    },
+    {
+      "from": "leilao/bids",
+      "to": "leilao/auctions",
+      "count": 1
+    },
+    {
+      "from": "leilao/bids",
+      "to": "leilao/users",
+      "count": 1
+    },
+    {
+      "from": "leilao/cards",
+      "to": "leilao/auctions",
+      "count": 1
+    },
+    {
+      "from": "leilao/common",
+      "to": "leilao/auth",
+      "count": 1
+    },
+    {
+      "from": "leilao/database",
+      "to": "leilao/auctions",
+      "count": 1
+    },
+    {
+      "from": "leilao/database",
+      "to": "leilao/bids",
+      "count": 1
+    },
+    {
+      "from": "leilao/database",
+      "to": "leilao/card-types",
+      "count": 1
+    },
+    {
+      "from": "leilao/database",
+      "to": "leilao/users",
+      "count": 1
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/auth",
+      "count": 1
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/card-types",
+      "count": 1
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/health",
+      "count": 1
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/users",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 125,
+  "totalEdges": 239,
+  "byModule": {
+    "auction/_root": 8,
+    "auction/auth": 6,
+    "auction/card-types": 1,
+    "auction/cards": 11,
+    "auction/common": 1,
+    "auction/database": 3,
+    "auction/realtime": 4,
+    "lances/auctions": 3,
+    "lances/auth": 3,
+    "lances/bids": 10,
+    "lances/cards": 2,
+    "lances/common": 1,
+    "lances/database": 5,
+    "lances/_root": 6,
+    "leilao/auction-jobs": 2,
+    "leilao/auctions": 28,
+    "leilao/auth": 3,
+    "leilao/bids": 2,
+    "leilao/cards": 6,
+    "leilao/common": 1,
+    "leilao/database": 6,
+    "leilao/_root": 13
+  }
+}

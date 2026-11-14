@@ -1,0 +1,23 @@
+{
+  "services": [
+    "postgres",
+    "redis",
+    "api",
+    "leilao_worker",
+    "leilao",
+    "lances",
+    "nginx"
+  ],
+  "serviceCount": 7,
+  "runningContainers": [
+    "auction_cap_s2_nginx",
+    "auction_cap_s2_lances",
+    "auction_cap_s2_leilao_worker",
+    "auction_cap_s2_leilao",
+    "auction_cap_s2_api",
+    "auction_cap_s2_postgres",
+    "auction_cap_s2_redis"
+  ],
+  "containerCount": 7,
+  "imageCount": 6
+}

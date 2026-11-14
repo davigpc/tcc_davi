@@ -1,0 +1,26 @@
+{
+  "auction-cap-s2-api": {
+    "bytes": 109949200,
+    "mb": 104.86
+  },
+  "auction-cap-s2-leilao": {
+    "bytes": 109949490,
+    "mb": 104.86
+  },
+  "auction-cap-s2-lances": {
+    "bytes": 109929529,
+    "mb": 104.84
+  },
+  "postgres:16": {
+    "bytes": 166201939,
+    "mb": 158.5
+  },
+  "redis:7": {
+    "bytes": 43621893,
+    "mb": 41.6
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}
