@@ -537,6 +537,60 @@ Subdomínio ou Transações) ou fechar a linha do inventário no capítulo 05.
 
 ---
 
+### Trilha 7/9 — auction × Capacidade de Negócio (concluída)
+
+**Branch:** `exp/auction/capacidade-negocio` (repo pai e fork `davigpc/auction`),
+a partir do baseline do leilão (`baseline/auction`, fork `baseline/experimento`).
+
+**Agrupamento (5 capacidades):** Identidade (auth + users), Catálogo de Cartas
+(cards + card-types), Leilão (auctions + jobs + worker), Lances (bids) e Tempo
+Real (Socket.IO + eventos). Ordem: **s1 Lances → s2 Leilão → final Identidade +
+Catálogo + Tempo Real**.
+
+**Persistência:** compartilhada até o s2; **isolada no final**, com quatro bancos
+(`identity_db`, `catalogo_db`, `leilao_db`, `lances_db`) e o monólito desativado.
+Topologia final com 12 contêineres (5 serviços + worker + 4 bancos + Redis +
+NGINX).
+
+**Registros:** `docs/extracao/auction__capacidade-negocio__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/auction__capacidade-negocio.md`.
+
+**Serviços:** `services/auction/{identidade,catalogo,leilao,lances,tempo-real}/`.
+Compose final: `infra/compose/auction-capacidade-negocio-final.yml`; gateway
+`infra/gateway/nginx-auction-capacidade-final.conf`; config do harness
+`harness/apps/auction.capacidade-negocio-final.json`.
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | S0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 76.076 ms | 82.340 ms | 90.035 ms | 116.823 ms |
+| Inicialização | 12.627 ms | 12.843 ms | 18.675 ms | 30.848 ms |
+| LOC | 2.863 | 3.593 | 4.310 | 4.552 |
+| Componentes / contêineres | 4 / 4 | 6 / 6 | 7 / 7 | 12 / 12 |
+| Cross-domain | 88/174 | 109/206 | 125/239 | 109/223 |
+| `GET /auctions` (req/s) | 923,9 | 859,0 | 874,1 | 740,1 |
+| `GET /auctions/:id` (req/s) | 751,6 | 713,6 | 721,6 | 653,1 |
+| `POST /bids` (req/s) | 159,0 | 152,2 | 152,7 | 87,2 |
+| RAM carga (MB) | 313,6 | 379,1 | 425,3 | 799,1 |
+
+**Achado central:** isolar a escrita custa caro. No s2 o lance ainda era uma
+transação no banco compartilhado; no final, o serviço de Lances mantém uma cópia
+local do estado do leilão (`bid_auction_state`) e envia o maior lance ao Leilão
+por chamada interna depois do commit. A vazão de escrita cai 45 % em relação ao
+S0 e 43 % em relação ao s2. O acoplamento estático cai de 125 para 109 arestas
+apenas porque o monólito sai da solução — o acoplamento real migra para 13
+endpoints internos que o `madge` não mede. O fechamento passa a atravessar três
+serviços (Lances → Catálogo → Leilão) e a projeção do maior lance não tem
+retentativa: é a primeira quebra de consistência admitida na trilha.
+
+**Tags:** `snap/auction/capacidade-negocio/{0,1,2,final}`.
+
+**Status:** concluída. Próximo: trilhas 8/9 e 9/9 do `auction` (Subdomínio e
+Transações), reaproveitando o desenho de bancos isolados.
+
+---
+
 ## 13. Consolidação em `main` (estratégia de branches)
 
 A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:

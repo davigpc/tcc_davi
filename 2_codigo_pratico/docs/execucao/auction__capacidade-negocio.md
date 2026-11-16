@@ -54,6 +54,20 @@ Tempo Real.
   menor que o monólito. O fechamento rodou no worker do novo serviço e
   transferiu a carta corretamente.
 
+### snapshot-final (bancos isolados)
+
+- Cinco servicos (Identidade, Catalogo, Leilao, Lances, Tempo Real) e o worker,
+  com um PostgreSQL por servico e o monolito desativado: 12 conteineres.
+- Resultados: build 116.823 ms (+29,8 %); inicializacao 30.848 (+65,2 %);
+  LOC 4.552 (+5,6 %); cross-domain 109/223 (-16); componentes 12; imagens
+  549,3 MB (+61,7 %); RAM 404,6 / 799,1 MB; CPU 2,75 / 259,79 %; `auctions`
+  740,1 req/s (-15,3 %); `auction-by-id` 653,1 (p50 29,7); `bids` 87,2
+  (p50 11,7), sem respostas fora da faixa 2xx.
+- Observacoes: o cross-domain cai porque o monolito deixou de compor a solucao.
+  A escrita cai 43 % por causa da transacao local em `lances_db` mais a
+  chamada de projecao ao Leilao. A inicializacao sobe pela soma dos healthchecks
+  e pela criacao de esquema nos quatro bancos.
+
 ## Desvios e dificuldades
 
 - **Build em `dist/src`.** O `nest build` compila também `scripts/`, então o
@@ -65,17 +79,29 @@ Tempo Real.
   respostas 4xx.
 - **Entidades copiadas.** O serviço de Lances precisa mapear `Auction`, `Card`,
   `CardType` e `User` para a relação do leilão funcionar na base compartilhada.
+- **Esquema criado por sincronização.** No snapshot final cada serviço tem o
+  próprio banco, então o esquema é criado com `synchronize: true` na subida — o
+  custo entra na métrica de inicialização.
+- **Seed em quatro etapas.** Identidade, Catálogo, Lances (apenas reset) e Leilão
+  rodam em sequência porque as referências atravessam bancos; o seed do Leilão é
+  o último e imprime o `auctionId`.
+- **Projeção sem compensação.** A chamada que leva o maior lance do serviço de
+  Lances ao Leilão é registrada em log e não tem retentativa: uma falha deixa a
+  projeção atrás do último lance gravado.
 
 ## Síntese para o capítulo 05
 
-Extrair uma capacidade pequena não sai barato: o código cresce 25 % porque as
-entidades e o código transversal são duplicados, e o acoplamento estático sobe
-em vez de cair. Em troca, a rota de escrita passa a ter processo próprio, com
-apenas 4 % de perda de vazão. O custo maior está em infraestrutura: mais um
-processo, mais uma imagem e 44 % de memória em repouso.
+Extrair uma capacidade pequena não sai barato. No s1 o código cresceu 25 %
+porque entidades e código transversal foram duplicados, e o acoplamento estático
+subiu em vez de cair. Na fase seguinte o padrão se repetiu: mais 20 % de código e
+o fechamento passou a rodar em processo próprio. O custo maior ficou na
+infraestrutura.
 
-Com o Leilão e o worker fora, o código chega a 4.310 linhas, 50,6 % acima do
-baseline. A transação de fechamento continua atômica porque o banco ainda é
-compartilhado, e é isso que o estado final vai testar: quando os bancos forem
-separados, fechar um leilão passará a atravessar serviços.
+O estado final mostra o preço de isolar a escrita. A rota de lance perde 43 % da
+vazão porque deixa de ser uma transação única: o serviço de Lances grava no
+próprio banco e envia o maior lance ao Leilão depois do commit. Em troca, saem o
+monólito, quatro bancos dedicados e 12 contêineres, e a memória sob carga quase
+dobra. O acoplamento estático cai de 125 para 109 arestas apenas porque o
+monólito deixou de compor a solução; o acoplamento real migrou para 13 endpoints
+internos que o `madge` não mede.
 
