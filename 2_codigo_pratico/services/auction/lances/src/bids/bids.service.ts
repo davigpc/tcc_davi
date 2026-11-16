@@ -7,21 +7,27 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, EntityManager, Repository } from 'typeorm';
-import { Auction, AuctionStatus } from '../auctions/auction.entity';
+import { LeilaoClient } from '../clients/leilao.client';
+import { RealtimeEventsPublisher } from '../realtime/realtime-events.publisher';
+import { BidAuctionState } from './bid-auction-state.entity';
 import { Bid } from './bid.entity';
 import { BidResponse, BidsPage } from './bids.types';
 import { CreateBidDto } from './dto/create-bid.dto';
 import { BidListSort, ListBidsQueryDto } from './dto/list-bids-query.dto';
-import { RealtimeEventsPublisher } from '../realtime/realtime-events.publisher';
+
+const ACTIVE = 'ACTIVE';
+const CLOSED = 'CLOSED';
+const CANCELLED = 'CANCELLED';
 
 @Injectable()
 export class BidsService {
   constructor(
     @InjectRepository(Bid)
     private readonly bidsRepository: Repository<Bid>,
-    @InjectRepository(Auction)
-    private readonly auctionsRepository: Repository<Auction>,
+    @InjectRepository(BidAuctionState)
+    private readonly statesRepository: Repository<BidAuctionState>,
     private readonly dataSource: DataSource,
+    private readonly leilaoClient: LeilaoClient,
     private readonly realtimeEventsPublisher: RealtimeEventsPublisher,
   ) {}
 
@@ -30,66 +36,76 @@ export class BidsService {
     bidderUserId: string,
     input: CreateBidDto,
   ): Promise<BidResponse> {
+    await this.ensureState(auctionId);
+
     const result = await this.dataSource.transaction(async (manager) => {
-      const auction = await manager.findOne(Auction, {
-        where: { id: auctionId },
+      const state = await manager.findOne(BidAuctionState, {
+        where: { auctionId },
         lock: { mode: 'pessimistic_write' },
       });
 
-      if (!auction) {
+      if (!state) {
         throw new NotFoundException('Auction not found');
       }
 
-      if (auction.status !== AuctionStatus.ACTIVE) {
+      if (state.status !== ACTIVE) {
         throw new ConflictException('Auction is not active');
       }
 
       const databaseNow = await this.getDatabaseNow(manager);
 
-      if (databaseNow >= auction.endTime) {
+      if (databaseNow >= state.endTime) {
         throw new ConflictException('Auction has ended');
       }
 
-      if (auction.sellerUserId === bidderUserId) {
+      if (state.sellerUserId === bidderUserId) {
         throw new ForbiddenException('Seller cannot bid on own auction');
       }
 
-      const currentHighestBid = auction.currentHighestBidId
-        ? await manager.findOne(Bid, {
-            where: { id: auction.currentHighestBidId },
-          })
+      if (!state.highestBidId && input.amount < state.startPrice) {
+        throw new BadRequestException(
+          `First bid must be at least ${state.startPrice}`,
+        );
+      }
+
+      if (
+        state.highestBidId &&
+        state.highestBidAmount !== null &&
+        input.amount <= state.highestBidAmount
+      ) {
+        throw new BadRequestException(
+          `Bid must be greater than ${state.highestBidAmount}`,
+        );
+      }
+
+      const previousHighestBid = state.highestBidId
+        ? {
+            bidderUserId: state.highestBidBidderUserId!,
+            amount: state.highestBidAmount!,
+          }
         : null;
 
-      if (!currentHighestBid && input.amount < auction.startPrice) {
-        throw new BadRequestException(
-          `First bid must be at least ${auction.startPrice}`,
-        );
-      }
+      const savedBid = await manager.save(
+        Bid,
+        manager.create(Bid, {
+          auctionId,
+          bidderUserId,
+          amount: input.amount,
+        }),
+      );
 
-      if (currentHighestBid && input.amount <= currentHighestBid.amount) {
-        throw new BadRequestException(
-          `Bid must be greater than ${currentHighestBid.amount}`,
-        );
-      }
+      state.highestBidId = savedBid.id;
+      state.highestBidAmount = savedBid.amount;
+      state.highestBidBidderUserId = savedBid.bidderUserId;
+      state.highestBidCreatedAt = savedBid.createdAt;
+      await manager.save(BidAuctionState, state);
 
-      const bidToSave = manager.create(Bid, {
-        auctionId: auction.id,
-        bidderUserId,
-        amount: input.amount,
-      });
-
-      const savedBid = await manager.save(Bid, bidToSave);
-
-      auction.currentHighestBidId = savedBid.id;
-      await manager.save(Auction, auction);
-
-      return {
-        bid: savedBid,
-        previousHighestBid: currentHighestBid,
-      };
+      return { bid: savedBid, previousHighestBid };
     });
 
     const response = this.toResponse(result.bid);
+
+    await this.leilaoClient.applyHighestBid(auctionId, response);
 
     await this.realtimeEventsPublisher.publishBidPlaced({
       auctionId: response.auctionId,
@@ -99,7 +115,6 @@ export class BidsService {
       createdAt: response.createdAt.toISOString(),
     });
 
-    // only the previous highest bidder should receive auction.outbid
     if (
       result.previousHighestBid &&
       result.previousHighestBid.bidderUserId !== bidderUserId
@@ -121,13 +136,7 @@ export class BidsService {
     auctionId: string,
     query: ListBidsQueryDto,
   ): Promise<BidsPage> {
-    const auctionExists = await this.auctionsRepository.exists({
-      where: { id: auctionId },
-    });
-
-    if (!auctionExists) {
-      throw new NotFoundException('Auction not found');
-    }
+    await this.ensureState(auctionId);
 
     const limit = query.limit ?? 25;
     const sort = query.sort ?? BidListSort.CREATED_AT;
@@ -167,6 +176,58 @@ export class BidsService {
     };
   }
 
+  async findHighest(auctionId: string): Promise<BidResponse | null> {
+    const state = await this.statesRepository.findOne({ where: { auctionId } });
+
+    if (!state || !state.highestBidId) {
+      return null;
+    }
+
+    return {
+      id: state.highestBidId,
+      auctionId,
+      bidderUserId: state.highestBidBidderUserId!,
+      amount: state.highestBidAmount!,
+      createdAt: state.highestBidCreatedAt!,
+    };
+  }
+
+  async findRecent(auctionId: string, limit: number): Promise<BidResponse[]> {
+    const bids = await this.bidsRepository.find({
+      where: { auctionId },
+      order: { createdAt: 'DESC' },
+      take: limit,
+    });
+
+    return bids.map((bid) => this.toResponse(bid));
+  }
+
+  async markClosed(auctionId: string): Promise<void> {
+    const state = await this.statesRepository.findOne({ where: { auctionId } });
+
+    if (!state) {
+      return;
+    }
+
+    if (state.status === ACTIVE) {
+      state.status = CLOSED;
+      await this.statesRepository.save(state);
+    }
+  }
+
+  async markCancelled(auctionId: string): Promise<void> {
+    const state = await this.statesRepository.findOne({ where: { auctionId } });
+
+    if (!state) {
+      return;
+    }
+
+    if (state.status === ACTIVE || state.status === CLOSED) {
+      state.status = CANCELLED;
+      await this.statesRepository.save(state);
+    }
+  }
+
   toResponse(bid: Bid): BidResponse {
     return {
       id: bid.id,
@@ -175,6 +236,44 @@ export class BidsService {
       amount: bid.amount,
       createdAt: bid.createdAt,
     };
+  }
+
+  /**
+   * Materializa o estado local na primeira operacao de um leilao. Depois
+   * disso o servico responde sem consultar o Leilao.
+   */
+  private async ensureState(auctionId: string): Promise<void> {
+    const existing = await this.statesRepository.findOne({
+      where: { auctionId },
+    });
+
+    if (existing) {
+      return;
+    }
+
+    const auction = await this.leilaoClient.findById(auctionId);
+
+    if (!auction) {
+      throw new NotFoundException('Auction not found');
+    }
+
+    await this.statesRepository
+      .createQueryBuilder()
+      .insert()
+      .into(BidAuctionState)
+      .values({
+        auctionId: auction.id,
+        sellerUserId: auction.sellerUserId,
+        status: auction.status,
+        startPrice: auction.startPrice,
+        endTime: new Date(auction.endTime),
+        highestBidId: null,
+        highestBidAmount: null,
+        highestBidBidderUserId: null,
+        highestBidCreatedAt: null,
+      })
+      .orIgnore()
+      .execute();
   }
 
   private async getDatabaseNow(manager: EntityManager): Promise<Date> {

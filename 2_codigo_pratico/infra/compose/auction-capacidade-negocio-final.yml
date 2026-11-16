@@ -1,0 +1,297 @@
+# Compose do experimento: leilao / Capacidade de Negocio / snapshot final
+# Topologia: Identidade, Catalogo de Cartas, Leilao (API + worker), Lances e
+# Tempo Real como servicos independentes, cada um com o proprio PostgreSQL, mais
+# Redis (eventos e fila) e gateway NGINX na borda (porta 3000).
+name: auction-capacidade-final
+
+x-app-env: &app-env
+  NODE_ENV: production
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  JWT_SECRET: auction-experiment-secret
+  JWT_EXPIRES_IN: 1d
+  CORS_ORIGIN: http://localhost:3001
+  AUCTION_MIN_DURATION_SECONDS: 30
+  AUCTION_MAX_DURATION_SECONDS: 604800
+  AUCTION_SCANNER_INTERVAL_SECONDS: 30
+
+x-db-env: &db-env
+  DATABASE_USER: auction
+  DATABASE_PASSWORD: auction
+
+services:
+  postgres_identity:
+    image: postgres:16
+    container_name: auction_cap_final_identity_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: identity_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d identity_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - identity_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  postgres_catalogo:
+    image: postgres:16
+    container_name: auction_cap_final_catalogo_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: catalogo_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d catalogo_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - catalogo_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  postgres_leilao:
+    image: postgres:16
+    container_name: auction_cap_final_leilao_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: leilao_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d leilao_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - leilao_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  postgres_lances:
+    image: postgres:16
+    container_name: auction_cap_final_lances_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: lances_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d lances_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - lances_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  redis:
+    image: redis:7
+    container_name: auction_cap_final_redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - auction
+
+  identidade:
+    image: auction-cap-final-identidade
+    build:
+      context: ../../services/auction/identidade
+    container_name: auction_cap_final_identidade
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: [*app-env, *db-env]
+      PORT: 3001
+      DATABASE_HOST: postgres_identity
+      DATABASE_PORT: 5432
+      DATABASE_NAME: identity_db
+    depends_on:
+      postgres_identity:
+        condition: service_healthy
+    networks:
+      - auction
+
+  catalogo:
+    image: auction-cap-final-catalogo
+    build:
+      context: ../../services/auction/catalogo
+    container_name: auction_cap_final_catalogo
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: [*app-env, *db-env]
+      PORT: 3001
+      DATABASE_HOST: postgres_catalogo
+      DATABASE_PORT: 5432
+      DATABASE_NAME: catalogo_db
+      IDENTIDADE_URL: http://identidade:3001
+    depends_on:
+      postgres_catalogo:
+        condition: service_healthy
+      identidade:
+        condition: service_healthy
+    networks:
+      - auction
+
+  leilao:
+    image: auction-cap-final-leilao
+    build:
+      context: ../../services/auction/leilao
+    container_name: auction_cap_final_leilao
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: [*app-env, *db-env]
+      PORT: 3001
+      DATABASE_HOST: postgres_leilao
+      DATABASE_PORT: 5432
+      DATABASE_NAME: leilao_db
+      IDENTIDADE_URL: http://identidade:3001
+      CATALOGO_URL: http://catalogo:3001
+      LANCES_URL: http://lances:3001
+    depends_on:
+      postgres_leilao:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      identidade:
+        condition: service_healthy
+      catalogo:
+        condition: service_healthy
+    networks:
+      - auction
+
+  leilao_worker:
+    image: auction-cap-final-leilao
+    container_name: auction_cap_final_leilao_worker
+    restart: unless-stopped
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: [*app-env, *db-env]
+      DATABASE_HOST: postgres_leilao
+      DATABASE_PORT: 5432
+      DATABASE_NAME: leilao_db
+      IDENTIDADE_URL: http://identidade:3001
+      CATALOGO_URL: http://catalogo:3001
+      LANCES_URL: http://lances:3001
+    depends_on:
+      postgres_leilao:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      leilao:
+        condition: service_healthy
+    networks:
+      - auction
+
+  lances:
+    image: auction-cap-final-lances
+    build:
+      context: ../../services/auction/lances
+    container_name: auction_cap_final_lances
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: [*app-env, *db-env]
+      PORT: 3001
+      DATABASE_HOST: postgres_lances
+      DATABASE_PORT: 5432
+      DATABASE_NAME: lances_db
+      LEILAO_URL: http://leilao:3001
+    depends_on:
+      postgres_lances:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      leilao:
+        condition: service_healthy
+    networks:
+      - auction
+
+  tempo-real:
+    image: auction-cap-final-tempo-real
+    build:
+      context: ../../services/auction/tempo-real
+    container_name: auction_cap_final_tempo_real
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: *app-env
+      PORT: 3001
+      IDENTIDADE_URL: http://identidade:3001
+    depends_on:
+      redis:
+        condition: service_healthy
+      identidade:
+        condition: service_healthy
+    networks:
+      - auction
+
+  nginx:
+    image: nginx:alpine
+    container_name: auction_cap_final_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-auction-capacidade-final.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      identidade:
+        condition: service_healthy
+      catalogo:
+        condition: service_healthy
+      leilao:
+        condition: service_healthy
+      lances:
+        condition: service_healthy
+      tempo-real:
+        condition: service_healthy
+    networks:
+      - auction
+
+volumes:
+  identity_data:
+  catalogo_data:
+  leilao_data:
+  lances_data:
+
+networks:
+  auction:
+    driver: bridge

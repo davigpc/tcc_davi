@@ -1,0 +1,110 @@
+{
+  "app": "auction",
+  "metodologias": ["capacidade-negocio"],
+  "composeDir": "2_codigo_pratico/infra/compose",
+  "composeFile": "auction-capacidade-negocio-final.yml",
+  "codeDir": "2_codigo_pratico/services/auction",
+  "composeProject": "auction-final",
+  "baseUrl": "http://localhost:3000",
+  "readinessPath": "/health",
+  "loginPath": "/auth/login",
+  "credentials": { "email": "bidder@example.com", "password": "password123" },
+  "seed": [
+    { "service": "identidade", "command": ["node", "scripts/seed-local.js"] },
+    { "service": "catalogo", "command": ["node", "scripts/seed-local.js"] },
+    { "service": "lances", "command": ["node", "scripts/seed-local.js"] },
+    { "service": "leilao", "command": ["node", "scripts/seed-local.js"] }
+  ],
+  "containers": [
+    "auction_cap_final_identity_db",
+    "auction_cap_final_catalogo_db",
+    "auction_cap_final_leilao_db",
+    "auction_cap_final_lances_db",
+    "auction_cap_final_redis",
+    "auction_cap_final_identidade",
+    "auction_cap_final_catalogo",
+    "auction_cap_final_leilao",
+    "auction_cap_final_leilao_worker",
+    "auction_cap_final_lances",
+    "auction_cap_final_tempo_real",
+    "auction_cap_final_nginx"
+  ],
+  "images": [
+    "auction-cap-final-identidade",
+    "auction-cap-final-catalogo",
+    "auction-cap-final-leilao",
+    "auction-cap-final-lances",
+    "auction-cap-final-tempo-real",
+    "postgres:16",
+    "redis:7",
+    "nginx:alpine"
+  ],
+  "sourceDirs": [
+    "2_codigo_pratico/services/auction/identidade/src",
+    "2_codigo_pratico/services/auction/catalogo/src",
+    "2_codigo_pratico/services/auction/leilao/src",
+    "2_codigo_pratico/services/auction/lances/src",
+    "2_codigo_pratico/services/auction/tempo-real/src"
+  ],
+  "crossDomain": [
+    {
+      "label": "identidade",
+      "dir": "2_codigo_pratico/services/auction/identidade/src",
+      "tsConfig": "2_codigo_pratico/services/auction/identidade/tsconfig.json"
+    },
+    {
+      "label": "catalogo",
+      "dir": "2_codigo_pratico/services/auction/catalogo/src",
+      "tsConfig": "2_codigo_pratico/services/auction/catalogo/tsconfig.json"
+    },
+    {
+      "label": "leilao",
+      "dir": "2_codigo_pratico/services/auction/leilao/src",
+      "tsConfig": "2_codigo_pratico/services/auction/leilao/tsconfig.json"
+    },
+    {
+      "label": "lances",
+      "dir": "2_codigo_pratico/services/auction/lances/src",
+      "tsConfig": "2_codigo_pratico/services/auction/lances/tsconfig.json"
+    },
+    {
+      "label": "tempo-real",
+      "dir": "2_codigo_pratico/services/auction/tempo-real/src",
+      "tsConfig": "2_codigo_pratico/services/auction/tempo-real/tsconfig.json"
+    }
+  ],
+  "ids": {
+    "userId": { "from": "login", "path": "user.id" },
+    "auctionId": { "from": "seed", "path": "auctionId" }
+  },
+  "routes": {
+    "read": [
+      {
+        "name": "auctions",
+        "method": "GET",
+        "path": "/auctions?limit=10"
+      },
+      {
+        "name": "auction-by-id",
+        "method": "GET",
+        "path": "/auctions/{{auctionId}}"
+      }
+    ],
+    "write": [
+      {
+        "name": "bids",
+        "method": "POST",
+        "path": "/auctions/{{auctionId}}/bids",
+        "auth": true,
+        "connections": 1,
+        "sequence": { "field": "amount", "start": 100 },
+        "body": { "amount": 100 }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}

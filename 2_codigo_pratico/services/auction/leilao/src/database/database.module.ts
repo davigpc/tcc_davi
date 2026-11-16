@@ -2,11 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Auction } from '../auctions/auction.entity';
-import { Bid } from '../bids/bid.entity';
-import { CardTransfer } from '../cards/card-transfer.entity';
-import { Card } from '../cards/card.entity';
-import { CardType } from '../card-types/card-type.entity';
-import { User } from '../users/user.entity';
 
 @Module({
   imports: [
@@ -19,10 +14,9 @@ import { User } from '../users/user.entity';
         username: configService.getOrThrow<string>('DATABASE_USER'),
         password: configService.getOrThrow<string>('DATABASE_PASSWORD'),
         database: configService.getOrThrow<string>('DATABASE_NAME'),
-        entities: [User, CardType, Card, CardTransfer, Auction, Bid],
+        entities: [Auction],
         autoLoadEntities: true,
-        synchronize: false,
-        migrationsRun: false,
+        synchronize: true,
       }),
     }),
   ],

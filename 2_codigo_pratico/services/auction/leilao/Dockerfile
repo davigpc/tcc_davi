@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-EXPOSE 3000
+EXPOSE 3001
 CMD ["npm", "run", "start:dev"]
 
 # BUILD IMAGE: compiles TypeScript into the dist/ directory
@@ -21,8 +21,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY package*.json ./
 RUN npm ci --omit=dev
-# Bring in the compiled app from the build stage instead of copying source files
 COPY --from=build /app/dist ./dist
-EXPOSE 3000
+COPY scripts ./scripts
+EXPOSE 3001
 CMD ["node", "dist/main.js"]
-

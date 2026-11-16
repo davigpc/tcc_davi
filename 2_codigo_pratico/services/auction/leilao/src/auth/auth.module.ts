@@ -2,18 +2,16 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './jwt.strategy';
 
 /**
- * Validacao do token no servico de Leilao.
+ * Validacao local de token no servico de Leilao.
  *
- * Mesmo padrao do servico de Lances: verificacao local e stateless com a
- * JWT_SECRET, carregando o usuario na tabela compartilhada.
+ * Verificacao stateless com a JWT_SECRET: o payload ja traz id, e-mail e nome
+ * do usuario, entao o servico nao consulta a Identidade a cada requisicao.
  */
 @Module({
   imports: [
-    UsersModule,
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],

@@ -3,14 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Card } from '../cards/card.entity';
-import { User } from '../users/user.entity';
-import { Bid } from '../bids/bid.entity';
+import { BidSummary } from './auctions.types';
 
 export enum AuctionStatus {
   ACTIVE = 'ACTIVE',
@@ -29,16 +25,8 @@ export class Auction {
   @Column({ name: 'card_id', type: 'uuid' })
   cardId!: string;
 
-  @ManyToOne(() => Card, { nullable: false })
-  @JoinColumn({ name: 'card_id' })
-  card!: Card;
-
   @Column({ name: 'seller_user_id', type: 'uuid' })
   sellerUserId!: string;
-
-  @ManyToOne(() => User, { nullable: false })
-  @JoinColumn({ name: 'seller_user_id' })
-  seller!: User;
 
   @Column({
     type: 'enum',
@@ -54,9 +42,8 @@ export class Auction {
   @Column({ name: 'current_highest_bid_id', type: 'uuid', nullable: true })
   currentHighestBidId!: string | null;
 
-  @ManyToOne(() => Bid, { nullable: true })
-  @JoinColumn({ name: 'current_highest_bid_id' })
-  currentHighestBid!: Bid | null;
+  @Column({ name: 'highest_bid', type: 'jsonb', nullable: true })
+  highestBid!: BidSummary | null;
 
   @Column({ name: 'start_time', type: 'timestamptz' })
   startTime!: Date;

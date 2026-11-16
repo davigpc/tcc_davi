@@ -1,9 +1,58 @@
-import { BidResponse } from '../bids/bids.types';
-import { CardResponse } from '../cards/cards.types';
-import { PublicUser } from '../users/user.types';
 import { AuctionStatus } from './auction.entity';
 
-export type BidSummaryResponse = BidResponse;
+export interface PublicUser {
+  id: string;
+  email: string;
+  username: string;
+}
+
+export interface CardTypeSummary {
+  id: string;
+  name: string;
+  attack: number;
+  midfield: number;
+  defense: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface BidSummary {
+  id: string;
+  auctionId: string;
+  bidderUserId: string;
+  amount: number;
+  createdAt: Date;
+}
+
+export interface CardSummary {
+  id: string;
+  status: string;
+  cardType: CardTypeSummary;
+  owner: PublicUser;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface InternalCard {
+  id: string;
+  status: string;
+  cardType: CardTypeSummary;
+  ownerUserId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type BidSummaryResponse = BidSummary;
+
+export interface InternalAuction {
+  id: string;
+  cardId: string;
+  sellerUserId: string;
+  status: AuctionStatus;
+  startPrice: number;
+  endTime: Date;
+  currentHighestBidId: string | null;
+}
 
 export interface AuctionResponse {
   id: string;
@@ -19,7 +68,7 @@ export interface AuctionResponse {
 }
 
 export interface AuctionDetailResponse extends AuctionResponse {
-  card: CardResponse;
+  card: CardSummary;
   seller: PublicUser;
   recentBids: BidSummaryResponse[];
 }

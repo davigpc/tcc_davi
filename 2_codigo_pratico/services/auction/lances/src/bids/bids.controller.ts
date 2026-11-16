@@ -1,4 +1,4 @@
-import {
+﻿import {
   Body,
   Controller,
   Get,
@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import type { CurrentUserPayload } from '../auth/auth.types';
-import { AuctionIdParamDto } from '../auctions/dto/auction-id-param.dto';
+import { AuctionIdParamDto } from '../common/dto/auction-id-param.dto';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { BidResponse, BidsPage } from './bids.types';
