@@ -385,12 +385,12 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
   \\caption{Variação acumulada por aplicação --- ${texEsc(metLabel)}.}
   \\label{qua:comp_${v.metodologia}_variacoes}
   \\renewcommand{\\arraystretch}{1.15}
-  \\begin{tabular}{|l${'|r'.repeat(ncols)}|}
+  \\begin{tabularx}{\\textwidth}{|>{\\raggedright\\arraybackslash}X${'|r'.repeat(ncols)}|}
     \\hline
     \\textbf{Métrica} & ${header}${withMean ? ' & \\textbf{Média}' : ''} \\\\
     \\hline
 ${rows.join('\n')}
-  \\end{tabular}
+  \\end{tabularx}
   \\fonte{medição automatizada do experimento (média de três execuções).}
 \\end{quadro}
 `;
@@ -428,7 +428,7 @@ function texMetodologiasTable(metodologias: VariacaoMetodologia[]): string {
   \\caption{Variação acumulada por metodologia (S0 $\\rightarrow$ último snapshot).}
   \\label{qua:comp_metodologias}
   \\renewcommand{\\arraystretch}{1.15}
-  \\setlength{\\tabcolsep}{4pt}
+  \\setlength{\\tabcolsep}{3pt}
   \\begin{tabularx}{\\textwidth}{|>{\\raggedright\\arraybackslash}X${'|r'.repeat(nomes.length)}|}
     \\hline
     \\textbf{Métrica} & ${header} \\\\

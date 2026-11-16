@@ -1,0 +1,408 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "catalogo/_root",
+    "catalogo/auth",
+    "catalogo/card-types",
+    "catalogo/cards",
+    "catalogo/clients",
+    "catalogo/common",
+    "catalogo/config",
+    "catalogo/database",
+    "catalogo/health",
+    "catalogo/internal",
+    "catalogo/users",
+    "identidade/_root",
+    "identidade/auth",
+    "identidade/common",
+    "identidade/config",
+    "identidade/database",
+    "identidade/health",
+    "identidade/internal",
+    "identidade/users",
+    "lances/_root",
+    "lances/auth",
+    "lances/bids",
+    "lances/clients",
+    "lances/common",
+    "lances/config",
+    "lances/database",
+    "lances/health",
+    "lances/internal",
+    "lances/realtime",
+    "leilao/_root",
+    "leilao/auction-jobs",
+    "leilao/auctions",
+    "leilao/auth",
+    "leilao/clients",
+    "leilao/common",
+    "leilao/config",
+    "leilao/database",
+    "leilao/health",
+    "leilao/internal",
+    "leilao/realtime",
+    "tempo-real/_root",
+    "tempo-real/clients",
+    "tempo-real/config",
+    "tempo-real/health",
+    "tempo-real/realtime"
+  ],
+  "edges": [
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/clients",
+      "count": 6
+    },
+    {
+      "from": "catalogo/cards",
+      "to": "catalogo/card-types",
+      "count": 5
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/users",
+      "count": 4
+    },
+    {
+      "from": "identidade/internal",
+      "to": "identidade/users",
+      "count": 3
+    },
+    {
+      "from": "catalogo/internal",
+      "to": "catalogo/cards",
+      "count": 3
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/realtime",
+      "count": 3
+    },
+    {
+      "from": "leilao/clients",
+      "to": "leilao/auctions",
+      "count": 3
+    },
+    {
+      "from": "leilao/internal",
+      "to": "leilao/auctions",
+      "count": 3
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/auction-jobs",
+      "count": 3
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/common",
+      "count": 3
+    },
+    {
+      "from": "lances/internal",
+      "to": "lances/bids",
+      "count": 3
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/realtime",
+      "count": 3
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/common",
+      "count": 2
+    },
+    {
+      "from": "catalogo/cards",
+      "to": "catalogo/common",
+      "count": 2
+    },
+    {
+      "from": "catalogo/cards",
+      "to": "catalogo/clients",
+      "count": 2
+    },
+    {
+      "from": "catalogo/cards",
+      "to": "catalogo/users",
+      "count": 2
+    },
+    {
+      "from": "catalogo/database",
+      "to": "catalogo/cards",
+      "count": 2
+    },
+    {
+      "from": "leilao/auction-jobs",
+      "to": "leilao/auctions",
+      "count": 2
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/common",
+      "count": 2
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/auction-jobs",
+      "count": 2
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/auctions",
+      "count": 2
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/config",
+      "count": 2
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/database",
+      "count": 2
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/clients",
+      "count": 2
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/realtime",
+      "count": 2
+    },
+    {
+      "from": "lances/database",
+      "to": "lances/bids",
+      "count": 2
+    },
+    {
+      "from": "identidade/common",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/database",
+      "to": "identidade/users",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/config",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/database",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/health",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/internal",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/users",
+      "count": 1
+    },
+    {
+      "from": "catalogo/card-types",
+      "to": "catalogo/common",
+      "count": 1
+    },
+    {
+      "from": "catalogo/cards",
+      "to": "catalogo/auth",
+      "count": 1
+    },
+    {
+      "from": "catalogo/_root",
+      "to": "catalogo/auth",
+      "count": 1
+    },
+    {
+      "from": "catalogo/_root",
+      "to": "catalogo/card-types",
+      "count": 1
+    },
+    {
+      "from": "catalogo/_root",
+      "to": "catalogo/cards",
+      "count": 1
+    },
+    {
+      "from": "catalogo/_root",
+      "to": "catalogo/config",
+      "count": 1
+    },
+    {
+      "from": "catalogo/_root",
+      "to": "catalogo/database",
+      "count": 1
+    },
+    {
+      "from": "catalogo/_root",
+      "to": "catalogo/health",
+      "count": 1
+    },
+    {
+      "from": "catalogo/_root",
+      "to": "catalogo/internal",
+      "count": 1
+    },
+    {
+      "from": "catalogo/clients",
+      "to": "catalogo/users",
+      "count": 1
+    },
+    {
+      "from": "catalogo/common",
+      "to": "catalogo/auth",
+      "count": 1
+    },
+    {
+      "from": "catalogo/database",
+      "to": "catalogo/card-types",
+      "count": 1
+    },
+    {
+      "from": "leilao/auctions",
+      "to": "leilao/auth",
+      "count": 1
+    },
+    {
+      "from": "leilao/common",
+      "to": "leilao/auth",
+      "count": 1
+    },
+    {
+      "from": "leilao/database",
+      "to": "leilao/auctions",
+      "count": 1
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/auth",
+      "count": 1
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/health",
+      "count": 1
+    },
+    {
+      "from": "leilao/_root",
+      "to": "leilao/internal",
+      "count": 1
+    },
+    {
+      "from": "lances/bids",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/clients",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/common",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/auth",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/bids",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/config",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/database",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/health",
+      "count": 1
+    },
+    {
+      "from": "lances/_root",
+      "to": "lances/internal",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/realtime",
+      "to": "tempo-real/clients",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/clients",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/config",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/health",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 109,
+  "totalEdges": 223,
+  "byModule": {
+    "identidade/auth": 6,
+    "identidade/common": 1,
+    "identidade/database": 1,
+    "identidade/_root": 6,
+    "identidade/internal": 3,
+    "catalogo/card-types": 1,
+    "catalogo/cards": 12,
+    "catalogo/_root": 7,
+    "catalogo/clients": 1,
+    "catalogo/common": 1,
+    "catalogo/database": 3,
+    "catalogo/internal": 3,
+    "leilao/auction-jobs": 2,
+    "leilao/auctions": 14,
+    "leilao/clients": 3,
+    "leilao/common": 1,
+    "leilao/database": 1,
+    "leilao/internal": 3,
+    "leilao/_root": 12,
+    "lances/bids": 8,
+    "lances/clients": 1,
+    "lances/common": 1,
+    "lances/database": 2,
+    "lances/internal": 3,
+    "lances/_root": 6,
+    "tempo-real/realtime": 1,
+    "tempo-real/_root": 6
+  }
+}

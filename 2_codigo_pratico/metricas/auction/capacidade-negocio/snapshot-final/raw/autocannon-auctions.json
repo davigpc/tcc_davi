@@ -1,0 +1,45 @@
+{
+  "route": "auctions",
+  "method": "GET",
+  "runs": 3,
+  "requestsPerSec": [
+    624.3,
+    789.4,
+    806.6
+  ],
+  "throughputBytesPerSec": [
+    792204.8,
+    1001779.2,
+    1023590.4
+  ],
+  "latencyP50": [
+    28,
+    24,
+    24
+  ],
+  "latencyP90": [
+    43,
+    27,
+    26
+  ],
+  "latencyP99": [
+    61,
+    34,
+    34
+  ],
+  "non2xx": [
+    0,
+    0,
+    0
+  ],
+  "errors": [
+    0,
+    0,
+    0
+  ],
+  "totalRequests": [
+    6243,
+    7894,
+    8066
+  ]
+}

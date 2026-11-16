@@ -1,0 +1,321 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 130,
+  "total": 4552,
+  "source": 3860,
+  "comment": 77,
+  "byModule": {
+    "identidade/auth": {
+      "files": 7,
+      "total": 219,
+      "source": 190,
+      "comment": 0
+    },
+    "identidade/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "identidade/config": {
+      "files": 2,
+      "total": 30,
+      "source": 28,
+      "comment": 0
+    },
+    "identidade/database": {
+      "files": 1,
+      "total": 24,
+      "source": 23,
+      "comment": 0
+    },
+    "identidade/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "identidade/identidade.module.ts": {
+      "files": 1,
+      "total": 25,
+      "source": 18,
+      "comment": 6
+    },
+    "identidade/internal": {
+      "files": 2,
+      "total": 47,
+      "source": 40,
+      "comment": 0
+    },
+    "identidade/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "identidade/users": {
+      "files": 4,
+      "total": 119,
+      "source": 98,
+      "comment": 0
+    },
+    "catalogo/auth": {
+      "files": 3,
+      "total": 64,
+      "source": 56,
+      "comment": 4
+    },
+    "catalogo/card-types": {
+      "files": 6,
+      "total": 178,
+      "source": 152,
+      "comment": 0
+    },
+    "catalogo/cards": {
+      "files": 8,
+      "total": 423,
+      "source": 355,
+      "comment": 0
+    },
+    "catalogo/catalogo.module.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 20,
+      "comment": 6
+    },
+    "catalogo/clients": {
+      "files": 1,
+      "total": 34,
+      "source": 27,
+      "comment": 0
+    },
+    "catalogo/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "catalogo/config": {
+      "files": 2,
+      "total": 31,
+      "source": 29,
+      "comment": 0
+    },
+    "catalogo/database": {
+      "files": 1,
+      "total": 26,
+      "source": 25,
+      "comment": 0
+    },
+    "catalogo/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "catalogo/internal": {
+      "files": 2,
+      "total": 74,
+      "source": 63,
+      "comment": 0
+    },
+    "catalogo/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "catalogo/users": {
+      "files": 1,
+      "total": 5,
+      "source": 5,
+      "comment": 0
+    },
+    "leilao/auction-jobs": {
+      "files": 5,
+      "total": 217,
+      "source": 183,
+      "comment": 5
+    },
+    "leilao/auctions": {
+      "files": 9,
+      "total": 717,
+      "source": 612,
+      "comment": 0
+    },
+    "leilao/auth": {
+      "files": 3,
+      "total": 67,
+      "source": 56,
+      "comment": 6
+    },
+    "leilao/clients": {
+      "files": 4,
+      "total": 233,
+      "source": 195,
+      "comment": 0
+    },
+    "leilao/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "leilao/config": {
+      "files": 2,
+      "total": 38,
+      "source": 36,
+      "comment": 0
+    },
+    "leilao/database": {
+      "files": 1,
+      "total": 24,
+      "source": 23,
+      "comment": 0
+    },
+    "leilao/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "leilao/internal": {
+      "files": 2,
+      "total": 56,
+      "source": 46,
+      "comment": 0
+    },
+    "leilao/leilao.module.ts": {
+      "files": 1,
+      "total": 26,
+      "source": 18,
+      "comment": 7
+    },
+    "leilao/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "leilao/realtime": {
+      "files": 3,
+      "total": 175,
+      "source": 152,
+      "comment": 2
+    },
+    "leilao/worker.module.ts": {
+      "files": 1,
+      "total": 13,
+      "source": 12,
+      "comment": 0
+    },
+    "leilao/worker.ts": {
+      "files": 1,
+      "total": 9,
+      "source": 7,
+      "comment": 1
+    },
+    "lances/auth": {
+      "files": 3,
+      "total": 61,
+      "source": 51,
+      "comment": 6
+    },
+    "lances/bids": {
+      "files": 8,
+      "total": 486,
+      "source": 403,
+      "comment": 12
+    },
+    "lances/clients": {
+      "files": 2,
+      "total": 88,
+      "source": 77,
+      "comment": 0
+    },
+    "lances/common": {
+      "files": 3,
+      "total": 25,
+      "source": 21,
+      "comment": 0
+    },
+    "lances/config": {
+      "files": 2,
+      "total": 33,
+      "source": 31,
+      "comment": 0
+    },
+    "lances/database": {
+      "files": 1,
+      "total": 25,
+      "source": 24,
+      "comment": 0
+    },
+    "lances/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "lances/internal": {
+      "files": 2,
+      "total": 57,
+      "source": 50,
+      "comment": 0
+    },
+    "lances/lances.module.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 18,
+      "comment": 8
+    },
+    "lances/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "lances/realtime": {
+      "files": 3,
+      "total": 175,
+      "source": 152,
+      "comment": 2
+    },
+    "tempo-real/clients": {
+      "files": 1,
+      "total": 41,
+      "source": 34,
+      "comment": 0
+    },
+    "tempo-real/config": {
+      "files": 2,
+      "total": 28,
+      "source": 26,
+      "comment": 0
+    },
+    "tempo-real/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "tempo-real/main.ts": {
+      "files": 1,
+      "total": 15,
+      "source": 11,
+      "comment": 1
+    },
+    "tempo-real/realtime": {
+      "files": 4,
+      "total": 354,
+      "source": 301,
+      "comment": 1
+    },
+    "tempo-real/tempo-real.module.ts": {
+      "files": 1,
+      "total": 35,
+      "source": 28,
+      "comment": 6
+    }
+  }
+}
