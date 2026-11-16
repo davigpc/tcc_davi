@@ -29,7 +29,23 @@ O Quadro \ref{qua:metricas-inventario-s0} reúne as métricas do sistema de inve
 
 \subsection*{Sistema de Leilões}
 
-O monólito utiliza o ORM TypeORM conectado ao PostgreSQL, auxiliado pelo Redis para controle de filas e processamento de tarefas em segundo plano via BullMQ e transmissão de mensagens em tempo real. Múltiplos componentes com ciclo de vida assíncrono e de operações transacionais críticas de encerramento de lance e transferência de ativos permite observar a latência sob estresse e a vazão de requisições durante a transição dos serviços.
+O monólito usa NestJS com TypeORM sobre o PostgreSQL e o Redis em dois papéis: fila de fechamento, pelo BullMQ, e canal de eventos do Socket.IO. A aplicação sobe em dois processos feitos da mesma imagem, um para a API e outro para o worker, além do banco e do Redis, o que dá quatro contêineres no estado inicial. O código está dividido em nove módulos que cobrem autenticação, usuários, cartas, tipos de carta, leilões, lances, tarefas de fechamento, tempo real e saúde.
+
+O caminho de escrita do sistema é o lance. Para aceitá-lo, o serviço verifica se o leilão está ativo, se ainda não terminou, se o vendedor não está apostando na própria carta e se o valor supera o maior lance registrado. A verificação e a gravação ocorrem na mesma transação, que trava a linha do leilão e atualiza a referência para o maior lance. Quando o prazo termina, o worker consome a fila, lê o maior lance e transfere a carta ao vencedor, registrando a troca no histórico de transferências. No estado inicial, a análise estática registrou 88 dependências cruzando fronteiras de módulo, de um total de 174.
+
+A Figura \ref{fig:leilao_arquitetura} apresenta a arquitetura base do sistema.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{figuras/leilao__arquitetura.png}
+    \caption{Arquitetura base do sistema de leilões.}
+    \label{fig:leilao_arquitetura}
+    \legend{Elaborado pelo autor (2026).}
+\end{figure}
+
+O Quadro \ref{qua:metricas-leilao-s0} reúne as métricas do sistema de leilões no estado inicial Snapshot 0.
+
+\input{tabelas/metricas-leilao-s0.tex}
 
 \subsection*{E-commerce}
 
@@ -81,6 +97,19 @@ O Quadro \ref{qua:comp_inventory-api_capacidade-negocio_snapshots} apresenta as 
 
 \subsection*{Sistema de Leilões}
 
+Na decomposição por capacidade de negócio, os nove módulos do leilão foram agrupados em cinco capacidades: Identidade (autenticação e usuários), Catálogo de Cartas (cartas e tipos de carta), Leilão (leilões e tarefas de fechamento), Lances e Tempo Real. O worker de fechamento pertence ao Leilão, porque só existe para encerrar o que essa capacidade administra. A extração foi feita em três fases, com o monólito desativado apenas na última. No baseline, a análise estática registrou 88 dependências cruzando fronteiras de módulo, de um total de 174.
+
+A primeira extração foi a de Lances, escolhida por ser a menor capacidade e por concentrar o caminho de escrita. O serviço passou a responder por \texttt{/auctions/:id/bids} atrás do NGINX, mas continuou usando o banco do monólito. Nessa fase, a transação do lance ainda travava a linha do leilão na mesma base, e por isso a vazão de escrita quase não mudou. O custo apareceu no código: o serviço copiou as entidades de leilão, carta, tipo de carta e usuário, além do publicador de eventos, e as Linhas de Código cresceram 25 \%.
+
+A segunda extração levou o Leilão e o worker para um serviço próprio. A fila do BullMQ e o varredor de leilões vencidos saíram junto, e o fechamento continuou atômico porque o banco seguia compartilhado: o worker lia os lances, travava a carta e gravava a transferência na mesma transação. O ganho dessa fase foi separar o processo assíncrono do caminho de leitura; o preço foi o tempo de inicialização, que subiu 45 \% com mais dois contêineres verificados por healthcheck.
+
+Na fase final saíram as três capacidades restantes, o monólito foi desativado e a persistência passou a ser isolada, com um banco por serviço. A separação expôs a dificuldade central da trilha: o lance deixou de ser uma transação única. O serviço de Lances manteve no próprio banco uma cópia do estado do leilão para verificar a invariante de valor crescente e passou a enviar o novo maior lance ao Leilão por chamada interna, depois do commit. A criação de leilão também passou a travar a carta no Catálogo por HTTP, e o fechamento passou a atravessar três serviços: o worker lê o maior lance em Lances, pede a transferência ao Catálogo e só então marca o leilão como encerrado.
+
+O Quadro \ref{qua:comp_auction_capacidade-negocio_snapshots} apresenta as métricas das quatro fases e o Quadro \ref{qua:comp_capacidade-negocio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 76 segundos no baseline para 117 segundos no estado final, e o de inicialização mais que dobrou. A memória sob carga passou de 314 MB para 799 MB, consequência dos quatro bancos dedicados. A vazão de \texttt{GET /auctions} caiu cerca de 20 \%, porque cada resposta passou a exigir uma chamada em lote ao Catálogo e outra à Identidade, além do salto pelo gateway. A escrita de lances caiu 45 \%, a maior perda da trilha.
+
+As chamadas entre fronteiras medidas pela análise estática caíram de 125 para 109 quando o monólito saiu de cena, movimento oposto ao das duas fases anteriores. A queda não indica menos acoplamento: indica que o acoplamento deixou de estar no código. Os serviços passaram a se comunicar por 13 endpoints internos, e o único trecho que a análise estática ainda enxerga é o que ficou duplicado dentro de cada serviço. Resta uma diferença de consistência em relação às fases anteriores: a chamada que leva o maior lance ao Leilão não tem retentativa, de modo que uma falha nela deixa a projeção do leilão atrás do último lance gravado. É o preço de manter a invariante em um banco e publicá-la em outro, sem transação distribuída.
+
+\input{tabelas/auction__capacidade-negocio__snapshots.tex}
 
 \subsection*{E-commerce}
 

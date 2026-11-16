@@ -1,0 +1,29 @@
+\begin{quadro}[htb]
+  \centering
+  \caption{Métricas do sistema de leilões no baseline (Snapshot 0).}
+  \label{qua:metricas-leilao-s0}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{|l|r|}
+    \hline
+    \textbf{Métrica} & \textbf{Valor} \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Agilidade e DevOps}} \\ \hline
+    Tempo de construção (média) & 76.076 ms \\
+    Tempo de inicialização (média) & 12.627 ms \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Custo e Infraestrutura}} \\ \hline
+    CPU total (repouso / carga) & 0,21 \% / 191,32 \% \\
+    RAM total (repouso / carga) & 137,5 MB / 313,6 MB \\
+    Imagem da aplicação & 104,88 MB \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Desempenho}} \\ \hline
+    \texttt{auctions} --- vazão & 923,9 req/s \\
+    \texttt{auctions} --- latência p50/p90/p99 & 20,7 / 23,7 / 32,0 ms \\
+    \texttt{auction-by-id} --- vazão & 751,6 req/s \\
+    \texttt{auction-by-id} --- latência p50/p90/p99 & 25,3 / 28,0 / 34,0 ms \\
+    \texttt{bids} --- vazão & 159,0 req/s \\
+    \texttt{bids} --- latência p50/p90/p99 & 6,0 / 6,3 / 7,7 ms \\ \hline
+    \multicolumn{2}{|l|}{\textbf{Manutenibilidade}} \\ \hline
+    Linhas de Código & 2.863 \\
+    Componentes / contêineres & 4 / 4 \\
+    Chamadas entre fronteiras & 88 de 174 \\ \hline
+  \end{tabular}
+  \fonte{medição automatizada do experimento (média de três execuções).}
+\end{quadro}
