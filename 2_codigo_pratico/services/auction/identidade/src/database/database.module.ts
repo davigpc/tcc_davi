@@ -16,7 +16,7 @@ import { User } from '../users/user.entity';
         database: configService.getOrThrow<string>('DATABASE_NAME'),
         entities: [User],
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: configService.get<boolean>('DATABASE_SYNC') ?? true,
       }),
     }),
   ],

@@ -1,0 +1,23 @@
+{
+  "services": [
+    "redis",
+    "postgres",
+    "api",
+    "identidade",
+    "tempo-real",
+    "worker",
+    "nginx"
+  ],
+  "serviceCount": 7,
+  "runningContainers": [
+    "auction_sub_s1_nginx",
+    "auction_sub_s1_tempo_real",
+    "auction_sub_s1_worker",
+    "auction_sub_s1_identidade",
+    "auction_sub_s1_api",
+    "auction_sub_s1_postgres",
+    "auction_sub_s1_redis"
+  ],
+  "containerCount": 7,
+  "imageCount": 6
+}

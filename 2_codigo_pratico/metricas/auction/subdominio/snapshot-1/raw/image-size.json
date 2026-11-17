@@ -1,0 +1,26 @@
+{
+  "auction-sub-s1-api": {
+    "bytes": 113477782,
+    "mb": 108.22
+  },
+  "auction-sub-s1-identidade": {
+    "bytes": 113427579,
+    "mb": 108.17
+  },
+  "auction-sub-s1-tempo-real": {
+    "bytes": 113401795,
+    "mb": 108.15
+  },
+  "postgres:16": {
+    "bytes": 166201939,
+    "mb": 158.5
+  },
+  "redis:7": {
+    "bytes": 43621893,
+    "mb": 41.6
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 96,
+  "total": 3437,
+  "source": 2949,
+  "comment": 35,
+  "byModule": {
+    "auction/app.module.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 26,
+      "comment": 0
+    },
+    "auction/auction-jobs": {
+      "files": 5,
+      "total": 217,
+      "source": 183,
+      "comment": 5
+    },
+    "auction/auctions": {
+      "files": 9,
+      "total": 657,
+      "source": 563,
+      "comment": 2
+    },
+    "auction/auth": {
+      "files": 3,
+      "total": 68,
+      "source": 56,
+      "comment": 6
+    },
+    "auction/bids": {
+      "files": 7,
+      "total": 343,
+      "source": 296,
+      "comment": 1
+    },
+    "auction/card-types": {
+      "files": 6,
+      "total": 170,
+      "source": 146,
+      "comment": 0
+    },
+    "auction/cards": {
+      "files": 8,
+      "total": 306,
+      "source": 262,
+      "comment": 0
+    },
+    "auction/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "auction/config": {
+      "files": 2,
+      "total": 35,
+      "source": 33,
+      "comment": 0
+    },
+    "auction/database": {
+      "files": 7,
+      "total": 229,
+      "source": 211,
+      "comment": 0
+    },
+    "auction/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "auction/main.ts": {
+      "files": 1,
+      "total": 39,
+      "source": 30,
+      "comment": 2
+    },
+    "auction/realtime": {
+      "files": 3,
+      "total": 175,
+      "source": 152,
+      "comment": 2
+    },
+    "auction/users": {
+      "files": 4,
+      "total": 111,
+      "source": 91,
+      "comment": 1
+    },
+    "auction/worker.module.ts": {
+      "files": 1,
+      "total": 13,
+      "source": 12,
+      "comment": 0
+    },
+    "auction/worker.ts": {
+      "files": 1,
+      "total": 9,
+      "source": 7,
+      "comment": 1
+    },
+    "identidade/auth": {
+      "files": 7,
+      "total": 219,
+      "source": 190,
+      "comment": 0
+    },
+    "identidade/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "identidade/config": {
+      "files": 2,
+      "total": 31,
+      "source": 29,
+      "comment": 0
+    },
+    "identidade/database": {
+      "files": 1,
+      "total": 24,
+      "source": 23,
+      "comment": 0
+    },
+    "identidade/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "identidade/identidade.module.ts": {
+      "files": 1,
+      "total": 25,
+      "source": 18,
+      "comment": 6
+    },
+    "identidade/internal": {
+      "files": 2,
+      "total": 47,
+      "source": 40,
+      "comment": 0
+    },
+    "identidade/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "identidade/users": {
+      "files": 4,
+      "total": 119,
+      "source": 98,
+      "comment": 0
+    },
+    "tempo-real/clients": {
+      "files": 1,
+      "total": 41,
+      "source": 34,
+      "comment": 0
+    },
+    "tempo-real/config": {
+      "files": 2,
+      "total": 28,
+      "source": 26,
+      "comment": 0
+    },
+    "tempo-real/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "tempo-real/main.ts": {
+      "files": 1,
+      "total": 15,
+      "source": 11,
+      "comment": 1
+    },
+    "tempo-real/realtime": {
+      "files": 4,
+      "total": 354,
+      "source": 301,
+      "comment": 1
+    },
+    "tempo-real/tempo-real.module.ts": {
+      "files": 1,
+      "total": 35,
+      "source": 28,
+      "comment": 6
+    }
+  }
+}

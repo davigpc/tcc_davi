@@ -1,0 +1,318 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "identidade/_root",
+    "identidade/auth",
+    "identidade/common",
+    "identidade/config",
+    "identidade/database",
+    "identidade/health",
+    "identidade/internal",
+    "identidade/users",
+    "monolito/_root",
+    "monolito/auction-jobs",
+    "monolito/auctions",
+    "monolito/auth",
+    "monolito/bids",
+    "monolito/card-types",
+    "monolito/cards",
+    "monolito/common",
+    "monolito/config",
+    "monolito/database",
+    "monolito/health",
+    "monolito/realtime",
+    "monolito/users",
+    "tempo-real/_root",
+    "tempo-real/clients",
+    "tempo-real/config",
+    "tempo-real/health",
+    "tempo-real/realtime"
+  ],
+  "edges": [
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/cards",
+      "count": 8
+    },
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/bids",
+      "count": 6
+    },
+    {
+      "from": "monolito/cards",
+      "to": "monolito/users",
+      "count": 5
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/auction-jobs",
+      "count": 4
+    },
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/users",
+      "count": 4
+    },
+    {
+      "from": "monolito/bids",
+      "to": "monolito/auctions",
+      "count": 4
+    },
+    {
+      "from": "monolito/cards",
+      "to": "monolito/card-types",
+      "count": 4
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/users",
+      "count": 4
+    },
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/realtime",
+      "count": 3
+    },
+    {
+      "from": "identidade/internal",
+      "to": "identidade/users",
+      "count": 3
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/realtime",
+      "count": 3
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/auctions",
+      "count": 2
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/config",
+      "count": 2
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/database",
+      "count": 2
+    },
+    {
+      "from": "monolito/auction-jobs",
+      "to": "monolito/auctions",
+      "count": 2
+    },
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/common",
+      "count": 2
+    },
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/auction-jobs",
+      "count": 2
+    },
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/card-types",
+      "count": 2
+    },
+    {
+      "from": "monolito/bids",
+      "to": "monolito/common",
+      "count": 2
+    },
+    {
+      "from": "monolito/bids",
+      "to": "monolito/realtime",
+      "count": 2
+    },
+    {
+      "from": "monolito/cards",
+      "to": "monolito/common",
+      "count": 2
+    },
+    {
+      "from": "monolito/database",
+      "to": "monolito/cards",
+      "count": 2
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/common",
+      "count": 2
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/auth",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/bids",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/card-types",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/cards",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/health",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/users",
+      "count": 1
+    },
+    {
+      "from": "monolito/auctions",
+      "to": "monolito/auth",
+      "count": 1
+    },
+    {
+      "from": "monolito/auth",
+      "to": "monolito/users",
+      "count": 1
+    },
+    {
+      "from": "monolito/bids",
+      "to": "monolito/users",
+      "count": 1
+    },
+    {
+      "from": "monolito/bids",
+      "to": "monolito/auth",
+      "count": 1
+    },
+    {
+      "from": "monolito/card-types",
+      "to": "monolito/common",
+      "count": 1
+    },
+    {
+      "from": "monolito/cards",
+      "to": "monolito/auctions",
+      "count": 1
+    },
+    {
+      "from": "monolito/cards",
+      "to": "monolito/auth",
+      "count": 1
+    },
+    {
+      "from": "monolito/common",
+      "to": "monolito/auth",
+      "count": 1
+    },
+    {
+      "from": "monolito/database",
+      "to": "monolito/auctions",
+      "count": 1
+    },
+    {
+      "from": "monolito/database",
+      "to": "monolito/bids",
+      "count": 1
+    },
+    {
+      "from": "monolito/database",
+      "to": "monolito/card-types",
+      "count": 1
+    },
+    {
+      "from": "monolito/database",
+      "to": "monolito/users",
+      "count": 1
+    },
+    {
+      "from": "identidade/common",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/database",
+      "to": "identidade/users",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/config",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/database",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/health",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/internal",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/users",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/realtime",
+      "to": "tempo-real/clients",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/clients",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/config",
+      "count": 1
+    },
+    {
+      "from": "tempo-real/_root",
+      "to": "tempo-real/health",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 102,
+  "totalEdges": 197,
+  "byModule": {
+    "monolito/_root": 16,
+    "monolito/auction-jobs": 2,
+    "monolito/auctions": 28,
+    "monolito/auth": 1,
+    "monolito/bids": 10,
+    "monolito/card-types": 1,
+    "monolito/cards": 13,
+    "monolito/common": 1,
+    "monolito/database": 6,
+    "identidade/auth": 6,
+    "identidade/common": 1,
+    "identidade/database": 1,
+    "identidade/_root": 6,
+    "identidade/internal": 3,
+    "tempo-real/realtime": 1,
+    "tempo-real/_root": 6
+  }
+}
