@@ -1,0 +1,30 @@
+{
+  "auction-sub-s2-api": {
+    "bytes": 113475347,
+    "mb": 108.22
+  },
+  "auction-sub-s2-identidade": {
+    "bytes": 113430038,
+    "mb": 108.18
+  },
+  "auction-sub-s2-catalogo": {
+    "bytes": 113436868,
+    "mb": 108.18
+  },
+  "auction-sub-s2-tempo-real": {
+    "bytes": 113402863,
+    "mb": 108.15
+  },
+  "postgres:16": {
+    "bytes": 166201939,
+    "mb": 158.5
+  },
+  "redis:7": {
+    "bytes": 43621893,
+    "mb": 41.6
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}

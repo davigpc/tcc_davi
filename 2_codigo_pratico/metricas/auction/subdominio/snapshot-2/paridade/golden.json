@@ -1,0 +1,91 @@
+{
+  "auctions": {
+    "route": "/auctions?limit=10",
+    "status": 200,
+    "body": {
+      "items": [
+        {
+          "id": "36a34025-cfff-465b-9c6d-d2876ce94eb7",
+          "cardId": "4838406f-e11f-4ea6-8d92-6a672da90794",
+          "sellerUserId": "e4a99fa8-fd99-4f5d-9dd6-07d80a91a6ff",
+          "status": "ACTIVE",
+          "startPrice": 100,
+          "currentHighestBid": null,
+          "startTime": "2026-11-17T18:01:16.069Z",
+          "endTime": "2026-11-18T00:01:16.069Z",
+          "closedAt": null,
+          "cancelledAt": null,
+          "card": {
+            "id": "4838406f-e11f-4ea6-8d92-6a672da90794",
+            "status": "LOCKED_IN_AUCTION",
+            "cardType": {
+              "id": "2541937c-9f3a-4924-9df4-642b5ec47705",
+              "name": "Lionel Messi",
+              "attack": 82,
+              "midfield": 64,
+              "defense": 71,
+              "createdAt": "2026-11-17T18:01:16.058Z",
+              "updatedAt": "2026-11-17T18:01:16.058Z"
+            },
+            "owner": {
+              "id": "e4a99fa8-fd99-4f5d-9dd6-07d80a91a6ff",
+              "email": "seller@example.com",
+              "username": "seller"
+            },
+            "createdAt": "2026-11-17T18:01:16.065Z",
+            "updatedAt": "2026-11-17T18:01:16.065Z"
+          },
+          "seller": {
+            "id": "e4a99fa8-fd99-4f5d-9dd6-07d80a91a6ff",
+            "email": "seller@example.com",
+            "username": "seller"
+          },
+          "recentBids": []
+        }
+      ],
+      "nextCursor": null
+    }
+  },
+  "auction-by-id": {
+    "route": "/auctions/{{auctionId}}",
+    "status": 200,
+    "body": {
+      "id": "36a34025-cfff-465b-9c6d-d2876ce94eb7",
+      "cardId": "4838406f-e11f-4ea6-8d92-6a672da90794",
+      "sellerUserId": "e4a99fa8-fd99-4f5d-9dd6-07d80a91a6ff",
+      "status": "ACTIVE",
+      "startPrice": 100,
+      "currentHighestBid": null,
+      "startTime": "2026-11-17T18:01:16.069Z",
+      "endTime": "2026-11-18T00:01:16.069Z",
+      "closedAt": null,
+      "cancelledAt": null,
+      "card": {
+        "id": "4838406f-e11f-4ea6-8d92-6a672da90794",
+        "status": "LOCKED_IN_AUCTION",
+        "cardType": {
+          "id": "2541937c-9f3a-4924-9df4-642b5ec47705",
+          "name": "Lionel Messi",
+          "attack": 82,
+          "midfield": 64,
+          "defense": 71,
+          "createdAt": "2026-11-17T18:01:16.058Z",
+          "updatedAt": "2026-11-17T18:01:16.058Z"
+        },
+        "owner": {
+          "id": "e4a99fa8-fd99-4f5d-9dd6-07d80a91a6ff",
+          "email": "seller@example.com",
+          "username": "seller"
+        },
+        "createdAt": "2026-11-17T18:01:16.065Z",
+        "updatedAt": "2026-11-17T18:01:16.065Z"
+      },
+      "seller": {
+        "id": "e4a99fa8-fd99-4f5d-9dd6-07d80a91a6ff",
+        "email": "seller@example.com",
+        "username": "seller"
+      },
+      "recentBids": []
+    }
+  }
+}

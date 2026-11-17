@@ -18,7 +18,7 @@ import { CardType } from '../card-types/card-type.entity';
         database: configService.getOrThrow<string>('DATABASE_NAME'),
         entities: [CardType, Card, CardTransfer],
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: configService.get<boolean>('DATABASE_SYNC') ?? true,
       }),
     }),
   ],
