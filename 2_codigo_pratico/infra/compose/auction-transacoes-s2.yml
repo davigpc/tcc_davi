@@ -1,0 +1,179 @@
+# Compose do experimento: leilao / Transacoes / snapshot-2
+# Topologia: grupo atomico + Identidade + monolito restante (tempo real),
+# PostgreSQL e Redis compartilhados, NGINX na 3000.
+name: auction-transacoes-s2
+
+x-app-env: &app-env
+  NODE_ENV: production
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  JWT_SECRET: auction-experiment-secret
+  JWT_EXPIRES_IN: 1d
+  CORS_ORIGIN: http://localhost:3001
+  AUCTION_MIN_DURATION_SECONDS: 30
+  AUCTION_MAX_DURATION_SECONDS: 604800
+  AUCTION_SCANNER_INTERVAL_SECONDS: 30
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: auction_tx_s2_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: auction
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d auction"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  redis:
+    image: redis:7
+    container_name: auction_tx_s2_redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - auction
+
+  api:
+    image: auction-tx-s2-api
+    build:
+      context: ../../apps/auction
+      target: prod
+    container_name: auction_tx_s2_api
+    restart: unless-stopped
+    command: ["sh", "-c", "node scripts/migrate.js && node dist/src/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3100/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: *app-env
+      PORT: 3100
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - auction
+
+  atomo:
+    image: auction-tx-s2-atomo
+    build:
+      context: ../../services/auction/atomo
+    container_name: auction_tx_s2_atomo
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: *app-env
+      PORT: 3001
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      DATABASE_SYNC: "false"
+      USERS_MODE: local
+      IDENTIDADE_URL: http://identidade:3001
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - auction
+
+  atomo_worker:
+    image: auction-tx-s2-atomo
+    container_name: auction_tx_s2_atomo_worker
+    restart: unless-stopped
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: *app-env
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      DATABASE_SYNC: "false"
+      USERS_MODE: local
+      IDENTIDADE_URL: http://identidade:3001
+    depends_on:
+      api:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - auction
+
+  identidade:
+    image: auction-tx-s2-identidade
+    build:
+      context: ../../services/auction/identidade
+    container_name: auction_tx_s2_identidade
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: *app-env
+      PORT: 3001
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: auction
+      DATABASE_PASSWORD: auction
+      DATABASE_NAME: auction
+      DATABASE_SYNC: "false"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - auction
+
+  nginx:
+    image: nginx:alpine
+    container_name: auction_tx_s2_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-auction-transacoes-s2.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      api:
+        condition: service_healthy
+      atomo:
+        condition: service_healthy
+      identidade:
+        condition: service_healthy
+    networks:
+      - auction
+
+volumes:
+  postgres_data:
+
+networks:
+  auction:
+    driver: bridge

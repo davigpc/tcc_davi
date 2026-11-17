@@ -1,0 +1,23 @@
+{
+  "services": [
+    "postgres",
+    "redis",
+    "api",
+    "atomo",
+    "identidade",
+    "nginx",
+    "atomo_worker"
+  ],
+  "serviceCount": 7,
+  "runningContainers": [
+    "auction_tx_s2_nginx",
+    "auction_tx_s2_atomo",
+    "auction_tx_s2_identidade",
+    "auction_tx_s2_atomo_worker",
+    "auction_tx_s2_api",
+    "auction_tx_s2_postgres",
+    "auction_tx_s2_redis"
+  ],
+  "containerCount": 7,
+  "imageCount": 6
+}

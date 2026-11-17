@@ -1,0 +1,361 @@
+{
+  "tool": "madge@8",
+  "modules": [
+    "atomo/_root",
+    "atomo/auction-jobs",
+    "atomo/auctions",
+    "atomo/auth",
+    "atomo/bids",
+    "atomo/card-types",
+    "atomo/cards",
+    "atomo/clients",
+    "atomo/common",
+    "atomo/config",
+    "atomo/database",
+    "atomo/health",
+    "atomo/realtime",
+    "atomo/users",
+    "identidade/_root",
+    "identidade/auth",
+    "identidade/common",
+    "identidade/config",
+    "identidade/database",
+    "identidade/health",
+    "identidade/internal",
+    "identidade/users",
+    "monolito/_root",
+    "monolito/auth",
+    "monolito/common",
+    "monolito/config",
+    "monolito/database",
+    "monolito/health",
+    "monolito/realtime",
+    "monolito/users"
+  ],
+  "edges": [
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/cards",
+      "count": 6
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/auction-jobs",
+      "count": 4
+    },
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/bids",
+      "count": 4
+    },
+    {
+      "from": "atomo/bids",
+      "to": "atomo/auctions",
+      "count": 4
+    },
+    {
+      "from": "atomo/cards",
+      "to": "atomo/card-types",
+      "count": 4
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/users",
+      "count": 4
+    },
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/realtime",
+      "count": 3
+    },
+    {
+      "from": "atomo/cards",
+      "to": "atomo/auctions",
+      "count": 3
+    },
+    {
+      "from": "atomo/cards",
+      "to": "atomo/users",
+      "count": 3
+    },
+    {
+      "from": "identidade/internal",
+      "to": "identidade/users",
+      "count": 3
+    },
+    {
+      "from": "monolito/realtime",
+      "to": "monolito/auth",
+      "count": 2
+    },
+    {
+      "from": "monolito/realtime",
+      "to": "monolito/users",
+      "count": 2
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/auctions",
+      "count": 2
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/config",
+      "count": 2
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/database",
+      "count": 2
+    },
+    {
+      "from": "atomo/auction-jobs",
+      "to": "atomo/auctions",
+      "count": 2
+    },
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/common",
+      "count": 2
+    },
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/auction-jobs",
+      "count": 2
+    },
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/card-types",
+      "count": 2
+    },
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/users",
+      "count": 2
+    },
+    {
+      "from": "atomo/bids",
+      "to": "atomo/common",
+      "count": 2
+    },
+    {
+      "from": "atomo/bids",
+      "to": "atomo/realtime",
+      "count": 2
+    },
+    {
+      "from": "atomo/cards",
+      "to": "atomo/common",
+      "count": 2
+    },
+    {
+      "from": "atomo/database",
+      "to": "atomo/cards",
+      "count": 2
+    },
+    {
+      "from": "atomo/users",
+      "to": "atomo/clients",
+      "count": 2
+    },
+    {
+      "from": "identidade/auth",
+      "to": "identidade/common",
+      "count": 2
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/auth",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/config",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/database",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/health",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/realtime",
+      "count": 1
+    },
+    {
+      "from": "monolito/_root",
+      "to": "monolito/users",
+      "count": 1
+    },
+    {
+      "from": "monolito/auth",
+      "to": "monolito/users",
+      "count": 1
+    },
+    {
+      "from": "monolito/common",
+      "to": "monolito/auth",
+      "count": 1
+    },
+    {
+      "from": "monolito/database",
+      "to": "monolito/users",
+      "count": 1
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/auth",
+      "count": 1
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/bids",
+      "count": 1
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/card-types",
+      "count": 1
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/cards",
+      "count": 1
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/health",
+      "count": 1
+    },
+    {
+      "from": "atomo/_root",
+      "to": "atomo/users",
+      "count": 1
+    },
+    {
+      "from": "atomo/auctions",
+      "to": "atomo/auth",
+      "count": 1
+    },
+    {
+      "from": "atomo/bids",
+      "to": "atomo/auth",
+      "count": 1
+    },
+    {
+      "from": "atomo/card-types",
+      "to": "atomo/common",
+      "count": 1
+    },
+    {
+      "from": "atomo/cards",
+      "to": "atomo/auth",
+      "count": 1
+    },
+    {
+      "from": "atomo/clients",
+      "to": "atomo/auctions",
+      "count": 1
+    },
+    {
+      "from": "atomo/common",
+      "to": "atomo/auth",
+      "count": 1
+    },
+    {
+      "from": "atomo/database",
+      "to": "atomo/auctions",
+      "count": 1
+    },
+    {
+      "from": "atomo/database",
+      "to": "atomo/bids",
+      "count": 1
+    },
+    {
+      "from": "atomo/database",
+      "to": "atomo/card-types",
+      "count": 1
+    },
+    {
+      "from": "atomo/database",
+      "to": "atomo/users",
+      "count": 1
+    },
+    {
+      "from": "atomo/users",
+      "to": "atomo/auctions",
+      "count": 1
+    },
+    {
+      "from": "identidade/common",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/database",
+      "to": "identidade/users",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/auth",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/config",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/database",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/health",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/internal",
+      "count": 1
+    },
+    {
+      "from": "identidade/_root",
+      "to": "identidade/users",
+      "count": 1
+    }
+  ],
+  "crossDomainEdges": 104,
+  "totalEdges": 216,
+  "byModule": {
+    "monolito/_root": 6,
+    "monolito/auth": 1,
+    "monolito/common": 1,
+    "monolito/database": 1,
+    "monolito/realtime": 4,
+    "atomo/_root": 16,
+    "atomo/auction-jobs": 2,
+    "atomo/auctions": 22,
+    "atomo/bids": 9,
+    "atomo/card-types": 1,
+    "atomo/cards": 13,
+    "atomo/clients": 1,
+    "atomo/common": 1,
+    "atomo/database": 6,
+    "atomo/users": 3,
+    "identidade/auth": 6,
+    "identidade/common": 1,
+    "identidade/database": 1,
+    "identidade/_root": 6,
+    "identidade/internal": 3
+  }
+}
