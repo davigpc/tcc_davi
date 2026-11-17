@@ -1,9 +1,11 @@
 \chapter{Desenvolvimento}
 \label{cap:desenvolvimento}
 
+Este capítulo evidencia o desenvolvimento da pesquisa experimental. Nesse sentido, aqui está descrito em detalhes como cada aplicação era implementada, como se deu a aplicação das metodologias de decomposição e também os resultados, organizados em quadros para comparação.
+
 \section{Arquitetura de Referência}
 \label{sec:arquitetura_referencia}
-Nessa seção, é apresentada a arquitetura base das aplicações utilizadas na pesquisa. Com base nisso, avaliam-se os módulos, fronteiras e interações entre as partes de cada sistema, de modo que seja possível identificar como aplicar cada uma das metodologias sem impedir o funcionamento e o fluxo das aplicações.
+Nessa seção, é apresentada a arquitetura base dos sistemas utilizadas na pesquisa. Com base nisso, avaliam-se os módulos, fronteiras e interações entre as partes de cada sistema, de modo que seja possível identificar como aplicar cada uma das metodologias sem impedir o funcionamento e o fluxo dos sistemas.
 
 A padronização na linguagem TypeScript e na plataforma Node.js/NestJS assegura consistência nas comparações de Linhas de Código (LOC), no empacotamento em contêineres e permite uma comparação justa entre os tempos de inicialização e os perfis de consumo de recursos.
 
@@ -25,28 +27,21 @@ A Figura \ref{fig:inventario_arquitetura} demonstra a arquitetura base do sistem
 
 O Quadro \ref{qua:metricas-inventario-s0} reúne as métricas do sistema de inventário no estado inicial Snapshot 0, adotado como referência para o cálculo das variações das três metodologias de decomposição.
 
-\input{tabelas/metricas-inventario-s0.tex}
+%\input{tabelas/metricas-inventario-s0.tex}
 
 \subsection*{Sistema de Leilões}
 
-O monólito usa NestJS com TypeORM sobre o PostgreSQL e o Redis em dois papéis: fila de fechamento, pelo BullMQ, e canal de eventos do Socket.IO. A aplicação sobe em dois processos feitos da mesma imagem, um para a API e outro para o worker, além do banco e do Redis, o que dá quatro contêineres no estado inicial. O código está dividido em nove módulos que cobrem autenticação, usuários, cartas, tipos de carta, leilões, lances, tarefas de fechamento, tempo real e saúde.
+O monólito utiliza o ORM TypeORM conectado ao PostgreSQL, auxiliado pelo Redis para controle de filas e processamento de tarefas em segundo plano via BullMQ e transmissão de mensagens em tempo real. Múltiplos componentes com ciclo de vida assíncrono e de operações transacionais críticas de encerramento de lance e transferência de ativos permite observar a latência sob estresse e a vazão de requisições durante a transição dos serviços.
 
-O caminho de escrita do sistema é o lance. Para aceitá-lo, o serviço verifica se o leilão está ativo, se ainda não terminou, se o vendedor não está apostando na própria carta e se o valor supera o maior lance registrado. A verificação e a gravação ocorrem na mesma transação, que trava a linha do leilão e atualiza a referência para o maior lance. Quando o prazo termina, o worker consome a fila, lê o maior lance e transfere a carta ao vencedor, registrando a troca no histórico de transferências. No estado inicial, a análise estática registrou 88 dependências cruzando fronteiras de módulo, de um total de 174.
-
-A Figura \ref{fig:leilao_arquitetura} apresenta a arquitetura base do sistema.
+A Figura \ref{fig:leilao_arquitetura} demonstra a arquitetura base do sistema.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{figuras/leilao__arquitetura.png}
+    \includegraphics[width=\linewidth]{figuras/leilao_arquitetura.png}
     \caption{Arquitetura base do sistema de leilões.}
     \label{fig:leilao_arquitetura}
     \legend{Elaborado pelo autor (2026).}
 \end{figure}
-
-O Quadro \ref{qua:metricas-leilao-s0} reúne as métricas do sistema de leilões no estado inicial Snapshot 0.
-
-\input{tabelas/metricas-leilao-s0.tex}
-
 \subsection*{E-commerce}
 
 Desenvolvida sobre o NestJS com o ODM Mongoose conectado a um banco de dados orientado a documentos (MongoDB), o código fonte original se organizava em mais de 20 controladores que cobriam autenticação, produtos, carrinho, pedidos, estoque e avaliações. Por conta desse volume, a fim de focar a experimentação na regra de negócio principal, foi necessário reduzir a complexidade do sistema ao cortar módulos que se integravam com ferramentas de terceiros, como AWS para armazenamento em núvem e Stripe para pagamentos, que se transformaram em módulos locais. Além disso, alguns componentes que complementavam o sistema, como aluguel, ofertas de serviços e chat também foram removidos. Desta forma, sua estrutura final permite investigar os impactos da decomposição em modelos orientados a documentos e em como o pedido grava status e estoque das operações de finalização de compras.
@@ -65,11 +60,11 @@ A Figura \ref{fig:ecommerce_arquitetura} demonstra a arquitetura base do sistema
 \section{Infraestrutura de Experimentação e Coleta de Métricas}
 \label{sec:infra_experimental}
 
-Para comparar as metodologias de forma precisa, é necessário configurar o ambiente para que os testes sejam feitos em cima das mesmas condições. Nesse sentido, antes de comparar as métricas, foi construída uma infraestrutura de automação, responsável por subir as aplicações, gerar a carga e coletar as métricas. Essa infraestrutura concentra os procedimentos de execução e de coleta em um único conjunto de scripts, de modo que para realizar um novo teste, não é necessário refazer manualmente o processo.
+Para comparar as metodologias de forma precisa, é necessário configurar o ambiente para que os testes sejam feitos em cima das mesmas condições. Nesse sentido, antes de comparar as métricas, foi construída uma infraestrutura de automação, responsável por subir os sistemas, gerar a carga e coletar as métricas. Essa infraestrutura concentra os procedimentos de execução e de coleta em um único conjunto de scripts, de modo que para realizar um novo teste, não é necessário refazer manualmente o processo.
 
 Com base nisso, as medições foram realizadas em um ambiente padrão: Windows 11, processador AMD Ryzen 7 5700X3D, 32 GB de memória, Docker Engine 29.7.2 e Docker Compose v5.4.0. Manter o ambiente permite comparar tempos de construção e consumo de recursos entre snapshots. Também, foram adotadas regras de isolamento, como manter os recursos alocados ao Docker constantes e encerrar contêineres externos ao experimento antes de cada medição, para não afetar os dados de processamento e de memória nem a contagem de componentes.
 
-A execução de cada aplicação se apoia em contêineres Docker orquestrados por \texttt{docker compose}. Cada aplicação sobe com seus serviços de apoio, como banco de dados e, quando aplicável, cache e proxy reverso. Para que a referência base das aplicações iniciais e decomposições partam do mesmo estado, um script de \emph{seed} determinístico popula o banco com um conjunto equivalente de dados de demonstração. As portas são fixadas por aplicação, conforme uma tabela de portas própria para o experimento, de modo a evitar colisões e preservar a reprodutibilidade.
+A execução de cada aplicação se apoia em contêineres Docker orquestrados por \texttt{docker compose}. Cada aplicação sobe com seus serviços de apoio, como banco de dados e, quando aplicável, cache e proxy reverso. Para que a referência base dos sistemas iniciais e decomposições partam do mesmo estado, um script de \emph{seed} determinístico popula o banco com um conjunto equivalente de dados de demonstração. As portas são fixadas por aplicação, conforme uma tabela de portas própria para o experimento, de modo a evitar colisões e preservar a reprodutibilidade.
 
 A coleta cobre oito métricas, distribuídas nas quatro categorias de medição definidas no Capítulo \ref{cap:metodologia}: tempo de construção da imagem, tempo de inicialização, consumo de processamento e de memória em repouso e sob carga, tamanho das imagens, vazão máxima e percentis de latência sob carga, Linhas de Código, contagem de componentes físicos e violações de fronteiras lógicas. A carga sintética é gerada com a ferramenta \emph{autocannon}. A contagem de Linhas de Código e as violações de fronteiras lógicas vêm de análise estática.
 
@@ -91,27 +86,43 @@ A terceira e última extração foi a da capacidade de Controle de Estoque, que 
 
 O Quadro \ref{qua:comp_inventory-api_capacidade-negocio_snapshots} apresenta as métricas ao longo das quatro fases e o Quadro \ref{qua:comp_capacidade-negocio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 47 segundos no baseline canônico para 138 segundos no estado final, como consequência da construção de imagens independentes. O consumo de memória e de processamento cresceu de forma contínua, com aumento significativo do processamento sob carga na fase final, quando passaram a existir dois bancos dedicados. A vazão média das rotas caiu após a primeira extração, em razão do salto adicional pelo proxy, e se recuperou nas fases seguintes. O número de componentes subiu de dois para seis. As Linhas de Código cresceram até a segunda extração, por duplicação de código transversal, e caíram no estado final, quando o monólito deixou de compor a solução. As chamadas entre fronteiras medidas pela análise estática variaram pouco, pois o acoplamento entre serviços passou a ocorrer pela rede e não é capturado por essa análise.
 
-\input{tabelas/inventory-api__capacidade-negocio__snapshots.tex}
+%\input{tabelas/inventory-api__capacidade-negocio__snapshots.tex}
 
-\input{tabelas/capacidade-negocio__variacoes.tex}
+%\input{tabelas/capacidade-negocio__variacoes.tex}
 
 \subsection*{Sistema de Leilões}
 
-Na decomposição por capacidade de negócio, os nove módulos do leilão foram agrupados em cinco capacidades: Identidade (autenticação e usuários), Catálogo de Cartas (cartas e tipos de carta), Leilão (leilões e tarefas de fechamento), Lances e Tempo Real. O worker de fechamento pertence ao Leilão, porque só existe para encerrar o que essa capacidade administra. A extração foi feita em três fases, com o monólito desativado apenas na última. No baseline, a análise estática registrou 88 dependências cruzando fronteiras de módulo, de um total de 174.
+Na decomposição por capacidade de negócio, os nove módulos do leilão foram agrupados em cinco capacidades: Identidade, com autenticação e usuários; Catálogo de Cartas, com cartas e tipos de carta; Leilão, com os leilões e as tarefas de fechamento; Lances; e Tempo Real. O worker de fechamento ficou no Leilão, porque existe apenas para encerrar o que essa capacidade administra. A extração ocorreu em três fases e o monólito foi desativado na última. No monólito de referência, a análise estática registrou 88 dependências cruzando fronteiras de módulo, de um total de 174.
 
-A primeira extração foi a de Lances, escolhida por ser a menor capacidade e por concentrar o caminho de escrita. O serviço passou a responder por \texttt{/auctions/:id/bids} atrás do NGINX, mas continuou usando o banco do monólito. Nessa fase, a transação do lance ainda travava a linha do leilão na mesma base, e por isso a vazão de escrita quase não mudou. O custo apareceu no código: o serviço copiou as entidades de leilão, carta, tipo de carta e usuário, além do publicador de eventos, e as Linhas de Código cresceram 25 \%.
+A primeira capacidade extraída foi a de Lances, a menor do sistema e a que concentra o caminho de escrita. O serviço passou a responder por \texttt{/auctions/:id/bids} atrás do NGINX, mas continuou apontando para o banco do monólito. Nessa fase, a transação do lance ainda travava a linha do leilão na mesma base, e a vazão de escrita ficou praticamente igual à do baseline. O custo apareceu no código: o serviço copiou as entidades de leilão, carta, tipo de carta e usuário, além do publicador de eventos, e as Linhas de Código cresceram 25 \%.
 
-A segunda extração levou o Leilão e o worker para um serviço próprio. A fila do BullMQ e o varredor de leilões vencidos saíram junto, e o fechamento continuou atômico porque o banco seguia compartilhado: o worker lia os lances, travava a carta e gravava a transferência na mesma transação. O ganho dessa fase foi separar o processo assíncrono do caminho de leitura; o preço foi o tempo de inicialização, que subiu 45 \% com mais dois contêineres verificados por healthcheck.
+A segunda extração levou o Leilão e o worker para um serviço próprio, junto com a fila do BullMQ e o varredor de leilões vencidos. O fechamento continuou atômico porque a base seguia compartilhada: o worker lia os lances, travava a carta e gravava a transferência na mesma transação. O ganho da fase foi separar o processo assíncrono do caminho de leitura, e o preço apareceu na inicialização, que subiu 45 \% com mais dois contêineres verificados por healthcheck.
 
-Na fase final saíram as três capacidades restantes, o monólito foi desativado e a persistência passou a ser isolada, com um banco por serviço. A separação expôs a dificuldade central da trilha: o lance deixou de ser uma transação única. O serviço de Lances manteve no próprio banco uma cópia do estado do leilão para verificar a invariante de valor crescente e passou a enviar o novo maior lance ao Leilão por chamada interna, depois do commit. A criação de leilão também passou a travar a carta no Catálogo por HTTP, e o fechamento passou a atravessar três serviços: o worker lê o maior lance em Lances, pede a transferência ao Catálogo e só então marca o leilão como encerrado.
+Na etapa final saíram Identidade, Catálogo e Tempo Real, o monólito foi desativado e cada serviço passou a ter o próprio banco. A separação expôs a principal dificuldade da trilha: o lance deixou de ser uma transação única. O serviço de Lances manteve no próprio banco uma cópia do estado do leilão para verificar a regra de valor crescente e passou a enviar o maior lance ao Leilão por chamada interna, depois do commit. A criação de um leilão também passou a travar a carta no Catálogo por HTTP, e o fechamento passou a atravessar três serviços: o worker lê o maior lance em Lances, pede a transferência da carta ao Catálogo e só então marca o leilão como encerrado.
 
-O Quadro \ref{qua:comp_auction_capacidade-negocio_snapshots} apresenta as métricas das quatro fases e o Quadro \ref{qua:comp_capacidade-negocio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 76 segundos no baseline para 117 segundos no estado final, e o de inicialização mais que dobrou. A memória sob carga passou de 314 MB para 799 MB, consequência dos quatro bancos dedicados. A vazão de \texttt{GET /auctions} caiu cerca de 20 \%, porque cada resposta passou a exigir uma chamada em lote ao Catálogo e outra à Identidade, além do salto pelo gateway. A escrita de lances caiu 45 \%, a maior perda da trilha.
+O Quadro \ref{qua:comp_auction_capacidade-negocio_snapshots} apresenta as métricas ao longo das quatro fases e o Quadro \ref{qua:comp_capacidade-negocio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 76 segundos no baseline para 117 segundos no estado final, pela construção de cinco imagens independentes, e o de inicialização mais que dobrou, ao somar os healthchecks e a criação de esquema nos quatro bancos. A memória sob carga passou de 314 MB para 799 MB. A vazão de \texttt{GET /auctions} caiu cerca de 20 \%, porque cada resposta passou a exigir uma chamada em lote ao Catálogo e outra à Identidade, além do salto pelo gateway, e a escrita de lances caiu 45 \%, a maior perda da trilha.
 
-As chamadas entre fronteiras medidas pela análise estática caíram de 125 para 109 quando o monólito saiu de cena, movimento oposto ao das duas fases anteriores. A queda não indica menos acoplamento: indica que o acoplamento deixou de estar no código. Os serviços passaram a se comunicar por 13 endpoints internos, e o único trecho que a análise estática ainda enxerga é o que ficou duplicado dentro de cada serviço. Resta uma diferença de consistência em relação às fases anteriores: a chamada que leva o maior lance ao Leilão não tem retentativa, de modo que uma falha nela deixa a projeção do leilão atrás do último lance gravado. É o preço de manter a invariante em um banco e publicá-la em outro, sem transação distribuída.
+As chamadas entre fronteiras medidas pela análise estática caíram de 125 para 109 quando o monólito saiu de cena, movimento oposto ao das duas fases anteriores. A queda não indica menos acoplamento, e sim que o acoplamento deixou de estar no código: os serviços passaram a se comunicar por 13 endpoints internos, que a análise estática não detecta. Resta uma diferença de consistência em relação às fases anteriores. A chamada que leva o maior lance ao Leilão não tem retentativa, de modo que uma falha nela deixa a projeção do leilão atrás do último lance gravado. É o preço de manter a invariante em um banco e publicá-la em outro, sem transação distribuída.
 
-\input{tabelas/auction__capacidade-negocio__snapshots.tex}
+%\input{tabelas/auction__capacidade-negocio__snapshots.tex}
 
 \subsection*{E-commerce}
+
+Na decomposição por capacidade de negócio, os treze módulos do e-commerce foram agrupados em quatro capacidades: Catálogo, Clientes, Vendas e Comunicação. O planejamento inicial previa o estoque como uma capacidade à parte, mas, como ele é atualizado dentro do próprio processo de compra, foi incorporado a Vendas, junto ao carrinho e ao pedido. No monólito de referência, a análise estática identificou 79 dependências cruzando fronteiras de módulo, de um total de 207, concentradas principalmente no carrinho e no pedido.
+
+O Catálogo foi a primeira capacidade extraída, por concentrar operações de consulta e ter poucos pontos de contato com o restante do sistema. Assim como nas demais trilhas, a extração seguiu o padrão \textit{Strangler Fig} mediado por NGINX, com a persistência ainda compartilhada. A principal consequência desta etapa foi a separação entre o pedido e a baixa de estoque, que passou a ocorrer por meio de uma chamada entre serviços. O comportamento do sistema foi preservado, mas as duas operações deixaram de ser atômicas, custo que a trilha de Transações examina de forma explícita.
+
+Em seguida, foi extraída a capacidade de Clientes, responsável pela identidade dos usuários e da qual praticamente todos os módulos dependem. Para evitar que cada requisição precisasse consultar o novo serviço, a validação de acesso permaneceu local no monólito, e a persistência continuou compartilhada nesta fase.
+
+Na etapa final, Vendas e Comunicação foram extraídas, o monólito foi desativado e cada serviço passou a ter seu próprio banco de dados. Com o isolamento dos dados, operações que antes eram resolvidas por consultas locais passaram a depender da rede: fechar um pedido exige validar o comprador em Clientes e os produtos no Catálogo, e exibir o carrinho requer combinar dados de dois serviços a cada leitura. Esta foi a principal dificuldade da trilha, pois o acoplamento entre as capacidades não deixou de existir, apenas foi transferido para a rede, onde a análise estática não consegue detectá-lo.
+
+O Quadro \ref{qua:comp_ecommerce_capacidade-negocio_snapshots} apresenta as métricas das quatro fases. O tempo de construção caiu 25 \% no estado final, já que a imagem do monólito, a mais pesada, deixou de ser construída e as imagens menores passaram a ser geradas em paralelo. A inicialização variou pouco, enquanto o número de componentes subiu de três para nove com a inclusão de três bancos de dados. O impacto mais expressivo apareceu na memória, cujo consumo em repouso quase triplicou e, sob carga, praticamente dobrou.
+
+No desempenho, a vazão média caiu 3 \% e a latência mediana recuou 12 \%. A rota de escrita apresentou aumento de vazão mesmo com as validações em rede, resultado que exige nova medição antes de ser atribuído à decomposição. As Linhas de Código cresceram 11 \% até a segunda extração e recuaram no estado final, com a remoção do monólito, e as chamadas entre fronteiras ficaram ligeiramente abaixo do código original.
+
+Em síntese, a trilha trocou um acoplamento visível por outro invisível. O volume de código diminuiu no estado final, mas concluir um pedido passou a depender de outros serviços, um custo que escapa à análise estática e se reflete nas métricas de infraestrutura.
+
+%\input{tabelas/ecommerce__capacidade-negocio__snapshots.tex}
 
 
 \section{Decomposição por Subdomínio (DDD)}
@@ -127,13 +138,32 @@ A etapa final extraiu o núcleo e isolou a persistência, com um banco por servi
 
 O Quadro \ref{qua:comp_inventory-api_subdominio_snapshots} apresenta as métricas ao longo das quatro fases e o Quadro \ref{qua:comp_subdominio_variacoes} consolida a variação acumulada da metodologia em relação ao S0 canônico. O tempo de construção subiu de cerca de 47 segundos no baseline para cerca de 123 segundos no estado final, em razão da construção de imagens independentes. O tempo de inicialização variou pouco até a segunda extração e subiu no estado final, quando passaram a existir três bancos. O número de componentes cresceu de dois para oito. As Linhas de Código subiram até a extração do suporte, por duplicação de código transversal, e caíram no estado final, quando o monólito deixou de compor a solução. As chamadas entre fronteiras medidas pela análise estática variaram pouco, pois o acoplamento entre serviços passou a ocorrer pela rede e não é capturado por essa análise. A vazão média das rotas apresentou leve recuperação no estado final e a latência média caiu em relação ao baseline. Vale registrar que a primeira extração desta trilha coincide, em topologia e em números, com a segunda fase da Capacidade de Negócio, o que reforça que o efeito medido até ali decorre da estrutura resultante e não da metodologia empregada.
 
-\input{tabelas/inventory-api__subdominio__snapshots.tex}
+%\input{tabelas/inventory-api__subdominio__snapshots.tex}
 
-\input{tabelas/subdominio__variacoes.tex}
+%\input{tabelas/subdominio__variacoes.tex}
 
 \subsection*{Sistema de Leilões}
 
+
 \subsection*{E-commerce}
+
+Para classificar o e-commerce de acordo com seus subdomínios, o critério deixou de ser os processos que a loja executa e passou a ser o valor estratégico de cada parte do sistema. Assim, autenticação, cadastro de usuários e o envio de e-mails formam subdomínios genéricos por serem funcionalidades que podem ser terceirizadas por outros aplicativos. O catálogo de produtos é um subdomínio de suporte, pois sem ele não há venda, mas não é o que diferencia a loja. O núcleo é a parte principal do negócio, e por isso reúne carrinho, frete, pedido, estoque e pagamento.
+
+Dois casos exigiram atenção ao código. O armazenamento de arquivos, usado tanto pelo catálogo quanto pelo cadastro de usuários, foi duplicado nos dois serviços para evitar uma dependência comum entre fronteiras. Já o pagamento, que dependia de uma plataforma externa, permaneceu no núcleo, por estar ligado à finalização do pedido e à baixa de estoque.
+
+Assim como nos outros sistemas do experimento a ordem foi inversa à Capacidade de Negócio, começando pelos subdomínios genéricos. Na primeira fase, Identidade e Comunicação foram extraídas, ainda com o banco de dados compartilhado. A principal dificuldade foi desfazer dependências circulares entre usuários e autenticação, que se referenciavam um ao outro no monólito. Como nas outras trilhas, a validação de acesso permaneceu local, evitando consultas à Identidade a cada requisição. Essa fase reduziu as dependências entre fronteiras de 79 para 69, já que o monólito ainda concentrava o catálogo e o próprio serviço de Identidade recriou parte dessas dependências internamente.
+
+O Catálogo foi extraído em seguida, por ser o último componente que o monólito ainda acessava diretamente no banco. Nesta fase, apenas a baixa de estoque passou a ser feita por chamada ao novo serviço, enquanto carrinho e pedido continuaram lendo os produtos no banco compartilhado. Com isso, a confirmação do pedido e a baixa de estoque deixaram de ocorrer na mesma transação, e uma falha entre as duas pode deixar o sistema inconsistente. Por outro lado, as consultas ao catálogo ganharam de 4 \% a 6 \% de vazão com o processo dedicado.
+
+Na etapa final, o núcleo foi extraído, o monólito foi desativado e cada serviço passou a ter seu próprio banco de dados. A partir daí, o custo deixou de estar no código e passou a estar na rede, visto que para fechar um pedido é necessário validar o comprador na Identidade e os produtos no Catálogo, e exibir o carrinho requer combinar dados de dois serviços a cada leitura. Manter pagamento, pedido e estoque juntos evitou uma transação distribuída, mas não eliminou essas consultas cruzadas. Mais uma vez, o acoplamento não desapareceu, apenas saiu do alcance da análise estática.
+
+O Quadro \ref{qua:comp_ecommerce_subdominio_snapshots} mostra dois efeitos distintos. O primeiro é o custo de manter mais processos em execução, já que com nove contêineres no lugar de três, o consumo de memória quase triplicou em repouso e praticamente dobrou sob carga. O segundo só aparece no estado final, quando o monólito deixa de ser construído. Nesse cenário, o tempo de build caiu 37 \% em relação ao baseline, depois de subir levemente nas fases intermediárias, e as Linhas de Código recuaram em relação ao pico atingido durante a migração. O desempenho variou pouco ao longo da trilha. A vazão média caiu na primeira fase, aumentou em seguida e terminou cerca de 5 \% abaixo do baseline, enquanto a latência mediana ficou 7 \% menor.
+
+\input{tabelas/ecommerce__subdominio__snapshots.tex}
+
+Ao final, a trilha chegou às mesmas quatro fronteiras da Capacidade de Negócio, com o mesmo volume de código e o mesmo número de chamadas entre fronteiras. Como o e-commerce é organizado em torno de um único fluxo de negócio, os critérios de valor e de processo acabam convergindo para o mesmo resultado, delimitado pelo início e pelo fim da compra. O que muda é o percurso. Começar pelos subdomínios genéricos reduziu o acoplamento estático já na primeira fase e antecipou o custo de infraestrutura, enquanto a Capacidade de Negócio só observou essa redução na segunda fase. Neste sistema, portanto, a metodologia escolhida altera o momento em que o custo é pago, e não a arquitetura obtida.
+
+
 
 \section{Decomposição por Transações}
 \label{sec:metodologia_transacoes}
@@ -152,13 +182,30 @@ Os Quadros \ref{qua:comp_inventory-api_transacoes_snapshots} e \ref{qua:comp_tra
 
 O estado final coincide com o da Capacidade de Negócio: mesma topologia, mesmas 9.599 Linhas de Código e as mesmas 78 de 416 chamadas entre fronteiras. A diferença está na ordem das extrações. Nesta trilha, o grupo atômico saiu na primeira extração, e o caminho de escrita passou a depender da rede antes das demais metodologias; na Capacidade, a escrita permaneceu local até o estado final. O resultado indica que, neste domínio, o critério de transações converge para a mesma fronteira da capacidade, porque a invariante de estoque domina o agrupamento. A comparação relevante deixa de ser o formato final e passa a ser quando o custo é pago e por quanto tempo a consistência da escrita depende de um único processo.
 
-\input{tabelas/inventory-api__transacoes__snapshots.tex}
+%\input{tabelas/inventory-api__transacoes__snapshots.tex}
 
-\input{tabelas/transacoes__variacoes.tex}
+%\input{tabelas/transacoes__variacoes.tex}
 
 \subsection*{Sistema de Leilões}
 
 \subsection*{E-commerce}
+
+Na decomposição por transações, o agrupamento parte do que precisa ser gravado junto. No e-commerce, a operação crítica é a confirmação do pedido: o webhook de pagamento muda o status do pedido e baixa o estoque dos itens na mesma sessão Mongo. Desse modo, se as duas escritas não acontecem juntas, um pedido pode ficar pago sem baixa ou com baixa parcial. Por isso, carrinho, frete, pedido, estoque e pagamento formaram um único serviço, o Checkout. Catálogo, Identidade e Comunicação ficaram fora da transação. O código de origem tinha 79 de 207 dependências cruzando fronteiras de módulo, concentradas no carrinho e no pedido.
+
+A extração começou pelo Checkout, ao contrário das outras duas trilhas, para que a transação ficasse em um único processo desde o início. O banco continuou sendo o do monólito, ou seja, carrinho e pedido liam produtos e usuários na mesma base, e a baixa do estoque seguia dentro da sessão do pedido. O monólito perdeu cinco módulos e manteve catálogo, identidade e comunicação, além de duas rotas internas: uma para o e-mail de confirmação, chamado depois do commit, e outra para o status de assinatura.
+
+Na segunda fase, o Catálogo foi extraído. A leitura de produto continuou local, porque a coleção era a mesma, e a baixa de estoque passou a escrever uma coleção que outro serviço serve. A atomicidade sobreviveu apenas porque o banco continuava compartilhado: a escrita cruzava a fronteira do serviço, mas não a do banco. É uma situação que só existe durante a migração e que a etapa final remove.
+
+Na etapa final, Identidade e Comunicação saíram, o monólito foi desativado e cada serviço passou a ter seu banco. O estoque deixou de ser um campo do produto e virou um contador próprio do Checkout, baixado na mesma sessão do status do pedido. O Catálogo mantém uma cópia de leitura, atualizada por uma chamada depois do commit, e a criação de um produto inicializa o contador no Checkout. Se a sincronização falhar, a listagem mostra saldo antigo, mas o saldo que decide a venda continua consistente. A validação do comprador e do item virou chamada HTTP dentro do caminho de escrita.
+
+O Quadro \ref{qua:comp_ecommerce_transacoes_snapshots} apresenta as métricas das quatro fases. O tempo de construção subiu de 117,3 para 129,2 segundos nas duas primeiras extrações e caiu para 84,7 segundos no estado final, 27,8 \% abaixo do baseline, porque a imagem do monólito deixou de ser construída. As Linhas de Código foram de 4.820 para 5.263 e terminaram em 5.004, com a saída do monólito. As chamadas entre fronteiras caíram de 79 para 72 e terminaram em 71 de 193. Os componentes passaram de três para nove e a memória em repouso, de 279,2 para 764,5 MB, com os três bancos. A vazão média terminou 3 \% abaixo do baseline e a latência mediana, 5,6 \% menor.
+
+A rota de escrita medida nas outras trilhas não executa essa transação: \texttt{POST /api/orders} apenas grava o pedido. Por isso, esta trilha mediu também o webhook, com uma conexão, porque requisições concorrentes sobre o mesmo pedido disputam a mesma transação e falham com conflito de escrita. O webhook fez 75,6 req/s no s1, 91,2 no s2 e 77,1 no final; a queda de 15,5 \% no último passo corresponde às duas validações em rede e à sincronização da cópia de leitura.
+
+\input{tabelas/ecommerce__transacoes__snapshots.tex}
+
+O estado final tem as mesmas quatro fronteiras das outras duas trilhas, mas não o mesmo artefato: 5.004 Linhas de Código e 71 de 193 chamadas, contra 5.328 e 76 de 206. A diferença não é de forma: o estoque está dentro do Checkout. Na Capacidade e no Subdomínio, a baixa saía por chamada HTTP e o pedido deixava de ser atômico desde a primeira extração; aqui, a consistência foi preservada em todas as fases, ao preço de extrair cinco módulos de uma vez, de quase dobrar a memória e de reduzir a vazão do caminho de confirmação. Em um domínio com um único fluxo de negócio, o critério de transações chega à mesma topologia dos outros dois, mas o custo é pago no começo, e não no fim.
+
 
 \section{Comparação entre as Metodologias}
 \label{sec:comparacao_metodologias}
@@ -166,7 +213,7 @@ O estado final coincide com o da Capacidade de Negócio: mesma topologia, mesmas
 O Quadro \ref{qua:comp_metodologias} reúne a variação acumulada de cada metodologia entre o estado inicial e o estado final.
 
 
-\input{tabelas/_metodologias.tex}
+%%\input{tabelas/_metodologias.tex}
 
 \section{Síntese do Capítulo}
 \label{sec:sintese_capitulo}

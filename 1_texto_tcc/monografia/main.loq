@@ -1,10 +1,2 @@
-\contentsline {quadro}{\numberline {1}{\ignorespaces Métricas do sistema de inventário no baseline (Snapshot 0).}}{33}{quadro.caption.28}%
-\contentsline {quadro}{\numberline {2}{\ignorespaces Métricas do sistema de leilões no baseline (Snapshot 0).}}{35}{quadro.caption.31}%
-\contentsline {quadro}{\numberline {3}{\ignorespaces Inventário --- métricas por snapshot --- Capacidade de Negócio.}}{38}{quadro.caption.35}%
-\contentsline {quadro}{\numberline {4}{\ignorespaces Variação acumulada por aplicação --- Capacidade de Negócio.}}{39}{quadro.caption.36}%
-\contentsline {quadro}{\numberline {5}{\ignorespaces Leilões --- métricas por snapshot --- Capacidade de Negócio.}}{40}{quadro.caption.38}%
-\contentsline {quadro}{\numberline {6}{\ignorespaces Inventário --- métricas por snapshot --- Subdomínio (DDD).}}{42}{quadro.caption.41}%
-\contentsline {quadro}{\numberline {7}{\ignorespaces Variação acumulada por aplicação --- Subdomínio (DDD).}}{43}{quadro.caption.42}%
-\contentsline {quadro}{\numberline {8}{\ignorespaces Inventário --- métricas por snapshot --- Transações.}}{45}{quadro.caption.46}%
-\contentsline {quadro}{\numberline {9}{\ignorespaces Variação acumulada por aplicação --- Transações.}}{46}{quadro.caption.47}%
-\contentsline {quadro}{\numberline {10}{\ignorespaces Variação acumulada por metodologia (S0 $\rightarrow $ último snapshot).}}{47}{quadro.caption.50}%
+\contentsline {quadro}{\numberline {1}{\ignorespaces E-commerce --- métricas por snapshot --- Subdomínio (DDD).}}{41}{quadro.caption.38}%
+\contentsline {quadro}{\numberline {2}{\ignorespaces E-commerce --- métricas por snapshot --- Transações.}}{45}{quadro.caption.42}%

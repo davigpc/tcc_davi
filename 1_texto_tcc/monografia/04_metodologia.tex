@@ -1,10 +1,12 @@
 \chapter{Metodologia}
 \label{cap:metodologia}
 
+%TOMAR CUIDADO EM TODO O DOCUMENTO (NÃO SÓ NESTE CAP) QUE TEM HORA QUE VC USA O TERMO APLICAÇÕES, OUTROS MOMENTOS VC FALA SISTEMAS. NÃO PODE FICAR ALTERNANDO. ESCOLHA UM TERMO E USE SEMPRE O MESMO.
+
 % Introdução breve do capítulo explicando que a pesquisa tem caráter empírico e quantitativo, 
 % focando na comparação de três padrões de decomposição em três aplicações distintas.
 
-Este capítulo descreve a metodologia de pesquisa adotada para conduzir este estudo empírico comparativo sobre estratégias de decomposição de monólitos em microsserviços. A pesquisa é baseada na Engenharia de Software Experimental, estruturando-se a partir da refatoração de três aplicações monolíticas de código aberto, submetidas a três metodologias distintas de decomposição arquitetural.
+Este capítulo descreve a metodologia de pesquisa adotada para conduzir este estudo empírico comparativo sobre estratégias de decomposição de monólitos em microsserviços. A pesquisa é baseada na Engenharia de Software Experimental, estruturando-se a partir da refatoração de três sistemas monolíticos de código aberto, submetidas a três metodologias distintas de decomposição arquitetural.
 
 A metodologia foi desenhada para que seja possível coletar e analisar dados de experimentos quantitativos ao longo do processo de migração, utilizando o padrão \textit{Strangler Fig} como mecanismo para a extração incremental. A observação dos experimentos ocorre de forma iterativa por meio de marcos de transição (\textit{snapshots}), o que permite avaliar o impacto de cada estratégia em quatro categorias: agilidade, infraestrutura, desempenho e manutenibilidade.
 
@@ -33,10 +35,10 @@ O experimento fundamenta-se na definição explícita de variáveis independente
 
 A metodologia prevê a execução de nove trilhas de refatoração independentes, partindo do mesmo ponto para cada aplicação. Cada trilha é submetida a testes padronizados de estresse e avaliação estática de código a cada tranformação.
 
-\section{Seleção e Justificativa das Aplicações}
+\section{Seleção e Justificativa dos Sistemas}
 \label{sec:selecao_aplicacoes}
 
-Para assegurar a validade e a relevância prática dos resultados, evitou-se o uso de sistemas de teste artificiais. Com base nisso, foram selecionadas três aplicações monolíticas de código aberto desenvolvidas em TypeScript com o ecossistema NestJS, que representam propostas e requisitos não funcionais diferentes encontrados na indústria de software.
+Para assegurar a validade e a relevância prática dos resultados, evitou-se o uso de sistemas de teste artificiais. Com base nisso, foram selecionados três sistemas monolíticos de código aberto desenvolvidas em TypeScript com o ecossistema NestJS, que representam propostas e requisitos não funcionais diferentes encontrados na indústria de software.
 
 \begin{itemize}
     \item \textbf{Aplicação Crítica: Sistema de Inventário.} A aplicação \textit{inventory-api}\footnote{Disponível em: \url{https://github.com/egp1020/inventory-api}.} representa um sistema de controle de inventário e execução operacional, similar aos sistemas MES (\textit{Manufacturing Execution System}) industriais. Nesse contexto, é uma aplicação que demanda acesso em tempo real, de modo a não tolerar tempos elevados fora do ar. Além disso, a integridade das transações nos bancos de dados é fundamental: transações operacionais de baixa e transferência de materiais exigem atualizações imediatas entre armazéns, produtos e saldos em estoque, sendo inadmissível o registro de quantidades negativas.
@@ -49,7 +51,7 @@ Para assegurar a validade e a relevância prática dos resultados, evitou-se o u
 \section{Procedimentos de Migração e Marcos de Avaliação}
 \label{sec:procedimentos_snapshots}
 
-A condução das refatorações segue uma abordagem de evolução controlada, reduzindo interrupções no funcionamento global do sistema e permitindo aferir os impactos parciais de cada etapa de extração.
+A condução das refatorações segue uma abordagem de evolução controlada, reduzindo interrupções no funcionamento global do sistema e permitindo medir os impactos parciais de cada etapa de extração.
 
 A transição da arquitetura de cada monólito para microsserviços é mediada pelo padrão \textit{Strangler Fig} \cite{fowler2004}, suportado por um proxy reverso configurado com o software NGINX.
 
@@ -68,4 +70,6 @@ Para permitir que as mudanças e impactos sejam avaliados e rastreáveis, cada u
 \end{enumerate}
 
 Cada marco de transição é feito por meio de tags no repositório de versionamento de código e submetido aos mesmos cenários de estresse de carga e amostragem de dados, para que as informações de desempenho, custo e acoplamento possam ser avaliadas conforme a evolução da arquitetura.
+
+%SERIA LEGAL TER UMA FIGURA ILUSTRANDO O QUE VC FALOU: três aplicações monolíticas de código aberto, submetidas a três metodologias distintas de decomposição arquitetural em uma matriz $3 \times 3$. 
 
