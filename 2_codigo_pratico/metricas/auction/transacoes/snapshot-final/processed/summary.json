@@ -1,0 +1,583 @@
+{
+  "app": "auction",
+  "metodologia": "transacoes",
+  "snapshot": "snapshot-final",
+  "tag": null,
+  "timestampUtc": "2026-11-17T19:15:30.387Z",
+  "buildTime": {
+    "meanMs": 109989,
+    "runsMs": [
+      101777,
+      118855,
+      109335
+    ]
+  },
+  "startupTime": {
+    "meanMs": 19015,
+    "runsMs": [
+      19190,
+      18956,
+      18898
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "auction_tx_final_nginx",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 12.82,
+        "memMinMB": 12.82,
+        "memMaxMB": 12.82
+      },
+      {
+        "container": "auction_tx_final_atomo_worker",
+        "samples": 4,
+        "cpuMedPerc": 0.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.08,
+        "memMedMB": 49.28,
+        "memMinMB": 49.2,
+        "memMaxMB": 49.31
+      },
+      {
+        "container": "auction_tx_final_atomo",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memMedMB": 58.88,
+        "memMinMB": 58.69,
+        "memMaxMB": 58.97
+      },
+      {
+        "container": "auction_tx_final_tempo_real",
+        "samples": 4,
+        "cpuMedPerc": 0.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 2.56,
+        "memMedMB": 38.36,
+        "memMinMB": 38.28,
+        "memMaxMB": 38.46
+      },
+      {
+        "container": "auction_tx_final_identidade",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 49.4,
+        "memMinMB": 49.36,
+        "memMaxMB": 49.45
+      },
+      {
+        "container": "auction_tx_final_atomo_db",
+        "samples": 4,
+        "cpuMedPerc": 0.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memMedMB": 20.35,
+        "memMinMB": 20.3,
+        "memMaxMB": 22.11
+      },
+      {
+        "container": "auction_tx_final_identity_db",
+        "samples": 4,
+        "cpuMedPerc": 0.01,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memMedMB": 20.2,
+        "memMinMB": 20.19,
+        "memMaxMB": 20.21
+      },
+      {
+        "container": "auction_tx_final_redis",
+        "samples": 4,
+        "cpuMedPerc": 0.16,
+        "cpuMinPerc": 0.15,
+        "cpuMaxPerc": 0.18,
+        "memMedMB": 8.55,
+        "memMinMB": 8.54,
+        "memMaxMB": 8.55
+      }
+    ],
+    "load": [
+      {
+        "container": "auction_tx_final_nginx",
+        "samples": 4,
+        "cpuMedPerc": 10.86,
+        "cpuMinPerc": 10.54,
+        "cpuMaxPerc": 11.05,
+        "memMedMB": 14.25,
+        "memMinMB": 14.06,
+        "memMaxMB": 14.38
+      },
+      {
+        "container": "auction_tx_final_atomo_worker",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 49.88,
+        "memMinMB": 49.81,
+        "memMaxMB": 49.93
+      },
+      {
+        "container": "auction_tx_final_atomo",
+        "samples": 4,
+        "cpuMedPerc": 110.41,
+        "cpuMinPerc": 104.04,
+        "cpuMaxPerc": 111.53,
+        "memMedMB": 228.85,
+        "memMinMB": 228.6,
+        "memMaxMB": 229.2
+      },
+      {
+        "container": "auction_tx_final_tempo_real",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0.01,
+        "memMedMB": 38.75,
+        "memMinMB": 38.75,
+        "memMaxMB": 38.77
+      },
+      {
+        "container": "auction_tx_final_identidade",
+        "samples": 4,
+        "cpuMedPerc": 46.89,
+        "cpuMinPerc": 41.77,
+        "cpuMaxPerc": 48.81,
+        "memMedMB": 114.7,
+        "memMinMB": 114.6,
+        "memMaxMB": 115.1
+      },
+      {
+        "container": "auction_tx_final_atomo_db",
+        "samples": 4,
+        "cpuMedPerc": 48.71,
+        "cpuMinPerc": 47.78,
+        "cpuMaxPerc": 49.44,
+        "memMedMB": 42.86,
+        "memMinMB": 41.99,
+        "memMaxMB": 43.7
+      },
+      {
+        "container": "auction_tx_final_identity_db",
+        "samples": 4,
+        "cpuMedPerc": 9.52,
+        "cpuMinPerc": 9.39,
+        "cpuMaxPerc": 9.76,
+        "memMedMB": 31.14,
+        "memMinMB": 31.13,
+        "memMaxMB": 32.69
+      },
+      {
+        "container": "auction_tx_final_redis",
+        "samples": 4,
+        "cpuMedPerc": 1.6,
+        "cpuMinPerc": 0.2,
+        "cpuMaxPerc": 3.24,
+        "memMedMB": 8.6,
+        "memMinMB": 8.46,
+        "memMaxMB": 9.14
+      }
+    ],
+    "imagensMB": {
+      "auction-tx-final-identidade": 108.17,
+      "auction-tx-final-atomo": 108.22,
+      "auction-tx-final-tempo-real": 108.15,
+      "postgres:16": 158.5,
+      "redis:7": 41.6,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "auction-by-id",
+        "rpsMean": 635.4,
+        "rpsMin": 614.6,
+        "rpsMax": 646.3,
+        "p50Mean": 30.33,
+        "p50Min": 30,
+        "p50Max": 31,
+        "p90Mean": 34.67,
+        "p90Min": 34,
+        "p90Max": 36,
+        "p99Mean": 41.33,
+        "p99Min": 40,
+        "p99Max": 44,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "auctions",
+        "rpsMean": 723.33,
+        "rpsMin": 620.6,
+        "rpsMax": 780,
+        "p50Mean": 26.33,
+        "p50Min": 25,
+        "p50Max": 29,
+        "p90Mean": 32.33,
+        "p90Min": 27,
+        "p90Max": 42,
+        "p99Mean": 43.33,
+        "p99Min": 33,
+        "p99Max": 63,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "bids",
+        "rpsMean": 143.17,
+        "rpsMin": 97.5,
+        "rpsMax": 169.3,
+        "p50Mean": 6.67,
+        "p50Min": 5,
+        "p50Max": 9,
+        "p90Mean": 12,
+        "p90Min": 11,
+        "p90Max": 13,
+        "p99Mean": 15.67,
+        "p99Min": 12,
+        "p99Max": 22,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 3555,
+    "locPorModulo": {
+      "atomo/atomo.module.ts": 27,
+      "atomo/auction-jobs": 217,
+      "atomo/auctions": 722,
+      "atomo/auth": 61,
+      "atomo/bids": 338,
+      "atomo/card-types": 170,
+      "atomo/cards": 289,
+      "atomo/clients": 58,
+      "atomo/common": 17,
+      "atomo/config": 38,
+      "atomo/database": 212,
+      "atomo/health": 17,
+      "atomo/main.ts": 23,
+      "atomo/realtime": 175,
+      "atomo/users": 165,
+      "atomo/worker.module.ts": 13,
+      "atomo/worker.ts": 9,
+      "identidade/auth": 219,
+      "identidade/common": 17,
+      "identidade/config": 31,
+      "identidade/database": 24,
+      "identidade/health": 16,
+      "identidade/identidade.module.ts": 25,
+      "identidade/internal": 47,
+      "identidade/main.ts": 17,
+      "identidade/users": 119,
+      "tempo-real/clients": 41,
+      "tempo-real/config": 28,
+      "tempo-real/health": 16,
+      "tempo-real/main.ts": 15,
+      "tempo-real/realtime": 354,
+      "tempo-real/tempo-real.module.ts": 35
+    },
+    "servicos": 8,
+    "containers": 8,
+    "crossDomainEdges": 96,
+    "totalEdges": 195,
+    "crossDomainPorModulo": {
+      "atomo/_root": 16,
+      "atomo/auction-jobs": 2,
+      "atomo/auctions": 22,
+      "atomo/bids": 9,
+      "atomo/card-types": 1,
+      "atomo/cards": 11,
+      "atomo/clients": 1,
+      "atomo/common": 1,
+      "atomo/database": 6,
+      "atomo/users": 3,
+      "identidade/auth": 6,
+      "identidade/common": 1,
+      "identidade/database": 1,
+      "identidade/_root": 6,
+      "identidade/internal": 3,
+      "tempo-real/realtime": 1,
+      "tempo-real/_root": 6
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/cards",
+        "count": 6
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/auction-jobs",
+        "count": 4
+      },
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/bids",
+        "count": 4
+      },
+      {
+        "from": "atomo/bids",
+        "to": "atomo/auctions",
+        "count": 4
+      },
+      {
+        "from": "atomo/cards",
+        "to": "atomo/card-types",
+        "count": 4
+      },
+      {
+        "from": "identidade/auth",
+        "to": "identidade/users",
+        "count": 4
+      },
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/realtime",
+        "count": 3
+      },
+      {
+        "from": "identidade/internal",
+        "to": "identidade/users",
+        "count": 3
+      },
+      {
+        "from": "tempo-real/_root",
+        "to": "tempo-real/realtime",
+        "count": 3
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/auctions",
+        "count": 2
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/config",
+        "count": 2
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/database",
+        "count": 2
+      },
+      {
+        "from": "atomo/auction-jobs",
+        "to": "atomo/auctions",
+        "count": 2
+      },
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/common",
+        "count": 2
+      },
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/auction-jobs",
+        "count": 2
+      },
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/card-types",
+        "count": 2
+      },
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/users",
+        "count": 2
+      },
+      {
+        "from": "atomo/bids",
+        "to": "atomo/common",
+        "count": 2
+      },
+      {
+        "from": "atomo/bids",
+        "to": "atomo/realtime",
+        "count": 2
+      },
+      {
+        "from": "atomo/cards",
+        "to": "atomo/common",
+        "count": 2
+      },
+      {
+        "from": "atomo/cards",
+        "to": "atomo/users",
+        "count": 2
+      },
+      {
+        "from": "atomo/cards",
+        "to": "atomo/auctions",
+        "count": 2
+      },
+      {
+        "from": "atomo/database",
+        "to": "atomo/cards",
+        "count": 2
+      },
+      {
+        "from": "atomo/users",
+        "to": "atomo/clients",
+        "count": 2
+      },
+      {
+        "from": "identidade/auth",
+        "to": "identidade/common",
+        "count": 2
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/auth",
+        "count": 1
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/bids",
+        "count": 1
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/card-types",
+        "count": 1
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/cards",
+        "count": 1
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/health",
+        "count": 1
+      },
+      {
+        "from": "atomo/_root",
+        "to": "atomo/users",
+        "count": 1
+      },
+      {
+        "from": "atomo/auctions",
+        "to": "atomo/auth",
+        "count": 1
+      },
+      {
+        "from": "atomo/bids",
+        "to": "atomo/auth",
+        "count": 1
+      },
+      {
+        "from": "atomo/card-types",
+        "to": "atomo/common",
+        "count": 1
+      },
+      {
+        "from": "atomo/cards",
+        "to": "atomo/auth",
+        "count": 1
+      },
+      {
+        "from": "atomo/clients",
+        "to": "atomo/auctions",
+        "count": 1
+      },
+      {
+        "from": "atomo/common",
+        "to": "atomo/auth",
+        "count": 1
+      },
+      {
+        "from": "atomo/database",
+        "to": "atomo/auctions",
+        "count": 1
+      },
+      {
+        "from": "atomo/database",
+        "to": "atomo/bids",
+        "count": 1
+      },
+      {
+        "from": "atomo/database",
+        "to": "atomo/card-types",
+        "count": 1
+      },
+      {
+        "from": "atomo/database",
+        "to": "atomo/users",
+        "count": 1
+      },
+      {
+        "from": "atomo/users",
+        "to": "atomo/auctions",
+        "count": 1
+      },
+      {
+        "from": "identidade/common",
+        "to": "identidade/auth",
+        "count": 1
+      },
+      {
+        "from": "identidade/database",
+        "to": "identidade/users",
+        "count": 1
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/auth",
+        "count": 1
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/config",
+        "count": 1
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/database",
+        "count": 1
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/health",
+        "count": 1
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/internal",
+        "count": 1
+      },
+      {
+        "from": "identidade/_root",
+        "to": "identidade/users",
+        "count": 1
+      },
+      {
+        "from": "tempo-real/realtime",
+        "to": "tempo-real/clients",
+        "count": 1
+      },
+      {
+        "from": "tempo-real/_root",
+        "to": "tempo-real/clients",
+        "count": 1
+      },
+      {
+        "from": "tempo-real/_root",
+        "to": "tempo-real/config",
+        "count": 1
+      },
+      {
+        "from": "tempo-real/_root",
+        "to": "tempo-real/health",
+        "count": 1
+      }
+    ]
+  }
+}

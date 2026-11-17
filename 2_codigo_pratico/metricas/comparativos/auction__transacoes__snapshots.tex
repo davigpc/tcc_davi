@@ -1,0 +1,35 @@
+% Gerado automaticamente por harness/analise/comparar.ts
+\begin{quadro}[htb]
+  \centering
+  \caption{Leilões --- métricas por snapshot --- Transações.}
+  \label{qua:comp_auction_transacoes_snapshots}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|r|r|r|r|}
+    \hline
+    \textbf{Métrica} & \textbf{S0} & \textbf{S1} & \textbf{S2} & \textbf{Final} \\
+    \hline
+    \multicolumn{5}{|l|}{\textbf{Agilidade}} \\
+    \hline
+    Tempo de construção (ms) & 76.076 & 98.325 & 110.920 & 109.989 \\
+    Tempo de inicialização (ms) & 12.627 & 19.635 & 20.634 & 19.015 \\
+    \hline
+    \multicolumn{5}{|l|}{\textbf{Custo}} \\
+    \hline
+    CPU total (repouso / carga, \%) & 0,21 / 191,32 & 2,26 / 186,32 & 0,2 / 182,66 & 0,2 / 227,99 \\
+    RAM total (repouso / carga, MB) & 137,46 / 313,61 & 201,25 / 277,13 & 247,84 / 426,95 & 257,84 / 529,03 \\
+    Imagens da aplicação (MB) & 104,9 & 241,5 & 349,7 & 349,7 \\
+    Componentes / contêineres & 4 / 4 & 6 / 6 & 7 / 7 & 8 / 8 \\
+    \hline
+    \multicolumn{5}{|l|}{\textbf{Desempenho}} \\
+    \hline
+    Vazão (média das rotas, req/s) & 611,5 & 569,3 & 543,3 & 500,6 \\
+    Latência p50 (média das rotas, ms) & 17,3 & 19 & 19,8 & 21,1 \\
+    \hline
+    \multicolumn{5}{|l|}{\textbf{Manutenibilidade}} \\
+    \hline
+    Linhas de Código & 2.863 & 3.711 & 4.075 & 3.555 \\
+    Chamadas entre fronteiras & 88 de 174 & 92 de 194 & 104 de 216 & 96 de 195 \\
+    \hline
+  \end{tabularx}
+  \fonte{medição automatizada do experimento (média de três execuções).}
+\end{quadro}

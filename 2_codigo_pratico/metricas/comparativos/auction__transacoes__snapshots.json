@@ -1,0 +1,2128 @@
+{
+  "app": "auction",
+  "metodologia": "transacoes",
+  "s0Canonico": {
+    "label": "Capacidade de Negócio / S0",
+    "metodologia": "capacidade-negocio",
+    "snapshot": "snapshot-0",
+    "summary": {
+      "app": "auction",
+      "metodologia": "capacidade-negocio",
+      "snapshot": "snapshot-0",
+      "tag": null,
+      "timestampUtc": "2026-11-14T19:07:23.351Z",
+      "buildTime": {
+        "meanMs": 76076,
+        "runsMs": [
+          78909,
+          74999,
+          74320
+        ]
+      },
+      "startupTime": {
+        "meanMs": 12627,
+        "runsMs": [
+          13015,
+          12691,
+          12174
+        ]
+      },
+      "custo": {
+        "idle": [
+          {
+            "container": "auction_baseline_worker",
+            "samples": 4,
+            "cpuMedPerc": 0,
+            "cpuMinPerc": 0,
+            "cpuMaxPerc": 0.01,
+            "memMedMB": 49.03,
+            "memMinMB": 48.93,
+            "memMaxMB": 49.09
+          },
+          {
+            "container": "auction_baseline_api",
+            "samples": 4,
+            "cpuMedPerc": 0,
+            "cpuMinPerc": 0,
+            "cpuMaxPerc": 0.01,
+            "memMedMB": 58.82,
+            "memMinMB": 58.45,
+            "memMaxMB": 58.85
+          },
+          {
+            "container": "auction_baseline_postgres",
+            "samples": 4,
+            "cpuMedPerc": 0.01,
+            "cpuMinPerc": 0.01,
+            "cpuMaxPerc": 5.23,
+            "memMedMB": 20.96,
+            "memMinMB": 19.97,
+            "memMaxMB": 22.83
+          },
+          {
+            "container": "auction_baseline_redis",
+            "samples": 4,
+            "cpuMedPerc": 0.2,
+            "cpuMinPerc": 0.17,
+            "cpuMaxPerc": 3.1,
+            "memMedMB": 8.65,
+            "memMinMB": 8.55,
+            "memMaxMB": 8.67
+          }
+        ],
+        "load": [
+          {
+            "container": "auction_baseline_worker",
+            "samples": 4,
+            "cpuMedPerc": 0,
+            "cpuMinPerc": 0,
+            "cpuMaxPerc": 0,
+            "memMedMB": 49.67,
+            "memMinMB": 49.58,
+            "memMaxMB": 49.91
+          },
+          {
+            "container": "auction_baseline_api",
+            "samples": 4,
+            "cpuMedPerc": 102.97,
+            "cpuMinPerc": 98.37,
+            "cpuMaxPerc": 106.23,
+            "memMedMB": 210.05,
+            "memMinMB": 209.7,
+            "memMaxMB": 210.2
+          },
+          {
+            "container": "auction_baseline_postgres",
+            "samples": 4,
+            "cpuMedPerc": 88.15,
+            "cpuMinPerc": 86.68,
+            "cpuMaxPerc": 91.17,
+            "memMedMB": 45.29,
+            "memMinMB": 45.2,
+            "memMaxMB": 47
+          },
+          {
+            "container": "auction_baseline_redis",
+            "samples": 4,
+            "cpuMedPerc": 0.2,
+            "cpuMinPerc": 0.18,
+            "cpuMaxPerc": 3.14,
+            "memMedMB": 8.6,
+            "memMinMB": 8.57,
+            "memMaxMB": 8.7
+          }
+        ],
+        "imagensMB": {
+          "auction-baseline-app": 104.88,
+          "postgres:16": 158.5,
+          "redis:7": 41.6
+        }
+      },
+      "desempenho": {
+        "leitura": [
+          {
+            "route": "auction-by-id",
+            "rpsMean": 751.63,
+            "rpsMin": 729.3,
+            "rpsMax": 764.3,
+            "p50Mean": 25.33,
+            "p50Min": 25,
+            "p50Max": 26,
+            "p90Mean": 28,
+            "p90Min": 27,
+            "p90Max": 29,
+            "p99Mean": 34,
+            "p99Min": 32,
+            "p99Max": 35,
+            "non2xxTotal": 0
+          },
+          {
+            "route": "auctions",
+            "rpsMean": 923.87,
+            "rpsMin": 825.4,
+            "rpsMax": 973.3,
+            "p50Mean": 20.67,
+            "p50Min": 20,
+            "p50Max": 22,
+            "p90Mean": 23.67,
+            "p90Min": 21,
+            "p90Max": 29,
+            "p99Mean": 32,
+            "p99Min": 25,
+            "p99Max": 45,
+            "non2xxTotal": 0
+          }
+        ],
+        "escrita": [
+          {
+            "route": "bids",
+            "rpsMean": 158.97,
+            "rpsMin": 153,
+            "rpsMax": 162.4,
+            "p50Mean": 6,
+            "p50Min": 6,
+            "p50Max": 6,
+            "p90Mean": 6.33,
+            "p90Min": 6,
+            "p90Max": 7,
+            "p99Mean": 7.67,
+            "p99Min": 7,
+            "p99Max": 8,
+            "non2xxTotal": 0
+          }
+        ]
+      },
+      "manutenibilidade": {
+        "locTotal": 2863,
+        "locPorModulo": {
+          "app.module.ts": 29,
+          "auction-jobs": 217,
+          "auctions": 657,
+          "auth": 219,
+          "bids": 343,
+          "card-types": 170,
+          "cards": 306,
+          "common": 17,
+          "config": 35,
+          "database": 229,
+          "health": 17,
+          "main.ts": 39,
+          "realtime": 452,
+          "users": 111,
+          "worker.module.ts": 13,
+          "worker.ts": 9
+        },
+        "servicos": 4,
+        "containers": 4,
+        "crossDomainEdges": 88,
+        "totalEdges": 174,
+        "crossDomainPorModulo": {
+          "_root": 17,
+          "auction-jobs": 2,
+          "auctions": 28,
+          "auth": 6,
+          "bids": 10,
+          "card-types": 1,
+          "cards": 13,
+          "common": 1,
+          "database": 6,
+          "realtime": 4
+        },
+        "crossDomainMatriz": [
+          {
+            "from": "auctions",
+            "to": "cards",
+            "count": 8
+          },
+          {
+            "from": "auctions",
+            "to": "bids",
+            "count": 6
+          },
+          {
+            "from": "cards",
+            "to": "users",
+            "count": 5
+          },
+          {
+            "from": "_root",
+            "to": "auction-jobs",
+            "count": 4
+          },
+          {
+            "from": "auctions",
+            "to": "users",
+            "count": 4
+          },
+          {
+            "from": "auth",
+            "to": "users",
+            "count": 4
+          },
+          {
+            "from": "bids",
+            "to": "auctions",
+            "count": 4
+          },
+          {
+            "from": "cards",
+            "to": "card-types",
+            "count": 4
+          },
+          {
+            "from": "auctions",
+            "to": "realtime",
+            "count": 3
+          },
+          {
+            "from": "_root",
+            "to": "auctions",
+            "count": 2
+          },
+          {
+            "from": "_root",
+            "to": "config",
+            "count": 2
+          },
+          {
+            "from": "_root",
+            "to": "database",
+            "count": 2
+          },
+          {
+            "from": "auction-jobs",
+            "to": "auctions",
+            "count": 2
+          },
+          {
+            "from": "auctions",
+            "to": "common",
+            "count": 2
+          },
+          {
+            "from": "auctions",
+            "to": "auction-jobs",
+            "count": 2
+          },
+          {
+            "from": "auctions",
+            "to": "card-types",
+            "count": 2
+          },
+          {
+            "from": "auth",
+            "to": "common",
+            "count": 2
+          },
+          {
+            "from": "bids",
+            "to": "common",
+            "count": 2
+          },
+          {
+            "from": "bids",
+            "to": "realtime",
+            "count": 2
+          },
+          {
+            "from": "cards",
+            "to": "common",
+            "count": 2
+          },
+          {
+            "from": "database",
+            "to": "cards",
+            "count": 2
+          },
+          {
+            "from": "realtime",
+            "to": "auth",
+            "count": 2
+          },
+          {
+            "from": "realtime",
+            "to": "users",
+            "count": 2
+          },
+          {
+            "from": "_root",
+            "to": "auth",
+            "count": 1
+          },
+          {
+            "from": "_root",
+            "to": "bids",
+            "count": 1
+          },
+          {
+            "from": "_root",
+            "to": "card-types",
+            "count": 1
+          },
+          {
+            "from": "_root",
+            "to": "cards",
+            "count": 1
+          },
+          {
+            "from": "_root",
+            "to": "health",
+            "count": 1
+          },
+          {
+            "from": "_root",
+            "to": "realtime",
+            "count": 1
+          },
+          {
+            "from": "_root",
+            "to": "users",
+            "count": 1
+          },
+          {
+            "from": "auctions",
+            "to": "auth",
+            "count": 1
+          },
+          {
+            "from": "bids",
+            "to": "users",
+            "count": 1
+          },
+          {
+            "from": "bids",
+            "to": "auth",
+            "count": 1
+          },
+          {
+            "from": "card-types",
+            "to": "common",
+            "count": 1
+          },
+          {
+            "from": "cards",
+            "to": "auctions",
+            "count": 1
+          },
+          {
+            "from": "cards",
+            "to": "auth",
+            "count": 1
+          },
+          {
+            "from": "common",
+            "to": "auth",
+            "count": 1
+          },
+          {
+            "from": "database",
+            "to": "auctions",
+            "count": 1
+          },
+          {
+            "from": "database",
+            "to": "bids",
+            "count": 1
+          },
+          {
+            "from": "database",
+            "to": "card-types",
+            "count": 1
+          },
+          {
+            "from": "database",
+            "to": "users",
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "snapshots": [
+    {
+      "nome": "snapshot-1",
+      "summary": {
+        "app": "auction",
+        "metodologia": "transacoes",
+        "snapshot": "snapshot-1",
+        "tag": null,
+        "timestampUtc": "2026-11-17T18:46:45.579Z",
+        "buildTime": {
+          "meanMs": 98325,
+          "runsMs": [
+            89046,
+            107162,
+            98766
+          ]
+        },
+        "startupTime": {
+          "meanMs": 19635,
+          "runsMs": [
+            20069,
+            20110,
+            18727
+          ]
+        },
+        "custo": {
+          "idle": [
+            {
+              "container": "auction_tx_s1_nginx",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 12.72,
+              "memMinMB": 12.72,
+              "memMaxMB": 12.72
+            },
+            {
+              "container": "auction_tx_s1_atomo_worker",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 50.42,
+              "memMinMB": 50.3,
+              "memMaxMB": 50.45
+            },
+            {
+              "container": "auction_tx_s1_atomo",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 55.05,
+              "memMinMB": 54.71,
+              "memMaxMB": 55.3
+            },
+            {
+              "container": "auction_tx_s1_api",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 2.64,
+              "memMedMB": 52.51,
+              "memMinMB": 52.42,
+              "memMaxMB": 53.41
+            },
+            {
+              "container": "auction_tx_s1_postgres",
+              "samples": 4,
+              "cpuMedPerc": 2.09,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 5.8,
+              "memMedMB": 21.92,
+              "memMinMB": 20.96,
+              "memMaxMB": 25.37
+            },
+            {
+              "container": "auction_tx_s1_redis",
+              "samples": 4,
+              "cpuMedPerc": 0.17,
+              "cpuMinPerc": 0.16,
+              "cpuMaxPerc": 0.18,
+              "memMedMB": 8.63,
+              "memMinMB": 8.56,
+              "memMaxMB": 8.7
+            }
+          ],
+          "load": [
+            {
+              "container": "auction_tx_s1_nginx",
+              "samples": 4,
+              "cpuMedPerc": 13.09,
+              "cpuMinPerc": 12.63,
+              "cpuMaxPerc": 13.23,
+              "memMedMB": 14.32,
+              "memMinMB": 14.25,
+              "memMaxMB": 14.38
+            },
+            {
+              "container": "auction_tx_s1_atomo_worker",
+              "samples": 4,
+              "cpuMedPerc": 0.01,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.01,
+              "memMedMB": 51.13,
+              "memMinMB": 50.98,
+              "memMaxMB": 51.17
+            },
+            {
+              "container": "auction_tx_s1_atomo",
+              "samples": 4,
+              "cpuMedPerc": 103.8,
+              "cpuMinPerc": 100.38,
+              "cpuMaxPerc": 105.8,
+              "memMedMB": 106.55,
+              "memMinMB": 106.4,
+              "memMaxMB": 106.9
+            },
+            {
+              "container": "auction_tx_s1_api",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 2.66,
+              "memMedMB": 52.73,
+              "memMinMB": 52.67,
+              "memMaxMB": 52.91
+            },
+            {
+              "container": "auction_tx_s1_postgres",
+              "samples": 4,
+              "cpuMedPerc": 67.84,
+              "cpuMinPerc": 66.06,
+              "cpuMaxPerc": 68.01,
+              "memMedMB": 43.87,
+              "memMinMB": 42.96,
+              "memMaxMB": 44.84
+            },
+            {
+              "container": "auction_tx_s1_redis",
+              "samples": 4,
+              "cpuMedPerc": 1.58,
+              "cpuMinPerc": 0.19,
+              "cpuMaxPerc": 2.96,
+              "memMedMB": 8.53,
+              "memMinMB": 8.47,
+              "memMaxMB": 9.19
+            }
+          ],
+          "imagensMB": {
+            "auction-tx-s1-api": 108.18,
+            "auction-tx-s1-atomo": 108.22,
+            "postgres:16": 158.5,
+            "redis:7": 41.6,
+            "nginx:alpine": 25.12
+          }
+        },
+        "desempenho": {
+          "leitura": [
+            {
+              "route": "auction-by-id",
+              "rpsMean": 724.47,
+              "rpsMin": 708.3,
+              "rpsMax": 744.3,
+              "p50Mean": 26.67,
+              "p50Min": 26,
+              "p50Max": 27,
+              "p90Mean": 30,
+              "p90Min": 27,
+              "p90Max": 33,
+              "p99Mean": 35.33,
+              "p99Min": 33,
+              "p99Max": 39,
+              "non2xxTotal": 0
+            },
+            {
+              "route": "auctions",
+              "rpsMean": 870.27,
+              "rpsMin": 787.5,
+              "rpsMax": 913.6,
+              "p50Mean": 21.67,
+              "p50Min": 21,
+              "p50Max": 23,
+              "p90Mean": 25,
+              "p90Min": 22,
+              "p90Max": 31,
+              "p99Mean": 33.33,
+              "p99Min": 28,
+              "p99Max": 43,
+              "non2xxTotal": 0
+            }
+          ],
+          "escrita": [
+            {
+              "route": "bids",
+              "rpsMean": 113.13,
+              "rpsMin": 91.2,
+              "rpsMax": 147.9,
+              "p50Mean": 8.67,
+              "p50Min": 7,
+              "p50Max": 10,
+              "p90Mean": 13,
+              "p90Min": 12,
+              "p90Max": 14,
+              "p99Mean": 19.33,
+              "p99Min": 16,
+              "p99Max": 21,
+              "non2xxTotal": 0
+            }
+          ]
+        },
+        "manutenibilidade": {
+          "locTotal": 3711,
+          "locPorModulo": {
+            "auction/app.module.ts": 25,
+            "auction/auth": 219,
+            "auction/common": 17,
+            "auction/config": 35,
+            "auction/database": 224,
+            "auction/health": 17,
+            "auction/main.ts": 39,
+            "auction/realtime": 452,
+            "auction/users": 111,
+            "atomo/atomo.module.ts": 27,
+            "atomo/auction-jobs": 217,
+            "atomo/auctions": 722,
+            "atomo/auth": 61,
+            "atomo/bids": 338,
+            "atomo/card-types": 170,
+            "atomo/cards": 310,
+            "atomo/clients": 58,
+            "atomo/common": 17,
+            "atomo/config": 38,
+            "atomo/database": 212,
+            "atomo/health": 17,
+            "atomo/main.ts": 23,
+            "atomo/realtime": 175,
+            "atomo/users": 165,
+            "atomo/worker.module.ts": 13,
+            "atomo/worker.ts": 9
+          },
+          "servicos": 6,
+          "containers": 6,
+          "crossDomainEdges": 92,
+          "totalEdges": 194,
+          "crossDomainPorModulo": {
+            "monolito/_root": 6,
+            "monolito/auth": 6,
+            "monolito/common": 1,
+            "monolito/database": 1,
+            "monolito/realtime": 4,
+            "atomo/_root": 16,
+            "atomo/auction-jobs": 2,
+            "atomo/auctions": 22,
+            "atomo/bids": 9,
+            "atomo/card-types": 1,
+            "atomo/cards": 13,
+            "atomo/clients": 1,
+            "atomo/common": 1,
+            "atomo/database": 6,
+            "atomo/users": 3
+          },
+          "crossDomainMatriz": [
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/cards",
+              "count": 6
+            },
+            {
+              "from": "monolito/auth",
+              "to": "monolito/users",
+              "count": 4
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auction-jobs",
+              "count": 4
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/bids",
+              "count": 4
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/auctions",
+              "count": 4
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/card-types",
+              "count": 4
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/realtime",
+              "count": 3
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/auctions",
+              "count": 3
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/users",
+              "count": 3
+            },
+            {
+              "from": "monolito/auth",
+              "to": "monolito/common",
+              "count": 2
+            },
+            {
+              "from": "monolito/realtime",
+              "to": "monolito/auth",
+              "count": 2
+            },
+            {
+              "from": "monolito/realtime",
+              "to": "monolito/users",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auctions",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/config",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/database",
+              "count": 2
+            },
+            {
+              "from": "atomo/auction-jobs",
+              "to": "atomo/auctions",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/auction-jobs",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/card-types",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/users",
+              "count": 2
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/realtime",
+              "count": 2
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/cards",
+              "count": 2
+            },
+            {
+              "from": "atomo/users",
+              "to": "atomo/clients",
+              "count": 2
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/auth",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/config",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/database",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/health",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/realtime",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/users",
+              "count": 1
+            },
+            {
+              "from": "monolito/common",
+              "to": "monolito/auth",
+              "count": 1
+            },
+            {
+              "from": "monolito/database",
+              "to": "monolito/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/bids",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/card-types",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/cards",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/health",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/card-types",
+              "to": "atomo/common",
+              "count": 1
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/clients",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "atomo/common",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/bids",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/card-types",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/users",
+              "to": "atomo/auctions",
+              "count": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "nome": "snapshot-2",
+      "summary": {
+        "app": "auction",
+        "metodologia": "transacoes",
+        "snapshot": "snapshot-2",
+        "tag": null,
+        "timestampUtc": "2026-11-17T18:59:26.672Z",
+        "buildTime": {
+          "meanMs": 110920,
+          "runsMs": [
+            94761,
+            120263,
+            117736
+          ]
+        },
+        "startupTime": {
+          "meanMs": 20634,
+          "runsMs": [
+            23923,
+            19150,
+            18829
+          ]
+        },
+        "custo": {
+          "idle": [
+            {
+              "container": "auction_tx_s2_nginx",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 12.78,
+              "memMinMB": 12.78,
+              "memMaxMB": 12.78
+            },
+            {
+              "container": "auction_tx_s2_atomo",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 55.92,
+              "memMinMB": 55.7,
+              "memMaxMB": 56.18
+            },
+            {
+              "container": "auction_tx_s2_identidade",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 2.73,
+              "memMedMB": 49.47,
+              "memMinMB": 49.43,
+              "memMaxMB": 49.56
+            },
+            {
+              "container": "auction_tx_s2_atomo_worker",
+              "samples": 4,
+              "cpuMedPerc": 0.01,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.08,
+              "memMedMB": 48.69,
+              "memMinMB": 48.64,
+              "memMaxMB": 48.72
+            },
+            {
+              "container": "auction_tx_s2_api",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.01,
+              "memMedMB": 51.25,
+              "memMinMB": 51.07,
+              "memMaxMB": 51.31
+            },
+            {
+              "container": "auction_tx_s2_postgres",
+              "samples": 4,
+              "cpuMedPerc": 0.01,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.47,
+              "memMedMB": 21.03,
+              "memMinMB": 21,
+              "memMaxMB": 21.26
+            },
+            {
+              "container": "auction_tx_s2_redis",
+              "samples": 4,
+              "cpuMedPerc": 0.18,
+              "cpuMinPerc": 0.16,
+              "cpuMaxPerc": 2.94,
+              "memMedMB": 8.7,
+              "memMinMB": 8.59,
+              "memMaxMB": 9.45
+            }
+          ],
+          "load": [
+            {
+              "container": "auction_tx_s2_nginx",
+              "samples": 4,
+              "cpuMedPerc": 12.22,
+              "cpuMinPerc": 12.07,
+              "cpuMaxPerc": 12.35,
+              "memMedMB": 14.36,
+              "memMinMB": 14.24,
+              "memMaxMB": 14.64
+            },
+            {
+              "container": "auction_tx_s2_atomo",
+              "samples": 4,
+              "cpuMedPerc": 106.34,
+              "cpuMinPerc": 102.41,
+              "cpuMaxPerc": 107.82,
+              "memMedMB": 208,
+              "memMinMB": 207.9,
+              "memMaxMB": 208.1
+            },
+            {
+              "container": "auction_tx_s2_identidade",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 49.88,
+              "memMinMB": 49.86,
+              "memMaxMB": 49.89
+            },
+            {
+              "container": "auction_tx_s2_atomo_worker",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.01,
+              "memMedMB": 50.7,
+              "memMinMB": 50.5,
+              "memMaxMB": 50.71
+            },
+            {
+              "container": "auction_tx_s2_api",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 2.88,
+              "memMedMB": 51.57,
+              "memMinMB": 51.55,
+              "memMaxMB": 51.59
+            },
+            {
+              "container": "auction_tx_s2_postgres",
+              "samples": 4,
+              "cpuMedPerc": 63.91,
+              "cpuMinPerc": 63.54,
+              "cpuMaxPerc": 65.66,
+              "memMedMB": 43.84,
+              "memMinMB": 42.95,
+              "memMaxMB": 44.75
+            },
+            {
+              "container": "auction_tx_s2_redis",
+              "samples": 4,
+              "cpuMedPerc": 0.19,
+              "cpuMinPerc": 0.18,
+              "cpuMaxPerc": 3.02,
+              "memMedMB": 8.6,
+              "memMinMB": 8.49,
+              "memMaxMB": 8.74
+            }
+          ],
+          "imagensMB": {
+            "auction-tx-s2-api": 108.18,
+            "auction-tx-s2-atomo": 108.21,
+            "auction-tx-s2-identidade": 108.17,
+            "postgres:16": 158.5,
+            "redis:7": 41.6,
+            "nginx:alpine": 25.12
+          }
+        },
+        "desempenho": {
+          "leitura": [
+            {
+              "route": "auction-by-id",
+              "rpsMean": 700.7,
+              "rpsMin": 682.5,
+              "rpsMax": 711.5,
+              "p50Mean": 27.33,
+              "p50Min": 27,
+              "p50Max": 28,
+              "p90Mean": 30,
+              "p90Min": 29,
+              "p90Max": 32,
+              "p99Mean": 35.67,
+              "p99Min": 35,
+              "p99Max": 37,
+              "non2xxTotal": 0
+            },
+            {
+              "route": "auctions",
+              "rpsMean": 811.73,
+              "rpsMin": 724.9,
+              "rpsMax": 858.6,
+              "p50Mean": 23.67,
+              "p50Min": 23,
+              "p50Max": 25,
+              "p90Mean": 28,
+              "p90Min": 24,
+              "p90Max": 35,
+              "p99Mean": 35,
+              "p99Min": 28,
+              "p99Max": 48,
+              "non2xxTotal": 0
+            }
+          ],
+          "escrita": [
+            {
+              "route": "bids",
+              "rpsMean": 117.6,
+              "rpsMin": 79.91,
+              "rpsMax": 165.5,
+              "p50Mean": 8.33,
+              "p50Min": 6,
+              "p50Max": 11,
+              "p90Mean": 13.67,
+              "p90Min": 11,
+              "p90Max": 16,
+              "p99Mean": 19.33,
+              "p99Min": 13,
+              "p99Max": 24,
+              "non2xxTotal": 0
+            }
+          ]
+        },
+        "manutenibilidade": {
+          "locTotal": 4075,
+          "locPorModulo": {
+            "auction/app.module.ts": 25,
+            "auction/auth": 68,
+            "auction/common": 17,
+            "auction/config": 35,
+            "auction/database": 224,
+            "auction/health": 17,
+            "auction/main.ts": 39,
+            "auction/realtime": 452,
+            "auction/users": 111,
+            "atomo/atomo.module.ts": 27,
+            "atomo/auction-jobs": 217,
+            "atomo/auctions": 722,
+            "atomo/auth": 61,
+            "atomo/bids": 338,
+            "atomo/card-types": 170,
+            "atomo/cards": 310,
+            "atomo/clients": 58,
+            "atomo/common": 17,
+            "atomo/config": 38,
+            "atomo/database": 212,
+            "atomo/health": 17,
+            "atomo/main.ts": 23,
+            "atomo/realtime": 175,
+            "atomo/users": 165,
+            "atomo/worker.module.ts": 13,
+            "atomo/worker.ts": 9,
+            "identidade/auth": 219,
+            "identidade/common": 17,
+            "identidade/config": 31,
+            "identidade/database": 24,
+            "identidade/health": 16,
+            "identidade/identidade.module.ts": 25,
+            "identidade/internal": 47,
+            "identidade/main.ts": 17,
+            "identidade/users": 119
+          },
+          "servicos": 7,
+          "containers": 7,
+          "crossDomainEdges": 104,
+          "totalEdges": 216,
+          "crossDomainPorModulo": {
+            "monolito/_root": 6,
+            "monolito/auth": 1,
+            "monolito/common": 1,
+            "monolito/database": 1,
+            "monolito/realtime": 4,
+            "atomo/_root": 16,
+            "atomo/auction-jobs": 2,
+            "atomo/auctions": 22,
+            "atomo/bids": 9,
+            "atomo/card-types": 1,
+            "atomo/cards": 13,
+            "atomo/clients": 1,
+            "atomo/common": 1,
+            "atomo/database": 6,
+            "atomo/users": 3,
+            "identidade/auth": 6,
+            "identidade/common": 1,
+            "identidade/database": 1,
+            "identidade/_root": 6,
+            "identidade/internal": 3
+          },
+          "crossDomainMatriz": [
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/cards",
+              "count": 6
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auction-jobs",
+              "count": 4
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/bids",
+              "count": 4
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/auctions",
+              "count": 4
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/card-types",
+              "count": 4
+            },
+            {
+              "from": "identidade/auth",
+              "to": "identidade/users",
+              "count": 4
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/realtime",
+              "count": 3
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/auctions",
+              "count": 3
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/users",
+              "count": 3
+            },
+            {
+              "from": "identidade/internal",
+              "to": "identidade/users",
+              "count": 3
+            },
+            {
+              "from": "monolito/realtime",
+              "to": "monolito/auth",
+              "count": 2
+            },
+            {
+              "from": "monolito/realtime",
+              "to": "monolito/users",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auctions",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/config",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/database",
+              "count": 2
+            },
+            {
+              "from": "atomo/auction-jobs",
+              "to": "atomo/auctions",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/auction-jobs",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/card-types",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/users",
+              "count": 2
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/realtime",
+              "count": 2
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/cards",
+              "count": 2
+            },
+            {
+              "from": "atomo/users",
+              "to": "atomo/clients",
+              "count": 2
+            },
+            {
+              "from": "identidade/auth",
+              "to": "identidade/common",
+              "count": 2
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/auth",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/config",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/database",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/health",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/realtime",
+              "count": 1
+            },
+            {
+              "from": "monolito/_root",
+              "to": "monolito/users",
+              "count": 1
+            },
+            {
+              "from": "monolito/auth",
+              "to": "monolito/users",
+              "count": 1
+            },
+            {
+              "from": "monolito/common",
+              "to": "monolito/auth",
+              "count": 1
+            },
+            {
+              "from": "monolito/database",
+              "to": "monolito/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/bids",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/card-types",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/cards",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/health",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/card-types",
+              "to": "atomo/common",
+              "count": 1
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/clients",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "atomo/common",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/bids",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/card-types",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/users",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "identidade/common",
+              "to": "identidade/auth",
+              "count": 1
+            },
+            {
+              "from": "identidade/database",
+              "to": "identidade/users",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/auth",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/config",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/database",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/health",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/internal",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/users",
+              "count": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "nome": "snapshot-final",
+      "summary": {
+        "app": "auction",
+        "metodologia": "transacoes",
+        "snapshot": "snapshot-final",
+        "tag": null,
+        "timestampUtc": "2026-11-17T19:15:30.387Z",
+        "buildTime": {
+          "meanMs": 109989,
+          "runsMs": [
+            101777,
+            118855,
+            109335
+          ]
+        },
+        "startupTime": {
+          "meanMs": 19015,
+          "runsMs": [
+            19190,
+            18956,
+            18898
+          ]
+        },
+        "custo": {
+          "idle": [
+            {
+              "container": "auction_tx_final_nginx",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 12.82,
+              "memMinMB": 12.82,
+              "memMaxMB": 12.82
+            },
+            {
+              "container": "auction_tx_final_atomo_worker",
+              "samples": 4,
+              "cpuMedPerc": 0.01,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.08,
+              "memMedMB": 49.28,
+              "memMinMB": 49.2,
+              "memMaxMB": 49.31
+            },
+            {
+              "container": "auction_tx_final_atomo",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.01,
+              "memMedMB": 58.88,
+              "memMinMB": 58.69,
+              "memMaxMB": 58.97
+            },
+            {
+              "container": "auction_tx_final_tempo_real",
+              "samples": 4,
+              "cpuMedPerc": 0.01,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 2.56,
+              "memMedMB": 38.36,
+              "memMinMB": 38.28,
+              "memMaxMB": 38.46
+            },
+            {
+              "container": "auction_tx_final_identidade",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 49.4,
+              "memMinMB": 49.36,
+              "memMaxMB": 49.45
+            },
+            {
+              "container": "auction_tx_final_atomo_db",
+              "samples": 4,
+              "cpuMedPerc": 0.01,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.01,
+              "memMedMB": 20.35,
+              "memMinMB": 20.3,
+              "memMaxMB": 22.11
+            },
+            {
+              "container": "auction_tx_final_identity_db",
+              "samples": 4,
+              "cpuMedPerc": 0.01,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.01,
+              "memMedMB": 20.2,
+              "memMinMB": 20.19,
+              "memMaxMB": 20.21
+            },
+            {
+              "container": "auction_tx_final_redis",
+              "samples": 4,
+              "cpuMedPerc": 0.16,
+              "cpuMinPerc": 0.15,
+              "cpuMaxPerc": 0.18,
+              "memMedMB": 8.55,
+              "memMinMB": 8.54,
+              "memMaxMB": 8.55
+            }
+          ],
+          "load": [
+            {
+              "container": "auction_tx_final_nginx",
+              "samples": 4,
+              "cpuMedPerc": 10.86,
+              "cpuMinPerc": 10.54,
+              "cpuMaxPerc": 11.05,
+              "memMedMB": 14.25,
+              "memMinMB": 14.06,
+              "memMaxMB": 14.38
+            },
+            {
+              "container": "auction_tx_final_atomo_worker",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0,
+              "memMedMB": 49.88,
+              "memMinMB": 49.81,
+              "memMaxMB": 49.93
+            },
+            {
+              "container": "auction_tx_final_atomo",
+              "samples": 4,
+              "cpuMedPerc": 110.41,
+              "cpuMinPerc": 104.04,
+              "cpuMaxPerc": 111.53,
+              "memMedMB": 228.85,
+              "memMinMB": 228.6,
+              "memMaxMB": 229.2
+            },
+            {
+              "container": "auction_tx_final_tempo_real",
+              "samples": 4,
+              "cpuMedPerc": 0,
+              "cpuMinPerc": 0,
+              "cpuMaxPerc": 0.01,
+              "memMedMB": 38.75,
+              "memMinMB": 38.75,
+              "memMaxMB": 38.77
+            },
+            {
+              "container": "auction_tx_final_identidade",
+              "samples": 4,
+              "cpuMedPerc": 46.89,
+              "cpuMinPerc": 41.77,
+              "cpuMaxPerc": 48.81,
+              "memMedMB": 114.7,
+              "memMinMB": 114.6,
+              "memMaxMB": 115.1
+            },
+            {
+              "container": "auction_tx_final_atomo_db",
+              "samples": 4,
+              "cpuMedPerc": 48.71,
+              "cpuMinPerc": 47.78,
+              "cpuMaxPerc": 49.44,
+              "memMedMB": 42.86,
+              "memMinMB": 41.99,
+              "memMaxMB": 43.7
+            },
+            {
+              "container": "auction_tx_final_identity_db",
+              "samples": 4,
+              "cpuMedPerc": 9.52,
+              "cpuMinPerc": 9.39,
+              "cpuMaxPerc": 9.76,
+              "memMedMB": 31.14,
+              "memMinMB": 31.13,
+              "memMaxMB": 32.69
+            },
+            {
+              "container": "auction_tx_final_redis",
+              "samples": 4,
+              "cpuMedPerc": 1.6,
+              "cpuMinPerc": 0.2,
+              "cpuMaxPerc": 3.24,
+              "memMedMB": 8.6,
+              "memMinMB": 8.46,
+              "memMaxMB": 9.14
+            }
+          ],
+          "imagensMB": {
+            "auction-tx-final-identidade": 108.17,
+            "auction-tx-final-atomo": 108.22,
+            "auction-tx-final-tempo-real": 108.15,
+            "postgres:16": 158.5,
+            "redis:7": 41.6,
+            "nginx:alpine": 25.12
+          }
+        },
+        "desempenho": {
+          "leitura": [
+            {
+              "route": "auction-by-id",
+              "rpsMean": 635.4,
+              "rpsMin": 614.6,
+              "rpsMax": 646.3,
+              "p50Mean": 30.33,
+              "p50Min": 30,
+              "p50Max": 31,
+              "p90Mean": 34.67,
+              "p90Min": 34,
+              "p90Max": 36,
+              "p99Mean": 41.33,
+              "p99Min": 40,
+              "p99Max": 44,
+              "non2xxTotal": 0
+            },
+            {
+              "route": "auctions",
+              "rpsMean": 723.33,
+              "rpsMin": 620.6,
+              "rpsMax": 780,
+              "p50Mean": 26.33,
+              "p50Min": 25,
+              "p50Max": 29,
+              "p90Mean": 32.33,
+              "p90Min": 27,
+              "p90Max": 42,
+              "p99Mean": 43.33,
+              "p99Min": 33,
+              "p99Max": 63,
+              "non2xxTotal": 0
+            }
+          ],
+          "escrita": [
+            {
+              "route": "bids",
+              "rpsMean": 143.17,
+              "rpsMin": 97.5,
+              "rpsMax": 169.3,
+              "p50Mean": 6.67,
+              "p50Min": 5,
+              "p50Max": 9,
+              "p90Mean": 12,
+              "p90Min": 11,
+              "p90Max": 13,
+              "p99Mean": 15.67,
+              "p99Min": 12,
+              "p99Max": 22,
+              "non2xxTotal": 0
+            }
+          ]
+        },
+        "manutenibilidade": {
+          "locTotal": 3555,
+          "locPorModulo": {
+            "atomo/atomo.module.ts": 27,
+            "atomo/auction-jobs": 217,
+            "atomo/auctions": 722,
+            "atomo/auth": 61,
+            "atomo/bids": 338,
+            "atomo/card-types": 170,
+            "atomo/cards": 289,
+            "atomo/clients": 58,
+            "atomo/common": 17,
+            "atomo/config": 38,
+            "atomo/database": 212,
+            "atomo/health": 17,
+            "atomo/main.ts": 23,
+            "atomo/realtime": 175,
+            "atomo/users": 165,
+            "atomo/worker.module.ts": 13,
+            "atomo/worker.ts": 9,
+            "identidade/auth": 219,
+            "identidade/common": 17,
+            "identidade/config": 31,
+            "identidade/database": 24,
+            "identidade/health": 16,
+            "identidade/identidade.module.ts": 25,
+            "identidade/internal": 47,
+            "identidade/main.ts": 17,
+            "identidade/users": 119,
+            "tempo-real/clients": 41,
+            "tempo-real/config": 28,
+            "tempo-real/health": 16,
+            "tempo-real/main.ts": 15,
+            "tempo-real/realtime": 354,
+            "tempo-real/tempo-real.module.ts": 35
+          },
+          "servicos": 8,
+          "containers": 8,
+          "crossDomainEdges": 96,
+          "totalEdges": 195,
+          "crossDomainPorModulo": {
+            "atomo/_root": 16,
+            "atomo/auction-jobs": 2,
+            "atomo/auctions": 22,
+            "atomo/bids": 9,
+            "atomo/card-types": 1,
+            "atomo/cards": 11,
+            "atomo/clients": 1,
+            "atomo/common": 1,
+            "atomo/database": 6,
+            "atomo/users": 3,
+            "identidade/auth": 6,
+            "identidade/common": 1,
+            "identidade/database": 1,
+            "identidade/_root": 6,
+            "identidade/internal": 3,
+            "tempo-real/realtime": 1,
+            "tempo-real/_root": 6
+          },
+          "crossDomainMatriz": [
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/cards",
+              "count": 6
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auction-jobs",
+              "count": 4
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/bids",
+              "count": 4
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/auctions",
+              "count": 4
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/card-types",
+              "count": 4
+            },
+            {
+              "from": "identidade/auth",
+              "to": "identidade/users",
+              "count": 4
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/realtime",
+              "count": 3
+            },
+            {
+              "from": "identidade/internal",
+              "to": "identidade/users",
+              "count": 3
+            },
+            {
+              "from": "tempo-real/_root",
+              "to": "tempo-real/realtime",
+              "count": 3
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auctions",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/config",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/database",
+              "count": 2
+            },
+            {
+              "from": "atomo/auction-jobs",
+              "to": "atomo/auctions",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/auction-jobs",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/card-types",
+              "count": 2
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/users",
+              "count": 2
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/realtime",
+              "count": 2
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/users",
+              "count": 2
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/auctions",
+              "count": 2
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/cards",
+              "count": 2
+            },
+            {
+              "from": "atomo/users",
+              "to": "atomo/clients",
+              "count": 2
+            },
+            {
+              "from": "identidade/auth",
+              "to": "identidade/common",
+              "count": 2
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/bids",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/card-types",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/cards",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/health",
+              "count": 1
+            },
+            {
+              "from": "atomo/_root",
+              "to": "atomo/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/auctions",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/bids",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/card-types",
+              "to": "atomo/common",
+              "count": 1
+            },
+            {
+              "from": "atomo/cards",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/clients",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "atomo/common",
+              "to": "atomo/auth",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/bids",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/card-types",
+              "count": 1
+            },
+            {
+              "from": "atomo/database",
+              "to": "atomo/users",
+              "count": 1
+            },
+            {
+              "from": "atomo/users",
+              "to": "atomo/auctions",
+              "count": 1
+            },
+            {
+              "from": "identidade/common",
+              "to": "identidade/auth",
+              "count": 1
+            },
+            {
+              "from": "identidade/database",
+              "to": "identidade/users",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/auth",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/config",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/database",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/health",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/internal",
+              "count": 1
+            },
+            {
+              "from": "identidade/_root",
+              "to": "identidade/users",
+              "count": 1
+            },
+            {
+              "from": "tempo-real/realtime",
+              "to": "tempo-real/clients",
+              "count": 1
+            },
+            {
+              "from": "tempo-real/_root",
+              "to": "tempo-real/clients",
+              "count": 1
+            },
+            {
+              "from": "tempo-real/_root",
+              "to": "tempo-real/config",
+              "count": 1
+            },
+            {
+              "from": "tempo-real/_root",
+              "to": "tempo-real/health",
+              "count": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

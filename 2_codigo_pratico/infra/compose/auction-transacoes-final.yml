@@ -1,0 +1,194 @@
+# Compose do experimento: leilao / Transacoes / snapshot final
+# Topologia: grupo atomico (leiloes + lances + cartas + worker) com banco
+# proprio, Identidade e Tempo Real como servicos independentes, Redis e NGINX.
+name: auction-transacoes-final
+
+x-app-env: &app-env
+  NODE_ENV: production
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  JWT_SECRET: auction-experiment-secret
+  JWT_EXPIRES_IN: 1d
+  CORS_ORIGIN: http://localhost:3001
+  AUCTION_MIN_DURATION_SECONDS: 30
+  AUCTION_MAX_DURATION_SECONDS: 604800
+  AUCTION_SCANNER_INTERVAL_SECONDS: 30
+
+x-db-env: &db-env
+  DATABASE_USER: auction
+  DATABASE_PASSWORD: auction
+
+services:
+  postgres_identity:
+    image: postgres:16
+    container_name: auction_tx_final_identity_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: identity_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d identity_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - identity_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  postgres_atomo:
+    image: postgres:16
+    container_name: auction_tx_final_atomo_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: auction
+      POSTGRES_PASSWORD: auction
+      POSTGRES_DB: atomo_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auction -d atomo_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - atomo_data:/var/lib/postgresql/data
+    networks:
+      - auction
+
+  redis:
+    image: redis:7
+    container_name: auction_tx_final_redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - auction
+
+  identidade:
+    image: auction-tx-final-identidade
+    build:
+      context: ../../services/auction/identidade
+    container_name: auction_tx_final_identidade
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: [*app-env, *db-env]
+      PORT: 3001
+      DATABASE_HOST: postgres_identity
+      DATABASE_PORT: 5432
+      DATABASE_NAME: identity_db
+    depends_on:
+      postgres_identity:
+        condition: service_healthy
+    networks:
+      - auction
+
+  atomo:
+    image: auction-tx-final-atomo
+    build:
+      context: ../../services/auction/atomo
+    container_name: auction_tx_final_atomo
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: [*app-env, *db-env]
+      PORT: 3001
+      DATABASE_HOST: postgres_atomo
+      DATABASE_PORT: 5432
+      DATABASE_NAME: atomo_db
+      USERS_MODE: http
+      IDENTIDADE_URL: http://identidade:3001
+    depends_on:
+      postgres_atomo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      identidade:
+        condition: service_healthy
+    networks:
+      - auction
+
+  atomo_worker:
+    image: auction-tx-final-atomo
+    container_name: auction_tx_final_atomo_worker
+    restart: unless-stopped
+    command: ["node", "dist/worker.js"]
+    environment:
+      <<: [*app-env, *db-env]
+      DATABASE_HOST: postgres_atomo
+      DATABASE_PORT: 5432
+      DATABASE_NAME: atomo_db
+      USERS_MODE: http
+      IDENTIDADE_URL: http://identidade:3001
+    depends_on:
+      postgres_atomo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      atomo:
+        condition: service_healthy
+    networks:
+      - auction
+
+  tempo-real:
+    image: auction-tx-final-tempo-real
+    build:
+      context: ../../services/auction/tempo-real
+    container_name: auction_tx_final_tempo_real
+    restart: unless-stopped
+    command: ["node", "dist/main.js"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      <<: *app-env
+      PORT: 3001
+      IDENTIDADE_URL: http://identidade:3001
+    depends_on:
+      redis:
+        condition: service_healthy
+      identidade:
+        condition: service_healthy
+    networks:
+      - auction
+
+  nginx:
+    image: nginx:alpine
+    container_name: auction_tx_final_nginx
+    restart: unless-stopped
+    volumes:
+      - ../gateway/nginx-auction-transacoes-final.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "3000:80"
+    depends_on:
+      identidade:
+        condition: service_healthy
+      atomo:
+        condition: service_healthy
+      tempo-real:
+        condition: service_healthy
+    networks:
+      - auction
+
+volumes:
+  identity_data:
+  atomo_data:
+
+networks:
+  auction:
+    driver: bridge

@@ -1,0 +1,25 @@
+{
+  "services": [
+    "postgres_identity",
+    "identidade",
+    "redis",
+    "tempo-real",
+    "postgres_atomo",
+    "atomo",
+    "nginx",
+    "atomo_worker"
+  ],
+  "serviceCount": 8,
+  "runningContainers": [
+    "auction_tx_final_nginx",
+    "auction_tx_final_atomo_worker",
+    "auction_tx_final_atomo",
+    "auction_tx_final_tempo_real",
+    "auction_tx_final_identidade",
+    "auction_tx_final_atomo_db",
+    "auction_tx_final_identity_db",
+    "auction_tx_final_redis"
+  ],
+  "containerCount": 8,
+  "imageCount": 6
+}

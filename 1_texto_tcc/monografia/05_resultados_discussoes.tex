@@ -201,6 +201,20 @@ O estado final coincide com o da Capacidade de Negócio: mesma topologia, mesmas
 
 \subsection*{Sistema de Leilões}
 
+Na decomposição por transações, o agrupamento partiu das operações que precisam ser gravadas juntas. No leilão, são duas. O lance trava a linha do leilão, valida situação e prazo, grava o lance e atualiza o maior lance. O fechamento lê esse maior lance, muda o dono da carta, registra a transferência e marca o leilão como encerrado. Como o fechamento escreve na carta e no histórico, o catálogo entrou no grupo: leilões, lances, cartas e transferências formaram um único serviço, com as tarefas de fechamento e o worker. Identidade e Tempo Real ficaram fora da fronteira transacional. No baseline, a análise estática registrou 88 dependências cruzando fronteiras de módulo, de um total de 174.
+
+A ordem foi a oposta à da Capacidade e à do Subdomínio: o grupo atômico saiu primeiro, para que a consistência fosse preservada em um único processo desde o início da migração. No s1, o serviço passou a responder por \texttt{/auctions}, \texttt{/auctions/:id/bids}, \texttt{/cards} e \texttt{/card-types}, enquanto o monólito ficou com autenticação e tempo real. O banco continuou compartilhado, e as duas transações críticas continuaram locais.
+
+Na segunda fase saiu a Identidade, e o monólito passou a conter apenas o gateway do Socket.IO e o assinante de eventos. O serviço atômico não mudou: como o banco ainda era o mesmo, ele seguia lendo a tabela de usuários localmente.
+
+Na etapa final o Tempo Real saiu, a persistência foi isolada e o monólito foi desativado. O serviço atômico passou a consultar a Identidade apenas para compor as respostas; cartas, tipos de carta, transferências, leilões e lances continuam no mesmo banco. O isolamento revelou uma dependência que o banco compartilhado escondia: a tabela de transferências tinha chave estrangeira para a tabela de usuários, e o fechamento passou a falhar quando os bancos foram separados. A correção foi guardar apenas os identificadores, sem a chave estrangeira.
+
+O Quadro \ref{qua:comp_auction_transacoes_snapshots} apresenta as métricas das quatro fases e o Quadro \ref{qua:comp_transacoes_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 76 segundos no baseline para 110 segundos no estado final, e o de inicialização, de 12,6 para 19 segundos. As Linhas de Código cresceram 30 \% até a segunda extração e fecharam em 3.555, 24 \% acima do baseline. A memória sob carga passou de 314 MB para 529 MB, com dois bancos dedicados. A listagem de leilões perdeu 22 \% de vazão e o detalhe, 16 \%, porque a composição das respostas passou a depender de uma chamada à Identidade.
+
+A comparação entre as três trilhas do leilão fica clara nas métricas de escrita. Separar Lances e Leilão custou 45 \% da vazão de lances na Capacidade. Manter lances e leilões juntos, mas deixar a carta fora, custou 15 \% no Subdomínio. Aqui, com o grupo atômico inteiro no mesmo serviço e no mesmo banco, a perda foi de 10 \%, dentro da faixa de variação da rota. O preço aparece na largura do serviço e no custo fixo: é a trilha com menos componentes e menor tempo de construção entre as três, mas também a que concentra mais tabelas em um único banco e a que mais cresceu em memória sob carga.
+
+%\input{tabelas/auction__transacoes__snapshots.tex}
+
 \subsection*{E-commerce}
 
 Na decomposição por transações, o agrupamento parte do que precisa ser gravado junto. No e-commerce, a operação crítica é a confirmação do pedido: o webhook de pagamento muda o status do pedido e baixa o estoque dos itens na mesma sessão Mongo. Desse modo, se as duas escritas não acontecem juntas, um pedido pode ficar pago sem baixa ou com baixa parcial. Por isso, carrinho, frete, pedido, estoque e pagamento formaram um único serviço, o Checkout. Catálogo, Identidade e Comunicação ficaram fora da transação. O código de origem tinha 79 de 207 dependências cruzando fronteiras de módulo, concentradas no carrinho e no pedido.

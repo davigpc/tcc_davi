@@ -643,6 +643,57 @@ quando o monólito sai.
 
 ---
 
+### Trilha 9/9 — auction × Transações (ACID) (concluída)
+
+**Branch:** `exp/auction/transacoes` (pai e fork), a partir do baseline do leilão.
+
+**Agrupamento:** grupo atômico = Leilão + Lances + Catálogo de Cartas
+(+ transferências + jobs + worker). Fora do grupo: Identidade e Tempo Real.
+Ordem: **s1 grupo atômico → s2 Identidade → final Tempo Real**, com o monólito
+desativado no fim.
+
+**Persistência:** compartilhada até o s2 (`DATABASE_SYNC=false`, `USERS_MODE=local`);
+**isolada no final** (`identity_db` + `atomo_db`, `USERS_MODE=http`). Topologia
+final com 8 contêineres.
+
+**Registros:** `docs/extracao/auction__transacoes__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/auction__transacoes.md`.
+
+**Serviços:** `services/auction/atomo/` (grupo atômico) e
+`services/auction/{identidade,tempo-real}/` (reaproveitados).
+Compose final: `infra/compose/auction-transacoes-final.yml`; gateway
+`infra/gateway/nginx-auction-transacoes-final.conf`; config
+`harness/apps/auction.transacoes-final.json`.
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | S0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 76.076 ms | 98.325 ms | 110.920 ms | 109.989 ms |
+| Inicialização | 12.627 ms | 19.635 ms | 20.634 ms | 19.015 ms |
+| LOC | 2.863 | 3.711 | 4.075 | 3.555 |
+| Componentes / contêineres | 4 / 4 | 6 / 6 | 7 / 7 | 8 / 8 |
+| Cross-domain | 88/174 | 92/194 | 104/216 | 96/195 |
+| `GET /auctions` (req/s) | 923,9 | 870,3 | 811,7 | 723,3 |
+| `GET /auctions/:id` (req/s) | 751,6 | 724,5 | 700,7 | 635,4 |
+| `POST /bids` (req/s) | 159,0 | 113,1 | 117,6 | 143,2 |
+| RAM carga (MB) | 313,6 | 277,1 | 427,0 | 529,0 |
+
+**Achado central:** o grupo atômico protege a escrita. Criação, lance e
+fechamento — incluindo a troca de dono da carta — permanecem locais em todas as
+fases; o único custo de rede do estado final é a leitura de usuários. Contra o
+S0, a escrita perde 10 %, contra 45 % na Capacidade e 15 % no Subdomínio. O preço
+é a largura do grupo: LOC +24 %, imagens +233 % e RAM +69 %, com um serviço que
+concentra leilões, lances, cartas e transferências. O isolamento também revelou
+uma dependência escondida: a chave estrangeira de `card_transfers` para `users`
+só quebrou quando os bancos foram separados.
+
+**Tags:** `snap/auction/transacoes/{1,2,final}`.
+
+**Status:** concluída. As nove trilhas do experimento estão fechadas.
+
+---
+
 ## 13. Consolidação em `main` (estratégia de branches)
 
 A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:
