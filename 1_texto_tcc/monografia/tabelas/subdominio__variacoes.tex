@@ -1,26 +1,35 @@
 % Gerado automaticamente por harness/analise/comparar.ts
 \begin{quadro}[htb]
   \centering
-  \caption{Variação acumulada por aplicação --- Subdomínio.}
+  \caption{Variação acumulada por aplicação --- Subdomínio (DDD).}
   \label{qua:comp_subdominio_variacoes}
   \renewcommand{\arraystretch}{1.15}
-  \begin{tabular}{|l|r|}
+  \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|r|r|r|}
     \hline
-    \textbf{Métrica} & \textbf{Inventário} \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Agilidade}} \\ \hline
-    Tempo de construção (ms) & +163 \% \\
-    Tempo de inicialização (ms) & +37 \% \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Custo}} \\ \hline
-    CPU total (repouso / carga, \%) & +0,3 p.p. / +54 \% \\
-    RAM total (repouso / carga, MB) & +211 \% / +186 \% \\
-    Imagens da aplicação (MB) & +410 \% \\
-    Componentes / contêineres & +6 \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Desempenho}} \\ \hline
-    Vazão (média das rotas, req/s) & +17 \% \\
-    Latência p50 (média das rotas, ms) & $-$ 24 \% \\ \hline
-    \multicolumn{2}{|l|}{\textbf{Manutenibilidade}} \\ \hline
-    Linhas de Código & +15 \% \\
-    Chamadas entre fronteiras & +23 \% \\ \hline
-  \end{tabular}
+    \textbf{Métrica} & \textbf{Leilões} & \textbf{Inventário} & \textbf{Média} \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Agilidade}} \\
+    \hline
+    Tempo de construção (ms) & +53 \% & +163 \% & +108 \% \\
+    Tempo de inicialização (ms) & +111 \% & +37 \% & +74 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Custo}} \\
+    \hline
+    CPU total (repouso / carga, \%) & +0,02 p.p. / +29 \% & +0,3 p.p. / +54 \% & +0,16 p.p. / +42 \% \\
+    RAM total (repouso / carga, MB) & +141 \% / +110 \% & +211 \% / +186 \% & +176 \% / +148 \% \\
+    Imagens da aplicação (MB) & +337 \% & +410 \% & +373 \% \\
+    Componentes / contêineres & +6 & +6 & +6 \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Desempenho}} \\
+    \hline
+    Vazão (média das rotas, req/s) & $-$ 30 \% & +17 \% & $-$ 7 \% \\
+    Latência p50 (média das rotas, ms) & +44 \% & $-$ 24 \% & +10 \% \\
+    \hline
+    \multicolumn{4}{|l|}{\textbf{Manutenibilidade}} \\
+    \hline
+    Linhas de Código & +37 \% & +15 \% & +26 \% \\
+    Chamadas entre fronteiras & +10 \% & +23 \% & +17 \% \\
+    \hline
+  \end{tabularx}
   \fonte{medição automatizada do experimento (média de três execuções).}
 \end{quadro}

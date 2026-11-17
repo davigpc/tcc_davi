@@ -537,6 +537,163 @@ Subdomínio ou Transações) ou fechar a linha do inventário no capítulo 05.
 
 ---
 
+### Trilha 7/9 — auction × Capacidade de Negócio (concluída)
+
+**Branch:** `exp/auction/capacidade-negocio` (repo pai e fork `davigpc/auction`),
+a partir do baseline do leilão (`baseline/auction`, fork `baseline/experimento`).
+
+**Agrupamento (5 capacidades):** Identidade (auth + users), Catálogo de Cartas
+(cards + card-types), Leilão (auctions + jobs + worker), Lances (bids) e Tempo
+Real (Socket.IO + eventos). Ordem: **s1 Lances → s2 Leilão → final Identidade +
+Catálogo + Tempo Real**.
+
+**Persistência:** compartilhada até o s2; **isolada no final**, com quatro bancos
+(`identity_db`, `catalogo_db`, `leilao_db`, `lances_db`) e o monólito desativado.
+Topologia final com 12 contêineres (5 serviços + worker + 4 bancos + Redis +
+NGINX).
+
+**Registros:** `docs/extracao/auction__capacidade-negocio__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/auction__capacidade-negocio.md`.
+
+**Serviços:** `services/auction/{identidade,catalogo,leilao,lances,tempo-real}/`.
+Compose final: `infra/compose/auction-capacidade-negocio-final.yml`; gateway
+`infra/gateway/nginx-auction-capacidade-final.conf`; config do harness
+`harness/apps/auction.capacidade-negocio-final.json`.
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | S0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 76.076 ms | 82.340 ms | 90.035 ms | 116.823 ms |
+| Inicialização | 12.627 ms | 12.843 ms | 18.675 ms | 30.848 ms |
+| LOC | 2.863 | 3.593 | 4.310 | 4.552 |
+| Componentes / contêineres | 4 / 4 | 6 / 6 | 7 / 7 | 12 / 12 |
+| Cross-domain | 88/174 | 109/206 | 125/239 | 109/223 |
+| `GET /auctions` (req/s) | 923,9 | 859,0 | 874,1 | 740,1 |
+| `GET /auctions/:id` (req/s) | 751,6 | 713,6 | 721,6 | 653,1 |
+| `POST /bids` (req/s) | 159,0 | 152,2 | 152,7 | 87,2 |
+| RAM carga (MB) | 313,6 | 379,1 | 425,3 | 799,1 |
+
+**Achado central:** isolar a escrita custa caro. No s2 o lance ainda era uma
+transação no banco compartilhado; no final, o serviço de Lances mantém uma cópia
+local do estado do leilão (`bid_auction_state`) e envia o maior lance ao Leilão
+por chamada interna depois do commit. A vazão de escrita cai 45 % em relação ao
+S0 e 43 % em relação ao s2. O acoplamento estático cai de 125 para 109 arestas
+apenas porque o monólito sai da solução — o acoplamento real migra para 13
+endpoints internos que o `madge` não mede. O fechamento passa a atravessar três
+serviços (Lances → Catálogo → Leilão) e a projeção do maior lance não tem
+retentativa: é a primeira quebra de consistência admitida na trilha.
+
+**Tags:** `snap/auction/capacidade-negocio/{0,1,2,final}`.
+
+**Status:** concluída. Próximo: trilhas 8/9 e 9/9 do `auction` (Subdomínio e
+Transações), reaproveitando o desenho de bancos isolados.
+
+---
+
+### Trilha 8/9 — auction × Subdomínio (DDD) (concluída)
+
+**Branch:** `exp/auction/subdominio` (pai e fork `davigpc/auction`), a partir do
+baseline do leilão.
+
+**Classificação:** genéricos = Identidade (auth/users) e Tempo Real (gateway +
+assinante Redis); suporte = Catálogo de Cartas (cards/card-types); núcleo =
+Leilão (auctions + bids + auction-jobs + worker). Ordem: **s1 genéricos → s2
+Catálogo → final núcleo**, com o monólito desativado no fim.
+
+**Persistência:** compartilhada até o s2 (`DATABASE_SYNC=false` nos serviços);
+**isolada no final**, com `identity_db`, `catalogo_db` e `leilao_db`. Topologia
+final com 10 contêineres.
+
+**Registros:** `docs/extracao/auction__subdominio__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/auction__subdominio.md`.
+
+**Serviços:** `services/auction/{identidade,catalogo,tempo-real}/` (reaproveitados
+da trilha de Capacidade) e `services/auction/nucleo/` (leilões + lances + worker).
+Compose final: `infra/compose/auction-subdominio-final.yml`; gateway
+`infra/gateway/nginx-auction-subdominio-final.conf`; config
+`harness/apps/auction.subdominio-final.json`.
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | S0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 76.076 ms | 106.665 ms | 120.588 ms | 116.144 ms |
+| Inicialização | 12.627 ms | 25.146 ms | 26.537 ms | 26.697 ms |
+| LOC | 2.863 | 3.437 | 4.089 | 3.916 |
+| Componentes / contêineres | 4 / 4 | 7 / 7 | 8 / 8 | 10 / 10 |
+| Cross-domain | 88/174 | 102/197 | 121/229 | 97/197 |
+| `GET /auctions` (req/s) | 923,9 | 896,8 | 910,9 | 588,6 |
+| `GET /auctions/:id` (req/s) | 751,6 | 725,1 | 745,6 | 551,8 |
+| `POST /bids` (req/s) | 159,0 | 134,0 | 164,0 | 135,1 |
+| RAM carga (MB) | 313,6 | 412,9 | 462,6 | 657,3 |
+
+**Achado central:** o critério de subdomínio mantém leilão e lances no mesmo
+núcleo, então a transação do lance continua local e a escrita perde só o salto
+pelo gateway (−15 % contra o S0, na faixa de variação da rota). É o contraste
+direto com a Capacidade, que separou as duas capacidades e perdeu 45 %. O preço
+aparece na leitura: compor cada resposta com Catálogo e Identidade custa 36 % da
+listagem e 27 % do detalhe. O cross-domain sobe até o s2 porque a fase de banco
+compartilhado obriga o núcleo a manter as entidades de carta; só cai no final,
+quando o monólito sai.
+
+**Tags:** `snap/auction/subdominio/{1,2,final}`.
+
+**Status:** concluída. Próximo: trilha 9/9 (Transações) do `auction`.
+
+---
+
+### Trilha 9/9 — auction × Transações (ACID) (concluída)
+
+**Branch:** `exp/auction/transacoes` (pai e fork), a partir do baseline do leilão.
+
+**Agrupamento:** grupo atômico = Leilão + Lances + Catálogo de Cartas
+(+ transferências + jobs + worker). Fora do grupo: Identidade e Tempo Real.
+Ordem: **s1 grupo atômico → s2 Identidade → final Tempo Real**, com o monólito
+desativado no fim.
+
+**Persistência:** compartilhada até o s2 (`DATABASE_SYNC=false`, `USERS_MODE=local`);
+**isolada no final** (`identity_db` + `atomo_db`, `USERS_MODE=http`). Topologia
+final com 8 contêineres.
+
+**Registros:** `docs/extracao/auction__transacoes__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/auction__transacoes.md`.
+
+**Serviços:** `services/auction/atomo/` (grupo atômico) e
+`services/auction/{identidade,tempo-real}/` (reaproveitados).
+Compose final: `infra/compose/auction-transacoes-final.yml`; gateway
+`infra/gateway/nginx-auction-transacoes-final.conf`; config
+`harness/apps/auction.transacoes-final.json`.
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | S0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 76.076 ms | 98.325 ms | 110.920 ms | 109.989 ms |
+| Inicialização | 12.627 ms | 19.635 ms | 20.634 ms | 19.015 ms |
+| LOC | 2.863 | 3.711 | 4.075 | 3.555 |
+| Componentes / contêineres | 4 / 4 | 6 / 6 | 7 / 7 | 8 / 8 |
+| Cross-domain | 88/174 | 92/194 | 104/216 | 96/195 |
+| `GET /auctions` (req/s) | 923,9 | 870,3 | 811,7 | 723,3 |
+| `GET /auctions/:id` (req/s) | 751,6 | 724,5 | 700,7 | 635,4 |
+| `POST /bids` (req/s) | 159,0 | 113,1 | 117,6 | 143,2 |
+| RAM carga (MB) | 313,6 | 277,1 | 427,0 | 529,0 |
+
+**Achado central:** o grupo atômico protege a escrita. Criação, lance e
+fechamento — incluindo a troca de dono da carta — permanecem locais em todas as
+fases; o único custo de rede do estado final é a leitura de usuários. Contra o
+S0, a escrita perde 10 %, contra 45 % na Capacidade e 15 % no Subdomínio. O preço
+é a largura do grupo: LOC +24 %, imagens +233 % e RAM +69 %, com um serviço que
+concentra leilões, lances, cartas e transferências. O isolamento também revelou
+uma dependência escondida: a chave estrangeira de `card_transfers` para `users`
+só quebrou quando os bancos foram separados.
+
+**Tags:** `snap/auction/transacoes/{1,2,final}`.
+
+**Status:** concluída. As nove trilhas do experimento estão fechadas.
+
+---
+
 ## 13. Consolidação em `main` (estratégia de branches)
 
 A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:

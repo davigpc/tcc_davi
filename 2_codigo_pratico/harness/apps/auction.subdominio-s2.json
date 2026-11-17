@@ -1,0 +1,96 @@
+{
+  "app": "auction",
+  "metodologias": ["subdominio"],
+  "composeDir": "2_codigo_pratico/infra/compose",
+  "composeFile": "auction-subdominio-s2.yml",
+  "composeProject": "auction-subdominio-s2",
+  "baseUrl": "http://localhost:3000",
+  "readinessPath": "/health",
+  "loginPath": "/auth/login",
+  "credentials": { "email": "bidder@example.com", "password": "password123" },
+  "seed": {
+    "service": "api",
+    "command": ["node", "scripts/seed-local.js"]
+  },
+  "containers": [
+    "auction_sub_s2_postgres",
+    "auction_sub_s2_redis",
+    "auction_sub_s2_api",
+    "auction_sub_s2_worker",
+    "auction_sub_s2_identidade",
+    "auction_sub_s2_catalogo",
+    "auction_sub_s2_tempo_real",
+    "auction_sub_s2_nginx"
+  ],
+  "images": [
+    "auction-sub-s2-api",
+    "auction-sub-s2-identidade",
+    "auction-sub-s2-catalogo",
+    "auction-sub-s2-tempo-real",
+    "postgres:16",
+    "redis:7",
+    "nginx:alpine"
+  ],
+  "sourceDirs": [
+    "2_codigo_pratico/apps/auction/src",
+    "2_codigo_pratico/services/auction/identidade/src",
+    "2_codigo_pratico/services/auction/catalogo/src",
+    "2_codigo_pratico/services/auction/tempo-real/src"
+  ],
+  "crossDomain": [
+    {
+      "label": "monolito",
+      "dir": "2_codigo_pratico/apps/auction/src",
+      "tsConfig": "2_codigo_pratico/apps/auction/tsconfig.json"
+    },
+    {
+      "label": "identidade",
+      "dir": "2_codigo_pratico/services/auction/identidade/src",
+      "tsConfig": "2_codigo_pratico/services/auction/identidade/tsconfig.json"
+    },
+    {
+      "label": "catalogo",
+      "dir": "2_codigo_pratico/services/auction/catalogo/src",
+      "tsConfig": "2_codigo_pratico/services/auction/catalogo/tsconfig.json"
+    },
+    {
+      "label": "tempo-real",
+      "dir": "2_codigo_pratico/services/auction/tempo-real/src",
+      "tsConfig": "2_codigo_pratico/services/auction/tempo-real/tsconfig.json"
+    }
+  ],
+  "ids": {
+    "userId": { "from": "login", "path": "user.id" },
+    "auctionId": { "from": "seed", "path": "auctionId" }
+  },
+  "routes": {
+    "read": [
+      {
+        "name": "auctions",
+        "method": "GET",
+        "path": "/auctions?limit=10"
+      },
+      {
+        "name": "auction-by-id",
+        "method": "GET",
+        "path": "/auctions/{{auctionId}}"
+      }
+    ],
+    "write": [
+      {
+        "name": "bids",
+        "method": "POST",
+        "path": "/auctions/{{auctionId}}/bids",
+        "auth": true,
+        "connections": 1,
+        "sequence": { "field": "amount", "start": 100 },
+        "body": { "amount": 100 }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}

@@ -67,6 +67,13 @@ Thumbs.db
 *.fls
 *.fdb_latexmk
 *.out
+*.bcf
+*.run.xml
+*.loq
+*.loa
+1_texto_tcc/monografia/main.pdf
+1_texto_tcc/monografia/_minted/
+*.zip
 
 # ==========================================
 # opencode / Skills locais

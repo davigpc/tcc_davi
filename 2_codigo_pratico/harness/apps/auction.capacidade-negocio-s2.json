@@ -1,0 +1,89 @@
+{
+  "app": "auction",
+  "metodologias": ["capacidade-negocio"],
+  "composeDir": "2_codigo_pratico/infra/compose",
+  "composeFile": "auction-capacidade-negocio-s2.yml",
+  "composeProject": "auction-capacidade-s2",
+  "baseUrl": "http://localhost:3000",
+  "readinessPath": "/health",
+  "loginPath": "/auth/login",
+  "credentials": { "email": "bidder@example.com", "password": "password123" },
+  "seed": {
+    "service": "api",
+    "command": ["node", "scripts/seed-local.js"]
+  },
+  "containers": [
+    "auction_cap_s2_api",
+    "auction_cap_s2_leilao",
+    "auction_cap_s2_leilao_worker",
+    "auction_cap_s2_lances",
+    "auction_cap_s2_postgres",
+    "auction_cap_s2_redis",
+    "auction_cap_s2_nginx"
+  ],
+  "images": [
+    "auction-cap-s2-api",
+    "auction-cap-s2-leilao",
+    "auction-cap-s2-lances",
+    "postgres:16",
+    "redis:7",
+    "nginx:alpine"
+  ],
+  "sourceDirs": [
+    "2_codigo_pratico/apps/auction/src",
+    "2_codigo_pratico/services/auction/lances/src",
+    "2_codigo_pratico/services/auction/leilao/src"
+  ],
+  "crossDomain": [
+    {
+      "label": "auction",
+      "dir": "2_codigo_pratico/apps/auction/src",
+      "tsConfig": "2_codigo_pratico/apps/auction/tsconfig.json"
+    },
+    {
+      "label": "lances",
+      "dir": "2_codigo_pratico/services/auction/lances/src",
+      "tsConfig": "2_codigo_pratico/services/auction/lances/tsconfig.json"
+    },
+    {
+      "label": "leilao",
+      "dir": "2_codigo_pratico/services/auction/leilao/src",
+      "tsConfig": "2_codigo_pratico/services/auction/leilao/tsconfig.json"
+    }
+  ],
+  "tsConfig": "2_codigo_pratico/apps/auction/tsconfig.json",
+  "ids": {
+    "userId": { "from": "login", "path": "user.id" },
+    "auctionId": { "from": "seed", "path": "auctionId" }
+  },
+  "routes": {
+    "read": [
+      {
+        "name": "auctions",
+        "method": "GET",
+        "path": "/auctions?limit=10"
+      },
+      {
+        "name": "auction-by-id",
+        "method": "GET",
+        "path": "/auctions/{{auctionId}}"
+      }
+    ],
+    "write": [
+      {
+        "name": "bids",
+        "method": "POST",
+        "path": "/auctions/{{auctionId}}/bids",
+        "auth": true,
+        "connections": 1,
+        "sequence": { "field": "amount", "start": 100 },
+        "body": { "amount": 100 }
+      }
+    ]
+  },
+  "load": { "connections": 20, "durationSec": 10, "pipelining": 1, "reps": 3 },
+  "buildReps": 3,
+  "startupReps": 3,
+  "statsIdleSec": 15,
+  "statsLoadSec": 15
+}
