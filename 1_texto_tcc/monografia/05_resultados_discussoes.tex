@@ -1,4 +1,4 @@
-\chapter{Desenvolvimento}
+﻿\chapter{Desenvolvimento}
 \label{cap:desenvolvimento}
 
 Este capítulo evidencia o desenvolvimento da pesquisa experimental. Nesse sentido, aqui está descrito em detalhes como cada aplicação era implementada, como se deu a aplicação das metodologias de decomposição e também os resultados, organizados em quadros para comparação.
@@ -27,7 +27,7 @@ A Figura \ref{fig:inventario_arquitetura} demonstra a arquitetura base do sistem
 
 O Quadro \ref{qua:metricas-inventario-s0} reúne as métricas do sistema de inventário no estado inicial Snapshot 0, adotado como referência para o cálculo das variações das três metodologias de decomposição.
 
-%\input{tabelas/metricas-inventario-s0.tex}
+\input{tabelas/metricas-inventario-s0.tex}
 
 \subsection*{Sistema de Leilões}
 
@@ -37,11 +37,15 @@ A Figura \ref{fig:leilao_arquitetura} demonstra a arquitetura base do sistema.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figuras/leilao_arquitetura.png}
+    \includegraphics[width=\linewidth]{figuras/leilao__arquitetura.png}
     \caption{Arquitetura base do sistema de leilões.}
     \label{fig:leilao_arquitetura}
     \legend{Elaborado pelo autor (2026).}
 \end{figure}
+
+O Quadro \ref{qua:metricas-leilao-s0} reúne as métricas do sistema de leilões no estado inicial Snapshot 0, adotado como referência para o cálculo das variações das três metodologias de decomposição.
+
+\input{tabelas/metricas-leilao-s0.tex}
 \subsection*{E-commerce}
 
 Desenvolvida sobre o NestJS com o ODM Mongoose conectado a um banco de dados orientado a documentos (MongoDB), o código fonte original se organizava em mais de 20 controladores que cobriam autenticação, produtos, carrinho, pedidos, estoque e avaliações. Por conta desse volume, a fim de focar a experimentação na regra de negócio principal, foi necessário reduzir a complexidade do sistema ao cortar módulos que se integravam com ferramentas de terceiros, como AWS para armazenamento em núvem e Stripe para pagamentos, que se transformaram em módulos locais. Além disso, alguns componentes que complementavam o sistema, como aluguel, ofertas de serviços e chat também foram removidos. Desta forma, sua estrutura final permite investigar os impactos da decomposição em modelos orientados a documentos e em como o pedido grava status e estoque das operações de finalização de compras.
@@ -51,11 +55,15 @@ A Figura \ref{fig:ecommerce_arquitetura} demonstra a arquitetura base do sistema
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figuras/ecommerce_arquitetura.png}
+    \includegraphics[width=\linewidth]{figuras/ecommerce__arquitetura.png}
     \caption{Arquitetura base do sistema de e-commerce.}
     \label{fig:ecommerce_arquitetura}
     \legend{Elaborado pelo autor (2026).}
 \end{figure}
+
+O Quadro \ref{qua:metricas-ecommerce-s0} reúne as métricas do sistema de e-commerce no estado inicial Snapshot 0, adotado como referência para o cálculo das variações das três metodologias de decomposição.
+
+\input{tabelas/metricas-ecommerce-s0.tex}
 
 \section{Infraestrutura de Experimentação e Coleta de Métricas}
 \label{sec:infra_experimental}
@@ -86,9 +94,9 @@ A terceira e última extração foi a da capacidade de Controle de Estoque, que 
 
 O Quadro \ref{qua:comp_inventory-api_capacidade-negocio_snapshots} apresenta as métricas ao longo das quatro fases e o Quadro \ref{qua:comp_capacidade-negocio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 47 segundos no baseline canônico para 138 segundos no estado final, como consequência da construção de imagens independentes. O consumo de memória e de processamento cresceu de forma contínua, com aumento significativo do processamento sob carga na fase final, quando passaram a existir dois bancos dedicados. A vazão média das rotas caiu após a primeira extração, em razão do salto adicional pelo proxy, e se recuperou nas fases seguintes. O número de componentes subiu de dois para seis. As Linhas de Código cresceram até a segunda extração, por duplicação de código transversal, e caíram no estado final, quando o monólito deixou de compor a solução. As chamadas entre fronteiras medidas pela análise estática variaram pouco, pois o acoplamento entre serviços passou a ocorrer pela rede e não é capturado por essa análise.
 
-%\input{tabelas/inventory-api__capacidade-negocio__snapshots.tex}
+\input{tabelas/inventory-api__capacidade-negocio__snapshots.tex}
 
-%\input{tabelas/capacidade-negocio__variacoes.tex}
+\input{tabelas/capacidade-negocio__variacoes.tex}
 
 \subsection*{Sistema de Leilões}
 
@@ -104,7 +112,7 @@ O Quadro \ref{qua:comp_auction_capacidade-negocio_snapshots} apresenta as métri
 
 As chamadas entre fronteiras medidas pela análise estática caíram de 125 para 109 quando o monólito saiu de cena, movimento oposto ao das duas fases anteriores. A queda não indica menos acoplamento, e sim que o acoplamento deixou de estar no código: os serviços passaram a se comunicar por 13 endpoints internos, que a análise estática não detecta. Resta uma diferença de consistência em relação às fases anteriores. A chamada que leva o maior lance ao Leilão não tem retentativa, de modo que uma falha nela deixa a projeção do leilão atrás do último lance gravado. É o preço de manter a invariante em um banco e publicá-la em outro, sem transação distribuída.
 
-%\input{tabelas/auction__capacidade-negocio__snapshots.tex}
+\input{tabelas/auction__capacidade-negocio__snapshots.tex}
 
 \subsection*{E-commerce}
 
@@ -122,7 +130,7 @@ No desempenho, a vazão média caiu 3 \% e a latência mediana recuou 12 \%. A r
 
 Em síntese, a trilha trocou um acoplamento visível por outro invisível. O volume de código diminuiu no estado final, mas concluir um pedido passou a depender de outros serviços, um custo que escapa à análise estática e se reflete nas métricas de infraestrutura.
 
-%\input{tabelas/ecommerce__capacidade-negocio__snapshots.tex}
+\input{tabelas/ecommerce__capacidade-negocio__snapshots.tex}
 
 
 \section{Decomposição por Subdomínio (DDD)}
@@ -138,9 +146,9 @@ A etapa final extraiu o núcleo e isolou a persistência, com um banco por servi
 
 O Quadro \ref{qua:comp_inventory-api_subdominio_snapshots} apresenta as métricas ao longo das quatro fases e o Quadro \ref{qua:comp_subdominio_variacoes} consolida a variação acumulada da metodologia em relação ao S0 canônico. O tempo de construção subiu de cerca de 47 segundos no baseline para cerca de 123 segundos no estado final, em razão da construção de imagens independentes. O tempo de inicialização variou pouco até a segunda extração e subiu no estado final, quando passaram a existir três bancos. O número de componentes cresceu de dois para oito. As Linhas de Código subiram até a extração do suporte, por duplicação de código transversal, e caíram no estado final, quando o monólito deixou de compor a solução. As chamadas entre fronteiras medidas pela análise estática variaram pouco, pois o acoplamento entre serviços passou a ocorrer pela rede e não é capturado por essa análise. A vazão média das rotas apresentou leve recuperação no estado final e a latência média caiu em relação ao baseline. Vale registrar que a primeira extração desta trilha coincide, em topologia e em números, com a segunda fase da Capacidade de Negócio, o que reforça que o efeito medido até ali decorre da estrutura resultante e não da metodologia empregada.
 
-%\input{tabelas/inventory-api__subdominio__snapshots.tex}
+\input{tabelas/inventory-api__subdominio__snapshots.tex}
 
-%\input{tabelas/subdominio__variacoes.tex}
+\input{tabelas/subdominio__variacoes.tex}
 
 \subsection*{Sistema de Leilões}
 
@@ -156,7 +164,7 @@ O Quadro \ref{qua:comp_auction_subdominio_snapshots} apresenta as métricas das 
 
 A comparação com a trilha de Capacidade de Negócio é o resultado mais relevante desta etapa. Lá, separar Lances e Leilão custou 45 \% da vazão de escrita, porque o maior lance passou a ser publicado por chamada interna depois do commit. Aqui, manter as duas partes no mesmo núcleo preservou a transação e a perda ficou na faixa do ruído. Em compensação, a leitura paga mais: 36 \% contra 20 \% da Capacidade. O critério de subdomínio, neste sistema, escolheu proteger a escrita e transferir o custo para as consultas.
 
-%\input{tabelas/auction__subdominio__snapshots.tex}
+\input{tabelas/auction__subdominio__snapshots.tex}
 
 \subsection*{E-commerce}
 
@@ -195,9 +203,9 @@ Os Quadros \ref{qua:comp_inventory-api_transacoes_snapshots} e \ref{qua:comp_tra
 
 O estado final coincide com o da Capacidade de Negócio: mesma topologia, mesmas 9.599 Linhas de Código e as mesmas 78 de 416 chamadas entre fronteiras. A diferença está na ordem das extrações. Nesta trilha, o grupo atômico saiu na primeira extração, e o caminho de escrita passou a depender da rede antes das demais metodologias; na Capacidade, a escrita permaneceu local até o estado final. O resultado indica que, neste domínio, o critério de transações converge para a mesma fronteira da capacidade, porque a invariante de estoque domina o agrupamento. A comparação relevante deixa de ser o formato final e passa a ser quando o custo é pago e por quanto tempo a consistência da escrita depende de um único processo.
 
-%\input{tabelas/inventory-api__transacoes__snapshots.tex}
+\input{tabelas/inventory-api__transacoes__snapshots.tex}
 
-%\input{tabelas/transacoes__variacoes.tex}
+\input{tabelas/transacoes__variacoes.tex}
 
 \subsection*{Sistema de Leilões}
 
@@ -213,7 +221,7 @@ O Quadro \ref{qua:comp_auction_transacoes_snapshots} apresenta as métricas das 
 
 A comparação entre as três trilhas do leilão fica clara nas métricas de escrita. Separar Lances e Leilão custou 45 \% da vazão de lances na Capacidade. Manter lances e leilões juntos, mas deixar a carta fora, custou 15 \% no Subdomínio. Aqui, com o grupo atômico inteiro no mesmo serviço e no mesmo banco, a perda foi de 10 \%, dentro da faixa de variação da rota. O preço aparece na largura do serviço e no custo fixo: é a trilha com menos componentes e menor tempo de construção entre as três, mas também a que concentra mais tabelas em um único banco e a que mais cresceu em memória sob carga.
 
-%\input{tabelas/auction__transacoes__snapshots.tex}
+\input{tabelas/auction__transacoes__snapshots.tex}
 
 \subsection*{E-commerce}
 
@@ -240,7 +248,7 @@ O estado final tem as mesmas quatro fronteiras das outras duas trilhas, mas não
 O Quadro \ref{qua:comp_metodologias} reúne a variação acumulada de cada metodologia entre o estado inicial e o estado final.
 
 
-%%\input{tabelas/_metodologias.tex}
+\input{tabelas/_metodologias.tex}
 
 \section{Síntese do Capítulo}
 \label{sec:sintese_capitulo}
