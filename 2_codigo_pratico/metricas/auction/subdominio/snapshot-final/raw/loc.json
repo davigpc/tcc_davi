@@ -1,0 +1,255 @@
+{
+  "tool": "sloc@0.3.2",
+  "files": 110,
+  "total": 3916,
+  "source": 3350,
+  "comment": 49,
+  "byModule": {
+    "nucleo/auction-jobs": {
+      "files": 5,
+      "total": 217,
+      "source": 183,
+      "comment": 5
+    },
+    "nucleo/auctions": {
+      "files": 9,
+      "total": 699,
+      "source": 601,
+      "comment": 0
+    },
+    "nucleo/auth": {
+      "files": 3,
+      "total": 61,
+      "source": 51,
+      "comment": 6
+    },
+    "nucleo/bids": {
+      "files": 7,
+      "total": 338,
+      "source": 292,
+      "comment": 1
+    },
+    "nucleo/clients": {
+      "files": 3,
+      "total": 157,
+      "source": 131,
+      "comment": 0
+    },
+    "nucleo/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "nucleo/config": {
+      "files": 2,
+      "total": 37,
+      "source": 35,
+      "comment": 0
+    },
+    "nucleo/database": {
+      "files": 6,
+      "total": 208,
+      "source": 192,
+      "comment": 0
+    },
+    "nucleo/health": {
+      "files": 3,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "nucleo/main.ts": {
+      "files": 1,
+      "total": 23,
+      "source": 19,
+      "comment": 1
+    },
+    "nucleo/nucleo.module.ts": {
+      "files": 1,
+      "total": 28,
+      "source": 20,
+      "comment": 7
+    },
+    "nucleo/realtime": {
+      "files": 3,
+      "total": 175,
+      "source": 152,
+      "comment": 2
+    },
+    "nucleo/worker.module.ts": {
+      "files": 1,
+      "total": 13,
+      "source": 12,
+      "comment": 0
+    },
+    "nucleo/worker.ts": {
+      "files": 1,
+      "total": 9,
+      "source": 7,
+      "comment": 1
+    },
+    "identidade/auth": {
+      "files": 7,
+      "total": 219,
+      "source": 190,
+      "comment": 0
+    },
+    "identidade/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "identidade/config": {
+      "files": 2,
+      "total": 31,
+      "source": 29,
+      "comment": 0
+    },
+    "identidade/database": {
+      "files": 1,
+      "total": 24,
+      "source": 23,
+      "comment": 0
+    },
+    "identidade/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "identidade/identidade.module.ts": {
+      "files": 1,
+      "total": 25,
+      "source": 18,
+      "comment": 6
+    },
+    "identidade/internal": {
+      "files": 2,
+      "total": 47,
+      "source": 40,
+      "comment": 0
+    },
+    "identidade/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "identidade/users": {
+      "files": 4,
+      "total": 119,
+      "source": 98,
+      "comment": 0
+    },
+    "catalogo/auth": {
+      "files": 3,
+      "total": 64,
+      "source": 56,
+      "comment": 4
+    },
+    "catalogo/card-types": {
+      "files": 6,
+      "total": 178,
+      "source": 152,
+      "comment": 0
+    },
+    "catalogo/cards": {
+      "files": 8,
+      "total": 423,
+      "source": 355,
+      "comment": 0
+    },
+    "catalogo/catalogo.module.ts": {
+      "files": 1,
+      "total": 27,
+      "source": 20,
+      "comment": 6
+    },
+    "catalogo/clients": {
+      "files": 1,
+      "total": 34,
+      "source": 27,
+      "comment": 0
+    },
+    "catalogo/common": {
+      "files": 2,
+      "total": 17,
+      "source": 14,
+      "comment": 0
+    },
+    "catalogo/config": {
+      "files": 2,
+      "total": 32,
+      "source": 30,
+      "comment": 0
+    },
+    "catalogo/database": {
+      "files": 1,
+      "total": 26,
+      "source": 25,
+      "comment": 0
+    },
+    "catalogo/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "catalogo/internal": {
+      "files": 2,
+      "total": 74,
+      "source": 63,
+      "comment": 0
+    },
+    "catalogo/main.ts": {
+      "files": 1,
+      "total": 17,
+      "source": 13,
+      "comment": 1
+    },
+    "catalogo/users": {
+      "files": 1,
+      "total": 5,
+      "source": 5,
+      "comment": 0
+    },
+    "tempo-real/clients": {
+      "files": 1,
+      "total": 41,
+      "source": 34,
+      "comment": 0
+    },
+    "tempo-real/config": {
+      "files": 2,
+      "total": 28,
+      "source": 26,
+      "comment": 0
+    },
+    "tempo-real/health": {
+      "files": 2,
+      "total": 16,
+      "source": 14,
+      "comment": 0
+    },
+    "tempo-real/main.ts": {
+      "files": 1,
+      "total": 15,
+      "source": 11,
+      "comment": 1
+    },
+    "tempo-real/realtime": {
+      "files": 4,
+      "total": 354,
+      "source": 301,
+      "comment": 1
+    },
+    "tempo-real/tempo-real.module.ts": {
+      "files": 1,
+      "total": 35,
+      "source": 28,
+      "comment": 6
+    }
+  }
+}

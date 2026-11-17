@@ -1,0 +1,29 @@
+{
+  "services": [
+    "redis",
+    "postgres_identity",
+    "identidade",
+    "postgres_catalogo",
+    "catalogo",
+    "postgres_leilao",
+    "leilao",
+    "tempo-real",
+    "nginx",
+    "leilao_worker"
+  ],
+  "serviceCount": 10,
+  "runningContainers": [
+    "auction_sub_final_nginx",
+    "auction_sub_final_leilao_worker",
+    "auction_sub_final_leilao",
+    "auction_sub_final_tempo_real",
+    "auction_sub_final_catalogo",
+    "auction_sub_final_identidade",
+    "auction_sub_final_leilao_db",
+    "auction_sub_final_identity_db",
+    "auction_sub_final_catalogo_db",
+    "auction_sub_final_redis"
+  ],
+  "containerCount": 10,
+  "imageCount": 7
+}

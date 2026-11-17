@@ -591,6 +591,58 @@ Transações), reaproveitando o desenho de bancos isolados.
 
 ---
 
+### Trilha 8/9 — auction × Subdomínio (DDD) (concluída)
+
+**Branch:** `exp/auction/subdominio` (pai e fork `davigpc/auction`), a partir do
+baseline do leilão.
+
+**Classificação:** genéricos = Identidade (auth/users) e Tempo Real (gateway +
+assinante Redis); suporte = Catálogo de Cartas (cards/card-types); núcleo =
+Leilão (auctions + bids + auction-jobs + worker). Ordem: **s1 genéricos → s2
+Catálogo → final núcleo**, com o monólito desativado no fim.
+
+**Persistência:** compartilhada até o s2 (`DATABASE_SYNC=false` nos serviços);
+**isolada no final**, com `identity_db`, `catalogo_db` e `leilao_db`. Topologia
+final com 10 contêineres.
+
+**Registros:** `docs/extracao/auction__subdominio__{s1,s2,final}.{plan,}.md`;
+diário `docs/execucao/auction__subdominio.md`.
+
+**Serviços:** `services/auction/{identidade,catalogo,tempo-real}/` (reaproveitados
+da trilha de Capacidade) e `services/auction/nucleo/` (leilões + lances + worker).
+Compose final: `infra/compose/auction-subdominio-final.yml`; gateway
+`infra/gateway/nginx-auction-subdominio-final.conf`; config
+`harness/apps/auction.subdominio-final.json`.
+
+**Resultados (média de 3 repetições):**
+
+| Métrica | S0 | s1 | s2 | final |
+|---|---|---|---|---|
+| Build | 76.076 ms | 106.665 ms | 120.588 ms | 116.144 ms |
+| Inicialização | 12.627 ms | 25.146 ms | 26.537 ms | 26.697 ms |
+| LOC | 2.863 | 3.437 | 4.089 | 3.916 |
+| Componentes / contêineres | 4 / 4 | 7 / 7 | 8 / 8 | 10 / 10 |
+| Cross-domain | 88/174 | 102/197 | 121/229 | 97/197 |
+| `GET /auctions` (req/s) | 923,9 | 896,8 | 910,9 | 588,6 |
+| `GET /auctions/:id` (req/s) | 751,6 | 725,1 | 745,6 | 551,8 |
+| `POST /bids` (req/s) | 159,0 | 134,0 | 164,0 | 135,1 |
+| RAM carga (MB) | 313,6 | 412,9 | 462,6 | 657,3 |
+
+**Achado central:** o critério de subdomínio mantém leilão e lances no mesmo
+núcleo, então a transação do lance continua local e a escrita perde só o salto
+pelo gateway (−15 % contra o S0, na faixa de variação da rota). É o contraste
+direto com a Capacidade, que separou as duas capacidades e perdeu 45 %. O preço
+aparece na leitura: compor cada resposta com Catálogo e Identidade custa 36 % da
+listagem e 27 % do detalhe. O cross-domain sobe até o s2 porque a fase de banco
+compartilhado obriga o núcleo a manter as entidades de carta; só cai no final,
+quando o monólito sai.
+
+**Tags:** `snap/auction/subdominio/{1,2,final}`.
+
+**Status:** concluída. Próximo: trilha 9/9 (Transações) do `auction`.
+
+---
+
 ## 13. Consolidação em `main` (estratégia de branches)
 
 A branch `main` centraliza **o texto do TCC, o harness e os dados sintetizados**:

@@ -144,6 +144,19 @@ O Quadro \ref{qua:comp_inventory-api_subdominio_snapshots} apresenta as métrica
 
 \subsection*{Sistema de Leilões}
 
+Na classificação por subdomínio, os nove módulos do leilão foram separados pelo valor estratégico. Identidade e Tempo Real são genéricos, porque poderiam ser atendidos por componentes prontos. O Catálogo de Cartas é de suporte: sem ele não há leilão, mas não é o que diferencia o sistema. O núcleo reúne leilões, lances e as tarefas de fechamento, com o worker, porque é ali que está a regra que sustenta o negócio: o lance sempre crescente e a carta que muda de dono quando o prazo termina. No baseline, a análise estática registrou 88 dependências cruzando fronteiras de módulo, de um total de 174.
+
+A extração seguiu a ordem inversa à da Capacidade de Negócio, começando pelos genéricos. No s1 saíram Identidade e Tempo Real. O login passou a ser respondido pelo novo serviço, mas o monólito manteve uma cópia local do mapeamento de usuários e os guardas de token, porque cartas, leilões e lances exibem nome e e-mail nas respostas. O gateway do Socket.IO também saiu, enquanto o publicador de eventos ficou no monólito. O custo apareceu na infraestrutura: a corrente de healthchecks ganhou dois saltos antes do NGINX e o tempo de inicialização dobrou.
+
+No s2 saiu o Catálogo de Cartas, que passou a responder por \texttt{/cards} e \texttt{/card-types}. O banco continuou compartilhado e o monólito manteve as entidades de carta, porque ainda escreve nelas ao criar o leilão e ao fechar a disputa. O resultado contrariou a expectativa: as chamadas entre fronteiras subiram de 102 para 121, já que o novo serviço recria as arestas internas do módulo enquanto o monólito conserva as suas. Extrair o serviço sem isolar o dado não reduziu o acoplamento estático.
+
+Na etapa final o núcleo saiu como serviço único, com banco próprio, e o monólito foi desativado. A decisão central foi manter lances e leilões juntos: a transação do lance continua travando a linha do leilão, gravando o lance e atualizando o maior lance na mesma escrita. O que passou a atravessar a rede foi a carta. A criação do leilão trava a carta no Catálogo por chamada interna, e o fechamento só marca o leilão como encerrado depois que o Catálogo confirma a transferência, usando o estado de encerramento como ponto de retomada.
+
+O Quadro \ref{qua:comp_auction_subdominio_snapshots} apresenta as métricas das quatro fases e o Quadro \ref{qua:comp_subdominio_variacoes} consolida a variação acumulada da metodologia. O tempo de construção subiu de cerca de 76 segundos no baseline para 116 segundos no estado final, e o de inicialização mais que dobrou, de 12,6 para 26,7 segundos, por causa da corrente de healthchecks e do terceiro banco. A memória sob carga passou de 314 MB para 657 MB. A listagem de leilões perdeu 36 \% de vazão e o detalhe, 27 \%, porque cada resposta passou a depender de duas chamadas internas, ao Catálogo e à Identidade. A escrita de lances perdeu 15 \%, dentro da faixa de variação da própria rota.
+
+A comparação com a trilha de Capacidade de Negócio é o resultado mais relevante desta etapa. Lá, separar Lances e Leilão custou 45 \% da vazão de escrita, porque o maior lance passou a ser publicado por chamada interna depois do commit. Aqui, manter as duas partes no mesmo núcleo preservou a transação e a perda ficou na faixa do ruído. Em compensação, a leitura paga mais: 36 \% contra 20 \% da Capacidade. O critério de subdomínio, neste sistema, escolheu proteger a escrita e transferir o custo para as consultas.
+
+%\input{tabelas/auction__subdominio__snapshots.tex}
 
 \subsection*{E-commerce}
 

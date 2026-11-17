@@ -1,10 +1,5 @@
 {
-  "inventory-api": {
-    "metodologia": "capacidade-negocio",
-    "snapshot": "snapshot-0"
-  },
-  "ecommerce": {
-    "metodologia": "transacoes",
-    "snapshot": "snapshot-0"
-  }
+  "inventory-api": { "metodologia": "capacidade-negocio", "snapshot": "snapshot-0" },
+  "ecommerce": { "metodologia": "transacoes", "snapshot": "snapshot-0" },
+  "auction": { "metodologia": "capacidade-negocio", "snapshot": "snapshot-0" }
 }
