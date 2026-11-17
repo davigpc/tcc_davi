@@ -1,0 +1,382 @@
+{
+  "app": "ecommerce",
+  "metodologia": "transacoes",
+  "snapshot": "snapshot-1",
+  "tag": null,
+  "timestampUtc": "2026-11-12T17:39:53.226Z",
+  "buildTime": {
+    "meanMs": 120345,
+    "runsMs": [
+      118414,
+      126240,
+      116380
+    ]
+  },
+  "startupTime": {
+    "meanMs": 8578,
+    "runsMs": [
+      8543,
+      8690,
+      8501
+    ]
+  },
+  "custo": {
+    "idle": [
+      {
+        "container": "ecommerce_tx_s1_nginx",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 12.8,
+        "memMinMB": 12.8,
+        "memMaxMB": 12.8
+      },
+      {
+        "container": "ecommerce_tx_s1_monolith",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 76.31,
+        "memMinMB": 76.27,
+        "memMaxMB": 76.34
+      },
+      {
+        "container": "ecommerce_tx_s1_checkout",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 55.97,
+        "memMinMB": 55.93,
+        "memMaxMB": 56
+      },
+      {
+        "container": "ecommerce_tx_s1_redis",
+        "samples": 4,
+        "cpuMedPerc": 0.29,
+        "cpuMinPerc": 0.28,
+        "cpuMaxPerc": 0.3,
+        "memMedMB": 8.36,
+        "memMinMB": 8.35,
+        "memMaxMB": 8.48
+      },
+      {
+        "container": "ecommerce_tx_s1_mongo",
+        "samples": 4,
+        "cpuMedPerc": 0.68,
+        "cpuMinPerc": 0.34,
+        "cpuMaxPerc": 54.03,
+        "memMedMB": 205.25,
+        "memMinMB": 204.8,
+        "memMaxMB": 207.5
+      }
+    ],
+    "load": [
+      {
+        "container": "ecommerce_tx_s1_nginx",
+        "samples": 4,
+        "cpuMedPerc": 37.42,
+        "cpuMinPerc": 36.2,
+        "cpuMaxPerc": 38.18,
+        "memMedMB": 14.77,
+        "memMinMB": 14.71,
+        "memMaxMB": 15.04
+      },
+      {
+        "container": "ecommerce_tx_s1_monolith",
+        "samples": 4,
+        "cpuMedPerc": 103.32,
+        "cpuMinPerc": 101.62,
+        "cpuMaxPerc": 103.54,
+        "memMedMB": 249,
+        "memMinMB": 248.9,
+        "memMaxMB": 249.1
+      },
+      {
+        "container": "ecommerce_tx_s1_checkout",
+        "samples": 4,
+        "cpuMedPerc": 0,
+        "cpuMinPerc": 0,
+        "cpuMaxPerc": 0,
+        "memMedMB": 56.57,
+        "memMinMB": 56.57,
+        "memMaxMB": 56.66
+      },
+      {
+        "container": "ecommerce_tx_s1_redis",
+        "samples": 4,
+        "cpuMedPerc": 10.51,
+        "cpuMinPerc": 10.26,
+        "cpuMaxPerc": 10.83,
+        "memMedMB": 8.38,
+        "memMinMB": 8.25,
+        "memMaxMB": 8.51
+      },
+      {
+        "container": "ecommerce_tx_s1_mongo",
+        "samples": 4,
+        "cpuMedPerc": 0.45,
+        "cpuMinPerc": 0.4,
+        "cpuMaxPerc": 67.07,
+        "memMedMB": 208.75,
+        "memMinMB": 206.4,
+        "memMaxMB": 209
+      }
+    ],
+    "imagensMB": {
+      "ecommerce-tx-s1-monolith": 98.66,
+      "ecommerce-tx-s1-checkout": 88.92,
+      "mongo:7": 283.38,
+      "redis:7-alpine": 15.52,
+      "nginx:alpine": 25.12
+    }
+  },
+  "desempenho": {
+    "leitura": [
+      {
+        "route": "product-by-id",
+        "rpsMean": 2854.13,
+        "rpsMin": 2845.4,
+        "rpsMax": 2861.2,
+        "p50Mean": 7,
+        "p50Min": 7,
+        "p50Max": 7,
+        "p90Mean": 14,
+        "p90Min": 14,
+        "p90Max": 14,
+        "p99Mean": 17.33,
+        "p99Min": 17,
+        "p99Max": 18,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "products",
+        "rpsMean": 2702.13,
+        "rpsMin": 2554.6,
+        "rpsMax": 2781.4,
+        "p50Mean": 7,
+        "p50Min": 7,
+        "p50Max": 7,
+        "p90Mean": 14,
+        "p90Min": 14,
+        "p90Max": 14,
+        "p99Mean": 16.33,
+        "p99Min": 16,
+        "p99Max": 17,
+        "non2xxTotal": 0
+      }
+    ],
+    "escrita": [
+      {
+        "route": "orders",
+        "rpsMean": 517.67,
+        "rpsMin": 462.2,
+        "rpsMax": 553.21,
+        "p50Mean": 38,
+        "p50Min": 36,
+        "p50Max": 41,
+        "p90Mean": 48.67,
+        "p90Min": 44,
+        "p90Max": 56,
+        "p99Mean": 62,
+        "p99Min": 52,
+        "p99Max": 78,
+        "non2xxTotal": 0
+      },
+      {
+        "route": "webhook",
+        "rpsMean": 75.57,
+        "rpsMin": 46.7,
+        "rpsMax": 92,
+        "p50Mean": 13.33,
+        "p50Min": 10,
+        "p50Max": 20,
+        "p90Mean": 17.67,
+        "p90Min": 12,
+        "p90Max": 28,
+        "p99Mean": 21.33,
+        "p99Min": 14,
+        "p99Max": 35,
+        "non2xxTotal": 0
+      }
+    ]
+  },
+  "manutenibilidade": {
+    "locTotal": 4938,
+    "locPorModulo": {
+      "ecommerce/common": 64,
+      "ecommerce/config": 84,
+      "ecommerce/main.module.ts": 55,
+      "ecommerce/main.ts": 27,
+      "ecommerce/modules": 2462,
+      "ecommerce/shared": 298,
+      "checkout/checkout.module.ts": 37,
+      "checkout/clients": 87,
+      "checkout/config": 14,
+      "checkout/main.ts": 27,
+      "checkout/modules": 1674,
+      "checkout/shared": 109
+    },
+    "servicos": 5,
+    "containers": 5,
+    "crossDomainEdges": 72,
+    "totalEdges": 196,
+    "crossDomainPorModulo": {
+      "ecommerce/shared": 1,
+      "ecommerce/auth": 7,
+      "ecommerce/internal": 4,
+      "ecommerce/product": 9,
+      "ecommerce/search": 1,
+      "ecommerce/token": 2,
+      "ecommerce/user": 12,
+      "checkout/cart": 14,
+      "checkout/inventory": 2,
+      "checkout/order": 12,
+      "checkout/stripe": 8
+    },
+    "crossDomainMatriz": [
+      {
+        "from": "checkout/cart",
+        "to": "checkout/item",
+        "count": 8
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/address",
+        "count": 6
+      },
+      {
+        "from": "checkout/cart",
+        "to": "checkout/shipping",
+        "count": 5
+      },
+      {
+        "from": "checkout/stripe",
+        "to": "checkout/shared",
+        "count": 5
+      },
+      {
+        "from": "ecommerce/product",
+        "to": "ecommerce/shared",
+        "count": 4
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/shared",
+        "count": 4
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/item",
+        "count": 4
+      },
+      {
+        "from": "ecommerce/auth",
+        "to": "ecommerce/token",
+        "count": 3
+      },
+      {
+        "from": "checkout/stripe",
+        "to": "checkout/order",
+        "count": 3
+      },
+      {
+        "from": "ecommerce/auth",
+        "to": "ecommerce/shared",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/auth",
+        "to": "ecommerce/user",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/internal",
+        "to": "ecommerce/email",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/internal",
+        "to": "ecommerce/user",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/product",
+        "to": "ecommerce/search",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/product",
+        "to": "ecommerce/storages",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/storages",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/stripe",
+        "count": 2
+      },
+      {
+        "from": "checkout/inventory",
+        "to": "checkout/item",
+        "count": 2
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/inventory",
+        "count": 2
+      },
+      {
+        "from": "checkout/order",
+        "to": "checkout/stripe",
+        "count": 2
+      },
+      {
+        "from": "ecommerce/shared",
+        "to": "ecommerce/auth",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/product",
+        "to": "ecommerce/user",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/search",
+        "to": "ecommerce/shared",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/token",
+        "to": "ecommerce/user",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/token",
+        "to": "ecommerce/shared",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/shared",
+        "count": 1
+      },
+      {
+        "from": "ecommerce/user",
+        "to": "ecommerce/auth",
+        "count": 1
+      },
+      {
+        "from": "checkout/cart",
+        "to": "checkout/shared",
+        "count": 1
+      }
+    ]
+  }
+}

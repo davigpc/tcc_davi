@@ -4,31 +4,33 @@
   \caption{Variação acumulada por aplicação --- Transações.}
   \label{qua:comp_transacoes_variacoes}
   \renewcommand{\arraystretch}{1.15}
-  \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|r|r|r|}
+  \setlength{\tabcolsep}{3pt}
+  \footnotesize
+  \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|r|r|r|r|}
     \hline
-    \textbf{Métrica} & \textbf{Leilões} & \textbf{Inventário} & \textbf{Média} \\
+    \textbf{Métrica} & \textbf{Leilões} & \textbf{E-commerce} & \textbf{Inventário} & \textbf{Média} \\
     \hline
-    \multicolumn{4}{|l|}{\textbf{Agilidade}} \\
+    \multicolumn{5}{|l|}{\textbf{Agilidade}} \\
     \hline
-    Tempo de construção (ms) & +45 \% & +139 \% & +92 \% \\
-    Tempo de inicialização (ms) & +51 \% & +53 \% & +52 \% \\
+    Tempo de construção (ms) & +45 \% & $-$ 28 \% & +139 \% & +52 \% \\
+    Tempo de inicialização (ms) & +51 \% & +4 \% & +53 \% & +36 \% \\
     \hline
-    \multicolumn{4}{|l|}{\textbf{Custo}} \\
+    \multicolumn{5}{|l|}{\textbf{Custo}} \\
     \hline
-    CPU total (repouso / carga, \%) & $-$ 0,01 p.p. / +19 \% & $-$ 0,47 p.p. / +80 \% & $-$ 0,24 p.p. / +49 \% \\
-    RAM total (repouso / carga, MB) & +88 \% / +69 \% & +135 \% / +124 \% & +111 \% / +96 \% \\
-    Imagens da aplicação (MB) & +233 \% & +287 \% & +260 \% \\
-    Componentes / contêineres & +4 & +4 & +4 \\
+    CPU total (repouso / carga, \%) & $-$ 0,01 p.p. / +19 \% & +0,31 p.p. / +32 \% & $-$ 0,47 p.p. / +80 \% & $-$ 0,06 p.p. / +44 \% \\
+    RAM total (repouso / carga, MB) & +88 \% / +69 \% & +174 \% / +97 \% & +135 \% / +124 \% & +132 \% / +97 \% \\
+    Imagens da aplicação (MB) & +233 \% & +294 \% & +287 \% & +271 \% \\
+    Componentes / contêineres & +4 & +6 & +4 & +5 \\
     \hline
-    \multicolumn{4}{|l|}{\textbf{Desempenho}} \\
+    \multicolumn{5}{|l|}{\textbf{Desempenho}} \\
     \hline
-    Vazão (média das rotas, req/s) & $-$ 18 \% & +8 \% & $-$ 5 \% \\
-    Latência p50 (média das rotas, ms) & +22 \% & $-$ 18 \% & +2 \% \\
+    Vazão (média das rotas, req/s) & $-$ 18 \% & $-$ 3 \% & +8 \% & $-$ 4 \% \\
+    Latência p50 (média das rotas, ms) & +22 \% & $-$ 6 \% & $-$ 18 \% & $-$ 0 \% \\
     \hline
-    \multicolumn{4}{|l|}{\textbf{Manutenibilidade}} \\
+    \multicolumn{5}{|l|}{\textbf{Manutenibilidade}} \\
     \hline
-    Linhas de Código & +24 \% & +9 \% & +17 \% \\
-    Chamadas entre fronteiras & +9 \% & +13 \% & +11 \% \\
+    Linhas de Código & +24 \% & +4 \% & +9 \% & +12 \% \\
+    Chamadas entre fronteiras & +9 \% & $-$ 10 \% & +13 \% & +4 \% \\
     \hline
   \end{tabularx}
   \fonte{medição automatizada do experimento (média de três execuções).}

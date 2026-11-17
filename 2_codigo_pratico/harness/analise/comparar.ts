@@ -385,7 +385,8 @@ function texVariacoesTable(v: VariacaoMetodologia): string {
   \\caption{Variação acumulada por aplicação --- ${texEsc(metLabel)}.}
   \\label{qua:comp_${v.metodologia}_variacoes}
   \\renewcommand{\\arraystretch}{1.15}
-  \\begin{tabularx}{\\textwidth}{|>{\\raggedright\\arraybackslash}X${'|r'.repeat(ncols)}|}
+  \\setlength{\\tabcolsep}{3pt}
+${ncols >= 4 ? '  \\footnotesize\n' : ''}  \\begin{tabularx}{\\textwidth}{|>{\\raggedright\\arraybackslash}X${'|r'.repeat(ncols)}|}
     \\hline
     \\textbf{Métrica} & ${header}${withMean ? ' & \\textbf{Média}' : ''} \\\\
     \\hline
