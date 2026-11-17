@@ -1,0 +1,22 @@
+{
+  "auction-tx-s1-api": {
+    "bytes": 113439829,
+    "mb": 108.18
+  },
+  "auction-tx-s1-atomo": {
+    "bytes": 113472536,
+    "mb": 108.22
+  },
+  "postgres:16": {
+    "bytes": 166201939,
+    "mb": 158.5
+  },
+  "redis:7": {
+    "bytes": 43621893,
+    "mb": 41.6
+  },
+  "nginx:alpine": {
+    "bytes": 26335715,
+    "mb": 25.12
+  }
+}
